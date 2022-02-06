@@ -15,7 +15,7 @@ export default function PageHead({
     <Head>
       <title>
         {title}
-        {title && ' - '}Next-Bootstrap.ts
+        {title && ' - '}开源市集
       </title>
 
       {description && <meta name="description" content={description} />}
