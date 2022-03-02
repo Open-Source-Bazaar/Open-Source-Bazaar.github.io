@@ -14,21 +14,12 @@
     "e2e": "jest"
   },
   "dependencies": {
-    "@editorjs/code": "^2.7.0",
-    "@editorjs/editorjs": "^2.22.2",
-    "@editorjs/header": "^2.6.2",
-    "@editorjs/image": "^2.6.2",
-    "@editorjs/link": "^2.3.1",
-    "@editorjs/list": "^1.6.2",
-    "@editorjs/paragraph": "^2.8.0",
-    "@editorjs/quote": "^2.4.0",
-    "editorjs-html": "^3.4.2",
     "idea-react": "^0.9.6",
     "next": "12.0.7",
     "react": "17.0.2",
     "react-bootstrap": "^2.0.4",
     "react-dom": "17.0.2",
-    "react-editor-js": "^2.0.3"
+    "react-typed-component": "^1.0.4"
   },
   "devDependencies": {
     "@jest/types": "^27.4.2",
