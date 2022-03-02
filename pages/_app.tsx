@@ -34,6 +34,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             <Nav.Link href="/history">历史</Nav.Link>
             <Nav.Link href="/code-of-conduct">行为规范</Nav.Link>
             <Nav.Link href="/join-us">参与</Nav.Link>
+            <Nav.Link href="/open-collaborator-award">开放协作人奖</Nav.Link>
           </Nav>
         </Container>
       </Navbar>

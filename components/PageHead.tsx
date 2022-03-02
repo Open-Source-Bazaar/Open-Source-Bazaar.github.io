@@ -8,7 +8,7 @@ export type PageHeadProps = PropsWithChildren<{
 
 export default function PageHead({
   title,
-  description = 'React project scaffold based on TypeScript, Next.js & Bootstrap.',
+  description = '开源市集。',
   children,
 }: PageHeadProps) {
   return (
