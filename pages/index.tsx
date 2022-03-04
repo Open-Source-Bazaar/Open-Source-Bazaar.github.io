@@ -31,7 +31,7 @@ const HomePage = () => (
       </h2>
     </section>
     <section
-      className={`flex-fill d-flex flex-column justify-content-center align-items-center pb-0 bg-success bg-opacity-25 ${styles.main}`}
+      className={`flex-fill d-flex flex-column justify-content-center align-items-center pb-0 bg-warning bg-opacity-10 ${styles.main}`}
     >
       <h2 className="text-start mb-5 mt-5 fw-bolder">形式</h2>
       <Row className="flex-fill d-flex justify-content-around align-items-center w-100 px-3">
@@ -67,9 +67,29 @@ const HomePage = () => (
         </Col>
       </Row>
     </section>
-    <footer className="mw-100 bg-dark text-white">
-      <p className="text-center my-0 py-3">© 2022 开源市集</p>
-    </footer>
+    <section
+      className={`flex-fill d-flex flex-column justify-content-center align-items-center pb-0 bg-success bg-opacity-10 ${styles.main}`}
+    >
+      <h2 className="text-start mb-5 fw-bolder h1">行动</h2>
+      <Row className="d-flex flex-column justify-content-start align-items-center w-100 mb-5">
+        <Col className="text-center">
+          <figure className="text-center">
+            <blockquote className="blockquote mb-4">
+              <p className="h2">我们正在筹办 3 月开源市集，欢迎参与！</p>
+            </blockquote>
+            <figcaption className="h6 text-muted">
+              即兴三月，开源开放！来都来了，玩就是了！👉
+              <a
+                href="https://open-source-bazaar.feishu.cn/docs/doccnGSsshgO4ojuAHVzWJMXWog?from=from_copylink"
+                className="text-primary"
+              >
+                立刻协作
+              </a>
+            </figcaption>
+          </figure>
+        </Col>
+      </Row>
+    </section>
   </>
 );
 

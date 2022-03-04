@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-
+import { useRouter } from 'next/router';
+import { Image } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -9,6 +10,8 @@ import 'idea-react/dist/index.css';
 import '../styles/globals.css';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const { pathname } = useRouter();
+  const thisFullYear = new Date().getFullYear();
   return (
     <>
       <Head>
@@ -28,13 +31,46 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
       <Navbar bg="dark" variant="dark" fixed="top">
         <Container>
-          <Navbar.Brand href="/">开源市集</Navbar.Brand>
+          <Navbar.Brand href="/" className="fw-bolder">
+            开源市集
+          </Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="/about">关于</Nav.Link>
-            <Nav.Link href="/history">历史</Nav.Link>
-            <Nav.Link href="/code-of-conduct">行为规范</Nav.Link>
-            <Nav.Link href="/join-us">参与</Nav.Link>
-            <Nav.Link href="/open-collaborator-award">开放协作人奖</Nav.Link>
+            <Nav.Link
+              href="/about"
+              className={pathname === '/about' ? 'fw-bolder text-light' : ''}
+            >
+              关于
+            </Nav.Link>
+            <Nav.Link
+              href="/history"
+              className={pathname === '/history' ? 'fw-bolder text-light' : ''}
+            >
+              历史
+            </Nav.Link>
+            <Nav.Link
+              href="/code-of-conduct"
+              className={
+                pathname === '/code-of-conduct' ? 'fw-bolder text-light' : ''
+              }
+            >
+              行为规范
+            </Nav.Link>
+            <Nav.Link
+              href="/join-us"
+              className={pathname === '/join-us' ? 'fw-bolder text-light' : ''}
+            >
+              参与
+            </Nav.Link>
+            <Nav.Link
+              href="/open-collaborator-award"
+              className={
+                pathname === '/open-collaborator-award'
+                  ? 'fw-bolder text-light'
+                  : ''
+              }
+            >
+              开放协作人奖
+            </Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -43,19 +79,29 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </div>
 
-      {/* <footer className="flex-fill d-flex justify-content-center align-items-center border-top py-4">
-        <a
-          className="flex-fill d-flex justify-content-center align-items-center"
-          href="https://vercel.com?utm_source=create-next-app&amp;utm_medium=default-template&amp;utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by
-          <span className="mx-2">
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
+      <footer className="mw-100 bg-dark text-white">
+        <p className="text-center my-0 py-3">
+          <span className="pr-3">
+            © 2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`} 开源市集
           </span>
-        </a>
-      </footer> */}
+          <a
+            className="flex-fill d-flex justify-content-center align-items-center"
+            href="https://vercel.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Powered by
+            <span className="mx-2">
+              <Image
+                src="/vercel.svg"
+                alt="Vercel Logo"
+                width={72}
+                height={16}
+              />
+            </span>
+          </a>
+        </p>
+      </footer>
     </>
   );
 }
