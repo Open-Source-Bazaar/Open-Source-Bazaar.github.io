@@ -84,7 +84,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           <span className="pr-3">
             © 2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`} 开源市集
           </span>
-          <a
+          {/* <a
             className="flex-fill d-flex justify-content-center align-items-center"
             href="https://vercel.com/"
             target="_blank"
@@ -99,7 +99,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 height={16}
               />
             </span>
-          </a>
+          </a> */}
         </p>
       </footer>
     </>
