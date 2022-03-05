@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import ReactTyped from 'react-typed-component';
 import { Row, Col, Card } from 'react-bootstrap';
 import PageHead from '../components/PageHead';
@@ -37,9 +38,11 @@ const HomePage = () => (
       <Row className="flex-fill d-flex justify-content-around align-items-center w-100 px-3">
         <Col xs={8} sm={7} md={4} className="pb-5">
           <Card body className={`shadow ${styles.activeCard}`}>
-            <a href="/history">
-              <h5 className="fw-bold mb-3">开源市集</h5>
-            </a>
+            <Link href="/history">
+              <a>
+                <h5 className="fw-bold mb-3">开源市集</h5>
+              </a>
+            </Link>
             <p>
               一群来自科技、艺术、环保不同领域的有趣的朋友通过展示、交流，将“开源”和“开放式协作”的乐趣带给更多人，点亮更多有趣的灵魂，为社会带来正面影响。
             </p>
