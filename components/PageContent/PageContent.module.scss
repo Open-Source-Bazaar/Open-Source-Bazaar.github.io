@@ -1,0 +1,18 @@
+.MDXProvider {
+    font-size: 1rem;
+
+    h1 {
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    ul {
+        li {
+            margin-bottom: 1rem;
+        }
+        li:last-child {
+            margin-bottom: 0;
+        }
+    }
+}

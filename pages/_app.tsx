@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-
+import { useRouter } from 'next/router';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -8,7 +8,32 @@ import Navbar from 'react-bootstrap/Navbar';
 import 'idea-react/dist/index.css';
 import '../styles/globals.css';
 
+const topNavBarMenu = [
+  {
+    href: '/about',
+    name: '关于',
+  },
+  {
+    href: '/history',
+    name: '历史',
+  },
+  {
+    href: '/code-of-conduct',
+    name: '行为规范',
+  },
+  {
+    href: '/join-us',
+    name: '参与',
+  },
+  {
+    href: '/open-collaborator-award',
+    name: '开放协作人奖',
+  },
+];
+
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const { pathname } = useRouter();
+  const thisFullYear = new Date().getFullYear();
   return (
     <>
       <Head>
@@ -16,26 +41,29 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
         <title>开源市集</title>
         <link rel="icon" href="/favicon.ico" />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
-        />
       </Head>
 
-      <Navbar bg="dark" variant="dark" fixed="top">
+      <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
         <Container>
-          <Navbar.Brand href="/">开源市集</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="/about">关于</Nav.Link>
-            <Nav.Link href="/history">历史</Nav.Link>
-            <Nav.Link href="/code-of-conduct">行为规范</Nav.Link>
-            <Nav.Link href="/join-us">参与</Nav.Link>
-            <Nav.Link href="/open-collaborator-award">开放协作人奖</Nav.Link>
-          </Nav>
+          <Navbar.Brand href="/" className="fw-bolder">
+            开源市集
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbarScroll" />
+          <Navbar.Collapse id="navbarScroll">
+            <Nav className="me-auto my-2 my-lg-0" navbarScroll>
+              {topNavBarMenu.map(({ href, name }) => (
+                <Nav.Link
+                  key={`${href}-${name}`}
+                  href={href}
+                  className={
+                    pathname === `${href}` ? 'fw-bolder text-light' : ''
+                  }
+                >
+                  {name}
+                </Nav.Link>
+              ))}
+            </Nav>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
 
@@ -43,19 +71,29 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </div>
 
-      {/* <footer className="flex-fill d-flex justify-content-center align-items-center border-top py-4">
-        <a
-          className="flex-fill d-flex justify-content-center align-items-center"
-          href="https://vercel.com?utm_source=create-next-app&amp;utm_medium=default-template&amp;utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by
-          <span className="mx-2">
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
+      <footer className="mw-100 bg-dark text-white">
+        <p className="text-center my-0 py-3">
+          <span className="pr-3">
+            © 2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`} 开源市集
           </span>
-        </a>
-      </footer> */}
+          {/* <a
+            className="flex-fill d-flex justify-content-center align-items-center"
+            href="https://vercel.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Powered by
+            <span className="mx-2">
+              <Image
+                src="/vercel.svg"
+                alt="Vercel Logo"
+                width={72}
+                height={16}
+              />
+            </span>
+          </a> */}
+        </p>
+      </footer>
     </>
   );
 }
