@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import ReactTyped from 'react-typed-component';
 import { Row, Col, Card } from 'react-bootstrap';
 import PageHead from '../components/PageHead';
@@ -34,38 +33,58 @@ const HomePage = () => (
     <section
       className={`flex-fill d-flex flex-column justify-content-center align-items-center pb-0 bg-warning bg-opacity-10 ${styles.main}`}
     >
-      <h2 className="text-start mb-5 mt-5 fw-bolder">形式</h2>
+      <h2 className="text-start mb-5 mt-5 fw-bolder">参与</h2>
       <Row className="flex-fill d-flex justify-content-around align-items-center w-100 px-3">
         <Col xs={8} sm={7} md={4} className="pb-5">
           <Card body className={`shadow ${styles.activeCard}`}>
-            <Link href="/history">
-              <a>
-                <h5 className="fw-bold mb-3">开源市集</h5>
+            <h5 className="fw-bold mb-3">代码工作</h5>
+            <ul className="list-unstyled">
+              <li className="mb-3">
+                <a
+                  href="https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io"
+                  className="fw-bold"
+                >
+                  官网开发
+                </a>
+                ：研发官网,让更多人了解「开源市集」,了解「开放式协作」……
+              </li>
+              <li className="mb-3">
+                <span className="fw-bold">……</span>
+              </li>
+            </ul>
+          </Card>
+        </Col>
+        <Col xs={8} sm={7} md={4} className="pb-5">
+          <Card body className={`shadow overflow-auto ${styles.activeCard}`}>
+            <h5 className="fw-bold mb-3">非代码工作</h5>
+            <ul className="list-unstyled">
+              <li className="mb-3">
+                <a href="/history" className="fw-bold">
+                  开放市集
+                </a>
+                ：一群来自不同领域的有趣的朋友通过展示、交流，将“开源”和“开放式协作”的乐趣带给更多人……
+              </li>
+              <li className="mb-3">
+                <a href="/open-collaborator-award" className="fw-bold">
+                  开放协作人奖
+                </a>
+                ：在过去的一年中令你难以忘怀的人，请把 Ta 推荐给更多的人……
+              </li>
+              <li className="mb-3">
+                <span className="fw-bold">……</span>
+              </li>
+            </ul>
+          </Card>
+        </Col>
+        <Col xs={8} sm={7} md={4} className="pb-5">
+          <Card body className={`shadow ${styles.activeCard}`}>
+            <p>
+              欢迎
+              <a href="/join-us" className="fw-bold">
+                成为共创人/方
               </a>
-            </Link>
-            <p>
-              一群来自科技、艺术、环保不同领域的有趣的朋友通过展示、交流，将“开源”和“开放式协作”的乐趣带给更多人，点亮更多有趣的灵魂，为社会带来正面影响。
+              ，更多内容/形式等你来共创……
             </p>
-          </Card>
-        </Col>
-        <Col xs={8} sm={7} md={4} className="pb-5">
-          <Card body className={`shadow ${styles.activeCard}`}>
-            <a href="/open-collaborator-award">
-              <h5 className="fw-bold mb-3">开放协作人奖</h5>
-            </a>
-            <p>
-              开放协作人，在过去的一年中，是否有人给你带来感动，带来惊喜？是否有人与你一起成长，一起进步？也许是长此以往，或者说那一瞬间，如果有这样令你难以忘怀的人，请把
-              Ta 推荐给更多的人。
-            </p>
-          </Card>
-        </Col>
-        <Col xs={8} sm={7} md={4} className="pb-5">
-          <Card body className={`shadow ${styles.activeCard}`}>
-            欢迎
-            <strong>
-              <a href="/join-us">成为共创人/方</a>
-            </strong>
-            ，更多内容/形式等你来共创……
           </Card>
         </Col>
       </Row>
