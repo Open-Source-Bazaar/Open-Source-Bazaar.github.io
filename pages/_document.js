@@ -6,11 +6,11 @@ export default function Document() {
       <Head>
         <link
           rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          href="https://unpkg.com/bootstrap@5.2.3/dist/css/bootstrap.min.css"
         />
         <link
           rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+          href="https://unpkg.com/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
         />
       </Head>
       <body>
