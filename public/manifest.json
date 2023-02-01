@@ -1,6 +1,6 @@
 {
-  "name": "@open-source-bazaar/web-site",
-  "short_name": "OSB Website",
+  "name": "Open Source Bazaar",
+  "short_name": "开源市集",
   "start_url": ".",
   "description": "Open Source Bazaar Website",
   "scope": "/",
@@ -12,9 +12,9 @@
   "background_color": "transparent",
   "icons": [
     {
-      "src": "favicon.ico",
-      "type": "image/x-icon",
-      "sizes": "280x280"
+      "src": "osb-icon.png",
+      "type": "image/png",
+      "sizes": "382x382"
     }
   ]
 }
