@@ -1,7 +1,7 @@
 {
-  "name": "open-source-bazaar-website",
+  "name": "@open-source-bazaar/web-site",
   "version": "0.0.2",
-  "description": "open source bazaar website",
+  "description": "Open Source Bazaar web-site",
   "private": true,
   "scripts": {
     "prepare": "husky install  &&  npx playwright install",
