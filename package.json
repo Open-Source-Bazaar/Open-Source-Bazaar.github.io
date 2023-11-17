@@ -4,44 +4,35 @@
   "description": "Open Source Bazaar web-site",
   "private": true,
   "scripts": {
-    "prepare": "husky install  &&  npx playwright install",
+    "prepare": "husky install",
     "dev": "next dev",
     "build": "next build",
-    "export": "next build && next export",
     "start": "next start",
     "lint": "next lint",
-    "test": "npm run lint  &&  lint-staged",
-    "e2e": "jest"
+    "test": "npm run lint  &&  lint-staged"
   },
   "dependencies": {
-    "@mdx-js/loader": "^2.0.0",
-    "@mdx-js/react": "^2.0.0",
-    "@next/mdx": "^12.1.0",
-    "idea-react": "^0.27.11",
-    "next": "^12.3.4",
+    "@mdx-js/loader": "^3.0.0",
+    "@mdx-js/react": "^3.0.0",
+    "@next/mdx": "^14.0.3",
+    "idea-react": "^1.0.0-rc.30",
+    "next": "^14.0.3",
     "next-pwa": "^5.6.0",
-    "react": "^17.0.2",
-    "react-bootstrap": "^2.7.0",
-    "react-dom": "^17.0.2",
-    "react-typed-component": "^1.0.4"
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.9.1",
+    "react-dom": "^18.2.0",
+    "react-typed-component": "^1.0.6"
   },
   "devDependencies": {
-    "@jest/types": "^27.5.1",
-    "@types/jest": "^27.4.1",
-    "@types/node": "^14.18.12",
-    "@types/react": "^17.0.53",
-    "eslint": "^8.10.0",
-    "eslint-config-next": "^12.1.0",
-    "husky": "^7.0.4",
-    "jest": "^27.5.1",
-    "jest-playwright-preset": "^1.7.0",
-    "lint-staged": "^12.3.4",
-    "playwright": "^1.19.2",
-    "prettier": "^2.5.1",
-    "sass": "^1.49.9",
-    "ts-jest": "^27.1.3",
-    "ts-node": "^10.6.0",
-    "typescript": "~4.6.2"
+    "@types/node": "^18.18.9",
+    "@types/react": "^18.2.37",
+    "eslint": "^8.53.0",
+    "eslint-config-next": "^14.0.3",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.1.0",
+    "prettier": "^3.1.0",
+    "sass": "^1.69.5",
+    "typescript": "~5.2.2"
   },
   "prettier": {
     "singleQuote": true,
@@ -49,7 +40,7 @@
     "arrowParens": "avoid"
   },
   "lint-staged": {
-    "*.{html,md,less,json,yml,js,ts,tsx}": "prettier --write",
-    "*.{js,jsx,ts,tsx}": "eslint --fix"
+    "*.{html,md,scss,json,yml,js,mjs,ts,tsx}": "prettier --write",
+    "*.{js,mjs,ts,tsx}": "eslint --fix"
   }
 }

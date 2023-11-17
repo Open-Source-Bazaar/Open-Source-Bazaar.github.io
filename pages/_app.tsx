@@ -1,11 +1,8 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import { Container, Nav, Navbar } from 'react-bootstrap';
 
-import 'idea-react/dist/index.css';
 import '../styles/globals.css';
 
 const topNavBarMenu = [
@@ -28,6 +25,10 @@ const topNavBarMenu = [
   {
     href: '/open-collaborator-award',
     name: '开放协作人奖',
+  },
+  {
+    href: 'https://github.com/Open-Source-Bazaar/Git-Hackathon-scaffold',
+    name: '黑客马拉松',
   },
 ];
 

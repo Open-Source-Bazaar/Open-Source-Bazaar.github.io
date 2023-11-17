@@ -7,23 +7,25 @@ jobs:
   Build-and-Deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
       - uses: pnpm/action-setup@v2
         with:
-          version: 7
+          version: 8
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 18
           cache: pnpm
+
       - name: Install
         run: pnpm i --frozen-lockfile
       - name: Build
-        run: pnpm export
+        run: pnpm build
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           publish_dir: ./out
           personal_token: ${{ secrets.GITHUB_TOKEN }}
-          forceOrphan: true
+          force_orphan: true
