@@ -1,0 +1,20 @@
+{
+  "name": "Open Source Bazaar",
+  "short_name": "开源市集",
+  "start_url": ".",
+  "description": "Open Source Bazaar Website",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "theme_color": "rgba(0,0,0,0.5)",
+  "background_color": "transparent",
+  "icons": [
+    {
+      "src": "osb-icon.png",
+      "type": "image/png",
+      "sizes": "382x382"
+    }
+  ]
+}
