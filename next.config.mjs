@@ -1,5 +1,7 @@
-/** @type {import('next').NextConfig} */
-const withMDX = require('@next/mdx')({
+import setMDX from '@next/mdx';
+import setPWA from 'next-pwa';
+
+const withMDX = setMDX({
     options: {
       remarkPlugins: [],
       rehypePlugins: [],
@@ -7,16 +9,17 @@ const withMDX = require('@next/mdx')({
     },
     extension: /\.mdx?$/,
   }),
-  withPWA = require('next-pwa')({
+  withPWA = setPWA({
     dest: 'public',
     register: true,
     skipWaiting: true,
     disable: process.env.NODE_ENV === 'development',
   });
 
-module.exports = withPWA(
+/** @type {import('next').NextConfig} */
+export default withPWA(
   withMDX({
     pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
-    reactStrictMode: true,
+    output: 'export',
   }),
 );

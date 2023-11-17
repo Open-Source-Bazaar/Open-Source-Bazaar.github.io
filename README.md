@@ -2,7 +2,7 @@
 
 开源市集官网项目
 
-[![CI & CD](https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io/workflows/CI%20&%20CD/badge.svg)][7]
+[![CI & CD](https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io/actions/workflows/main.yml/badge.svg)][7]
 
 ## 上游项目
 
@@ -10,10 +10,9 @@
 
 ## 技术栈
 
-- Language: [TypeScript v4][2]
-- Component engine: [Nextjs v12][3]
+- Language: [TypeScript v5][2]
+- Component engine: [Nextjs v14][3]
 - Component suite: [Bootstrap v5][4]
-- Test framework: [Jest][8] + [Playwright][9]
 - CI / CD: GitHub [Actions][10] + [Vercel][11]
 
 ## 开始
@@ -32,10 +31,6 @@ yarn dev
 [2]: https://www.typescriptlang.org/
 [3]: https://nextjs.org/
 [4]: https://getbootstrap.com/
-[5]: https://github.com/vercel/next.js/tree/canary/packages/create-next-app
-[6]: https://david-dm.org/idea2app/next-bootstrap-ts
-[7]: https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io/actions
-[8]: https://jestjs.io/
-[9]: https://playwright.dev/
+[7]: https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io/actions/workflows/main.yml
 [10]: https://github.com/features/actions
-[11]: https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme
+[11]: https://vercel.com/
