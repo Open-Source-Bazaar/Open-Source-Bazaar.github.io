@@ -1,5 +1,7 @@
+import { Card, Col, Row } from 'react-bootstrap';
+import { renderToStaticMarkup } from 'react-dom/server';
 import ReactTyped from 'react-typed-component';
-import { Row, Col, Card } from 'react-bootstrap';
+
 import PageHead from '../components/PageHead';
 import styles from '../styles/Home.module.scss';
 
@@ -21,12 +23,31 @@ const HomePage = () => (
           showCursor
           startDelay={0}
           strings={[
-            "欢迎来到<strong><a className='text-primary mx-2' href='https://open-source-bazaar.github.io/'>开源市集</a></strong>",
-            '欢迎参与<strong>开放式协作</strong>',
-            '欢迎一起评选<strong>开放协作人奖</strong>',
+            renderToStaticMarkup(
+              <>
+                欢迎来到
+                <strong>
+                  <a
+                    className="text-primary mx-2"
+                    href="https://bazaar.fcc-cd.dev/"
+                  >
+                    开源市集
+                  </a>
+                </strong>
+              </>,
+            ),
+            renderToStaticMarkup(
+              <>
+                欢迎参与<strong>开放式协作</strong>
+              </>,
+            ),
+            renderToStaticMarkup(
+              <>
+                欢迎一起评选<strong>开放协作人奖</strong>
+              </>,
+            ),
           ]}
           typeSpeed={100}
-          typedRef={function noRefCheck() {}}
         />
       </h2>
     </section>

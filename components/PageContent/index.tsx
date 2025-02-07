@@ -1,6 +1,6 @@
 import { MDXProvider } from '@mdx-js/react';
 import type { PropsWithChildren } from 'react';
-import { Container, Card } from 'react-bootstrap';
+import { Card, Container } from 'react-bootstrap';
 
 import styles from '../../styles/Home.module.scss';
 import pageContentStyles from './PageContent.module.scss';

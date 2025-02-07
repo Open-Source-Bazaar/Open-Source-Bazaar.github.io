@@ -1,31 +1,16 @@
+import '../styles/globals.css';
+
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 
-import '../styles/globals.css';
-
 const topNavBarMenu = [
-  {
-    href: '/about',
-    name: '关于',
-  },
-  {
-    href: '/history',
-    name: '历史',
-  },
-  {
-    href: '/code-of-conduct',
-    name: '行为规范',
-  },
-  {
-    href: '/join-us',
-    name: '参与',
-  },
-  {
-    href: '/open-collaborator-award',
-    name: '开放协作人奖',
-  },
+  { href: '/about', name: '关于' },
+  { href: '/history', name: '历史' },
+  { href: '/code-of-conduct', name: '行为规范' },
+  { href: '/join-us', name: '参与' },
+  { href: '/open-collaborator-award', name: '开放协作人奖' },
   {
     href: 'https://github.com/Open-Source-Bazaar/Git-Hackathon-scaffold',
     name: '黑客马拉松',
@@ -35,6 +20,7 @@ const topNavBarMenu = [
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
   const thisFullYear = new Date().getFullYear();
+
   return (
     <>
       <Head>

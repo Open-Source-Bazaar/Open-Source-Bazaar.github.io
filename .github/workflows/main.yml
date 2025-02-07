@@ -2,30 +2,59 @@ name: CI & CD
 on:
   push:
     branches:
-      - main
+      - '*'
 jobs:
   Build-and-Deploy:
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        if: ${{ env.VERCEL_TOKEN && env.VERCEL_ORG_ID && env.VERCEL_PROJECT_ID }}
 
-      - uses: pnpm/action-setup@v2
+      - name: Deploy to Vercel
+        id: vercel-deployment
+        uses: amondnet/vercel-action@v25
+        if: ${{ env.VERCEL_TOKEN && env.VERCEL_ORG_ID && env.VERCEL_PROJECT_ID }}
         with:
-          version: 8
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: pnpm
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./
+          vercel-args: ${{ github.ref == 'refs/heads/main' && ' --prod' || '' }}
 
-      - name: Install
-        run: pnpm i --frozen-lockfile
-      - name: Build
-        run: pnpm build
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Lark notification
+        uses: foxundermoon/feishu-action@v2
         with:
-          publish_dir: ./out
-          personal_token: ${{ secrets.GITHUB_TOKEN }}
-          force_orphan: true
+          url: ${{ secrets.LARK_CHATBOT_HOOK_URL }}
+          msg_type: post
+          content: |
+            post:
+              en_us:
+                title: "Vercel Preview Environment"
+                content:
+                  - - tag: text
+                      text: "Git Repository: "
+                    - tag: a
+                      text: ${{ github.server_url }}/${{ github.repository }}
+                      href: ${{ github.server_url }}/${{ github.repository }}
+                  - - tag: text
+                      text: "Code Branch: "
+                    - tag: a
+                      text: ${{ github.ref }}
+                      href: ${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}
+                  - - tag: text
+                      text: "Commit Author: "
+                    - tag: a
+                      text: ${{ github.actor }}
+                      href: ${{ github.server_url }}/${{ github.actor }}
+                  - - tag: text
+                      text: "Preview Link: "
+                    - tag: a
+                      text: ${{ steps.vercel-deployment.outputs.preview-url }}
+                      href: ${{ steps.vercel-deployment.outputs.preview-url }}
