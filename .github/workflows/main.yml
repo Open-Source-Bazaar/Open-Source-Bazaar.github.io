@@ -35,26 +35,26 @@ jobs:
           msg_type: post
           content: |
             post:
-              en_us:
-                title: "Vercel Preview Environment"
+              zh_cn:
+                title: Vercel 预览环境
                 content:
                   - - tag: text
-                      text: "Git Repository: "
+                      text: Git 仓库：
                     - tag: a
                       text: ${{ github.server_url }}/${{ github.repository }}
                       href: ${{ github.server_url }}/${{ github.repository }}
                   - - tag: text
-                      text: "Code Branch: "
+                      text: 代码分支：
                     - tag: a
                       text: ${{ github.ref }}
                       href: ${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}
                   - - tag: text
-                      text: "Commit Author: "
+                      text: 提交作者：
                     - tag: a
                       text: ${{ github.actor }}
                       href: ${{ github.server_url }}/${{ github.actor }}
                   - - tag: text
-                      text: "Preview Link: "
+                      text: 预览链接：
                     - tag: a
                       text: ${{ steps.vercel-deployment.outputs.preview-url }}
                       href: ${{ steps.vercel-deployment.outputs.preview-url }}

@@ -39,30 +39,30 @@ jobs:
           msg_type: post
           content: |
             post:
-              en_us:
-                title: "GitHub issue opened: ${{ steps.issue_content.outputs.issue_title }}"
+              zh_cn:
+                title: "GitHub issue 打开：${{ steps.issue_content.outputs.issue_title }}"
                 content:
                   - - tag: text
-                      text: "Link: "
+                      text: 链接：
                     - tag: a
                       text: ${{ github.event.issue.html_url }}
                       href: ${{ github.event.issue.html_url }}
                   - - tag: text
-                      text: "Author: "
+                      text: 作者：
                     - tag: a
                       text: ${{ github.event.issue.user.login }}
                       href: ${{ github.event.issue.user.html_url }}
                   - - tag: text
-                      text: "Assignee: "
+                      text: 指派：
                     - tag: a
                       text: "${{ github.event.issue.assignee.login }}"
                       href: "${{ github.event.issue.assignee.html_url }}"
                   - - tag: text
-                      text: "Labels: ${{ github.event.issue.labels }}"
+                      text: 标签：${{ github.event.issue.labels }}
                   - - tag: text
-                      text: "Milestone: ${{ github.event.issue.milestone.title }}"
+                      text: 里程碑：${{ github.event.issue.milestone.title }}
                   - - tag: text
-                      text: "Description: "
+                      text: 描述：
                     - tag: text
                       text: "${{ steps.issue_content.outputs.issue_body }}"
 
@@ -74,30 +74,30 @@ jobs:
           msg_type: post
           content: |
             post:
-              en_us:
-                title: "GitHub issue edited: ${{ steps.issue_content.outputs.issue_title }}"
+              zh_cn:
+                title: "GitHub issue 编辑：${{ steps.issue_content.outputs.issue_title }}"
                 content:
                   - - tag: text
-                      text: "Link: "
+                      text: 链接：
                     - tag: a
                       text: ${{ github.event.issue.html_url }}
                       href: ${{ github.event.issue.html_url }}
                   - - tag: text
-                      text: "Author: "
+                      text: 作者：
                     - tag: a
                       text: ${{ github.event.issue.user.login }}
                       href: ${{ github.event.issue.user.html_url }}
                   - - tag: text
-                      text: "Assignee: "
+                      text: 指派：
                     - tag: a
                       text: "${{ github.event.issue.assignee.login }}"
                       href: "${{ github.event.issue.assignee.html_url }}"
                   - - tag: text
-                      text: "Labels: ${{ github.event.issue.labels }}"
+                      text: 标签：${{ github.event.issue.labels }}
                   - - tag: text
-                      text: "Milestone: ${{ github.event.issue.milestone.title }}"
+                      text: 里程碑：${{ github.event.issue.milestone.title }}
                   - - tag: text
-                      text: "Description: "
+                      text: 描述：
                     - tag: text
                       text: "${{ steps.issue_content.outputs.issue_body }}"
 
@@ -109,30 +109,30 @@ jobs:
           msg_type: post
           content: |
             post:
-              en_us:
-                title: "GitHub issue closed: ${{ steps.issue_content.outputs.issue_title }}"
+              zh_cn:
+                title: "GitHub issue 关闭：${{ steps.issue_content.outputs.issue_title }}"
                 content:
                   - - tag: text
-                      text: "Link: "
+                      text: 链接：
                     - tag: a
                       text: ${{ github.event.issue.html_url }}
                       href: ${{ github.event.issue.html_url }}
                   - - tag: text
-                      text: "Author: "
+                      text: 作者：
                     - tag: a
                       text: ${{ github.event.issue.user.login }}
                       href: ${{ github.event.issue.user.html_url }}
                   - - tag: text
-                      text: "Assignee: "
+                      text: 指派：
                     - tag: a
                       text: "${{ github.event.issue.assignee.login }}"
                       href: "${{ github.event.issue.assignee.html_url }}"
                   - - tag: text
-                      text: "Labels: ${{ github.event.issue.labels }}"
+                      text: 标签：${{ github.event.issue.labels }}
                   - - tag: text
-                      text: "Milestone: ${{ github.event.issue.milestone.title }}"
+                      text: 里程碑：${{ github.event.issue.milestone.title }}
                   - - tag: text
-                      text: "Description: "
+                      text: 描述：
                     - tag: text
                       text: "${{ steps.issue_content.outputs.issue_body }}"
 
@@ -163,30 +163,30 @@ jobs:
           msg_type: post
           content: |
             post:
-              en_us:
-                title: "GitHub PR opened: ${{ steps.PR_content.outputs.PR_title }}"
+              zh_cn:
+                title: "GitHub PR 打开：${{ steps.PR_content.outputs.PR_title }}"
                 content:
                   - - tag: text
-                      text: "Link: "
+                      text: 链接：
                     - tag: a
                       text: ${{ github.event.pull_request.html_url }}
                       href: ${{ github.event.pull_request.html_url }}
                   - - tag: text
-                      text: "Author: "
+                      text: 作者：
                     - tag: a
                       text: ${{ github.event.pull_request.user.login }}
                       href: ${{ github.event.pull_request.user.html_url }}
                   - - tag: text
-                      text: "Assignee: "
+                      text: 指派：
                     - tag: a
                       text: "${{ github.event.pull_request.assignee.login }}"
                       href: "${{ github.event.pull_request.assignee.html_url }}"
                   - - tag: text
-                      text: "Labels: ${{ github.event.pull_request.labels }}"
+                      text: 标签：${{ github.event.pull_request.labels }}
                   - - tag: text
-                      text: "Milestone: ${{ github.event.pull_request.milestone.title }}"
+                      text: 里程碑：${{ github.event.pull_request.milestone.title }}
                   - - tag: text
-                      text: "Description: "
+                      text: 描述：
                     - tag: text
                       text: "${{ steps.PR_content.outputs.PR_body }}"
 
@@ -198,30 +198,30 @@ jobs:
           msg_type: post
           content: |
             post:
-              en_us:
-                title: "GitHub PR edited: ${{ steps.PR_content.outputs.PR_title }}"
+              zh_cn:
+                title: "GitHub PR 编辑：${{ steps.PR_content.outputs.PR_title }}"
                 content:
                   - - tag: text
-                      text: "Link: "
+                      text: 链接：
                     - tag: a
                       text: ${{ github.event.pull_request.html_url }}
                       href: ${{ github.event.pull_request.html_url }}
                   - - tag: text
-                      text: "Author: "
+                      text: 作者：
                     - tag: a
                       text: ${{ github.event.pull_request.user.login }}
                       href: ${{ github.event.pull_request.user.html_url }}
                   - - tag: text
-                      text: "Assignee: "
+                      text: 指派：
                     - tag: a
                       text: "${{ github.event.pull_request.assignee.login }}"
                       href: "${{ github.event.pull_request.assignee.html_url }}"
                   - - tag: text
-                      text: "Labels: ${{ github.event.pull_request.labels }}"
+                      text: 标签：${{ github.event.pull_request.labels }}
                   - - tag: text
-                      text: "Milestone: ${{ github.event.pull_request.milestone.title }}"
+                      text: 里程碑：${{ github.event.pull_request.milestone.title }}
                   - - tag: text
-                      text: "Description: "
+                      text: 描述：
                     - tag: text
                       text: "${{ steps.PR_content.outputs.PR_body }}"
 
@@ -233,30 +233,30 @@ jobs:
           msg_type: post
           content: |
             post:
-              en_us:
-                title: "GitHub PR closed: ${{ steps.PR_content.outputs.PR_title }}"
+              zh_cn:
+                title: "GitHub PR 关闭：${{ steps.PR_content.outputs.PR_title }}"
                 content:
                   - - tag: text
-                      text: "Link: "
+                      text: 链接：
                     - tag: a
                       text: ${{ github.event.pull_request.html_url }}
                       href: ${{ github.event.pull_request.html_url }}
                   - - tag: text
-                      text: "Author: "
+                      text: 作者：
                     - tag: a
                       text: ${{ github.event.pull_request.user.login }}
                       href: ${{ github.event.pull_request.user.html_url }}
                   - - tag: text
-                      text: "Assignee: "
+                      text: 指派：
                     - tag: a
                       text: "${{ github.event.pull_request.assignee.login }}"
                       href: "${{ github.event.pull_request.assignee.html_url }}"
                   - - tag: text
-                      text: "Labels: ${{ github.event.pull_request.labels }}"
+                      text: 标签：${{ github.event.pull_request.labels }}
                   - - tag: text
-                      text: "Milestone: ${{ github.event.pull_request.milestone.title }}"
+                      text: 里程碑：${{ github.event.pull_request.milestone.title }}
                   - - tag: text
-                      text: "Description: "
+                      text: 描述：
                     - tag: text
                       text: "${{ steps.PR_content.outputs.PR_body }}"
 
@@ -287,25 +287,25 @@ jobs:
           msg_type: post
           content: |
             post:
-              en_us:
-                title: "GitHub discussion created: ${{ steps.discussion_content.outputs.discussion_title }}"
+              zh_cn:
+                title: "GitHub 帖子发布：${{ steps.discussion_content.outputs.discussion_title }}"
                 content:
                   - - tag: text
-                      text: "Link: "
+                      text: 链接：
                     - tag: a
                       text: ${{ github.event.discussion.html_url }}
                       href: ${{ github.event.discussion.html_url }}
                   - - tag: text
-                      text: "Author: "
+                      text: 作者：
                     - tag: a
                       text: ${{ github.event.discussion.user.login }}
                       href: ${{ github.event.discussion.user.html_url }}
                   - - tag: text
-                      text: "Category: ${{ github.event.discussion.category }}"
+                      text: 分类：${{ github.event.discussion.category }}
                   - - tag: text
-                      text: "Labels: ${{ github.event.discussion.labels }}"
+                      text: 标签：${{ github.event.discussion.labels }}
                   - - tag: text
-                      text: "Description: "
+                      text: 描述：
                     - tag: text
                       text: "${{ steps.discussion_content.outputs.discussion_body }}"
 
@@ -317,25 +317,25 @@ jobs:
           msg_type: post
           content: |
             post:
-              en_us:
-                title: "GitHub discussion edited: ${{ steps.discussion_content.outputs.discussion_title }}"
+              zh_cn:
+                title: "GitHub 帖子修改：${{ steps.discussion_content.outputs.discussion_title }}"
                 content:
                   - - tag: text
-                      text: "Link: "
+                      text: 链接：
                     - tag: a
                       text: ${{ github.event.discussion.html_url }}
                       href: ${{ github.event.discussion.html_url }}
                   - - tag: text
-                      text: "Author: "
+                      text: 作者：
                     - tag: a
                       text: ${{ github.event.discussion.user.login }}
                       href: ${{ github.event.discussion.user.html_url }}
                   - - tag: text
-                      text: "Category: ${{ github.event.discussion.category }}"
+                      text: 分类：${{ github.event.discussion.category }}
                   - - tag: text
-                      text: "Labels: ${{ github.event.discussion.labels }}"
+                      text: 标签：${{ github.event.discussion.labels }}
                   - - tag: text
-                      text: "Description: "
+                      text: 描述：
                     - tag: text
                       text: "${{ steps.discussion_content.outputs.discussion_body }}"
 
@@ -359,20 +359,20 @@ jobs:
           msg_type: post
           content: |
             post:
-              en_us:
-                title: "GitHub comment: ${{ steps.issue_content.outputs.issue_title }}"
+              zh_cn:
+                title: "GitHub 帖子评论：${{ steps.issue_content.outputs.issue_title }}"
                 content:
                   - - tag: text
-                      text: "Link: "
+                      text: 链接：
                     - tag: a
                       text: ${{ github.event.comment.html_url }}
                       href: ${{ github.event.comment.html_url }}
                   - - tag: text
-                      text: "Author: "
+                      text: 作者：
                     - tag: a
                       text: ${{ github.event.comment.user.login }}
                       href: ${{ github.event.comment.user.html_url }}
                   - - tag: text
-                      text: "Description: "
+                      text: 描述：
                     - tag: text
                       text: "${{ steps.comment_body.outputs.comment_body }}"

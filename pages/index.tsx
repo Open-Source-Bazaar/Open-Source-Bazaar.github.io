@@ -2,7 +2,7 @@ import { Card, Col, Row } from 'react-bootstrap';
 import { renderToStaticMarkup } from 'react-dom/server';
 import ReactTyped from 'react-typed-component';
 
-import PageHead from '../components/PageHead';
+import { PageHead } from '../components/PageHead';
 import styles from '../styles/Home.module.scss';
 
 const HomePage = () => (
@@ -67,7 +67,7 @@ const HomePage = () => (
                 >
                   官网开发
                 </a>
-                ：研发官网,让更多人了解「开源市集」,了解「开放式协作」……
+                ：研发官网，让更多人了解「开源市集」，了解「开放式协作」……
               </li>
               <li className="mb-3">
                 <span className="fw-bold">……</span>

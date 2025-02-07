@@ -1,5 +1,5 @@
 import { MDXProvider } from '@mdx-js/react';
-import type { PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { Card, Container } from 'react-bootstrap';
 
 import styles from '../../styles/Home.module.scss';
@@ -15,19 +15,17 @@ const components = {
   ),
 };
 
-export default function PageContent({ children }: PageContentProps) {
-  return (
-    <main
-      className={`flex-fill d-flex flex-column justify-content-start align-items-center bg-secondary bg-gradient text-dark bg-opacity-10 ${styles.main}`}
-    >
-      <Container>
-        <Card
-          body
-          className={`px-5 py-5 lh-base ${pageContentStyles.MDXProvider}`}
-        >
-          <MDXProvider components={components}>{children}</MDXProvider>
-        </Card>
-      </Container>
-    </main>
-  );
-}
+export const PageContent: FC<PageContentProps> = ({ children }) => (
+  <main
+    className={`flex-fill d-flex flex-column justify-content-start align-items-center bg-secondary bg-gradient text-dark bg-opacity-10 ${styles.main}`}
+  >
+    <Container>
+      <Card
+        body
+        className={`px-5 py-5 lh-base ${pageContentStyles.MDXProvider}`}
+      >
+        <MDXProvider components={components}>{children}</MDXProvider>
+      </Card>
+    </Container>
+  </main>
+);
