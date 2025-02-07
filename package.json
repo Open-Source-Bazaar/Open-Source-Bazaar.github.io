@@ -1,46 +1,66 @@
 {
   "name": "@open-source-bazaar/web-site",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Open Source Bazaar web-site",
   "private": true,
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "test": "npm run lint  &&  lint-staged"
+    "lint": "next lint  &&  tsc --noEmit",
+    "test": "lint-staged  &&  npm run lint"
   },
   "dependencies": {
-    "@mdx-js/loader": "^3.0.0",
-    "@mdx-js/react": "^3.0.0",
-    "@next/mdx": "^14.0.3",
-    "idea-react": "^1.0.0-rc.30",
-    "next": "^14.0.3",
+    "@mdx-js/loader": "^3.1.0",
+    "@mdx-js/react": "^3.1.0",
+    "@next/mdx": "^15.1.6",
+    "idea-react": "^2.0.0-rc.8",
+    "next": "^15.1.6",
     "next-pwa": "^5.6.0",
-    "react": "^18.2.0",
-    "react-bootstrap": "^2.9.1",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-bootstrap": "^2.10.9",
+    "react-dom": "^18.3.1",
     "react-typed-component": "^1.0.6"
   },
   "devDependencies": {
-    "@types/node": "^18.18.9",
-    "@types/react": "^18.2.37",
-    "eslint": "^8.53.0",
-    "eslint-config-next": "^14.0.3",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.1.0",
-    "prettier": "^3.1.0",
-    "sass": "^1.69.5",
-    "typescript": "~5.2.2"
+    "@eslint/compat": "^1.2.6",
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.19.0",
+    "@softonus/prettier-plugin-duplicate-remover": "^1.1.2",
+    "@types/eslint-config-prettier": "^6.11.3",
+    "@types/eslint__eslintrc": "^2.1.2",
+    "@types/next-pwa": "^5.6.9",
+    "@types/node": "^22.13.1",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18",
+    "eslint": "^9.19.0",
+    "eslint-config-next": "^15.1.6",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "globals": "^15.14.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.4.2",
+    "prettier-plugin-css-order": "^2.1.2",
+    "sass": "^1.84.0",
+    "typescript": "~5.7.3",
+    "typescript-eslint": "^8.23.0"
+  },
+  "resolutions": {
+    "next": "$next"
   },
   "prettier": {
     "singleQuote": true,
     "trailingComma": "all",
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "plugins": [
+      "prettier-plugin-css-order",
+      "@softonus/prettier-plugin-duplicate-remover"
+    ]
   },
   "lint-staged": {
-    "*.{html,md,scss,json,yml,js,mjs,ts,tsx}": "prettier --write",
-    "*.{js,mjs,ts,tsx}": "eslint --fix"
+    "*.{html,md,scss,json,yml,js,mjs,ts,tsx}": "prettier --write"
   }
 }
