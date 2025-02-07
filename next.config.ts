@@ -1,5 +1,10 @@
 import setMDX from '@next/mdx';
 import setPWA from 'next-pwa';
+// @ts-expect-error no official types
+import withLess from 'next-with-less';
+
+const { NODE_ENV, CI } = process.env;
+const isDev = NODE_ENV === 'development';
 
 const withMDX = setMDX({
     options: {
@@ -13,12 +18,14 @@ const withMDX = setMDX({
     dest: 'public',
     register: true,
     skipWaiting: true,
-    disable: process.env.NODE_ENV === 'development',
+    disable: isDev,
   });
 
 export default withPWA(
-  withMDX({
-    pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
-    output: 'export',
-  }),
+  withLess(
+    withMDX({
+      pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+      output: CI ? 'standalone' : undefined,
+    }),
+  ),
 );

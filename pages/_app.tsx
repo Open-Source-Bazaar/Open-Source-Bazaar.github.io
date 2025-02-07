@@ -5,6 +5,8 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 
+import { PageContent } from '../components/PageContent';
+
 const topNavBarMenu = [
   { href: '/about', name: '关于' },
   { href: '/history', name: '历史' },
@@ -55,7 +57,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       </Navbar>
 
       <div className="mt-5 pt-2">
-        <Component {...pageProps} />
+        <PageContent>
+          <Component {...pageProps} />
+        </PageContent>
       </div>
 
       <footer className="mw-100 bg-dark text-white">
