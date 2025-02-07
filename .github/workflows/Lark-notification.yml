@@ -1,0 +1,378 @@
+name: Lark notification
+
+# https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows
+on:
+  issues:
+  pull_request:
+  discussion:
+  issue_comment:
+  discussion_comment:
+
+jobs:
+  send-Lark-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Issue content cleaning
+        id: issue_content
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          echo "$ISSUE_TITLE" | sed 's/"/\\"/g' > issue_title.txt
+          {
+            echo 'issue_title<<EOF'
+            cat issue_title.txt
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+          echo "$ISSUE_BODY" | sed 's/"/\\"/g' > issue_body.txt
+          {
+            echo 'issue_body<<EOF'
+            cat issue_body.txt
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+
+      - name: Issue opened
+        uses: foxundermoon/feishu-action@v2
+        if: github.event_name == 'issues' && (github.event.action == 'opened' || github.event.action == 'reopened')
+        with:
+          url: ${{ secrets.LARK_CHATBOT_HOOK_URL }}
+          msg_type: post
+          content: |
+            post:
+              en_us:
+                title: "GitHub issue opened: ${{ steps.issue_content.outputs.issue_title }}"
+                content:
+                  - - tag: text
+                      text: "Link: "
+                    - tag: a
+                      text: ${{ github.event.issue.html_url }}
+                      href: ${{ github.event.issue.html_url }}
+                  - - tag: text
+                      text: "Author: "
+                    - tag: a
+                      text: ${{ github.event.issue.user.login }}
+                      href: ${{ github.event.issue.user.html_url }}
+                  - - tag: text
+                      text: "Assignee: "
+                    - tag: a
+                      text: "${{ github.event.issue.assignee.login }}"
+                      href: "${{ github.event.issue.assignee.html_url }}"
+                  - - tag: text
+                      text: "Labels: ${{ github.event.issue.labels }}"
+                  - - tag: text
+                      text: "Milestone: ${{ github.event.issue.milestone.title }}"
+                  - - tag: text
+                      text: "Description: "
+                    - tag: text
+                      text: "${{ steps.issue_content.outputs.issue_body }}"
+
+      - name: Issue edited
+        uses: foxundermoon/feishu-action@v2
+        if: github.event_name == 'issues' && (github.event.action == 'edited' || github.event.action == 'transferred' || github.event.action == 'labeled' || github.event.action == 'unlabeled' || github.event.action == 'assigned' || github.event.action == 'unassigned')
+        with:
+          url: ${{ secrets.LARK_CHATBOT_HOOK_URL }}
+          msg_type: post
+          content: |
+            post:
+              en_us:
+                title: "GitHub issue edited: ${{ steps.issue_content.outputs.issue_title }}"
+                content:
+                  - - tag: text
+                      text: "Link: "
+                    - tag: a
+                      text: ${{ github.event.issue.html_url }}
+                      href: ${{ github.event.issue.html_url }}
+                  - - tag: text
+                      text: "Author: "
+                    - tag: a
+                      text: ${{ github.event.issue.user.login }}
+                      href: ${{ github.event.issue.user.html_url }}
+                  - - tag: text
+                      text: "Assignee: "
+                    - tag: a
+                      text: "${{ github.event.issue.assignee.login }}"
+                      href: "${{ github.event.issue.assignee.html_url }}"
+                  - - tag: text
+                      text: "Labels: ${{ github.event.issue.labels }}"
+                  - - tag: text
+                      text: "Milestone: ${{ github.event.issue.milestone.title }}"
+                  - - tag: text
+                      text: "Description: "
+                    - tag: text
+                      text: "${{ steps.issue_content.outputs.issue_body }}"
+
+      - name: Issue closed
+        uses: foxundermoon/feishu-action@v2
+        if: github.event_name == 'issues' && github.event.action == 'closed'
+        with:
+          url: ${{ secrets.LARK_CHATBOT_HOOK_URL }}
+          msg_type: post
+          content: |
+            post:
+              en_us:
+                title: "GitHub issue closed: ${{ steps.issue_content.outputs.issue_title }}"
+                content:
+                  - - tag: text
+                      text: "Link: "
+                    - tag: a
+                      text: ${{ github.event.issue.html_url }}
+                      href: ${{ github.event.issue.html_url }}
+                  - - tag: text
+                      text: "Author: "
+                    - tag: a
+                      text: ${{ github.event.issue.user.login }}
+                      href: ${{ github.event.issue.user.html_url }}
+                  - - tag: text
+                      text: "Assignee: "
+                    - tag: a
+                      text: "${{ github.event.issue.assignee.login }}"
+                      href: "${{ github.event.issue.assignee.html_url }}"
+                  - - tag: text
+                      text: "Labels: ${{ github.event.issue.labels }}"
+                  - - tag: text
+                      text: "Milestone: ${{ github.event.issue.milestone.title }}"
+                  - - tag: text
+                      text: "Description: "
+                    - tag: text
+                      text: "${{ steps.issue_content.outputs.issue_body }}"
+
+      - name: PR content cleaning
+        id: PR_content
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          echo "$PR_TITLE" | sed 's/"/\\"/g' > PR_title.txt
+          {
+            echo 'PR_title<<EOF'
+            cat PR_title.txt
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+          echo "$PR_BODY" | sed 's/"/\\"/g' > PR_body.txt
+          {
+            echo 'PR_body<<EOF'
+            cat PR_body.txt
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+
+      - name: PR opened
+        uses: foxundermoon/feishu-action@v2
+        if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'reopened')
+        with:
+          url: ${{ secrets.LARK_CHATBOT_HOOK_URL }}
+          msg_type: post
+          content: |
+            post:
+              en_us:
+                title: "GitHub PR opened: ${{ steps.PR_content.outputs.PR_title }}"
+                content:
+                  - - tag: text
+                      text: "Link: "
+                    - tag: a
+                      text: ${{ github.event.pull_request.html_url }}
+                      href: ${{ github.event.pull_request.html_url }}
+                  - - tag: text
+                      text: "Author: "
+                    - tag: a
+                      text: ${{ github.event.pull_request.user.login }}
+                      href: ${{ github.event.pull_request.user.html_url }}
+                  - - tag: text
+                      text: "Assignee: "
+                    - tag: a
+                      text: "${{ github.event.pull_request.assignee.login }}"
+                      href: "${{ github.event.pull_request.assignee.html_url }}"
+                  - - tag: text
+                      text: "Labels: ${{ github.event.pull_request.labels }}"
+                  - - tag: text
+                      text: "Milestone: ${{ github.event.pull_request.milestone.title }}"
+                  - - tag: text
+                      text: "Description: "
+                    - tag: text
+                      text: "${{ steps.PR_content.outputs.PR_body }}"
+
+      - name: PR edited
+        uses: foxundermoon/feishu-action@v2
+        if: github.event_name == 'pull_request' && (github.event.action == 'edited' || github.event.action == 'labeled' || github.event.action == 'unlabeled' || github.event.action == 'assigned' || github.event.action == 'unassigned')
+        with:
+          url: ${{ secrets.LARK_CHATBOT_HOOK_URL }}
+          msg_type: post
+          content: |
+            post:
+              en_us:
+                title: "GitHub PR edited: ${{ steps.PR_content.outputs.PR_title }}"
+                content:
+                  - - tag: text
+                      text: "Link: "
+                    - tag: a
+                      text: ${{ github.event.pull_request.html_url }}
+                      href: ${{ github.event.pull_request.html_url }}
+                  - - tag: text
+                      text: "Author: "
+                    - tag: a
+                      text: ${{ github.event.pull_request.user.login }}
+                      href: ${{ github.event.pull_request.user.html_url }}
+                  - - tag: text
+                      text: "Assignee: "
+                    - tag: a
+                      text: "${{ github.event.pull_request.assignee.login }}"
+                      href: "${{ github.event.pull_request.assignee.html_url }}"
+                  - - tag: text
+                      text: "Labels: ${{ github.event.pull_request.labels }}"
+                  - - tag: text
+                      text: "Milestone: ${{ github.event.pull_request.milestone.title }}"
+                  - - tag: text
+                      text: "Description: "
+                    - tag: text
+                      text: "${{ steps.PR_content.outputs.PR_body }}"
+
+      - name: PR closed
+        uses: foxundermoon/feishu-action@v2
+        if: github.event_name == 'pull_request' && github.event.action == 'closed'
+        with:
+          url: ${{ secrets.LARK_CHATBOT_HOOK_URL }}
+          msg_type: post
+          content: |
+            post:
+              en_us:
+                title: "GitHub PR closed: ${{ steps.PR_content.outputs.PR_title }}"
+                content:
+                  - - tag: text
+                      text: "Link: "
+                    - tag: a
+                      text: ${{ github.event.pull_request.html_url }}
+                      href: ${{ github.event.pull_request.html_url }}
+                  - - tag: text
+                      text: "Author: "
+                    - tag: a
+                      text: ${{ github.event.pull_request.user.login }}
+                      href: ${{ github.event.pull_request.user.html_url }}
+                  - - tag: text
+                      text: "Assignee: "
+                    - tag: a
+                      text: "${{ github.event.pull_request.assignee.login }}"
+                      href: "${{ github.event.pull_request.assignee.html_url }}"
+                  - - tag: text
+                      text: "Labels: ${{ github.event.pull_request.labels }}"
+                  - - tag: text
+                      text: "Milestone: ${{ github.event.pull_request.milestone.title }}"
+                  - - tag: text
+                      text: "Description: "
+                    - tag: text
+                      text: "${{ steps.PR_content.outputs.PR_body }}"
+
+      - name: Discussion content cleaning
+        id: discussion_content
+        env:
+          DISCUSSION_TITLE: ${{ github.event.discussion.title }}
+          DISCUSSION_BODY: ${{ github.event.discussion.body }}
+        run: |
+          echo "$DISCUSSION_TITLE" | sed 's/"/\\"/g' > discussion_title.txt
+          {
+            echo 'discussion_title<<EOF'
+            cat discussion_title.txt
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+          echo "$DISCUSSION_BODY" | sed 's/"/\\"/g' > discussion_body.txt
+          {
+            echo 'discussion_body<<EOF'
+            cat discussion_body.txt
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+
+      - name: Discussion created
+        uses: foxundermoon/feishu-action@v2
+        if: github.event_name == 'discussion' && github.event.action == 'created'
+        with:
+          url: ${{ secrets.LARK_CHATBOT_HOOK_URL }}
+          msg_type: post
+          content: |
+            post:
+              en_us:
+                title: "GitHub discussion created: ${{ steps.discussion_content.outputs.discussion_title }}"
+                content:
+                  - - tag: text
+                      text: "Link: "
+                    - tag: a
+                      text: ${{ github.event.discussion.html_url }}
+                      href: ${{ github.event.discussion.html_url }}
+                  - - tag: text
+                      text: "Author: "
+                    - tag: a
+                      text: ${{ github.event.discussion.user.login }}
+                      href: ${{ github.event.discussion.user.html_url }}
+                  - - tag: text
+                      text: "Category: ${{ github.event.discussion.category }}"
+                  - - tag: text
+                      text: "Labels: ${{ github.event.discussion.labels }}"
+                  - - tag: text
+                      text: "Description: "
+                    - tag: text
+                      text: "${{ steps.discussion_content.outputs.discussion_body }}"
+
+      - name: Discussion edited
+        uses: foxundermoon/feishu-action@v2
+        if: github.event_name == 'discussion' && (github.event.action == 'edited' || github.event.action == 'transferred' || github.event.action == 'category_changed' || github.event.action == 'labeled' || github.event.action == 'unlabeled')
+        with:
+          url: ${{ secrets.LARK_CHATBOT_HOOK_URL }}
+          msg_type: post
+          content: |
+            post:
+              en_us:
+                title: "GitHub discussion edited: ${{ steps.discussion_content.outputs.discussion_title }}"
+                content:
+                  - - tag: text
+                      text: "Link: "
+                    - tag: a
+                      text: ${{ github.event.discussion.html_url }}
+                      href: ${{ github.event.discussion.html_url }}
+                  - - tag: text
+                      text: "Author: "
+                    - tag: a
+                      text: ${{ github.event.discussion.user.login }}
+                      href: ${{ github.event.discussion.user.html_url }}
+                  - - tag: text
+                      text: "Category: ${{ github.event.discussion.category }}"
+                  - - tag: text
+                      text: "Labels: ${{ github.event.discussion.labels }}"
+                  - - tag: text
+                      text: "Description: "
+                    - tag: text
+                      text: "${{ steps.discussion_content.outputs.discussion_body }}"
+
+      - name: Comment body cleaning
+        id: comment_body
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body }}
+        run: |
+          echo "$COMMENT_BODY" | sed 's/"/\\"/g' > comment_body.txt
+          {
+            echo 'comment_body<<EOF'
+            cat comment_body.txt
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+
+      - name: Issue/Discussion commented
+        uses: foxundermoon/feishu-action@v2
+        if: (github.event_name == 'issue_comment' || github.event_name == 'discussion_comment') && (github.event.action == 'created' || github.event.action == 'edited')
+        with:
+          url: ${{ secrets.LARK_CHATBOT_HOOK_URL }}
+          msg_type: post
+          content: |
+            post:
+              en_us:
+                title: "GitHub comment: ${{ steps.issue_content.outputs.issue_title }}"
+                content:
+                  - - tag: text
+                      text: "Link: "
+                    - tag: a
+                      text: ${{ github.event.comment.html_url }}
+                      href: ${{ github.event.comment.html_url }}
+                  - - tag: text
+                      text: "Author: "
+                    - tag: a
+                      text: ${{ github.event.comment.user.login }}
+                      href: ${{ github.event.comment.user.html_url }}
+                  - - tag: text
+                      text: "Description: "
+                    - tag: text
+                      text: "${{ steps.comment_body.outputs.comment_body }}"

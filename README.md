@@ -6,12 +6,12 @@
 
 ## 上游项目
 
-- [idea2app/Next-Bootstrap-ts][1]
+- [idea2app/Lark-Next-Bootstrap-ts][1]
 
 ## 技术栈
 
 - Language: [TypeScript v5][2]
-- Component engine: [Nextjs v14][3]
+- Component engine: [Nextjs v15][3]
 - Component suite: [Bootstrap v5][4]
 - CI / CD: GitHub [Actions][10] + [Vercel][11]
 
@@ -27,7 +27,7 @@ yarn dev
 
 可访问 http://localhost:3000.
 
-[1]: https://github.com/idea2app/Next-Bootstrap-ts
+[1]: https://github.com/idea2app/Lark-Next-Bootstrap-ts
 [2]: https://www.typescriptlang.org/
 [3]: https://nextjs.org/
 [4]: https://getbootstrap.com/
