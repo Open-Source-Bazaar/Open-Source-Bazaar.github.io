@@ -1,41 +1,64 @@
 import '../styles/globals.css';
 
+import { HTTPError } from 'koajax';
+import { configure } from 'mobx';
+import { enableStaticRendering, observer } from 'mobx-react';
 import type { AppProps } from 'next/app';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { FC } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 
 import { PageContent } from '../components/PageContent';
+import { isServer } from '../models/Base';
+import { t } from '../models/Translation';
 
-const topNavBarMenu = [
-  { href: '/about', name: '关于' },
-  { href: '/history', name: '历史' },
-  { href: '/code-of-conduct', name: '行为规范' },
-  { href: '/join-us', name: '参与' },
-  { href: '/open-collaborator-award', name: '开放协作人奖' },
-  {
-    href: 'https://github.com/Open-Source-Bazaar/Git-Hackathon-scaffold',
-    name: '黑客马拉松',
-  },
-];
+const LanguageMenu = dynamic(import('../components/Navigator/LanguageMenu'), {
+  ssr: false,
+});
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+configure({ enforceActions: 'never' });
+
+enableStaticRendering(isServer());
+
+globalThis.addEventListener?.('unhandledrejection', ({ reason }) => {
+  const { message, response } = reason as HTTPError;
+  const { statusText, body } = response || {};
+
+  const tips = body?.message || statusText || message;
+
+  if (tips) alert(tips);
+});
+
+const App: FC<AppProps> = observer(({ Component, pageProps }) => {
   const { pathname } = useRouter();
   const thisFullYear = new Date().getFullYear();
 
+  const topNavBarMenu = [
+    { href: '/about', name: t('about') },
+    { href: '/history', name: t('history') },
+    { href: '/code-of-conduct', name: t('code_of_conduct') },
+    { href: '/join-us', name: t('join_us') },
+    { href: '/open-collaborator-award', name: t('open_collaborator_award') },
+    {
+      href: 'https://github.com/Open-Source-Bazaar/Git-Hackathon-scaffold',
+      name: t('hackathon'),
+    },
+  ];
   return (
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <title>开源市集</title>
+        <title>{t('open_source_bazaar')}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
         <Container>
           <Navbar.Brand href="/" className="fw-bolder">
-            开源市集
+            {t('open_source_bazaar')}
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
@@ -52,6 +75,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 </Nav.Link>
               ))}
             </Nav>
+
+            <LanguageMenu />
           </Navbar.Collapse>
         </Container>
       </Navbar>
@@ -65,7 +90,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <footer className="mw-100 bg-dark text-white">
         <p className="text-center my-0 py-3">
           <span className="pr-3">
-            © 2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`} 开源市集
+            © 2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`}{' '}
+            {t('open_source_bazaar')}
           </span>
           {/* <a
             className="flex-fill d-flex justify-content-center align-items-center"
@@ -87,4 +113,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       </footer>
     </>
   );
-}
+});
+
+export default App;

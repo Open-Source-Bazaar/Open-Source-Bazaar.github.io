@@ -4,8 +4,7 @@ import { HTTPClient } from 'koajax';
 
 export const isServer = () => typeof window === 'undefined';
 
-const VercelHost = process.env.VERCEL_URL,
-  GithubToken = process.env.GITHUB_TOKEN;
+const VercelHost = process.env.VERCEL_URL;
 
 const API_Host = isServer()
   ? VercelHost

@@ -3,7 +3,7 @@ import type { FC, PropsWithChildren } from 'react';
 import { Card, Container } from 'react-bootstrap';
 
 import styles from '../../styles/Home.module.scss';
-import pageContentStyles from './index.module.scss';
+import pageContentStyles from './PageContent.module.scss';
 
 export type PageContentProps = PropsWithChildren<{}>;
 
