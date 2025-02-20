@@ -11,4 +11,7 @@ export default {
   // Search
   keywords: 'Keywords',
   search_results: 'Search Results',
+
+  // Open Library
+  open_library: "Open Library",
 };
