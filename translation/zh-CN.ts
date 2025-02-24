@@ -11,4 +11,7 @@ export default {
   // Search
   keywords: '关键词',
   search_results: '搜索结果',
+
+  // Open Library
+  open_library: "开源图书馆",
 };

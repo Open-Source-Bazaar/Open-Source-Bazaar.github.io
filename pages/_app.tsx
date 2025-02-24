@@ -45,6 +45,9 @@ const App: FC<AppProps> = observer(({ Component, pageProps }) => {
       href: 'https://github.com/Open-Source-Bazaar/Git-Hackathon-scaffold',
       name: t('hackathon'),
     },
+    {
+      href: '/library', name: t('open_library'),
+    },
   ];
   return (
     <>
