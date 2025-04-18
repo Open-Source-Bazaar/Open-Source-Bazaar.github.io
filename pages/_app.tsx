@@ -46,7 +46,8 @@ const App: FC<AppProps> = observer(({ Component, pageProps }) => {
       name: t('hackathon'),
     },
     {
-      href: '/library', name: t('open_library'),
+      href: '/open-library',
+      name: t('open_library'),
     },
   ];
   return (
