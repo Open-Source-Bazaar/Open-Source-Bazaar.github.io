@@ -1,17 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Card,
-  Form,
-  Image,
-  Stack,
-} from 'react-bootstrap';
-import NavbarComponent from '../../components/open-library/Navbar';
-import FooterComponent from '../../components/open-library/Footer';
+import { Row, Col, Button, Card, Form, Image, Stack } from 'react-bootstrap';
+import { Layout, ContentContainer } from '../../components/open-library/Layout';
 
 // TODO: Define a type for Book and Testimonial
 type Book = {
@@ -78,11 +68,160 @@ export default function OpenLibraryHomepage() {
     },
   ];
 
-  return (
-    <>
-      {/* --- Navbar --- */}
-      <NavbarComponent />
+  // Use client-side code to hide the main site header and adjust layout
+  useEffect(() => {
+    // Function to apply style to an element
+    const applyStyle = (
+      element: HTMLElement | null,
+      styles: Partial<CSSStyleDeclaration>,
+    ) => {
+      if (!element) return;
 
+      Object.entries(styles).forEach(([property, value]) => {
+        if (value) {
+          // @ts-ignore: dynamic property assignment
+          element.style[property] = value;
+        }
+      });
+    };
+
+    // Hide the main site header
+    const mainHeader = document.querySelector(
+      'nav.navbar.bg-dark.navbar-dark.fixed-top',
+    );
+    applyStyle(mainHeader as HTMLElement, { display: 'none' });
+
+    // Remove top margin that accommodates the main header
+    const mainContent = document.querySelector('div.mt-5.pt-2');
+    applyStyle(mainContent as HTMLElement, {
+      marginTop: '0',
+      paddingTop: '0',
+      maxWidth: '100%',
+      width: '100%',
+    });
+
+    // Remove background and padding from main content
+    const mainWrapper = document.querySelector(
+      'main.flex-fill.d-flex.flex-column.justify-content-start.align-items-center',
+    );
+    applyStyle(mainWrapper as HTMLElement, {
+      background: 'none',
+      padding: '0',
+      margin: '0',
+      maxWidth: '100%',
+      width: '100%',
+    });
+
+    // Remove container constraints
+    const containers = document.querySelectorAll('.container');
+    containers.forEach(container => {
+      applyStyle(container as HTMLElement, {
+        maxWidth: '100%',
+        padding: '0',
+        margin: '0',
+      });
+    });
+
+    // Remove card styling
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      if (
+        card.closest(
+          'main.flex-fill.d-flex.flex-column.justify-content-start.align-items-center',
+        )
+      ) {
+        applyStyle(card as HTMLElement, {
+          background: 'transparent',
+          border: 'none',
+          boxShadow: 'none',
+          padding: '0',
+          margin: '0',
+        });
+      }
+    });
+
+    // Remove card body padding
+    const cardBodies = document.querySelectorAll('.card-body');
+    cardBodies.forEach(cardBody => {
+      if (
+        cardBody.closest(
+          'main.flex-fill.d-flex.flex-column.justify-content-start.align-items-center',
+        )
+      ) {
+        applyStyle(cardBody as HTMLElement, {
+          padding: '0',
+        });
+      }
+    });
+
+    // Hide the main site footer
+    const mainFooter = document.querySelector(
+      'footer.mw-100.bg-dark.text-white',
+    );
+    applyStyle(mainFooter as HTMLElement, { display: 'none' });
+
+    // Remove all padding and margin from body and html
+    applyStyle(document.body, {
+      margin: '0',
+      padding: '0',
+      overflow: 'auto',
+    });
+
+    applyStyle(document.documentElement, {
+      margin: '0',
+      padding: '0',
+      overflow: 'auto',
+    });
+
+    // Target the MDXProvider wrapper (main white background)
+    const mdxProvider = document.querySelector(`.MDXProvider`);
+    applyStyle(mdxProvider as HTMLElement, {
+      padding: '0 !important',
+      margin: '0 !important',
+      background: 'transparent !important',
+      border: 'none !important',
+      boxShadow: 'none !important',
+    });
+
+    // Add custom styles to ensure full width
+    const style = document.createElement('style');
+    style.textContent = `
+      body, html {
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow-x: hidden !important;
+      }
+      .container, .container-fluid {
+        max-width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+      main.flex-fill.d-flex.flex-column.justify-content-start.align-items-center {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+      }
+      main.flex-fill.d-flex.flex-column.justify-content-start.align-items-center > .container {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .MDXProvider {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }, []);
+
+  return (
+    <Layout title="Open Library - Free knowledge flows here">
       <main>
         {/* --- Hero Section --- */}
         <section
@@ -92,7 +231,7 @@ export default function OpenLibraryHomepage() {
               'linear-gradient(to right, var(--bs-success-bg-subtle), var(--bs-teal-bg-subtle))',
           }}
         >
-          <Container>
+          <ContentContainer>
             <Row className="align-items-center">
               <Col md={7}>
                 <h1 className="display-5 fw-bold mb-4">
@@ -119,12 +258,12 @@ export default function OpenLibraryHomepage() {
                 />
               </Col>
             </Row>
-          </Container>
+          </ContentContainer>
         </section>
 
         {/* --- Featured Books Section --- */}
         <section className="py-5 bg-light">
-          <Container>
+          <ContentContainer>
             <h2 className="text-center fw-bold mb-2 h1">Featured Books</h2>
             <p className="text-center text-muted mb-5">
               Discover what our community is reading right now
@@ -174,16 +313,16 @@ export default function OpenLibraryHomepage() {
                   variant="link"
                   className="text-success text-decoration-none"
                 >
-                  Browse All Books →
+                  Browse All Books
                 </Button>
               </Link>
             </div>
-          </Container>
+          </ContentContainer>
         </section>
 
         {/* --- Donation Callout Section --- */}
         <section className="py-5 bg-warning-subtle">
-          <Container>
+          <ContentContainer>
             <Row className="align-items-center">
               <Col md={7}>
                 <h2 className="fw-bold mb-4 h1">Share Your Knowledge</h2>
@@ -207,12 +346,12 @@ export default function OpenLibraryHomepage() {
                 />
               </Col>
             </Row>
-          </Container>
+          </ContentContainer>
         </section>
 
         {/* --- How It Works Section --- */}
         <section className="py-5">
-          <Container>
+          <ContentContainer>
             <h2 className="text-center fw-bold mb-2 h1">How It Works</h2>
             <p className="text-center text-muted mb-5">
               Three simple steps to borrow books from our community
@@ -255,16 +394,16 @@ export default function OpenLibraryHomepage() {
                   variant="link"
                   className="text-success text-decoration-none"
                 >
-                  Learn More About Borrowing →
+                  Learn More About Borrowing
                 </Button>
               </Link>
             </div>
-          </Container>
+          </ContentContainer>
         </section>
 
         {/* --- Testimonials Section --- */}
         <section className="py-5 bg-light">
-          <Container>
+          <ContentContainer>
             <h2 className="text-center fw-bold mb-2 h1">Community Voices</h2>
             <p className="text-center text-muted mb-5">
               What our members say about Open Library
@@ -291,16 +430,16 @@ export default function OpenLibraryHomepage() {
                   variant="link"
                   className="text-success text-decoration-none"
                 >
-                  Read More Reviews →
+                  Read More Reviews
                 </Button>
               </Link>
             </div>
-          </Container>
+          </ContentContainer>
         </section>
 
         {/* --- Newsletter Section --- */}
         <section className="py-5">
-          <Container>
+          <ContentContainer>
             <Row className="justify-content-center">
               <Col lg={6}>
                 <Card className="shadow-sm border-0">
@@ -334,12 +473,9 @@ export default function OpenLibraryHomepage() {
                 </Card>
               </Col>
             </Row>
-          </Container>
+          </ContentContainer>
         </section>
       </main>
-
-      {/* --- Footer --- */}
-      <FooterComponent />
-    </>
+    </Layout>
   );
 }

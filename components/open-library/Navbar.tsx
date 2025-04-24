@@ -11,19 +11,37 @@ import {
 const NavbarComponent = () => {
   return (
     <Navbar bg="light" expand="lg" sticky="top" className="mb-4 shadow-sm">
-      <Container fluid>
-        <Navbar.Brand href="#home" className="d-flex align-items-center">
+      {/* 使用自定义的居中容器替代 Container fluid，与页面内容保持一致的宽度和居中效果 */}
+      <div
+        style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          padding: '0 20px',
+          width: '100%',
+          boxSizing: 'border-box',
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Navbar.Brand
+          href="/open-library"
+          className="d-flex align-items-center"
+        >
           Open Library
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#catalog">Catalog</Nav.Link>
-            <Nav.Link href="#about">About</Nav.Link>
-            <Nav.Link href="#donate">Donate</Nav.Link>
-            <Nav.Link href="#how-to-borrow">How to Borrow</Nav.Link>
-            <Nav.Link href="#review">Review</Nav.Link>
+            <Nav.Link href="/open-library">Home</Nav.Link>
+            <Nav.Link href="/open-library/books">Catalog</Nav.Link>
+            <Nav.Link href="/open-library/about">About</Nav.Link>
+            <Nav.Link href="/open-library/donate">Donate</Nav.Link>
+            <Nav.Link href="/open-library/how-to-borrow">
+              How to Borrow
+            </Nav.Link>
+            <Nav.Link href="/open-library/review">Review</Nav.Link>
           </Nav>
           <Form className="d-flex">
             <FormControl
@@ -38,7 +56,7 @@ const NavbarComponent = () => {
             Login/Register
           </Button>
         </Navbar.Collapse>
-      </Container>
+      </div>
     </Navbar>
   );
 };

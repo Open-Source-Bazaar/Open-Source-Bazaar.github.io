@@ -35,6 +35,9 @@ const App: FC<AppProps> = observer(({ Component, pageProps }) => {
   const { pathname } = useRouter();
   const thisFullYear = new Date().getFullYear();
 
+  // 检查是否是 Open Library 路径
+  const isOpenLibraryPath = pathname.startsWith('/open-library');
+
   const topNavBarMenu = [
     { href: '/about', name: t('about') },
     { href: '/history', name: t('history') },
@@ -59,62 +62,75 @@ const App: FC<AppProps> = observer(({ Component, pageProps }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
-        <Container>
-          <Navbar.Brand href="/" className="fw-bolder">
-            {t('open_source_bazaar')}
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbarScroll" />
-          <Navbar.Collapse id="navbarScroll">
-            <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-              {topNavBarMenu.map(({ href, name }) => (
-                <Nav.Link
-                  key={`${href}-${name}`}
-                  href={href}
-                  className={
-                    pathname === `${href}` ? 'fw-bolder text-light' : ''
-                  }
-                >
-                  {name}
-                </Nav.Link>
-              ))}
-            </Nav>
+      {/* 只在非 Open Library 路径显示主站导航栏 */}
+      {!isOpenLibraryPath && (
+        <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
+          <Container>
+            <Navbar.Brand href="/" className="fw-bolder">
+              {t('open_source_bazaar')}
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="navbarScroll" />
+            <Navbar.Collapse id="navbarScroll">
+              <Nav className="me-auto my-2 my-lg-0" navbarScroll>
+                {topNavBarMenu.map(({ href, name }) => (
+                  <Nav.Link
+                    key={`${href}-${name}`}
+                    href={href}
+                    className={
+                      pathname === `${href}` ? 'fw-bolder text-light' : ''
+                    }
+                  >
+                    {name}
+                  </Nav.Link>
+                ))}
+              </Nav>
 
-            <LanguageMenu />
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+              <LanguageMenu />
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+      )}
 
-      <div className="mt-5 pt-2">
-        <PageContent>
-          <Component {...pageProps} />
-        </PageContent>
-      </div>
+      {/* 根据路径决定是否使用 PageContent 包装 */}
+      {isOpenLibraryPath ? (
+        // Open Library 路径直接渲染内容，不使用 PageContent
+        <Component {...pageProps} />
+      ) : (
+        // 其他路径使用原来的 PageContent 包装
+        <div className="mt-5 pt-2">
+          <PageContent>
+            <Component {...pageProps} />
+          </PageContent>
+        </div>
+      )}
 
-      <footer className="mw-100 bg-dark text-white">
-        <p className="text-center my-0 py-3">
-          <span className="pr-3">
-            © 2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`}{' '}
-            {t('open_source_bazaar')}
-          </span>
-          {/* <a
-            className="flex-fill d-flex justify-content-center align-items-center"
-            href="https://vercel.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Powered by
-            <span className="mx-2">
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                width={72}
-                height={16}
-              />
+      {/* 只在非 Open Library 路径显示主站页脚 */}
+      {!isOpenLibraryPath && (
+        <footer className="mw-100 bg-dark text-white">
+          <p className="text-center my-0 py-3">
+            <span className="pr-3">
+              2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`}{' '}
+              {t('open_source_bazaar')}
             </span>
-          </a> */}
-        </p>
-      </footer>
+            {/* <a
+              className="flex-fill d-flex justify-content-center align-items-center"
+              href="https://vercel.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Powered by
+              <span className="mx-2">
+                <Image
+                  src="/vercel.svg"
+                  alt="Vercel Logo"
+                  width={72}
+                  height={16}
+                />
+              </span>
+            </a> */}
+          </p>
+        </footer>
+      )}
     </>
   );
 });

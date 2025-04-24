@@ -1,10 +1,29 @@
 import React from 'react';
-import { Container, Row, Col, Nav } from 'react-bootstrap';
+import { Row, Col, Nav } from 'react-bootstrap';
+
+//
+const ContentContainer: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  return (
+    <div
+      style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '0 20px',
+        width: '100%',
+        boxSizing: 'border-box',
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
 const FooterComponent = () => {
   return (
     <footer className="bg-dark text-light py-4 mt-5">
-      <Container>
+      <ContentContainer>
         <Row>
           <Col md={4} className="mb-3 mb-md-0">
             <h5>Open Library</h5>
@@ -61,7 +80,7 @@ const FooterComponent = () => {
             </small>
           </Col>
         </Row>
-      </Container>
+      </ContentContainer>
     </footer>
   );
 };
