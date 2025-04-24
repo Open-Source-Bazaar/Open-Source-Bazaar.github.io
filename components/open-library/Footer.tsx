@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Nav } from 'react-bootstrap';
+import { Col, Nav, Row } from 'react-bootstrap';
 
 //
 const ContentContainer: React.FC<{ children: React.ReactNode }> = ({

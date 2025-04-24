@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
 import Link from 'next/link';
-import { Row, Col, Button, Card, Form, Image, Stack } from 'react-bootstrap';
-import { Layout, ContentContainer } from '../../components/open-library/Layout';
+import React, { useEffect } from 'react';
+import { Button, Card, Col, Form, Image, Row, Stack } from 'react-bootstrap';
+
+import { ContentContainer, Layout } from '../../components/open-library/Layout';
 
 // TODO: Define a type for Book and Testimonial
 type Book = {
@@ -79,7 +80,7 @@ export default function OpenLibraryHomepage() {
 
       Object.entries(styles).forEach(([property, value]) => {
         if (value) {
-          // @ts-ignore: dynamic property assignment
+          // @ts-expect-error: dynamic property assignment
           element.style[property] = value;
         }
       });

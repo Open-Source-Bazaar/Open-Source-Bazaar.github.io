@@ -1,7 +1,8 @@
-import React from 'react';
 import Head from 'next/head';
-import NavbarComponent from './Navbar';
+import React from 'react';
+
 import FooterComponent from './Footer';
+import NavbarComponent from './Navbar';
 
 // 内容容器组件，使内容居中但不添加边框
 const ContentContainer: React.FC<{ children: React.ReactNode }> = ({
@@ -56,5 +57,5 @@ const Layout: React.FC<LayoutProps> = ({
 };
 
 // 导出布局组件和内容容器组件，以便在页面中使用
-export { Layout, ContentContainer };
 export default Layout;
+export { ContentContainer, Layout };
