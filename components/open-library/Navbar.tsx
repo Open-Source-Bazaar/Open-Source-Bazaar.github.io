@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
-import { Button, Form, FormControl, Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 
 import { t } from '../../models/Translation';
 

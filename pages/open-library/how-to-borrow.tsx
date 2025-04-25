@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 
@@ -61,7 +62,10 @@ export default function HowToBorrowPage() {
                             fCC 成都社区图书馆
                           </a>{' '}
                           中查找自己感兴趣的书籍，或者在我们的{' '}
-                          <a href="/open-library/books">书籍目录</a> 中浏览。
+                          <Link href="/open-library/books" legacyBehavior>
+                            <a>书籍目录</a>
+                          </Link>{' '}
+                          中浏览。
                         </p>
                       </div>
                     </div>
@@ -214,9 +218,9 @@ export default function HowToBorrowPage() {
                     >
                       填写书籍传递表
                     </a>
-                    <a href="/open-library/books" className="btn btn-primary">
-                      浏览书籍目录
-                    </a>
+                    <Link href="/open-library/books" legacyBehavior>
+                      <a className="btn btn-primary">浏览书籍目录</a>
+                    </Link>
                   </div>
                 </Card.Body>
               </Card>
@@ -274,14 +278,14 @@ export default function HowToBorrowPage() {
           <div className="text-center">
             <h3 className="mb-4">准备好借阅了吗？</h3>
             <div className="d-flex justify-content-center gap-3 flex-wrap">
-              <a href="/open-library/books" className="btn btn-primary btn-lg">
-                浏览书籍目录
-              </a>
+              <Link href="/open-library/books" legacyBehavior>
+                <a className="btn btn-primary btn-lg">浏览书籍目录</a>
+              </Link>
               <a
                 href="https://open-source-bazaar.feishu.cn/share/base/form/shrcngQgMrhjTh6ycO1zcaEWZld"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-outline-primary btn-lg"
+                className="btn btn-warning btn-lg"
               >
                 申请成为会员
               </a>

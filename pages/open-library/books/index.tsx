@@ -124,8 +124,8 @@ export default function BookCatalog() {
   const [statusFilter, setStatusFilter] = useState('');
 
   // Extract unique categories and languages for filter dropdowns
-  const categories = [...new Set(books.map(book => book.category))];
-  const languages = [...new Set(books.map(book => book.language))];
+  const categories = Array.from(new Set(books.map(book => book.category)));
+  const languages = Array.from(new Set(books.map(book => book.language)));
 
   // Apply filters when any filter changes
   useEffect(() => {
