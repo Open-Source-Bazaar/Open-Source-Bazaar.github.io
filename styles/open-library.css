@@ -1,0 +1,65 @@
+/* Open Library Global Styles */
+
+/* Reset styles for Open Library section */
+body.open-library, 
+html.open-library {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+}
+
+/* Hide main site header and footer */
+body.open-library nav.navbar.bg-dark.navbar-dark.fixed-top,
+body.open-library footer.mw-100.bg-dark.text-white {
+  display: none !important;
+}
+
+/* Remove top margin that accommodates the main header */
+body.open-library div.mt-5.pt-2 {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Adjust main wrapper */
+body.open-library main.flex-fill.d-flex.flex-column.justify-content-start.align-items-center {
+  background: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Adjust container styles */
+body.open-library .container,
+body.open-library .container-fluid {
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* Remove card styling from main content */
+body.open-library main.flex-fill.d-flex.flex-column.justify-content-start.align-items-center .card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Remove card body padding */
+body.open-library main.flex-fill.d-flex.flex-column.justify-content-start.align-items-center .card-body {
+  padding: 0 !important;
+}
+
+/* Target the MDXProvider wrapper (main white background) */
+body.open-library .MDXProvider {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}

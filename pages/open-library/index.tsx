@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Card, Col, Form, Image, Row, Stack } from 'react-bootstrap';
 
 import { ContentContainer, Layout } from '../../components/open-library/Layout';
+import { t } from '../../models/Translation';
 
 // TODO: Define a type for Book and Testimonial
 type Book = {
@@ -69,160 +70,8 @@ export default function OpenLibraryHomepage() {
     },
   ];
 
-  // Use client-side code to hide the main site header and adjust layout
-  useEffect(() => {
-    // Function to apply style to an element
-    const applyStyle = (
-      element: HTMLElement | null,
-      styles: Partial<CSSStyleDeclaration>,
-    ) => {
-      if (!element) return;
-
-      Object.entries(styles).forEach(([property, value]) => {
-        if (value) {
-          // @ts-expect-error: dynamic property assignment
-          element.style[property] = value;
-        }
-      });
-    };
-
-    // Hide the main site header
-    const mainHeader = document.querySelector(
-      'nav.navbar.bg-dark.navbar-dark.fixed-top',
-    );
-    applyStyle(mainHeader as HTMLElement, { display: 'none' });
-
-    // Remove top margin that accommodates the main header
-    const mainContent = document.querySelector('div.mt-5.pt-2');
-    applyStyle(mainContent as HTMLElement, {
-      marginTop: '0',
-      paddingTop: '0',
-      maxWidth: '100%',
-      width: '100%',
-    });
-
-    // Remove background and padding from main content
-    const mainWrapper = document.querySelector(
-      'main.flex-fill.d-flex.flex-column.justify-content-start.align-items-center',
-    );
-    applyStyle(mainWrapper as HTMLElement, {
-      background: 'none',
-      padding: '0',
-      margin: '0',
-      maxWidth: '100%',
-      width: '100%',
-    });
-
-    // Remove container constraints
-    const containers = document.querySelectorAll('.container');
-    containers.forEach(container => {
-      applyStyle(container as HTMLElement, {
-        maxWidth: '100%',
-        padding: '0',
-        margin: '0',
-      });
-    });
-
-    // Remove card styling
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-      if (
-        card.closest(
-          'main.flex-fill.d-flex.flex-column.justify-content-start.align-items-center',
-        )
-      ) {
-        applyStyle(card as HTMLElement, {
-          background: 'transparent',
-          border: 'none',
-          boxShadow: 'none',
-          padding: '0',
-          margin: '0',
-        });
-      }
-    });
-
-    // Remove card body padding
-    const cardBodies = document.querySelectorAll('.card-body');
-    cardBodies.forEach(cardBody => {
-      if (
-        cardBody.closest(
-          'main.flex-fill.d-flex.flex-column.justify-content-start.align-items-center',
-        )
-      ) {
-        applyStyle(cardBody as HTMLElement, {
-          padding: '0',
-        });
-      }
-    });
-
-    // Hide the main site footer
-    const mainFooter = document.querySelector(
-      'footer.mw-100.bg-dark.text-white',
-    );
-    applyStyle(mainFooter as HTMLElement, { display: 'none' });
-
-    // Remove all padding and margin from body and html
-    applyStyle(document.body, {
-      margin: '0',
-      padding: '0',
-      overflow: 'auto',
-    });
-
-    applyStyle(document.documentElement, {
-      margin: '0',
-      padding: '0',
-      overflow: 'auto',
-    });
-
-    // Target the MDXProvider wrapper (main white background)
-    const mdxProvider = document.querySelector(`.MDXProvider`);
-    applyStyle(mdxProvider as HTMLElement, {
-      padding: '0 !important',
-      margin: '0 !important',
-      background: 'transparent !important',
-      border: 'none !important',
-      boxShadow: 'none !important',
-    });
-
-    // Add custom styles to ensure full width
-    const style = document.createElement('style');
-    style.textContent = `
-      body, html {
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow-x: hidden !important;
-      }
-      .container, .container-fluid {
-        max-width: 100% !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-      }
-      main.flex-fill.d-flex.flex-column.justify-content-start.align-items-center {
-        padding: 0 !important;
-        margin: 0 !important;
-        max-width: 100% !important;
-        width: 100% !important;
-      }
-      main.flex-fill.d-flex.flex-column.justify-content-start.align-items-center > .container {
-        max-width: 100% !important;
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-      .MDXProvider {
-        padding: 0 !important;
-        margin: 0 !important;
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-      }
-    `;
-    document.head.appendChild(style);
-  }, []);
-
   return (
-    <Layout title="Open Library - Free knowledge flows here">
+    <Layout title={`${t('open_library')} - freeCodeCamp 成都社区`}>
       <main>
         {/* --- Hero Section --- */}
         <section
@@ -235,17 +84,17 @@ export default function OpenLibraryHomepage() {
           <ContentContainer>
             <Row className="align-items-center">
               <Col md={7}>
-                <h1 className="display-5 fw-bold mb-4">
-                  Free knowledge flows here
-                </h1>
-                <p className="lead mb-4">
-                  Share and borrow books in our open-source community. Join
-                  freeCodeCamp Chengdu's initiative to make learning accessible
-                  to everyone.
-                </p>
+                <h1 className="display-5 fw-bold mb-4">{t('hero_title')}</h1>
+                <p className="lead mb-4">{t('hero_subtitle')}</p>
                 {/* TODO: Link this button to the actual Feishu form or member sign-up page */}
-                <Button variant="success" size="lg">
-                  Become a Member
+                <Button
+                  variant="success"
+                  size="lg"
+                  href="https://open-source-bazaar.feishu.cn/share/base/form/shrcngQgMrhjTh6ycO1zcaEWZld"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t('become_member')}
                 </Button>
               </Col>
               <Col md={5} className="mt-4 mt-md-0 text-center">
@@ -265,9 +114,11 @@ export default function OpenLibraryHomepage() {
         {/* --- Featured Books Section --- */}
         <section className="py-5 bg-light">
           <ContentContainer>
-            <h2 className="text-center fw-bold mb-2 h1">Featured Books</h2>
+            <h2 className="text-center fw-bold mb-2 h1">
+              {t('featured_books')}
+            </h2>
             <p className="text-center text-muted mb-5">
-              Discover what our community is reading right now
+              {t('featured_books_subtitle')}
             </p>
             <Row xs={1} sm={2} md={4} className="g-4 justify-content-center">
               {featuredBooks.map(book => (
@@ -299,7 +150,7 @@ export default function OpenLibraryHomepage() {
                           legacyBehavior
                         >
                           <Button variant="outline-success" as="a">
-                            View Details
+                            {t('view_details')}
                           </Button>
                         </Link>
                       </div>
@@ -314,7 +165,7 @@ export default function OpenLibraryHomepage() {
                   variant="link"
                   className="text-success text-decoration-none"
                 >
-                  Browse All Books
+                  {t('view_all_books')} &rarr;
                 </Button>
               </Link>
             </div>
@@ -326,14 +177,10 @@ export default function OpenLibraryHomepage() {
           <ContentContainer>
             <Row className="align-items-center">
               <Col md={7}>
-                <h2 className="fw-bold mb-4 h1">Share Your Knowledge</h2>
-                <p className="lead mb-4">
-                  Have books collecting dust on your shelf? Donate them to our
-                  community and help others learn and grow. Your contribution
-                  makes a difference!
-                </p>
+                <h2 className="fw-bold mb-4 h1">{t('share_your_knowledge')}</h2>
+                <p className="lead mb-4">{t('donation_callout_subtitle')}</p>
                 <Link href="/open-library/donate" passHref legacyBehavior>
-                  <Button variant="warning">Donate a Book</Button>
+                  <Button variant="warning">{t('donate_a_book')}</Button>
                 </Link>
               </Col>
               <Col md={5} className="mt-4 mt-md-0 text-center">
@@ -353,40 +200,31 @@ export default function OpenLibraryHomepage() {
         {/* --- How It Works Section --- */}
         <section className="py-5">
           <ContentContainer>
-            <h2 className="text-center fw-bold mb-2 h1">How It Works</h2>
+            <h2 className="text-center fw-bold mb-2 h1">{t('how_it_works')}</h2>
             <p className="text-center text-muted mb-5">
-              Three simple steps to borrow books from our community
+              {t('how_it_works_description')}
             </p>
             <Row className="text-center g-4">
               <Col md={4}>
                 <div className="mb-3">
                   <span className="d-inline-block p-3 bg-success-subtle text-success rounded-circle"></span>
                 </div>
-                <h3 className="fw-bold h4 mb-2">1. Find a Book</h3>
-                <p className="text-muted px-md-3">
-                  Browse our collection and find the book that interests you.
-                  Filter by category, author, or popularity.
-                </p>
+                <h3 className="fw-bold h4 mb-2">{t('step_1_find_book')}</h3>
+                <p className="text-muted px-md-3">{t('step_1_description')}</p>
               </Col>
               <Col md={4}>
                 <div className="mb-3">
                   <span className="d-inline-block p-3 bg-success-subtle text-success rounded-circle"></span>
                 </div>
-                <h3 className="fw-bold h4 mb-2">2. Apply to Borrow</h3>
-                <p className="text-muted px-md-3">
-                  Submit a simple request form. We'll connect you with the book
-                  owner and arrange the handover.
-                </p>
+                <h3 className="fw-bold h4 mb-2">{t('step_2_apply')}</h3>
+                <p className="text-muted px-md-3">{t('step_2_description')}</p>
               </Col>
               <Col md={4}>
                 <div className="mb-3">
                   <span className="d-inline-block p-3 bg-success-subtle text-success rounded-circle"></span>
                 </div>
-                <h3 className="fw-bold h4 mb-2">3. Receive and Pass It On</h3>
-                <p className="text-muted px-md-3">
-                  Enjoy your book and return it when you're done. Consider
-                  donating your own books to keep knowledge flowing.
-                </p>
+                <h3 className="fw-bold h4 mb-2">{t('step_3_receive')}</h3>
+                <p className="text-muted px-md-3">{t('step_3_description')}</p>
               </Col>
             </Row>
             <div className="text-center mt-5">
@@ -395,7 +233,7 @@ export default function OpenLibraryHomepage() {
                   variant="link"
                   className="text-success text-decoration-none"
                 >
-                  Learn More About Borrowing
+                  {t('learn_more_about_borrowing')}
                 </Button>
               </Link>
             </div>
@@ -405,9 +243,11 @@ export default function OpenLibraryHomepage() {
         {/* --- Testimonials Section --- */}
         <section className="py-5 bg-light">
           <ContentContainer>
-            <h2 className="text-center fw-bold mb-2 h1">Community Voices</h2>
+            <h2 className="text-center fw-bold mb-2 h1">
+              {t('community_voices')}
+            </h2>
             <p className="text-center text-muted mb-5">
-              What our members say about Open Library
+              {t('community_voices_description')}
             </p>
             <Row xs={1} md={3} className="g-4">
               {testimonials.map(testimonial => (
@@ -431,7 +271,7 @@ export default function OpenLibraryHomepage() {
                   variant="link"
                   className="text-success text-decoration-none"
                 >
-                  Read More Reviews
+                  {t('read_more_reviews')}
                 </Button>
               </Link>
             </div>
@@ -445,10 +285,9 @@ export default function OpenLibraryHomepage() {
               <Col lg={6}>
                 <Card className="shadow-sm border-0">
                   <Card.Body className="p-4 p-md-5 text-center">
-                    <h3 className="fw-bold mb-2 h2">Stay Updated</h3>
+                    <h3 className="fw-bold mb-2 h2">{t('stay_updated')}</h3>
                     <p className="text-muted mb-4">
-                      Subscribe to our newsletter for new book arrivals and
-                      community events.
+                      {t('newsletter_description')}
                     </p>
                     {/* TODO: Implement actual newsletter subscription logic */}
                     <Form onSubmit={e => e.preventDefault()}>
@@ -462,11 +301,11 @@ export default function OpenLibraryHomepage() {
                       >
                         <Form.Control
                           type="email"
-                          placeholder="Your email address"
+                          placeholder={t('email_placeholder')}
                           required
                         />
                         <Button variant="success" type="submit">
-                          Subscribe
+                          {t('subscribe')}
                         </Button>
                       </Stack>
                     </Form>

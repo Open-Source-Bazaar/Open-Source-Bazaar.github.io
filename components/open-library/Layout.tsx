@@ -2,9 +2,9 @@ import Head from 'next/head';
 import React from 'react';
 
 import FooterComponent from './Footer';
-import NavbarComponent from './Navbar';
+import LibraryNavbar from './Navbar';
+import { useOpenLibraryLayout } from './useOpenLibraryLayout';
 
-// 内容容器组件，使内容居中但不添加边框
 const ContentContainer: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -37,6 +37,9 @@ const Layout: React.FC<LayoutProps> = ({
   children,
   title = 'Open Library - Open Source Bazaar',
 }) => {
+  // Apply Open Library layout styles
+  useOpenLibraryLayout();
+
   return (
     <>
       <Head>
@@ -44,18 +47,14 @@ const Layout: React.FC<LayoutProps> = ({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {/* 导航栏 */}
-      <NavbarComponent />
+      <LibraryNavbar />
 
-      {/* 主要内容 */}
       <main>{children}</main>
 
-      {/* 页脚 */}
       <FooterComponent />
     </>
   );
 };
 
-// 导出布局组件和内容容器组件，以便在页面中使用
 export default Layout;
 export { ContentContainer, Layout };

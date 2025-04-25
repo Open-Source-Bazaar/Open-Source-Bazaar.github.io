@@ -1,4 +1,5 @@
 import '../styles/globals.css';
+import '../styles/open-library.css';
 
 import { HTTPError } from 'koajax';
 import { configure } from 'mobx';
