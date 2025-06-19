@@ -3,23 +3,11 @@ import { Col, Nav, Row } from 'react-bootstrap';
 
 import { t } from '../../models/Translation';
 
-//
+// 使用 Bootstrap 工具类替换内联样式的 ContentContainer
 const ContentContainer: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  return (
-    <div
-      style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: '0 20px',
-        width: '100%',
-        boxSizing: 'border-box',
-      }}
-    >
-      {children}
-    </div>
-  );
+  return <div className="container-xl px-3">{children}</div>;
 };
 
 const FooterComponent = () => {
@@ -31,75 +19,83 @@ const FooterComponent = () => {
   }, []);
 
   return (
-    <footer className="bg-dark text-light py-4 mt-5">
+    <footer className="bg-dark text-light py-4">
       <ContentContainer>
         <Row>
           <Col md={4} className="mb-3 mb-md-0">
-            <h5>{t('open_library')}</h5>
-            <p>{t('footer_description')}</p>
-            <div className="mt-2">
-              <a href="#github" className="text-light me-3">
+            <h5 className="fw-bold mb-3">{t('open_library')}</h5>
+            <p className="text-light opacity-75 lh-base">
+              {t('footer_description')}
+            </p>
+            <div className="mt-3">
+              <a
+                href="#github"
+                className="text-light text-decoration-none me-3 hover-opacity"
+              >
+                <i className="bi bi-github me-1"></i>
                 GitHub
               </a>
-              <a href="#twitter" className="text-light me-3">
+              <a
+                href="#twitter"
+                className="text-light text-decoration-none me-3 hover-opacity"
+              >
+                <i className="bi bi-twitter me-1"></i>
                 Twitter
               </a>
-              <a href="#feishu" className="text-light me-3">
+              <a
+                href="#feishu"
+                className="text-light text-decoration-none me-3 hover-opacity"
+              >
+                <i className="bi bi-chat-dots me-1"></i>
                 Feishu
-              </a>
-              <a href="#instagram" className="text-light">
-                Instagram
               </a>
             </div>
           </Col>
           <Col md={3} className="mb-3 mb-md-0">
-            <h5>{t('quick_links_footer')}</h5>
+            <h5 className="fw-bold mb-3">{t('quick_links_footer')}</h5>
             <Nav className="flex-column">
-              <Nav.Link href="/open-library/books" className="text-light px-0">
+              <Nav.Link
+                href="/open-library/books"
+                className="text-light px-0 py-1 text-decoration-none"
+              >
+                <i className="bi bi-book me-2"></i>
                 {t('catalog_footer')}
-              </Nav.Link>
-              <Nav.Link href="/open-library/donate" className="text-light px-0">
-                {t('donate_footer')}
               </Nav.Link>
               <Nav.Link
                 href="/open-library/how-to-borrow"
-                className="text-light px-0"
+                className="text-light px-0 py-1 text-decoration-none"
               >
+                <i className="bi bi-info-circle me-2"></i>
                 {t('how_to_borrow')}
-              </Nav.Link>
-              <Nav.Link href="/open-library/about" className="text-light px-0">
-                {t('about_us_footer')}
-              </Nav.Link>
-              <Nav.Link href="/open-library/faq" className="text-light px-0">
-                {t('faq')}
               </Nav.Link>
             </Nav>
           </Col>
           <Col md={5}>
-            <h5>{t('contact')}</h5>
-            <p className="mb-1">freeCodeCamp Chengdu Community</p>
-            <p className="mb-1">Chengdu, Sichuan, China</p>
-            <p className="mb-1">Email: contact@openlibrary.org</p>
-            <p>WeChat: FCCChengdu</p>
+            <h5 className="fw-bold mb-3">{t('contact')}</h5>
+            <div className="text-light opacity-75">
+              <p className="mb-2">
+                <i className="bi bi-geo-alt me-2"></i>
+                freeCodeCamp Chengdu Community
+              </p>
+              <p className="mb-2">
+                <i className="bi bi-pin-map me-2"></i>
+                Chengdu, Sichuan, China
+              </p>
+              <p className="mb-2">
+                <i className="bi bi-envelope me-2"></i>
+                Email: contact@openlibrary.org
+              </p>
+              <p className="mb-0">
+                <i className="bi bi-wechat me-2"></i>
+                WeChat: FCCChengdu
+              </p>
+            </div>
           </Col>
         </Row>
 
-        <hr
-          className="mt-4 mb-3"
-          style={{ borderColor: 'rgba(255,255,255,0.2)' }}
-        />
+        <hr className="mt-4 mb-3 border-secondary opacity-25" />
 
-        {/* Use a more direct approach with inline styles to ensure visibility */}
-        <div
-          className="py-2"
-          style={{
-            textAlign: 'center',
-            color: '#6c757d',
-            fontSize: '0.875rem',
-            width: '100%',
-            display: 'block',
-          }}
-        >
+        <div className="text-center text-light opacity-75 py-2">
           {isMounted ? (
             <>
               &copy; {new Date().getFullYear()} {t('open_library')}.{' '}

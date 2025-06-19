@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Badge, Button, Card, Col, Row, Tab, Tabs } from 'react-bootstrap';
@@ -263,11 +264,13 @@ export default function BookDetail() {
             <Card.Body>
               <Row>
                 <Col md={3} className="text-center mb-4 mb-md-0">
-                  <img
+                  <Image
                     src={book.cover || '/images/placeholder-book.svg'}
                     alt={book.title}
                     className="img-fluid"
                     style={{ maxHeight: '300px' }}
+                    width={200}
+                    height={300}
                   />
                   <div className="mt-3">
                     <Badge

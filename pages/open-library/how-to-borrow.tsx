@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import { Button, Card, Col, Row } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 
 import { ContentContainer, Layout } from '../../components/open-library/Layout';
 

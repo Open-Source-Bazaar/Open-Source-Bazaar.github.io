@@ -8,19 +8,7 @@ import { useOpenLibraryLayout } from './useOpenLibraryLayout';
 const ContentContainer: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  return (
-    <div
-      style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: '0 20px',
-        width: '100%',
-        boxSizing: 'border-box',
-      }}
-    >
-      {children}
-    </div>
-  );
+  return <div className="container-xl px-3">{children}</div>;
 };
 
 interface LayoutProps {
@@ -49,7 +37,9 @@ const Layout: React.FC<LayoutProps> = ({
 
       <LibraryNavbar />
 
-      <main>{children}</main>
+      <main className="py-5">
+        <ContentContainer>{children}</ContentContainer>
+      </main>
 
       <FooterComponent />
     </>

@@ -9,7 +9,7 @@ if (HTTP_PROXY) setGlobalDispatcher(new ProxyAgent(HTTP_PROXY));
 export type NextAPI = (
   req: NextApiRequest,
   res: NextApiResponse,
-) => Promise<any>;
+) => Promise<void>;
 
 export function safeAPI(handler: NextAPI): NextAPI {
   return async (req, res) => {
