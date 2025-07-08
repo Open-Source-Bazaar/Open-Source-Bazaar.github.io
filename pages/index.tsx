@@ -2,7 +2,7 @@ import { Card, Col, Row } from 'react-bootstrap';
 import { renderToStaticMarkup } from 'react-dom/server';
 import ReactTyped from 'react-typed-component';
 
-import { PageHead } from '../components/PageHead';
+import { PageHead } from '../components/Layout/PageHead';
 import styles from '../styles/Home.module.scss';
 
 const HomePage = () => (

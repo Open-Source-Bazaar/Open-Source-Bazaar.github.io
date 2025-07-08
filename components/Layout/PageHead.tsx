@@ -1,5 +1,7 @@
 import Head from 'next/head';
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
+
+import { Name, Summary } from '../../models/configuration';
 
 export type PageHeadProps = PropsWithChildren<{
   title?: string;
@@ -8,14 +10,11 @@ export type PageHeadProps = PropsWithChildren<{
 
 export const PageHead: FC<PageHeadProps> = ({
   title,
-  description = '开源市集',
+  description = Summary,
   children,
 }) => (
   <Head>
-    <title>
-      {title}
-      {title && ' - '}开源市集
-    </title>
+    <title>{`${title ? `${title} - ` : ''}${Name}`}</title>
 
     {description && <meta name="description" content={description} />}
 
