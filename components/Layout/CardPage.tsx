@@ -4,7 +4,7 @@ import { Col, Pagination, Row } from 'react-bootstrap';
 import { SearchPageMeta } from '../../models/System';
 
 export interface CardPageProps extends SearchPageMeta {
-  Card: ComponentClass<any> | FC<any>;
+  Card: ComponentClass<Record<string, unknown>> | FC<Record<string, unknown>>;
   cardLinkOf?: (id: string) => string;
   pageLinkOf: (page: number) => string;
 }

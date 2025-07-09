@@ -23,6 +23,10 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
     href: 'https://github.com/Open-Source-Bazaar/Git-Hackathon-scaffold',
     name: t('hackathon'),
   },
+  {
+    href: '/open-library',
+    name: t('open_library'),
+  },
 ];
 
 export interface MainNavigatorProps {
@@ -35,6 +39,14 @@ export const MainNavigator: FC<MainNavigatorProps> = observer(({ menu }) => {
   const { t } = i18n;
 
   menu ||= topNavBarMenu(i18n);
+
+  // 检查是否是 Open Library 路径
+  const isOpenLibraryPath = pathname.startsWith('/open-library');
+
+  // 如果是 Open Library 路径，不渲染主站导航栏
+  if (isOpenLibraryPath) {
+    return null;
+  }
 
   return (
     <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
