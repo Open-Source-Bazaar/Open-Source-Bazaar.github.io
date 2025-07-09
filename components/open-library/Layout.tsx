@@ -1,18 +1,15 @@
 import Head from 'next/head';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import FooterComponent from './Footer';
 import LibraryNavbar from './Navbar';
 import { useOpenLibraryLayout } from './useOpenLibraryLayout';
 
-const ContentContainer: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  return <div className="container-xl px-3">{children}</div>;
-};
+const ContentContainer: React.FC<PropsWithChildren> = ({ children }) => (
+  <div className="container-xl px-3">{children}</div>
+);
 
 interface LayoutProps {
-  children: React.ReactNode;
   title?: string;
 }
 
@@ -21,7 +18,7 @@ interface LayoutProps {
  * 包含导航栏、页脚和内容容器
  * 所有 Open Library 页面都应使用此布局
  */
-const Layout: React.FC<LayoutProps> = ({
+const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
   children,
   title = 'Open Library - Open Source Bazaar',
 }) => {

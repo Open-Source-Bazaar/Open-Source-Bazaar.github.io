@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { PropsWithChildren, useContext } from 'react';
 import { Col, Nav, Row } from 'react-bootstrap';
 
-import { t } from '../../models/Translation';
+import { I18nContext } from '../../models/Translation';
 
 // 使用 Bootstrap 工具类替换内联样式的 ContentContainer
-const ContentContainer: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  return <div className="container-xl px-3">{children}</div>;
-};
+const ContentContainer: React.FC<PropsWithChildren> = ({ children }) => (
+  <div className="container-xl px-3">{children}</div>
+);
 
 const FooterComponent = () => {
   // Use client-side rendering for the copyright text to avoid hydration issues
   const [isMounted, setIsMounted] = React.useState(false);
+
+  const { t } = useContext(I18nContext);
 
   React.useEffect(() => {
     setIsMounted(true);
@@ -32,21 +32,21 @@ const FooterComponent = () => {
                 href="#github"
                 className="text-light text-decoration-none me-3 hover-opacity"
               >
-                <i className="bi bi-github me-1"></i>
+                <i className="bi bi-github me-1" />
                 GitHub
               </a>
               <a
                 href="#twitter"
                 className="text-light text-decoration-none me-3 hover-opacity"
               >
-                <i className="bi bi-twitter me-1"></i>
+                <i className="bi bi-twitter me-1" />
                 Twitter
               </a>
               <a
                 href="#feishu"
                 className="text-light text-decoration-none me-3 hover-opacity"
               >
-                <i className="bi bi-chat-dots me-1"></i>
+                <i className="bi bi-chat-dots me-1" />
                 Feishu
               </a>
             </div>
@@ -58,14 +58,14 @@ const FooterComponent = () => {
                 href="/open-library/books"
                 className="text-light px-0 py-1 text-decoration-none"
               >
-                <i className="bi bi-book me-2"></i>
+                <i className="bi bi-book me-2" />
                 {t('catalog_footer')}
               </Nav.Link>
               <Nav.Link
                 href="/open-library/how-to-borrow"
                 className="text-light px-0 py-1 text-decoration-none"
               >
-                <i className="bi bi-info-circle me-2"></i>
+                <i className="bi bi-info-circle me-2" />
                 {t('how_to_borrow')}
               </Nav.Link>
             </Nav>
@@ -74,19 +74,19 @@ const FooterComponent = () => {
             <h5 className="fw-bold mb-3">{t('contact')}</h5>
             <div className="text-light opacity-75">
               <p className="mb-2">
-                <i className="bi bi-geo-alt me-2"></i>
+                <i className="bi bi-geo-alt me-2" />
                 freeCodeCamp Chengdu Community
               </p>
               <p className="mb-2">
-                <i className="bi bi-pin-map me-2"></i>
+                <i className="bi bi-pin-map me-2" />
                 Chengdu, Sichuan, China
               </p>
               <p className="mb-2">
-                <i className="bi bi-envelope me-2"></i>
+                <i className="bi bi-envelope me-2" />
                 Email: contact@openlibrary.org
               </p>
               <p className="mb-0">
-                <i className="bi bi-wechat me-2"></i>
+                <i className="bi bi-wechat me-2" />
                 WeChat: FCCChengdu
               </p>
             </div>

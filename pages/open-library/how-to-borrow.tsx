@@ -38,7 +38,7 @@ export default function HowToBorrowPage() {
                         backgroundColor: '#e9ecef',
                         zIndex: 1,
                       }}
-                    ></div>
+                    />
 
                     <div
                       className="d-flex mb-4 position-relative"

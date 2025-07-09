@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 
 import FeaturedBooks from '../../components/open-library/FeaturedBooks';
@@ -10,7 +10,7 @@ import HowItWorks from '../../components/open-library/HowItWorks';
 import { ContentContainer } from '../../components/open-library/Layout';
 import LibraryNavbar from '../../components/open-library/Navbar';
 import { useOpenLibraryLayout } from '../../components/open-library/useOpenLibraryLayout';
-import { t } from '../../models/Translation';
+import { I18nContext } from '../../models/Translation';
 
 // Sample data - these could be moved to a separate data file in the future
 const featuredBooks = [
@@ -90,6 +90,9 @@ const workflowSteps = [
 export default function OpenLibraryHomepage() {
   // Apply Open Library layout styles
   useOpenLibraryLayout();
+
+  // Use the new i18n context
+  const { t } = useContext(I18nContext);
 
   return (
     <>
@@ -210,12 +213,12 @@ export default function OpenLibraryHomepage() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="bi bi-heart-fill me-2"></i>
+                  <i className="bi bi-heart-fill me-2" />
                   GitHub Sponsors
                 </a>
                 <Link href="/open-library/books">
                   <span className="btn btn-outline-light btn-lg rounded-pill px-4">
-                    <i className="bi bi-book me-2"></i>
+                    <i className="bi bi-book me-2" />
                     分享你的图书
                   </span>
                 </Link>

@@ -9,7 +9,7 @@ import {
 } from '../../../components/open-library/Layout';
 
 // Book type definition
-type Book = {
+interface Book {
   id: number;
   title: string;
   author: string;
@@ -34,7 +34,7 @@ type Book = {
     comment: string;
     date: string;
   }[];
-};
+}
 
 // Mock database of books
 const booksDatabase: Book[] = [

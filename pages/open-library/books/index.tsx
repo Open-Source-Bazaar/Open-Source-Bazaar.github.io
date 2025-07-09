@@ -7,7 +7,7 @@ import {
 } from '../../../components/open-library/Layout';
 
 // Book type definition
-type Book = {
+interface Book {
   id: number;
   title: string;
   author: string;
@@ -17,7 +17,7 @@ type Book = {
   status: 'available' | 'borrowed';
   currentHolder?: string;
   description?: string;
-};
+}
 
 export default function BookCatalog() {
   // Sample books data - in a real app, this would come from an API

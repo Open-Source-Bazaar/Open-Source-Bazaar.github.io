@@ -4,136 +4,108 @@ import '../styles/open-library.css';
 import { HTTPError } from 'koajax';
 import { configure } from 'mobx';
 import { enableStaticRendering, observer } from 'mobx-react';
-import type { AppProps } from 'next/app';
-import dynamic from 'next/dynamic';
+import App, { AppContext } from 'next/app';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { FC } from 'react';
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { Image } from 'react-bootstrap';
 
+import { MainNavigator } from '../components/Navigator/MainNavigator';
 import { PageContent } from '../components/PageContent';
-import { isServer } from '../models/Base';
-import { t } from '../models/Translation';
-
-const LanguageMenu = dynamic(import('../components/Navigator/LanguageMenu'), {
-  ssr: false,
-});
+import { isServer } from '../models/configuration';
+import {
+  createI18nStore,
+  I18nContext,
+  I18nProps,
+  loadSSRLanguage,
+} from '../models/Translation';
 
 configure({ enforceActions: 'never' });
 
 enableStaticRendering(isServer());
 
-globalThis.addEventListener?.('unhandledrejection', ({ reason }) => {
-  const { message, response } = reason as HTTPError;
-  const { statusText, body } = response || {};
+@observer
+export default class CustomApp extends App<I18nProps> {
+  static async getInitialProps(context: AppContext) {
+    return {
+      ...(await App.getInitialProps(context)),
+      ...(await loadSSRLanguage(context.ctx)),
+    };
+  }
 
-  const tips = body?.message || statusText || message;
+  i18nStore = createI18nStore(this.props.language, this.props.languageMap);
 
-  if (tips) alert(tips);
-});
+  componentDidMount() {
+    window.addEventListener('unhandledrejection', ({ reason }) => {
+      const { message, response } = reason as HTTPError;
+      const { statusText, body } = response || {};
 
-const App: FC<AppProps> = observer(({ Component, pageProps }) => {
-  const { pathname } = useRouter();
-  const thisFullYear = new Date().getFullYear();
+      const tips = body?.message || statusText || message;
 
-  // 检查是否是 Open Library 路径
-  const isOpenLibraryPath = pathname.startsWith('/open-library');
+      if (tips) alert(tips);
+    });
+  }
 
-  const topNavBarMenu = [
-    { href: '/about', name: t('about') },
-    { href: '/history', name: t('history') },
-    { href: '/code-of-conduct', name: t('code_of_conduct') },
-    { href: '/join-us', name: t('join_us') },
-    { href: '/open-collaborator-award', name: t('open_collaborator_award') },
-    {
-      href: 'https://github.com/Open-Source-Bazaar/Git-Hackathon-scaffold',
-      name: t('hackathon'),
-    },
-    {
-      href: '/open-library',
-      name: t('open_library'),
-    },
-  ];
-  return (
-    <>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+  render() {
+    const { Component, pageProps, router } = this.props,
+      { t } = this.i18nStore;
+    const thisFullYear = new Date().getFullYear();
 
-        <title>{t('open_source_bazaar')}</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    // 检查是否是 Open Library 路径
+    const isOpenLibraryPath = router.route.startsWith('/open-library');
 
-      {/* 只在非 Open Library 路径显示主站导航栏 */}
-      {!isOpenLibraryPath && (
-        <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
-          <Container>
-            <Navbar.Brand href="/" className="fw-bolder">
-              {t('open_source_bazaar')}
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="navbarScroll" />
-            <Navbar.Collapse id="navbarScroll">
-              <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-                {topNavBarMenu.map(({ href, name }) => (
-                  <Nav.Link
-                    key={`${href}-${name}`}
-                    href={href}
-                    className={
-                      pathname === `${href}` ? 'fw-bolder text-light' : ''
-                    }
-                  >
-                    {name}
-                  </Nav.Link>
-                ))}
-              </Nav>
+    return (
+      <I18nContext.Provider value={this.i18nStore}>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-              <LanguageMenu />
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
-      )}
+          <title>{t('open_source_bazaar')}</title>
+        </Head>
 
-      {/* 根据路径决定是否使用 PageContent 包装 */}
-      {isOpenLibraryPath ? (
-        // Open Library 路径直接渲染内容，不使用 PageContent
-        <Component {...pageProps} />
-      ) : (
-        // 其他路径使用原来的 PageContent 包装
-        <div className="mt-5 pt-2">
-          <PageContent>
-            <Component {...pageProps} />
-          </PageContent>
-        </div>
-      )}
+        <MainNavigator />
 
-      {/* 只在非 Open Library 路径显示主站页脚 */}
-      {!isOpenLibraryPath && (
-        <footer className="mw-100 bg-dark text-white">
-          <p className="text-center my-0 py-3">
-            <span className="pr-3">
-              2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`}{' '}
-              {t('open_source_bazaar')}
-            </span>
-            {/* <a
-              className="flex-fill d-flex justify-content-center align-items-center"
-              href="https://vercel.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Powered by
-              <span className="mx-2">
-                <Image
-                  src="/vercel.svg"
-                  alt="Vercel Logo"
-                  width={72}
-                  height={16}
-                />
+        {/* 根据路径决定是否使用 PageContent 包装和 margin */}
+        {isOpenLibraryPath ? (
+          // Open Library 路径直接渲染内容，不使用 PageContent 和额外的 margin
+          <Component {...pageProps} />
+        ) : (
+          <div className="mt-5 pt-2">
+            {router.route.startsWith('/article/') ? (
+              <PageContent>
+                <Component {...pageProps} />
+              </PageContent>
+            ) : (
+              <Component {...pageProps} />
+            )}
+          </div>
+        )}
+
+        {/* 只在非 Open Library 路径显示主站页脚 */}
+        {!isOpenLibraryPath && (
+          <footer className="mw-100 bg-dark text-white">
+            <p className="text-center my-0 py-3">
+              <span className="pr-3">
+                2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`}{' '}
+                {t('open_source_bazaar')}
               </span>
-            </a> */}
-          </p>
-        </footer>
-      )}
-    </>
-  );
-});
-
-export default App;
+              <a
+                className="flex-fill d-flex justify-content-center align-items-center"
+                href="https://vercel.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Powered by
+                <span className="mx-2">
+                  <Image
+                    src="/vercel.svg"
+                    alt="Vercel Logo"
+                    width={72}
+                    height={16}
+                  />
+                </span>
+              </a>
+            </p>
+          </footer>
+        )}
+      </I18nContext.Provider>
+    );
+  }
+}

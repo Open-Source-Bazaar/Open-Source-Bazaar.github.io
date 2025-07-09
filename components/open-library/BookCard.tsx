@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, Card, Image } from 'react-bootstrap';
 
-import { t } from '../../models/Translation';
+import { I18nContext } from '../../models/Translation';
 
 export interface Book {
   id: number;
@@ -29,6 +29,8 @@ const BookCard: React.FC<BookCardProps> = ({
     variant === 'featured'
       ? 'h-100 shadow-sm border-0'
       : 'h-100 shadow border-0';
+
+  const { t } = useContext(I18nContext);
 
   return (
     <Card className={cardClass}>
@@ -77,7 +79,7 @@ const BookCard: React.FC<BookCardProps> = ({
         </Card.Text>
         {book.category && (
           <Card.Text className="text-muted small mb-3">
-            <i className="bi bi-tag me-1"></i>
+            <i className="bi bi-tag me-1" />
             {book.category}
           </Card.Text>
         )}

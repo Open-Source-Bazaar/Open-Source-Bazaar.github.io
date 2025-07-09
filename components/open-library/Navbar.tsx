@@ -1,8 +1,8 @@
 import dynamic from 'next/dynamic';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
 
-import { t } from '../../models/Translation';
+import { I18nContext } from '../../models/Translation';
 
 // 动态导入 LanguageMenu 组件，禁用 SSR
 const LanguageMenu = dynamic(() => import('../Navigator/LanguageMenu'), {
@@ -10,6 +10,9 @@ const LanguageMenu = dynamic(() => import('../Navigator/LanguageMenu'), {
 });
 
 const LibraryNavbar = () => {
+  // Use the new i18n context
+  const { t } = useContext(I18nContext);
+
   // Use a client-side only rendering approach for the brand text to avoid hydration mismatch
   const [isMounted, setIsMounted] = React.useState(false);
 
