@@ -11,4 +11,8 @@ export default {
   // Search
   keywords: '關鍵詞',
   search_results: '搜尋結果',
+
+  // Scroll List
+  load_more: '加載更多……',
+  no_more: '沒有更多',
 };

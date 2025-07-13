@@ -47,6 +47,9 @@ importers:
       mobx:
         specifier: ^6.13.7
         version: 6.13.7
+      mobx-github:
+        specifier: ^0.3.11
+        version: 0.3.11(core-js@3.44.0)(typescript@5.8.3)
       mobx-i18n:
         specifier: ^0.7.1
         version: 0.7.1(mobx@6.13.7)(typescript@5.8.3)
@@ -59,6 +62,9 @@ importers:
       mobx-restful:
         specifier: ^2.1.0
         version: 2.1.0(core-js@3.44.0)(mobx@6.13.7)(typescript@5.8.3)
+      mobx-restful-table:
+        specifier: ^2.5.2
+        version: 2.5.2(@types/react@19.1.8)(core-js@3.44.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
       next:
         specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.89.2)
@@ -1222,6 +1228,9 @@ packages:
       '@types/react': '>=16'
       react: '>=16'
 
+  '@mixmark-io/domino@2.2.0':
+    resolution: {integrity: sha512-Y28PR25bHXUg88kCV7nivXrP2Nj2RueZ3/l/jdx6J9f8J4nsEGcgX0Qe6lt7Pa+J79+kPiJU3LguR6O/6zrLOw==}
+
   '@napi-rs/wasm-runtime@0.2.11':
     resolution: {integrity: sha512-9DPkXtvHydrcOsopiYpUgPHpmj0HWZKMUnL2dZqpvC42lsratuBG06V5ipyno0fUek5VlFsNQ+AcFATSrJXgMA==}
 
@@ -1305,6 +1314,9 @@ packages:
   '@nolyfill/is-core-module@1.0.39':
     resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
     engines: {node: '>=12.4.0'}
+
+  '@octokit/openapi-types@25.1.0':
+    resolution: {integrity: sha512-idsIggNXUKkk0+BExUn1dQ92sfysJrje03Q0bv0e+KPLrvyqZF8MnBpFz8UNfYDwB3Ie7Z0TByjWfzxt7vseaA==}
 
   '@parcel/watcher-android-arm64@2.5.1':
     resolution: {integrity: sha512-KF8+j9nNbUN8vzOFDpRMsaKBHZ/mcjEjMToVMJOhTozkDonQFFrRcfdLWn6yWKCmJKmdVxSgHiYvTCef4/qcBA==}
@@ -1571,6 +1583,9 @@ packages:
   '@types/koa__router@12.0.4':
     resolution: {integrity: sha512-Y7YBbSmfXZpa/m5UGGzb7XadJIRBRnwNY9cdAojZGp65Cpe5MAP3mOZE7e3bImt8dfKS4UFcR16SLH8L/z7PBw==}
 
+  '@types/lodash@4.17.20':
+    resolution: {integrity: sha512-H3MHACvFUEiujabxhaI/ImO6gUrd8oOurg7LQtS7mbwIXA/cUqWrvBsaeJ23aZEPk1TAYkurjfMbSELfoCXlGA==}
+
   '@types/mdast@4.0.4':
     resolution: {integrity: sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==}
 
@@ -1626,6 +1641,9 @@ packages:
 
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
+
+  '@types/turndown@5.0.5':
+    resolution: {integrity: sha512-TL2IgGgc7B5j78rIccBtlYAnkuv8nUQqhQc+DSYV5j9Be9XOcm/SKOVRuA47xAVI3680Tk9B1d8flK2GWT2+4w==}
 
   '@types/unist@2.0.11':
     resolution: {integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==}
@@ -1971,6 +1989,9 @@ packages:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
 
+  browser-fs-access@0.37.0:
+    resolution: {integrity: sha512-MKpvZrKtv6pBJ2ACd+VwfS9XauBKTMVZg2UBibypuK1gfiXM7euZjbdKmvRsyxeQRhfzNVQrzCSVGXs19/LP8Q==}
+
   browserslist@4.25.1:
     resolution: {integrity: sha512-KGj0KoOMXLpSNkkEI6Z6mShmQy0bc1I+T7K9N81k4WWMrfz+6fQ6es80B/YLAeRoKvjYE1YSHHOW1qe9xIVzHw==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
@@ -2308,6 +2329,9 @@ packages:
 
   editorjs-html@4.0.5:
     resolution: {integrity: sha512-ImQYxB3fNCJcd+nJ+Vbne/6PxidO1cYByNpu9nBDStVabfjVrMW65BuR+IEZfOii8VKYH+CW/lYDb2GDlzZtDg==}
+
+  edkit@1.2.7:
+    resolution: {integrity: sha512-dCOBN9MMbCaCdSqhnZTSHPe7lu53TQttttjVBxLE/TehsQasuxmqW3ckimVODFaJVci1A6w429j9bebpiU3zKg==}
 
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
@@ -3289,6 +3313,11 @@ packages:
     resolution: {integrity: sha512-o5vL7aDWatOTX8LzaS1WMoaoxIiLRQJuIKKe2wAw6IeULDHaqbiqiggmx+pKvZDb1Sj+pE46Sn1T7lCqfFtg1Q==}
     engines: {node: '>=16'}
 
+  marked@15.0.12:
+    resolution: {integrity: sha512-8dD6FusOQSrpv9Z1rdNMdlSgQOIP880DHqnohobOmYLElGEqAL/JvxvuxZO16r4HtjTlfPRDC1hbvxC9dPN2nA==}
+    engines: {node: '>= 18'}
+    hasBin: true
+
   marked@16.0.0:
     resolution: {integrity: sha512-MUKMXDjsD/eptB7GPzxo4xcnLS6oo7/RHimUMHEDRhUooPwmN9BEpMl7AEOJv3bmso169wHI2wUF9VQgL7zfmA==}
     engines: {node: '>= 20'}
@@ -3464,6 +3493,9 @@ packages:
   minimist@1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
 
+  mobx-github@0.3.11:
+    resolution: {integrity: sha512-xbad5SNMmVJBKoWTnkUxzObSWQI/olk3Iy6ai2LWEbou2hfpQVre0/FaejQs593cNyheQl1RULdKctOcB4EbyQ==}
+
   mobx-i18n@0.7.1:
     resolution: {integrity: sha512-J8iTlxkj19Rh75gst5IvNl8LnlBQVIRV7FAt8yaLBRhSSe4jaZxlDMwXiv0wuBZ6SUD71KYw1w4YTMAorL3O5w==}
     peerDependencies:
@@ -3503,6 +3535,11 @@ packages:
         optional: true
       react-native:
         optional: true
+
+  mobx-restful-table@2.5.2:
+    resolution: {integrity: sha512-+LubMlc+Mm1WGJbASaIWiJndSTRSlW8DIrGwqdKKjYSQcj3/ULloQELrUoCVuid3Q4hCYdjmioarwTqTyFvBsQ==}
+    peerDependencies:
+      react: '>=16.8'
 
   mobx-restful@2.1.0:
     resolution: {integrity: sha512-5fuTDldCPwU+Ji/ea5UGza8Nd1FbM4qEI5w+e/SESTrimchcAx8nvO4zWuNB/OEm3dsVqo8eMASdhnaJ5FRS8g==}
@@ -3818,6 +3855,12 @@ packages:
   raw-body@2.5.2:
     resolution: {integrity: sha512-8zGqypfENjCIqGhgXToC8aB2r7YrBX+AQAfIPs/Mlk+BtPTztOvTS01NRW/3Eh60J+a48lt8qsCzirQ6loCVfA==}
     engines: {node: '>= 0.8'}
+
+  react-bootstrap-editor@2.1.1:
+    resolution: {integrity: sha512-vnAy1MSn4mAZp418cz3R7IiUWXGGwNfmWQYlPUa2MWGm6hTTxJVeKTp2jhrH3n8sbbtg2MN4/co44OP+sZn1pQ==}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
 
   react-bootstrap@2.10.10:
     resolution: {integrity: sha512-gMckKUqn8aK/vCnfwoBpBVFUGT9SVQxwsYrp9yDHt0arXMamxALerliKBxr1TPbntirK/HGrUAHYbAeQTa9GHQ==}
@@ -4320,6 +4363,12 @@ packages:
   tsscmp@1.0.6:
     resolution: {integrity: sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==}
     engines: {node: '>=0.6.x'}
+
+  turndown-plugin-gfm@1.0.2:
+    resolution: {integrity: sha512-vwz9tfvF7XN/jE0dGoBei3FXWuvll78ohzCZQuOb+ZjWrs3a0XhQVomJEb2Qh4VHTPNRO4GPZh0V7VRbiWwkRg==}
+
+  turndown@7.2.0:
+    resolution: {integrity: sha512-eCZGBN4nNNqM9Owkv9HAtWRYfLA4h909E/WGAWWBpmB275ehNhZyk87/Tpvjbp0jjNl9XwCsbe6bm6CqFsgD+A==}
 
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
@@ -5825,6 +5874,8 @@ snapshots:
       '@types/react': 19.1.8
       react: 19.1.0
 
+  '@mixmark-io/domino@2.2.0': {}
+
   '@napi-rs/wasm-runtime@0.2.11':
     dependencies:
       '@emnapi/core': 1.4.4
@@ -5882,6 +5933,8 @@ snapshots:
       fastq: 1.19.1
 
   '@nolyfill/is-core-module@1.0.39': {}
+
+  '@octokit/openapi-types@25.1.0': {}
 
   '@parcel/watcher-android-arm64@2.5.1':
     optional: true
@@ -6168,6 +6221,8 @@ snapshots:
     dependencies:
       '@types/koa': 2.15.0
 
+  '@types/lodash@4.17.20': {}
+
   '@types/mdast@4.0.4':
     dependencies:
       '@types/unist': 3.0.3
@@ -6239,6 +6294,8 @@ snapshots:
       '@types/send': 0.17.5
 
   '@types/trusted-types@2.0.7': {}
+
+  '@types/turndown@5.0.5': {}
 
   '@types/unist@2.0.11': {}
 
@@ -6601,6 +6658,8 @@ snapshots:
     dependencies:
       fill-range: 7.1.1
 
+  browser-fs-access@0.37.0: {}
+
   browserslist@4.25.1:
     dependencies:
       caniuse-lite: 1.0.30001727
@@ -6956,6 +7015,19 @@ snapshots:
       safe-buffer: 5.2.1
 
   editorjs-html@4.0.5: {}
+
+  edkit@1.2.7(typescript@5.8.3):
+    dependencies:
+      '@swc/helpers': 0.5.17
+      '@types/turndown': 5.0.5
+      browser-fs-access: 0.37.0
+      marked: 15.0.12
+      regenerator-runtime: 0.14.1
+      turndown: 7.2.0
+      turndown-plugin-gfm: 1.0.2
+      web-utility: 4.4.3(typescript@5.8.3)
+    transitivePeerDependencies:
+      - typescript
 
   ee-first@1.1.1: {}
 
@@ -8179,6 +8251,8 @@ snapshots:
 
   markdown-extensions@2.0.0: {}
 
+  marked@15.0.12: {}
+
   marked@16.0.0: {}
 
   math-intrinsics@1.1.0: {}
@@ -8530,6 +8604,21 @@ snapshots:
 
   minimist@1.2.8: {}
 
+  mobx-github@0.3.11(core-js@3.44.0)(typescript@5.8.3):
+    dependencies:
+      '@octokit/openapi-types': 25.1.0
+      '@swc/helpers': 0.5.17
+      '@types/lodash': 4.17.20
+      koajax: 3.1.2(core-js@3.44.0)(typescript@5.8.3)
+      lodash: 4.17.21
+      mobx: 6.13.7
+      mobx-restful: 2.1.0(core-js@3.44.0)(mobx@6.13.7)(typescript@5.8.3)
+      web-utility: 4.4.3(typescript@5.8.3)
+    transitivePeerDependencies:
+      - core-js
+      - jsdom
+      - typescript
+
   mobx-i18n@0.7.1(mobx@6.13.7)(typescript@5.8.3):
     dependencies:
       '@swc/helpers': 0.5.17
@@ -8578,6 +8667,29 @@ snapshots:
       react: 19.1.0
     optionalDependencies:
       react-dom: 19.1.0(react@19.1.0)
+
+  mobx-restful-table@2.5.2(@types/react@19.1.8)(core-js@3.44.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3):
+    dependencies:
+      '@swc/helpers': 0.5.17
+      classnames: 2.5.1
+      lodash: 4.17.21
+      mobx: 6.13.7
+      mobx-i18n: 0.7.1(mobx@6.13.7)(typescript@5.8.3)
+      mobx-react: 9.2.0(mobx@6.13.7)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      mobx-react-helper: 0.4.1(mobx@6.13.7)(react@19.1.0)(typescript@5.8.3)
+      mobx-restful: 2.1.0(core-js@3.44.0)(mobx@6.13.7)(typescript@5.8.3)
+      react: 19.1.0
+      react-bootstrap: 2.10.10(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react-bootstrap-editor: 2.1.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
+      regenerator-runtime: 0.14.1
+      web-utility: 4.4.3(typescript@5.8.3)
+    transitivePeerDependencies:
+      - '@types/react'
+      - core-js
+      - jsdom
+      - react-dom
+      - react-native
+      - typescript
 
   mobx-restful@2.1.0(core-js@3.44.0)(mobx@6.13.7)(typescript@5.8.3):
     dependencies:
@@ -8903,6 +9015,20 @@ snapshots:
       http-errors: 2.0.0
       iconv-lite: 0.4.24
       unpipe: 1.0.0
+
+  react-bootstrap-editor@2.1.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3):
+    dependencies:
+      '@swc/helpers': 0.5.17
+      edkit: 1.2.7(typescript@5.8.3)
+      mobx: 6.13.7
+      mobx-react: 9.2.0(mobx@6.13.7)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      mobx-react-helper: 0.4.1(mobx@6.13.7)(react@19.1.0)(typescript@5.8.3)
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+      web-utility: 4.4.3(typescript@5.8.3)
+    transitivePeerDependencies:
+      - react-native
+      - typescript
 
   react-bootstrap@2.10.10(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
@@ -9515,6 +9641,12 @@ snapshots:
   tslib@2.8.1: {}
 
   tsscmp@1.0.6: {}
+
+  turndown-plugin-gfm@1.0.2: {}
+
+  turndown@7.2.0:
+    dependencies:
+      '@mixmark-io/domino': 2.2.0
 
   type-check@0.4.0:
     dependencies:
