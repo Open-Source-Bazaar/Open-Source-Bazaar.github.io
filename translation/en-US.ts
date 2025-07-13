@@ -11,4 +11,8 @@ export default {
   // Search
   keywords: 'Keywords',
   search_results: 'Search Results',
+
+  // Scroll List
+  load_more: 'Load more...',
+  no_more: 'No more',
 };

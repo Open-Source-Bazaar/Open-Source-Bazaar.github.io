@@ -11,4 +11,8 @@ export default {
   // Search
   keywords: '关键词',
   search_results: '搜索结果',
+
+  // Scroll List
+  load_more: '加载更多……',
+  no_more: '没有更多',
 };
