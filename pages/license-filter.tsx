@@ -34,8 +34,13 @@ const LicenseTool: FC = observer(() => {
   const [filterOption, setFilterOption] = useState({});
   const [disableChoose, setDisableChoose] = useState(false);
   const [lists, setLists] = useState<List[]>([]);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   const now = Math.ceil(100 / choiceSteps.length);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   useEffect(() => {
     if (stepIndex === choiceSteps.length) setDisableChoose(true);
@@ -94,7 +99,7 @@ const LicenseTool: FC = observer(() => {
         className="mb-3"
         variant="info"
         now={(keyIndex + 1) * now}
-        label={t('step_x', { step: keyIndex + 1 })}
+        label={isHydrated ? t('step_x', { step: keyIndex + 1 }) : undefined}
       />
       <Button className="mb-2" variant="warning" onClick={backToLast}>
         {t('last_step')}
