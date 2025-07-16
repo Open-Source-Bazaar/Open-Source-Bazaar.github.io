@@ -29,6 +29,7 @@
     "mobx-i18n": "^0.7.1",
     "mobx-lark": "^2.2.0",
     "mobx-react": "^9.2.0",
+    "mobx-react-helper": "^0.5.1",
     "mobx-restful": "^2.1.0",
     "mobx-restful-table": "^2.5.2",
     "next": "^15.3.5",

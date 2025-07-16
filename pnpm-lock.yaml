@@ -62,6 +62,9 @@ importers:
       mobx-react:
         specifier: ^9.2.0
         version: 9.2.0(mobx@6.13.7)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      mobx-react-helper:
+        specifier: ^0.5.1
+        version: 0.5.1(mobx@6.13.7)(react@19.1.0)(typescript@5.8.3)
       mobx-restful:
         specifier: ^2.1.0
         version: 2.1.0(core-js@3.44.0)(mobx@6.13.7)(typescript@5.8.3)
@@ -3514,6 +3517,12 @@ packages:
 
   mobx-react-helper@0.4.1:
     resolution: {integrity: sha512-+chcWzOznL5/c6n33iswIGKvFJI/afmWRMFZ5NjjJyD3DJuoGuaiayEEhL3FITVKpwOkPKF2K5Werz8vhk6xEA==}
+    peerDependencies:
+      mobx: '>=6.11'
+      react: '>=16'
+
+  mobx-react-helper@0.5.1:
+    resolution: {integrity: sha512-8jwR6LbPmC5s0tcmPz6CjXs1uarAcKjeTD+Oqbd7Vk4Ce49yDxeUOxG07VAcWZVnjnJXE0n79oG3z9c2XEEWTw==}
     peerDependencies:
       mobx: '>=6.11'
       react: '>=16'
@@ -8656,6 +8665,16 @@ snapshots:
       - typescript
 
   mobx-react-helper@0.4.1(mobx@6.13.7)(react@19.1.0)(typescript@5.8.3):
+    dependencies:
+      '@swc/helpers': 0.5.17
+      lodash.isequalwith: 4.4.0
+      mobx: 6.13.7
+      react: 19.1.0
+      web-utility: 4.4.3(typescript@5.8.3)
+    transitivePeerDependencies:
+      - typescript
+
+  mobx-react-helper@0.5.1(mobx@6.13.7)(react@19.1.0)(typescript@5.8.3):
     dependencies:
       '@swc/helpers': 0.5.17
       lodash.isequalwith: 4.4.0
