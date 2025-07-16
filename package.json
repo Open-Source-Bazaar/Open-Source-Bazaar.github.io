@@ -21,6 +21,7 @@
     "idea-react": "^2.0.0-rc.13",
     "koa": "^2.16.1",
     "koajax": "^3.1.2",
+    "license-filter": "^0.2.5",
     "marked": "^16.0.0",
     "mime": "^4.0.7",
     "mobx": "^6.13.7",
