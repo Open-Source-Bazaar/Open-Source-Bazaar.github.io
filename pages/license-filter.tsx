@@ -1,7 +1,18 @@
-import { FeatureAttitude, filterLicenses, InfectionRange, License } from 'license-filter';
+import {
+  FeatureAttitude,
+  filterLicenses,
+  InfectionRange,
+  License,
+} from 'license-filter';
 import { observer } from 'mobx-react';
 import { FC, useContext, useEffect, useState } from 'react';
-import { Accordion, Button, ButtonGroup, Container, ProgressBar } from 'react-bootstrap';
+import {
+  Accordion,
+  Button,
+  ButtonGroup,
+  Container,
+  ProgressBar,
+} from 'react-bootstrap';
 
 import { PageHead } from '../components/Layout/PageHead';
 import { licenseTips, optionValue } from '../components/License/helper';
@@ -34,13 +45,8 @@ const LicenseTool: FC = observer(() => {
   const [filterOption, setFilterOption] = useState({});
   const [disableChoose, setDisableChoose] = useState(false);
   const [lists, setLists] = useState<List[]>([]);
-  const [isHydrated, setIsHydrated] = useState(false);
 
   const now = Math.ceil(100 / choiceSteps.length);
-
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
 
   useEffect(() => {
     if (stepIndex === choiceSteps.length) setDisableChoose(true);
@@ -72,7 +78,11 @@ const LicenseTool: FC = observer(() => {
     setFilterOption(newObject);
 
     setStepIndex(
-      stepIndex === choiceSteps.length ? stepIndex - 2 : stepIndex > 0 ? stepIndex - 1 : stepIndex,
+      stepIndex === choiceSteps.length
+        ? stepIndex - 2
+        : stepIndex > 0
+          ? stepIndex - 1
+          : stepIndex,
     );
     setKeyIndex(keyIndex > 0 ? keyIndex - 1 : keyIndex);
 
@@ -99,7 +109,7 @@ const LicenseTool: FC = observer(() => {
         className="mb-3"
         variant="info"
         now={(keyIndex + 1) * now}
-        label={isHydrated ? t('step_x', { step: keyIndex + 1 }) : undefined}
+        label={t('step_x', { step: keyIndex + 1 })}
       />
       <Button className="mb-2" variant="warning" onClick={backToLast}>
         {t('last_step')}
