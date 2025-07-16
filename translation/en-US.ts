@@ -19,6 +19,7 @@ export default {
   no_more: 'No more',
 
   //License-tool Page
+  license_filter: 'Open Source License Selector',
   feature_attitude_undefined: "I don't care",
   feature_attitude_positive: 'I need',
   feature_attitude_negative: "I don't need",

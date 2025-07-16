@@ -19,6 +19,7 @@ export default {
   no_more: '没有更多',
 
   //License-tool Page
+  license_filter: '开源协议选择器',
   feature_attitude_undefined: '我不在乎',
   feature_attitude_positive: '我需要',
   feature_attitude_negative: '我不需要',
