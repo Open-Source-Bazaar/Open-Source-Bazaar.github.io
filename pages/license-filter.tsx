@@ -5,6 +5,8 @@ import {
   License,
 } from 'license-filter';
 import { observer } from 'mobx-react';
+import { GetServerSidePropsContext } from 'next';
+import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext, useEffect, useState } from 'react';
 import {
   Accordion,
@@ -16,7 +18,17 @@ import {
 
 import { PageHead } from '../components/Layout/PageHead';
 import { licenseTips, optionValue } from '../components/License/helper';
-import { i18n, I18nContext } from '../models/Translation';
+import { i18n, I18nContext, I18nProps, loadSSRLanguage } from '../models/Translation';
+
+export const getServerSideProps = compose(cache(), errorLogger, async (context: GetServerSidePropsContext) => {
+  const ssrData = await loadSSRLanguage(context as any);
+  
+  return {
+    props: JSON.parse(JSON.stringify({
+      ...ssrData,
+    })),
+  };
+});
 
 interface List {
   license: License;
@@ -36,7 +48,7 @@ const choiceSteps = [
   'marketingEndorsement',
 ] as const;
 
-const LicenseTool: FC = observer(() => {
+const LicenseTool: FC<I18nProps> = observer(() => {
   const i18n = useContext(I18nContext);
   const { t } = i18n;
 
@@ -109,7 +121,19 @@ const LicenseTool: FC = observer(() => {
         className="mb-3"
         variant="info"
         now={(keyIndex + 1) * now}
-        label={t('step_x', { step: keyIndex + 1 })}
+        label={(() => {
+          const currentLang = i18n.currentLanguage;
+          const stepNumber = keyIndex + 1;
+          
+          switch (currentLang) {
+            case 'zh-CN':
+            case 'zh-TW':
+              return `第 ${stepNumber} 步`;
+            case 'en-US':
+            default:
+              return `step ${stepNumber}`;
+          }
+        })()}
       />
       <Button className="mb-2" variant="warning" onClick={backToLast}>
         {t('last_step')}
