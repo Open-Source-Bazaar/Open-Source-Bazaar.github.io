@@ -26,6 +26,7 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
     href: 'https://github.com/Open-Source-Bazaar/Git-Hackathon-scaffold',
     name: t('hackathon'),
   },
+  { href: '/license-filter', name: t('license_filter') },
 ];
 
 export interface MainNavigatorProps {
