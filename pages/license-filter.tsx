@@ -5,8 +5,6 @@ import {
   License,
 } from 'license-filter';
 import { observer } from 'mobx-react';
-import { GetServerSidePropsContext } from 'next';
-import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext, useEffect, useState } from 'react';
 import {
   Accordion,
@@ -18,17 +16,7 @@ import {
 
 import { PageHead } from '../components/Layout/PageHead';
 import { licenseTips, optionValue } from '../components/License/helper';
-import { i18n, I18nContext, I18nProps, loadSSRLanguage } from '../models/Translation';
-
-export const getServerSideProps = compose(cache(), errorLogger, async (context: GetServerSidePropsContext) => {
-  const ssrData = await loadSSRLanguage(context as any);
-  
-  return {
-    props: JSON.parse(JSON.stringify({
-      ...ssrData,
-    })),
-  };
-});
+import { i18n, I18nContext, I18nProps} from '../models/Translation';
 
 interface List {
   license: License;
@@ -121,19 +109,7 @@ const LicenseTool: FC<I18nProps> = observer(() => {
         className="mb-3"
         variant="info"
         now={(keyIndex + 1) * now}
-        label={(() => {
-          const currentLang = i18n.currentLanguage;
-          const stepNumber = keyIndex + 1;
-          
-          switch (currentLang) {
-            case 'zh-CN':
-            case 'zh-TW':
-              return `第 ${stepNumber} 步`;
-            case 'en-US':
-            default:
-              return `step ${stepNumber}`;
-          }
-        })()}
+        label={t('step_x', { step: keyIndex + 1 })}
       />
       <Button className="mb-2" variant="warning" onClick={backToLast}>
         {t('last_step')}
