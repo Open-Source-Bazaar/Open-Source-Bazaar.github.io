@@ -18,6 +18,10 @@ export default {
   load_more: 'Load more...',
   no_more: 'No more',
 
+  // Volunteer page
+  volunteer: 'Volunteer',
+  online_volunteer: 'Online Volunteer',
+
   //License-tool Page
   license_filter: 'Open Source License Selector',
   feature_attitude_undefined: "I don't care",

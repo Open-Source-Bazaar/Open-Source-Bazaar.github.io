@@ -18,6 +18,10 @@ export default {
   load_more: '加載更多……',
   no_more: '沒有更多',
 
+  // Volunteer page
+  volunteer: '志工',
+  online_volunteer: '線上志工',
+
   //License-tool Page
   license_filter: '開源許可證選擇器',
   feature_attitude_undefined: '我不在乎',

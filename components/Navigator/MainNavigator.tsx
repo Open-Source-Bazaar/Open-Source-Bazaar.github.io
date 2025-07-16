@@ -19,6 +19,7 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
     href: '/article/open-collaborator-award',
     name: t('open_collaborator_award'),
   },
+  { href: '/volunteer', name: t('volunteer') },
   { href: '/project', name: t('open_source_projects') },
   { href: '/issue', name: 'GitHub issues' },
   {

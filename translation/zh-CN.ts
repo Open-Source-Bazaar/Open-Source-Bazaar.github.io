@@ -18,6 +18,10 @@ export default {
   load_more: '加载更多……',
   no_more: '没有更多',
 
+  // Volunteer page
+  volunteer: '志愿者',
+  online_volunteer: '线上志愿者',
+
   //License-tool Page
   license_filter: '开源协议选择器',
   feature_attitude_undefined: '我不在乎',

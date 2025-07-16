@@ -89,6 +89,7 @@
     "singleQuote": true,
     "trailingComma": "all",
     "arrowParens": "avoid",
+    "printWidth": 100,
     "plugins": [
       "prettier-plugin-css-order",
       "@softonus/prettier-plugin-duplicate-remover"
