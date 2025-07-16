@@ -109,7 +109,7 @@ const LicenseTool: FC<I18nProps> = observer(() => {
         className="mb-3"
         variant="info"
         now={(keyIndex + 1) * now}
-        label={t('step_x', { step: keyIndex + 1 })}
+        label={`${(keyIndex + 1) * now}%`}
       />
       <Button className="mb-2" variant="warning" onClick={backToLast}>
         {t('last_step')}

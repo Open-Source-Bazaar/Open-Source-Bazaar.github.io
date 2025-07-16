@@ -55,7 +55,6 @@ export default {
   warn_info: '切记：必须阅读并理解您选择的许可协议',
   filter_option: '筛选条件',
   option_undefined: '不要求',
-  step_x: ({ step }: { step: number }) => `第 ${step} 步`,
   license_score: '评分',
   popularity: '流行程度',
   reuseCondition: '复用条件',

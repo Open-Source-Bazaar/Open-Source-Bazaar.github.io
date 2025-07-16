@@ -55,7 +55,6 @@ export default {
   warn_info: '切記：必須閱讀並理解您選擇的許可協議',
   filter_option: '篩選條件',
   option_undefined: '不要求',
-  step_x: ({ step }: { step: number }) => `第 ${step} 步`,
   license_score: '評分',
   popularity: '流行程度',
   reuseCondition: '復用條件',

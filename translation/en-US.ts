@@ -56,7 +56,6 @@ export default {
     'Remember: You must read and understand the license agreement you choose',
   filter_option: 'filter option',
   option_undefined: 'Not required',
-  step_x: ({ step }: { step: number }) => `step ${step}`,
   license_score: 'score',
   popularity: 'Popularity',
   reuseCondition: 'Reuse Condition',
