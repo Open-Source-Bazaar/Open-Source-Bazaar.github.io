@@ -17,4 +17,8 @@ export default {
   // Scroll List
   load_more: '加載更多……',
   no_more: '沒有更多',
+
+  // Volunteer page
+  volunteer: '志工',
+  online_volunteer: '線上志工',
 };

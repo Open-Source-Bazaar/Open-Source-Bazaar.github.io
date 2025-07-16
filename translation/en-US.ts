@@ -17,4 +17,8 @@ export default {
   // Scroll List
   load_more: 'Load more...',
   no_more: 'No more',
+
+  // Volunteer page
+  volunteer: 'Volunteer',
+  online_volunteer: 'Online Volunteer',
 };
