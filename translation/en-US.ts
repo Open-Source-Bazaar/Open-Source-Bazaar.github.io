@@ -9,6 +9,7 @@ export default {
   open_source_projects: 'Open Source projects',
   open_source_bazaar: 'Open Source Bazaar',
   home_page: 'Home Page',
+  wiki: 'Wiki',
 
   // Search
   keywords: 'Keywords',
@@ -56,8 +57,7 @@ export default {
   license_tool_headline: 'Open Source License Selector',
   license_tool_description:
     'This tool is designed to help users understand their own preferences for free and open source software licensing agreements. Users must read these license agreements themselves. It is important to read and fully understand the license agreement you choose before applying it to your project. The classification of license types that support the operation of the tool will inevitably be somewhat reduced. Therefore, the output of the tool cannot and must not be taken as legal advice.',
-  warn_info:
-    'Remember: You must read and understand the license agreement you choose',
+  warn_info: 'Remember: You must read and understand the license agreement you choose',
   filter_option: 'filter option',
   option_undefined: 'Not required',
   license_score: 'score',
