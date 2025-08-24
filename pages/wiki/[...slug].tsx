@@ -10,7 +10,7 @@ interface WikiPageParams extends ParsedUrlQuery {
 }
 
 export const getStaticPaths: GetStaticPaths<WikiPageParams> = async () => {
-  const tree = await Array.fromAsync(pageListOf('wiki', ''));
+  const tree = await Array.fromAsync(pageListOf('wiki', 'public/'));
   const list = tree.map(root => [...traverseTree(root, 'subs')]).flat();
   const paths = list
     .map(({ path }) => path && { params: { slug: path.split('/') } })
@@ -29,7 +29,7 @@ export const getStaticProps: GetStaticProps<WikiPageProps, WikiPageParams> = asy
   // https://github.com/vercel/next.js/issues/12851
   if (slug[0] !== 'wiki') slug.unshift('wiki');
 
-  const { meta, markdown } = await splitFrontMatter(`${slug.join('/')}.md`);
+  const { meta, markdown } = await splitFrontMatter(`public/${slug.join('/')}.md`);
 
   const markup = marked(markdown) as string;
 
