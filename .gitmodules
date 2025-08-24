@@ -1,3 +1,3 @@
-[submodule "pages/wiki/policy"]
-	path = pages/wiki/policy
+[submodule "wiki/policy"]
+	path = wiki/policy
 	url = https://github.com/fpsig/open-source-policy

@@ -7,7 +7,7 @@ import { i18n } from '../../models/Translation';
 import { ArticleMeta, pageListOf, traverseTree } from '../api/core';
 
 export const getStaticProps = async () => {
-  const tree = await Array.fromAsync(pageListOf('/wiki'));
+  const tree = await Array.fromAsync(pageListOf('wiki', ''));
   const list = tree.map(root => [...traverseTree(root, 'subs')]).flat();
 
   return { props: { tree, list } };

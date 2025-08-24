@@ -1,3 +1,5 @@
+import 'core-js/full/array/from-async';
+
 import Router, { RouterParamContext } from '@koa/router';
 import { Context, Middleware } from 'koa';
 import { HTTPError } from 'koajax';
@@ -58,14 +60,25 @@ export interface ArticleMeta {
 
 const MDX_pattern = /\.mdx?$/;
 
-export async function frontMatterOf(path: string) {
+export async function splitFrontMatter(path: string) {
   const { readFile } = await import('fs/promises');
 
   const file = await readFile(path, 'utf-8');
 
-  const [, frontMatter] = file.match(/^---[\r\n]([\s\S]+?[\r\n])---/) || [];
+  const [, frontMatter, markdown] =
+    file.trim().match(/^---[\r\n]([\s\S]+?[\r\n])---[\r\n]([\s\S]*)/) || [];
 
-  return frontMatter && parse(frontMatter);
+  if (!frontMatter) return { markdown: file };
+
+  try {
+    const meta = parse(frontMatter) as DataObject;
+
+    return { markdown, meta };
+  } catch (error) {
+    console.error(`Error reading front matter for ${path}:`, error);
+
+    return { markdown };
+  }
 }
 
 export async function* pageListOf(path: string, prefix = 'pages'): AsyncGenerator<ArticleMeta> {
@@ -85,13 +98,11 @@ export async function* pageListOf(path: string, prefix = 'pages'): AsyncGenerato
 
     if (node.isFile() && isMDX) {
       const article: ArticleMeta = { name, path, subs: [] };
-      try {
-        const meta = await frontMatterOf(`${node.path}/${node.name}`);
 
-        if (meta) article.meta = meta;
-      } catch (error) {
-        console.error(`Error reading front matter for ${node.path}/${node.name}:`, error);
-      }
+      const { meta } = await splitFrontMatter(`${node.path}/${node.name}`);
+
+      if (meta) article.meta = meta;
+
       yield article;
     }
     if (!node.isDirectory()) continue;
@@ -106,9 +117,12 @@ export type TreeNode<K extends string> = {
   [key in K]: TreeNode<K>[];
 };
 
-export function* traverseTree<K extends string>(tree: TreeNode<K>, key: K): Generator<TreeNode<K>> {
+export function* traverseTree<K extends string, N extends TreeNode<K>>(
+  tree: N,
+  key: K,
+): Generator<N> {
   for (const node of tree[key] || []) {
-    yield node;
-    yield* traverseTree(node, key);
+    yield node as N;
+    yield* traverseTree(node as N, key);
   }
 }
