@@ -10,12 +10,7 @@ import { Image } from 'react-bootstrap';
 import { MainNavigator } from '../components/Navigator/MainNavigator';
 import { PageContent } from '../components/PageContent';
 import { isServer } from '../models/configuration';
-import {
-  createI18nStore,
-  I18nContext,
-  I18nProps,
-  loadSSRLanguage,
-} from '../models/Translation';
+import { createI18nStore, I18nContext, I18nProps, loadSSRLanguage } from '../models/Translation';
 
 configure({ enforceActions: 'never' });
 
@@ -46,7 +41,8 @@ export default class CustomApp extends App<I18nProps> {
   render() {
     const { Component, pageProps, router } = this.props,
       { t } = this.i18nStore;
-    const thisFullYear = new Date().getFullYear();
+    const thisFullYear = new Date().getFullYear(),
+      { asPath } = router;
 
     return (
       <I18nContext.Provider value={this.i18nStore}>
@@ -59,7 +55,7 @@ export default class CustomApp extends App<I18nProps> {
         <MainNavigator />
 
         <div className="mt-5 pt-2">
-          {router.route.startsWith('/article/') ? (
+          {asPath.startsWith('/article/') || asPath.startsWith('/wiki/') ? (
             <PageContent>
               <Component {...pageProps} />
             </PageContent>
@@ -71,8 +67,7 @@ export default class CustomApp extends App<I18nProps> {
         <footer className="mw-100 bg-dark text-white">
           <p className="text-center my-0 py-3">
             <span className="pr-3">
-              © 2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`}{' '}
-              {t('open_source_bazaar')}
+              © 2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`} {t('open_source_bazaar')}
             </span>
             <a
               className="flex-fill d-flex justify-content-center align-items-center"
@@ -82,12 +77,7 @@ export default class CustomApp extends App<I18nProps> {
             >
               Powered by
               <span className="mx-2">
-                <Image
-                  src="/vercel.svg"
-                  alt="Vercel Logo"
-                  width={72}
-                  height={16}
-                />
+                <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
               </span>
             </a>
           </p>

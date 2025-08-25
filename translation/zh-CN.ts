@@ -9,6 +9,7 @@ export default {
   open_source_projects: '开源项目',
   hackathon: '黑客马拉松',
   home_page: '主页',
+  wiki: '知识库',
 
   // Search
   keywords: '关键词',
@@ -34,8 +35,7 @@ export default {
 
   tip_popularity_0:
     '您是否希望将结果限制在开放源代码促进会（Open Source Initiative, 缩写: OSI）所描述的 "流行、广泛使用或拥有强大社群” 的许可证上？',
-  tip_popularity_1:
-    '为了确保许可协议为主流许可协议，将妥协放弃掉一些不那么主流但可能有用的特征。',
+  tip_popularity_1: '为了确保许可协议为主流许可协议，将妥协放弃掉一些不那么主流但可能有用的特征。',
   tip_reuse_condition:
     '您想对代码的重复使用设置许可条件吗? 如果没有，您的许可证将属于所谓的 "宽松 (Permissive) " 许可证。所有自由与开源许可证都允许他人对您的代码进行修改，并将这些修改后的版本提供给他人。您的许可证可以对如何实现这一点提出条件，特别是在这些修改版本上可以使用哪些许可证。这些条件有助于保持代码的自由性，但也会使一些人不再重用您的代码。',
   tip_infection_intensity:

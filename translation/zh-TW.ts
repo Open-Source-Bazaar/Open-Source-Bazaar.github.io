@@ -9,6 +9,7 @@ export default {
   open_source_projects: '開源項目',
   hackathon: '黑客馬拉松',
   home_page: '主頁',
+  wiki: '知識庫',
 
   // Search
   keywords: '關鍵詞',
@@ -34,8 +35,7 @@ export default {
 
   tip_popularity_0:
     '您是否希望將結果限制在開放原始碼促進會（Open Source Initiative, 縮寫: OSI）所描述的 "流行、廣泛使用或擁有強大社群」 的授權上？',
-  tip_popularity_1:
-    '這將以犧牲一些更冷僻但或許有用的特徵為代價來確保該許可協議成為“主流”協議。',
+  tip_popularity_1: '這將以犧牲一些更冷僻但或許有用的特徵為代價來確保該許可協議成為“主流”協議。',
   tip_reuse_condition:
     '您想對程式碼的重複使用設定許可條件嗎? 如果沒有，您的許可證將屬於所謂的 "寬鬆 (Permissive) " 許可證。 所有自由與開源許可證都允許他人對您的程式碼進行修改，並將這些修改後的版本提供給他人。 您的許可證可以對如何實現這一點提出條件，特別是在這些修改版本上可以使用哪些許可證。 這些條件有助於保持程式碼的自由性，但也會使一些人不再重複使用您的程式碼。',
   tip_infection_intensity:
