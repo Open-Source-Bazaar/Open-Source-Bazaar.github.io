@@ -1,82 +1,44 @@
 import { observer } from 'mobx-react';
 import { GetStaticProps } from 'next';
-import { FC, useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { Container } from 'react-bootstrap';
+import { treeFrom } from 'web-utility';
 
 import { PageHead } from '../../components/Layout/PageHead';
 import { I18nContext } from '../../models/Translation';
 import { WikiNode, wikiStore } from '../../models/Wiki';
 
 export const getStaticProps: GetStaticProps = async () => {
-  try {
-    const nodes = await wikiStore.getAll();
+  const nodes = await wikiStore.getAllContent();
 
-    return { 
-      props: { nodes },
-      revalidate: 300 // Revalidate every 5 minutes
-    };
-  } catch (error) {
-    console.error('Failed to load wiki content:', error);
-
-    return { props: { nodes: [] } };
-  }
+  return { 
+    props: { nodes },
+    revalidate: 300 // Revalidate every 5 minutes
+  };
 };
 
-const renderWikiList = (nodes: WikiNode[]) => {
-  if (!nodes.length) {
-    return (
-      <div className="text-muted">
-        <p>暂无政策文档。</p>
-        <p>政策文档将从标记为 'wiki' 或 'policy' 的 GitHub Issues 中自动加载。</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="row g-3">
-      {nodes.map(({ id, title, body, html_url, updated_at, labels, repository }) => (
-        <div key={id} className="col-md-6 col-lg-4">
-          <div className="card h-100">
-            <div className="card-body">
-              <h5 className="card-title">
-                <a href={`/wiki/${id}`} className="text-decoration-none">
-                  {title}
-                </a>
-              </h5>
-              <p className="card-text text-muted small">
-                {body.length > 100 ? `${body.substring(0, 100)}...` : body}
-              </p>
-              <div className="mb-2">
-                {labels.map(label => (
-                  <span key={label} className="badge bg-secondary me-1">
-                    {label}
-                  </span>
-                ))}
-              </div>
-              {repository && (
-                <p className="card-text">
-                  <small className="text-muted">
-                    来源: {repository.full_name}
-                  </small>
-                </p>
-              )}
-            </div>
-            <div className="card-footer">
-              <small className="text-muted">
-                更新于: {new Date(updated_at).toLocaleDateString('zh-CN')}
-              </small>
-              <div className="mt-2">
-                <a href={html_url} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline-primary">
-                  在 GitHub 查看
-                </a>
-              </div>
-            </div>
-          </div>
+const renderTree = (nodes: WikiNode[], level = 0): React.ReactElement => (
+  <ul className={level === 0 ? 'list-unstyled' : ''}>
+    {nodes.map((node) => (
+      <li key={node.path} className={level > 0 ? 'ms-3' : ''}>
+        <div className="d-flex align-items-center py-1">
+          <a 
+            href={`/wiki/${node.path}`} 
+            className="text-decoration-none"
+          >
+            {node.title}
+          </a>
+          {node.metadata?.['主题分类'] && (
+            <span className="badge bg-secondary ms-2 small">
+              {node.metadata['主题分类']}
+            </span>
+          )}
         </div>
-      ))}
-    </div>
-  );
-};
+        {node.children && node.children.length > 0 && renderTree(node.children, level + 1)}
+      </li>
+    ))}
+  </ul>
+);
 
 const WikiIndexPage: FC<{ nodes: WikiNode[] }> = observer(({ nodes }) => {
   const { t } = useContext(I18nContext);
@@ -88,7 +50,7 @@ const WikiIndexPage: FC<{ nodes: WikiNode[] }> = observer(({ nodes }) => {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>政策 Wiki ({nodes.length})</h1>
         <a 
-          href="https://github.com/Open-Source-Bazaar" 
+          href="https://github.com/fpsig/open-source-policy" 
           target="_blank" 
           rel="noopener noreferrer"
           className="btn btn-outline-primary"
@@ -97,7 +59,16 @@ const WikiIndexPage: FC<{ nodes: WikiNode[] }> = observer(({ nodes }) => {
         </a>
       </div>
 
-      {renderWikiList(nodes)}
+      {nodes.length === 0 ? (
+        <div className="text-muted">
+          <p>暂无政策文档。</p>
+          <p>政策文档将从 GitHub 仓库中自动加载。</p>
+        </div>
+      ) : (
+        renderTree(
+          treeFrom(nodes, 'path', 'parent_path', 'children'),
+        )
+      )}
     </Container>
   );
 });

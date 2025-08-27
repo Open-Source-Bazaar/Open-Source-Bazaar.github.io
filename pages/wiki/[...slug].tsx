@@ -3,7 +3,7 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
 import { ParsedUrlQuery } from 'querystring';
 import { FC } from 'react';
-import { Badge, Container } from 'react-bootstrap';
+import { Badge, Breadcrumb, Button, Container } from 'react-bootstrap';
 
 import { PageHead } from '../../components/Layout/PageHead';
 import { WikiNode, wikiStore } from '../../models/Wiki';
@@ -13,138 +13,143 @@ interface WikiPageParams extends ParsedUrlQuery {
 }
 
 export const getStaticPaths: GetStaticPaths<WikiPageParams> = async () => {
-  try {
-    const nodes = await wikiStore.getAll();
-    const paths = nodes.map(({ id }) => ({ 
-      params: { slug: [id.toString()] } 
-    }));
+  const nodes = await wikiStore.getAllContent();
+  const paths = nodes.map(({ path }) => ({ 
+    params: { slug: path.split('/') } 
+  }));
 
-    return { paths, fallback: 'blocking' };
-  } catch (error) {
-    console.error('Failed to generate static paths:', error);
-
-    return { paths: [], fallback: 'blocking' };
-  }
+  return { paths, fallback: 'blocking' };
 };
 
 interface WikiPageProps {
-  node?: WikiNode;
+  node: WikiNode;
   markup: string;
 }
 
 export const getStaticProps: GetStaticProps<WikiPageProps, WikiPageParams> = async ({ params }) => {
   const { slug } = params!;
-  const [nodeId] = slug;
+  const nodePath = slug.join('/');
 
-  try {
-    const node = await wikiStore.getOne(nodeId);
-    
-    if (!node) {
-      return { notFound: true };
-    }
+  const node = await wikiStore.getOne(nodePath);
+  const markup = marked(node.content || '') as string;
 
-    const markup = marked(node.body || '') as string;
-
-    return { 
-      props: { node, markup },
-      revalidate: 300 // Revalidate every 5 minutes
-    };
-  } catch (error) {
-    console.error('Failed to load wiki node:', error);
-
-    return { notFound: true };
-  }
+  return { 
+    props: { node, markup },
+    revalidate: 300 // Revalidate every 5 minutes
+  };
 };
 
-const WikiPage: FC<WikiPageProps> = ({ node, markup }) => {
-  if (!node) {
-    return (
-      <Container className="py-4">
-        <div className="text-center">
-          <h2>Wiki 页面未找到</h2>
-          <p>请检查页面链接是否正确。</p>
-          <Link href="/wiki" className="btn btn-primary">
-            返回 Wiki 首页
-          </Link>
-        </div>
-      </Container>
-    );
-  }
+const WikiPage: FC<WikiPageProps> = ({ node, markup }) => (
+  <Container className="py-4">
+    <PageHead title={node.title} />
+    
+    <Breadcrumb className="mb-4">
+      <Breadcrumb.Item linkAs={Link} linkProps={{ href: '/wiki' }}>
+        Wiki
+      </Breadcrumb.Item>
+      {node.parent_path && node.parent_path.split('/').map((segment, index, array) => {
+        const breadcrumbPath = array.slice(0, index + 1).join('/');
 
-  return (
-    <Container className="py-4">
-      <PageHead title={node.title} />
-      
-      <nav aria-label="breadcrumb" className="mb-4">
-        <ol className="breadcrumb">
-          <li className="breadcrumb-item">
-            <Link href="/wiki">Wiki</Link>
-          </li>
-          <li className="breadcrumb-item active" aria-current="page">
-            {node.title}
-          </li>
-        </ol>
-      </nav>
+        return (
+          <Breadcrumb.Item 
+            key={breadcrumbPath}
+            linkAs={Link} 
+            linkProps={{ href: `/wiki/${breadcrumbPath}` }}
+          >
+            {segment}
+          </Breadcrumb.Item>
+        );
+      })}
+      <Breadcrumb.Item active>
+        {node.title}
+      </Breadcrumb.Item>
+    </Breadcrumb>
 
-      <article>
-        <header className="mb-4">
-          <h1>{node.title}</h1>
-          
+    <article>
+      <header className="mb-4">
+        <h1>{node.title}</h1>
+        
+        {node.metadata && (
           <div className="d-flex flex-wrap align-items-center gap-3 mb-3">
-            <div>
-              {node.labels.map(label => (
-                <Badge key={label} bg="secondary" className="me-1">
-                  {label}
-                </Badge>
-              ))}
-            </div>
-            
-            {node.repository && (
-              <small className="text-muted">
-                来源: {node.repository.full_name}
-              </small>
+            <ul className="list-inline mb-0">
+              {node.metadata['主题分类'] && (
+                <li className="list-inline-item">
+                  <Badge bg="primary">{node.metadata['主题分类']}</Badge>
+                </li>
+              )}
+              {node.metadata['发文机构'] && (
+                <li className="list-inline-item">
+                  <Badge bg="secondary">{node.metadata['发文机构']}</Badge>
+                </li>
+              )}
+              {node.metadata['有效性'] && (
+                <li className="list-inline-item">
+                  <Badge bg={node.metadata['有效性'] === '现行有效' ? 'success' : 'warning'}>
+                    {node.metadata['有效性']}
+                  </Badge>
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
+
+        <div className="d-flex justify-content-between align-items-center text-muted small mb-3">
+          <div>
+            {node.metadata?.['成文日期'] && (
+              <span>成文日期: {node.metadata['成文日期']}</span>
+            )}
+            {node.metadata?.['发布日期'] && node.metadata['发布日期'] !== node.metadata['成文日期'] && (
+              <span className="ms-3">发布日期: {node.metadata['发布日期']}</span>
             )}
           </div>
-
-          <div className="d-flex justify-content-between align-items-center text-muted small">
-            <div>
-              创建于: {new Date(node.created_at).toLocaleDateString('zh-CN')}
-              {node.updated_at !== node.created_at && (
-                <> | 更新于: {new Date(node.updated_at).toLocaleDateString('zh-CN')}</>
-              )}
-            </div>
-            
-            <div>
-              <a 
-                className="btn btn-sm btn-outline-primary"
-                href={node.html_url} 
+          
+          <div className="d-flex gap-2">
+            <Button 
+              variant="outline-primary"
+              size="sm"
+              href={`https://github.com/fpsig/open-source-policy/blob/main/China/政策/${node.path}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              在 GitHub 编辑
+            </Button>
+            {node.metadata?.url && (
+              <Button 
+                variant="outline-secondary"
+                size="sm"
+                href={node.metadata.url}
+                target="_blank"
                 rel="noopener noreferrer"
-                target="_blank" 
               >
-                在 GitHub 编辑
-              </a>
-            </div>
+                查看原文
+              </Button>
+            )}
           </div>
-        </header>
-
-        <div 
-          dangerouslySetInnerHTML={{ __html: markup }} 
-          className="wiki-content" 
-        />
-      </article>
-
-      <footer className="mt-5 pt-4 border-top">
-        <div className="text-center">
-          <p className="text-muted">
-            这是一个基于 GitHub Issues 的 Wiki 页面。
-            <a href={node.html_url} target="_blank" rel="noopener noreferrer" className="ms-2">
-              在 GitHub 上查看或编辑此内容
-            </a>
-          </p>
         </div>
-      </footer>
-    </Container>
-  );
-};
+      </header>
+
+      <div 
+        dangerouslySetInnerHTML={{ __html: markup }} 
+        className="markdown-body" 
+      />
+    </article>
+
+    <footer className="mt-5 pt-4 border-top">
+      <div className="text-center">
+        <p className="text-muted">
+          这是一个基于 GitHub 仓库的政策文档页面。
+          <a 
+            href={`https://github.com/fpsig/open-source-policy/blob/main/China/政策/${node.path}`} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="ms-2"
+          >
+            在 GitHub 上查看或编辑此内容
+          </a>
+        </p>
+      </div>
+    </footer>
+  </Container>
+);
 
 export default WikiPage;
