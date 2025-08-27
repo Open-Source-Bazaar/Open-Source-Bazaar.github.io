@@ -77,4 +77,10 @@ export default {
   range_file: '文件',
   range_module: '模块',
   last_step: '上一步',
+  
+  // Wiki
+  knowledge_base: '知识库',
+  contribute_content: '贡献内容',
+  no_docs_available: '知识库暂无文档。',
+  docs_auto_load_from_github: '文档将从 GitHub 仓库中自动加载。',
 };

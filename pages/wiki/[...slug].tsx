@@ -30,7 +30,7 @@ export const getStaticProps: GetStaticProps<WikiPageProps, WikiPageParams> = asy
   const { slug } = params!;
   const nodePath = slug.join('/');
 
-  const node = await wikiStore.getOne(nodePath);
+  const node = await wikiStore.getWikiContent(nodePath);
   const markup = marked(node.content || '') as string;
 
   return { 
@@ -47,7 +47,7 @@ const WikiPage: FC<WikiPageProps> = ({ node, markup }) => (
       <Breadcrumb.Item linkAs={Link} linkProps={{ href: '/wiki' }}>
         Wiki
       </Breadcrumb.Item>
-      {node.parent_path && node.parent_path.split('/').map((segment, index, array) => {
+      {node.parent_path?.split('/').map((segment, index, array) => {
         const breadcrumbPath = array.slice(0, index + 1).join('/');
 
         return (

@@ -31,6 +31,3 @@ article {
     max-width: 100%;
   }
 }
-
-/* Import GitHub Markdown CSS */
-@import 'github-markdown-css/github-markdown.css';

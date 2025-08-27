@@ -16,16 +16,15 @@ export interface WikiNode {
   html_url?: string;
   git_url?: string;
   download_url?: string;
-  // Frontmatter fields
-  metadata?: Record<string, string>;
   content?: string;
+  metadata?: Record<string, string>;
 }
 
-export class WikiModel {
-  // For now, only use filesystem reading for simplicity
+class WikiModel {
+  // TODO: Use ContentModel from mobx-github once authentication is configured
+  // private contentModel = new ContentModel('fpsig', 'open-source-policy');
 
-  // Method for build-time static generation
-  async getAllContentStatic(): Promise<WikiNode[]> {
+  async getAllContent(): Promise<WikiNode[]> {
     const items: WikiNode[] = [];
     const policyDir = path.join(process.cwd(), 'public/wiki/policy/China/政策');
     
@@ -73,22 +72,12 @@ export class WikiModel {
     return items;
   }
 
-  // Method for all environments - use static reading
-  async getAllContent(): Promise<WikiNode[]> {
-    return this.getAllContentStatic();
-  }
-
   async getContentTree(): Promise<WikiNode[]> {
     const allContent = await this.getAllContent();
     return treeFrom(allContent, 'path', 'parent_path', 'children');
   }
 
-  async getOne(path: string): Promise<WikiNode> {
-    return this.getOneStatic(path);
-  }
-
-  // Static method for build-time reading
-  async getOneStatic(pathParam: string): Promise<WikiNode> {
+  async getWikiContent(pathParam: string): Promise<WikiNode> {
     const fullPath = pathParam.endsWith('.md') ? pathParam : `${pathParam}.md`;
     const filePath = path.join(process.cwd(), 'public/wiki/policy/China/政策', fullPath);
     

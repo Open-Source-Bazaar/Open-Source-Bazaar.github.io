@@ -78,4 +78,10 @@ export default {
   range_file: 'file',
   range_module: 'module',
   last_step: 'back',
+  
+  // Wiki
+  knowledge_base: 'Knowledge Base',
+  contribute_content: 'Contribute Content',
+  no_docs_available: 'No documents available in the knowledge base.',
+  docs_auto_load_from_github: 'Documents will be automatically loaded from GitHub repository.',
 };
