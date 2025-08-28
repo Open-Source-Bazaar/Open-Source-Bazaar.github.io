@@ -29,6 +29,9 @@ importers:
       file-type:
         specifier: ^21.0.0
         version: 21.0.0
+      github-markdown-css:
+        specifier: ^5.8.1
+        version: 5.8.1
       idea-react:
         specifier: ^2.0.0-rc.13
         version: 2.0.0-rc.13(@types/react@19.1.11)(react-dom@19.1.1(react@19.1.1))(react-is@16.13.1)(react@19.1.1)(typescript@5.9.2)
@@ -51,8 +54,8 @@ importers:
         specifier: ^6.13.7
         version: 6.13.7
       mobx-github:
-        specifier: ^0.3.11
-        version: 0.3.11(core-js@3.45.1)(typescript@5.9.2)
+        specifier: ^0.4.0-rc.1
+        version: 0.4.0-rc.1(core-js@3.45.1)(typescript@5.9.2)
       mobx-i18n:
         specifier: ^0.7.1
         version: 0.7.1(mobx@6.13.7)(typescript@5.9.2)
@@ -2723,6 +2726,10 @@ packages:
   get-tsconfig@4.10.1:
     resolution: {integrity: sha512-auHyJ4AgMz7vgS8Hp3N6HXSmlMdUyhSUrfBF16w153rxtLIEOE+HGqaBppczZvnHLqQJfiHotCYpNhl0lUROFQ==}
 
+  github-markdown-css@5.8.1:
+    resolution: {integrity: sha512-8G+PFvqigBQSWLQjyzgpa2ThD9bo7+kDsriUIidGcRhXgmcaAWUIpCZf8DavJgc+xifjbCG+GvMyWr0XMXmc7g==}
+    engines: {node: '>=10'}
+
   glob-parent@5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
     engines: {node: '>= 6'}
@@ -3511,8 +3518,8 @@ packages:
   minimist@1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
 
-  mobx-github@0.3.11:
-    resolution: {integrity: sha512-xbad5SNMmVJBKoWTnkUxzObSWQI/olk3Iy6ai2LWEbou2hfpQVre0/FaejQs593cNyheQl1RULdKctOcB4EbyQ==}
+  mobx-github@0.4.0-rc.1:
+    resolution: {integrity: sha512-r+8gN8fAvT1Oj2pelAeMSYbAefEJSr/hqjmSktzK9q732b+S52fE5wmkrc7iUZdGXr5/41iRJncftsiBUGAX/g==}
 
   mobx-i18n@0.7.1:
     resolution: {integrity: sha512-J8iTlxkj19Rh75gst5IvNl8LnlBQVIRV7FAt8yaLBRhSSe4jaZxlDMwXiv0wuBZ6SUD71KYw1w4YTMAorL3O5w==}
@@ -7602,6 +7609,8 @@ snapshots:
     dependencies:
       resolve-pkg-maps: 1.0.0
 
+  github-markdown-css@5.8.1: {}
+
   glob-parent@5.1.2:
     dependencies:
       is-glob: 4.0.3
@@ -8637,7 +8646,7 @@ snapshots:
 
   minimist@1.2.8: {}
 
-  mobx-github@0.3.11(core-js@3.45.1)(typescript@5.9.2):
+  mobx-github@0.4.0-rc.1(core-js@3.45.1)(typescript@5.9.2):
     dependencies:
       '@octokit/openapi-types': 25.1.0
       '@swc/helpers': 0.5.17
