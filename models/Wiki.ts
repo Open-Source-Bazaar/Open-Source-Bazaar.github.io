@@ -1,7 +1,6 @@
-import { marked } from 'marked';
+import { ContentModel } from 'mobx-github';
 import { treeFrom } from 'web-utility';
-import * as fs from 'fs';
-import * as path from 'path';
+import { githubClient } from './Base';
 
 export interface WikiNode {
   name?: string;
@@ -18,58 +17,52 @@ export interface WikiNode {
   download_url?: string;
   content?: string;
   metadata?: Record<string, string>;
+  labels?: string[];
 }
 
+export const contentStore = new ContentModel('fpsig', 'open-source-policy');
+
 class WikiModel {
-  // TODO: Use ContentModel from mobx-github once authentication is configured
-  // private contentModel = new ContentModel('fpsig', 'open-source-policy');
+  private contentModel = contentStore;
 
   async getAllContent(): Promise<WikiNode[]> {
-    const items: WikiNode[] = [];
-    const policyDir = path.join(process.cwd(), 'public/wiki/policy/China/政策');
-    
-    if (!fs.existsSync(policyDir)) {
-      return items;
-    }
-
-    const processDirectory = (dir: string, baseDir: string = '') => {
-      const files = fs.readdirSync(dir);
+    try {
+      const items: WikiNode[] = [];
       
-      for (const file of files) {
-        const fullPath = path.join(dir, file);
-        const stat = fs.statSync(fullPath);
-        
-        if (stat.isDirectory()) {
-          const subDir = baseDir ? `${baseDir}/${file}` : file;
-          processDirectory(fullPath, subDir);
-        } else if (file.endsWith('.md')) {
-          const relativePath = baseDir ? `${baseDir}/${file}` : file;
+      // Use traverseTree to get all markdown files recursively from China/政策
+      for await (const item of this.contentModel.traverseTree()) {
+        if (item.type === 'file' && item.name.endsWith('.md') && item.path.startsWith('China/政策/')) {
+          // Remove the 'China/政策/' prefix to get relative path within wiki
+          const relativePath = item.path.replace('China/政策/', '');
           const pathParts = relativePath.split('/');
           const fileName = pathParts.pop();
           const parent_path = pathParts.length > 0 ? pathParts.join('/') : undefined;
-          
+
           const wikiNode: WikiNode = {
             name: fileName || '',
             path: relativePath.replace('.md', ''),
             parent_path,
             title: fileName?.replace('.md', '') || '',
-            type: 'file',
-            size: stat.size,
-            sha: '',
-            url: '',
-            html_url: `https://github.com/fpsig/open-source-policy/blob/main/China/政策/${relativePath}`,
-            git_url: '',
-            download_url: `https://raw.githubusercontent.com/fpsig/open-source-policy/main/China/政策/${relativePath}`,
+            type: item.type,
+            size: item.size,
+            sha: item.sha,
+            url: item.url,
+            html_url: item.html_url || undefined,
+            git_url: item.git_url || undefined,
+            download_url: item.download_url || undefined,
             content: '',
+            labels: [],
           };
-          
+
           items.push(wikiNode);
         }
       }
-    };
 
-    processDirectory(policyDir);
-    return items;
+      return items;
+    } catch (error) {
+      console.error('Error fetching content from GitHub:', error);
+      return [];
+    }
   }
 
   async getContentTree(): Promise<WikiNode[]> {
@@ -79,21 +72,23 @@ class WikiModel {
 
   async getWikiContent(pathParam: string): Promise<WikiNode> {
     const fullPath = pathParam.endsWith('.md') ? pathParam : `${pathParam}.md`;
-    const filePath = path.join(process.cwd(), 'public/wiki/policy/China/政策', fullPath);
+    const filePath = `China/政策/${fullPath}`;
+
+    const item = await this.contentModel.getOne(filePath);
     
-    if (!fs.existsSync(filePath)) {
+    if (!item || item.type !== 'file') {
       throw new Error(`Content not found at path: ${pathParam}`);
     }
 
-    const fileContent = fs.readFileSync(filePath, 'utf-8');
-    const stat = fs.statSync(filePath);
+    // Decode Base64 content
+    const content = item.content ? atob(item.content) : '';
     
     // Parse frontmatter
     let metadata: Record<string, string> = {};
     let markdownContent = '';
     
-    if (fileContent.startsWith('---\n')) {
-      const parts = fileContent.split('\n---\n');
+    if (content.startsWith('---\n')) {
+      const parts = content.split('\n---\n');
       if (parts.length >= 2) {
         const frontmatter = parts[0].substring(4); // Remove first '---\n'
         markdownContent = parts.slice(1).join('\n---\n');
@@ -108,7 +103,7 @@ class WikiModel {
         }
       }
     } else {
-      markdownContent = fileContent;
+      markdownContent = content;
     }
 
     const pathParts = pathParam.split('/');
@@ -120,15 +115,16 @@ class WikiModel {
       path: pathParam.replace('.md', ''),
       parent_path,
       title: metadata['name'] || fileName?.replace('.md', '') || '',
-      type: 'file',
-      size: stat.size,
-      sha: '',
-      url: '',
-      html_url: `https://github.com/fpsig/open-source-policy/blob/main/China/政策/${fullPath}`,
-      git_url: '',
-      download_url: `https://raw.githubusercontent.com/fpsig/open-source-policy/main/China/政策/${fullPath}`,
+      type: item.type,
+      size: item.size,
+      sha: item.sha,
+      url: item.url,
+      html_url: item.html_url || undefined,
+      git_url: item.git_url || undefined,
+      download_url: item.download_url || undefined,
       content: markdownContent,
       metadata,
+      labels: [],
     };
   }
 }
