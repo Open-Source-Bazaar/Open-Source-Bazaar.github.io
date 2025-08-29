@@ -58,31 +58,28 @@ export interface ArticleMeta {
   subs: ArticleMeta[];
 }
 
-const MDX_pattern = /\.mdx?$/;
+export const MD_pattern = /\.(md|markdown)$/i,
+  MDX_pattern = /\.mdx?$/i;
 
-export async function splitFrontMatter(path: string) {
-  const { readFile } = await import('fs/promises');
-
-  const file = await readFile(path, 'utf-8');
-
+export function splitFrontMatter(raw: string) {
   const [, frontMatter, markdown] =
-    file.trim().match(/^---[\r\n]([\s\S]+?[\r\n])---[\r\n]([\s\S]*)/) || [];
+    raw.trim().match(/^---[\r\n]([\s\S]+?[\r\n])---[\r\n]([\s\S]*)/) || [];
 
-  if (!frontMatter) return { markdown: file };
+  if (!frontMatter) return { markdown: raw };
 
   try {
     const meta = parse(frontMatter) as DataObject;
 
     return { markdown, meta };
   } catch (error) {
-    console.error(`Error reading front matter for ${path}:`, error);
+    console.error(`Error parsing Front Matter:`, error);
 
     return { markdown };
   }
 }
 
 export async function* pageListOf(path: string, prefix = 'pages'): AsyncGenerator<ArticleMeta> {
-  const { readdir } = await import('fs/promises');
+  const { readdir, readFile } = await import('fs/promises');
 
   const list = await readdir(prefix + path, { withFileTypes: true });
 
@@ -99,7 +96,9 @@ export async function* pageListOf(path: string, prefix = 'pages'): AsyncGenerato
     if (node.isFile() && isMDX) {
       const article: ArticleMeta = { name, path, subs: [] };
 
-      const { meta } = await splitFrontMatter(`${node.path}/${node.name}`);
+      const file = await readFile(`${node.path}/${node.name}`, 'utf-8');
+
+      const { meta } = splitFrontMatter(file);
 
       if (meta) article.meta = meta;
 

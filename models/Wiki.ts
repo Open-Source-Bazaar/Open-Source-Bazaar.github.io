@@ -1,33 +1,11 @@
-import { ContentModel } from 'mobx-github';
-import { treeFrom } from 'web-utility';
+import { Content, ContentModel } from 'mobx-github';
+import { DataObject } from 'mobx-restful';
 
 import './Base';
 
-export const policyContentStore = new ContentModel('fpsig', 'open-source-policy');
-
-// Minimal interface and exports for compatibility
-export interface WikiNode {
-  name?: string;
-  title: string;
-  path: string;
-  parent_path?: string;
-  children?: WikiNode[];
-  type?: string;
-  size?: number;
-  sha?: string;
-  url?: string;
-  html_url?: string;
-  git_url?: string;
-  download_url?: string;
-  content?: string;
-  metadata?: Record<string, string>;
+export interface XContent extends Content {
+  meta?: DataObject;
+  children?: XContent[];
 }
 
-export const wikiStore = {
-  async getAllContent(): Promise<WikiNode[]> {
-    return [];
-  },
-  async getWikiContent(pathParam: string): Promise<WikiNode> {
-    throw new Error('Not implemented');
-  }
-};
+export const policyContentStore = new ContentModel('fpsig', 'open-source-policy');
