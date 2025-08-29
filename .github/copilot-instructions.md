@@ -56,7 +56,6 @@ After making ANY changes, ALWAYS validate by running through these scenarios:
 ALWAYS run before committing changes:
 
 ```bash
-pnpm lint     # Fix linting issues automatically
 npm test     # Runs linting + staged file checks
 ```
 
@@ -98,24 +97,8 @@ Based on comprehensive PR review analysis, follow these critical development sta
 #### Component and Import Standards
 
 - **ALWAYS use React Bootstrap components** instead of custom HTML elements
-- Use `<Button>`, `<Badge>`, `<Breadcrumb>`, `<Card>`, `<Container>` from 'react-bootstrap'
-- Import from existing configured clients: use `githubClient` from `models/Base.ts`
 - Use utilities from established libraries: 'web-utility'
 - Import `'./Base'` in model files for proper configuration
-
-#### Data and API Integration
-
-- Use **GitHub API** with ContentModel from mobx-github for content management
-- Use configured `githubClient` from `models/Base.ts` for authenticated API calls
-- **Base64 decode** content from GitHub API responses: `atob(item.content)`
-- Replace filesystem reading with GitHub Contents API calls
-- Use `ContentModel('owner', 'repo')` pattern for repository content access
-
-#### Error Handling and Static Generation
-
-- **Natural error throwing** for static generation - let errors bubble up to catch build issues
-- Don't catch errors in `getStaticProps` unless specifically handling them
-- Ensure build passes before pushing - resolve issues at compile time
 
 ### UI/UX Standards
 
@@ -233,10 +216,7 @@ const tree = treeFrom(nodes, 'path', 'parent_path', 'children');
 
 #### API Usage Patterns
 
-- Use `ContentModel` for repository content access
-- Always decode Base64 content: `atob(item.content)`
 - Import configured `githubClient` from `models/Base.ts`
-- Follow the pattern: `new ContentModel('owner', 'repository')`
 
 #### Authentication and Rate Limiting
 
