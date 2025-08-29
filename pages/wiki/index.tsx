@@ -1,35 +1,49 @@
 import { observer } from 'mobx-react';
-import { InferGetStaticPropsType } from 'next';
-import { FC } from 'react';
+import { GetStaticProps } from 'next';
+import Link from 'next/link';
+import React, { FC, useContext } from 'react';
+import { Badge, Button, Card, Container } from 'react-bootstrap';
+import { treeFrom } from 'web-utility';
 
-import { MDXLayout } from '../../components/Layout/MDXLayout';
-import { i18n } from '../../models/Translation';
-import { ArticleMeta, pageListOf, traverseTree } from '../api/core';
+import { PageHead } from '../../components/Layout/PageHead';
+import { I18nContext } from '../../models/Translation';
+import { policyContentStore, XContent } from '../../models/Wiki';
+import { MD_pattern, splitFrontMatter } from '../api/core';
 
-export const getStaticProps = async () => {
-  const tree = await Array.fromAsync(pageListOf('wiki', 'public/'));
-  const list = tree.map(root => [...traverseTree(root, 'subs')]).flat();
+export const getStaticProps: GetStaticProps<{ nodes: XContent[] }> = async () => {
+  const nodes = (await policyContentStore.getAll())
+    .filter(({ type, name }) => type !== 'file' || MD_pattern.test(name))
+    .map(({ content, ...rest }) => {
+      const { meta, markdown } = content ? splitFrontMatter(content) : {};
 
-  return { props: { tree, list } };
+      return { ...rest, content: markdown, meta };
+    });
+
+  return {
+    props: JSON.parse(JSON.stringify({ nodes })),
+    revalidate: 300, // Revalidate every 5 minutes
+  };
 };
 
-const renderTree = (list: ArticleMeta[]) => (
-  <ol>
-    {list.map(({ name, path, meta, subs }) => (
-      <li key={name}>
-        {path ? (
-          <a className="h4 d-flex justify-content-between align-items-center" href={path}>
-            {name}{' '}
-            {meta && (
-              <time className="fs-6" dateTime={meta.updated || meta.date}>
-                {meta.updated || meta.date}
-              </time>
+const renderTree = (nodes: XContent[], level = 0) => (
+  <ol className={level === 0 ? 'list-unstyled' : ''}>
+    {nodes.map(({ path, name, type, meta, children }) => (
+      <li key={path} className={level > 0 ? 'ms-3' : ''}>
+        {type !== 'dir' ? (
+          <Link className="h4 d-flex align-items-center py-1" href={`/wiki/${path}`}>
+            {name}
+
+            {meta?.['主题分类'] && (
+              <Badge bg="secondary" className="ms-2 small">
+                {meta['主题分类']}
+              </Badge>
             )}
-          </a>
+          </Link>
         ) : (
           <details>
             <summary className="h4">{name}</summary>
-            {renderTree(subs)}
+
+            {renderTree(children || [], level + 1)}
           </details>
         )}
       </li>
@@ -37,12 +51,39 @@ const renderTree = (list: ArticleMeta[]) => (
   </ol>
 );
 
-const ArticleIndexPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = observer(
-  ({ tree, list: { length } }) => (
-    <MDXLayout className="" title={`${i18n.t('wiki')} (${length})`}>
-      {renderTree(tree)}
-    </MDXLayout>
-  ),
-);
+const WikiIndexPage: FC<{ nodes: XContent[] }> = observer(({ nodes }) => {
+  const { t } = useContext(I18nContext);
 
-export default ArticleIndexPage;
+  return (
+    <Container className="py-4">
+      <PageHead title={`${t('wiki')} - ${t('knowledge_base')}`} />
+
+      <hgroup className="d-flex justify-content-between align-items-center mb-4">
+        <h1>
+          {t('wiki')} ({nodes.length})
+        </h1>
+        <Button
+          href="https://github.com/fpsig/open-source-policy"
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="outline-primary"
+        >
+          {t('contribute_content')}
+        </Button>
+      </hgroup>
+
+      {nodes[0] ? (
+        renderTree(treeFrom(nodes, 'path', 'parent_path', 'children'))
+      ) : (
+        <Card>
+          <Card.Body className="text-muted text-center">
+            <p>{t('no_docs_available')}</p>
+            <p>{t('docs_auto_load_from_github')}</p>
+          </Card.Body>
+        </Card>
+      )}
+    </Container>
+  );
+});
+
+export default WikiIndexPage;

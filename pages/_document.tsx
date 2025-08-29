@@ -40,6 +40,10 @@ export default class CustomDocument extends Document<CustomDocumentProps> {
             rel="stylesheet"
             href="https://unpkg.com/bootstrap-icons@1.13.1/font/bootstrap-icons.css"
           />
+          <link
+            rel="stylesheet"
+            href="https://unpkg.com/github-markdown-css@5.8.1/github-markdown.css"
+          />
         </Head>
 
         <body>

@@ -20,8 +20,7 @@ export const LARK_API_HOST = `${API_Host}/api/Lark/`;
 
 export const ProxyBaseURL = 'https://bazaar.fcc-cd.dev/proxy';
 
-export const GithubToken =
-  (globalThis.document && parseCookie().token) || process.env.GITHUB_TOKEN;
+export const GithubToken = (globalThis.document && parseCookie().token) || process.env.GH_PAT;
 
 export const LarkAppMeta = {
   host: process.env.NEXT_PUBLIC_LARK_API_HOST,

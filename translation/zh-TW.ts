@@ -77,4 +77,10 @@ export default {
   range_file: '檔案',
   range_module: '模組',
   last_step: '上一步',
+  
+  // Wiki
+  knowledge_base: '知識庫',
+  contribute_content: '貢獻內容',
+  no_docs_available: '知識庫暫無文檔。',
+  docs_auto_load_from_github: '文檔將從 GitHub 存儲庫中自動加載。',
 };
