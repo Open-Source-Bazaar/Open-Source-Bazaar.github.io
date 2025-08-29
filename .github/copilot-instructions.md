@@ -1,6 +1,6 @@
 # Open Source Bazaar - GitHub Copilot Instructions
 
-Open Source Bazaar 是一个基于 Next.js 15、TypeScript、React Bootstrap 和 MobX 构建的开源项目展示平台。它包含许可证过滤器、Wiki 知识库、志愿者展示、Lark 集成等功能。
+Open Source Bazaar is an open-source project showcase platform built with Next.js 15, TypeScript, React Bootstrap, and MobX. It includes license filters, Wiki knowledge base, volunteer showcase, Lark integration, and other features.
 
 Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
 
@@ -10,7 +10,7 @@ Always reference these instructions first and fallback to search or bash command
 
 - Check Node.js version: `node --version`
 - Development and linting commands work on Node.js 20+
-- Use **PNPM** as package manager, not npm or yarn
+- Use **PNPM** as package manager, not NPM or Yarn
 
 ## Working Effectively
 
@@ -57,7 +57,7 @@ ALWAYS run before committing changes:
 
 ```bash
 pnpm lint     # Fix linting issues automatically
-pnpm test     # Runs linting + staged file checks
+npm test     # Runs linting + staged file checks
 ```
 
 ## Key Project Structure
@@ -84,10 +84,10 @@ pnpm test     # Runs linting + staged file checks
 - **Next.js 15** - React framework
 - **React Bootstrap 2.10** - UI component library
 - **MobX 6.13** - State management
-- **mobx-github 0.4** - GitHub API integration
-- **mobx-i18n 0.7** - Internationalization
-- **license-filter 0.2** - License filtering functionality
-- **marked 16.2** - Markdown processing
+- **MobX-GitHub 0.4** - GitHub API integration
+- **MobX-i18n 0.7** - Internationalization
+- **License-Filter 0.2** - License filtering functionality
+- **Marked 16.2** - Markdown processing
 
 ## Development Standards and Best Practices
 
@@ -100,7 +100,7 @@ Based on comprehensive PR review analysis, follow these critical development sta
 - **ALWAYS use React Bootstrap components** instead of custom HTML elements
 - Use `<Button>`, `<Badge>`, `<Breadcrumb>`, `<Card>`, `<Container>` from 'react-bootstrap'
 - Import from existing configured clients: use `githubClient` from `models/Base.ts`
-- Use utilities from established libraries: `treeFrom` from 'web-utility'
+- Use utilities from established libraries: 'web-utility'
 - Import `'./Base'` in model files for proper configuration
 
 #### Data and API Integration
