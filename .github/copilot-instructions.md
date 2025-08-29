@@ -100,6 +100,11 @@ Based on comprehensive PR review analysis, follow these critical development sta
 - Use utilities from established libraries: 'web-utility'
 - Import `'./Base'` in model files for proper configuration
 
+#### Error Handling and Static Generation
+
+- **Natural error throwing** for static generation - let errors bubble up to catch build issues
+- Ensure build passes before pushing - resolve issues at compile time
+
 ### UI/UX Standards
 
 #### Component Usage Patterns
@@ -129,34 +134,16 @@ import { Button, Badge, Breadcrumb, Card, Container } from 'react-bootstrap';
 
 #### Modern ECMAScript Features
 
-```typescript
-// ✅ Correct - use optional chaining
-node.parent_path?.split('/')
-node.children?.length > 0
-
-// ✅ Correct - let TypeScript infer types when possible
-const renderTree = (nodes: WikiNode[], level = 0) => (
-  // No need for explicit return type annotation
-)
-
-// ❌ Wrong - verbose type annotations where inference works
-const renderTree = (nodes: WikiNode[], level = 0): React.ReactElement => (
-```
+- Use optional chaining and modern JavaScript features
+- Let TypeScript infer types when possible to avoid verbose annotations
+- Use modern ECMAScript patterns for cleaner, more maintainable code
 
 #### Import and Type Management
 
-```typescript
-// ✅ Correct - import from established sources
-import { ContentModel } from 'mobx-github';
-import { treeFrom } from 'web-utility';
-import './Base'; // For configuration
-
-// ✅ Correct - minimal exports
-export const policyContentStore = new ContentModel('fpsig', 'open-source-policy');
-
-// ❌ Wrong - unnecessary custom implementations
-// Don't create new GitHub API clients when configured ones exist
-```
+- Import from established sources: ContentModel from mobx-github, utilities from web-utility
+- Import configuration files where needed: `'./Base'` for GitHub client setup
+- Use minimal exports and avoid unnecessary custom implementations
+- Use configured clients rather than creating new ones
 
 ### Translation and Internationalization
 
@@ -168,19 +155,9 @@ export const policyContentStore = new ContentModel('fpsig', 'open-source-policy'
 
 #### Translation Patterns
 
-```typescript
-// ✅ Correct - all text translated
-const { t } = useContext(I18nContext);
-
-<p>{t('no_docs_available')}</p>
-<Button>{t('contribute_content')}</Button>
-alert(t('operation_successful'));
-
-// ❌ Wrong - hardcoded text
-<p>暂无政策文档</p>
-<Button>贡献内容</Button>
-alert('操作成功');
-```
+- Use the `t()` function from I18nContext for all user-facing text
+- Translate all button text, labels, error messages, and dynamic content
+- Avoid hardcoded text in any language
 
 #### Translation Key Management
 
@@ -192,25 +169,14 @@ alert('操作成功');
 
 #### Content Model Patterns
 
-```typescript
-// ✅ Correct - use ContentModel with configured client
-import { ContentModel } from 'mobx-github';
-import './Base'; // Ensures githubClient configuration
-
-export const policyContentStore = new ContentModel('fpsig', 'open-source-policy');
-
-// Content processing with proper Base64 decoding
-const content = item.content ? atob(item.content) : '';
-```
+- Use ContentModel with configured client from mobx-github
+- Import configuration via `'./Base'` to ensure proper GitHub client setup
+- Handle Base64 content decoding when processing GitHub API responses
 
 #### Tree Structure and Navigation
 
-```typescript
-// ✅ Correct - use treeFrom utility for hierarchical data
-import { treeFrom } from 'web-utility';
-
-const tree = treeFrom(nodes, 'path', 'parent_path', 'children');
-```
+- Use `treeFrom` utility from web-utility for hierarchical data structures
+- Follow established patterns for tree node organization and navigation
 
 ### GitHub Integration Standards
 
