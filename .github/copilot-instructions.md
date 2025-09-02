@@ -44,7 +44,7 @@ After making ANY changes, ALWAYS validate by running through these scenarios:
 2. **Navigate to homepage**: Visit http://localhost:3000 and verify page loads with navigation menu
 3. **Test core pages**:
    - License filter: http://localhost:3000/license-filter (interactive license selection tool)
-   - Wiki pages: http://localhost:3000/wiki (policy documents from GitHub)
+   - Wiki pages: http://localhost:3000/policy (policy documents from GitHub)
    - Volunteer page: http://localhost:3000/volunteer (contributor showcase)
    - Projects: http://localhost:3000/project (GitHub repository listings)
 4. **Test API endpoints**: Verify GitHub API integrations work

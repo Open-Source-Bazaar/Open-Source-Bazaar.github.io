@@ -27,7 +27,7 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
     name: t('hackathon'),
   },
   { href: '/license-filter', name: t('license_filter') },
-  { href: '/wiki', name: t('wiki') },
+  { href: '/policy', name: t('policy') },
 ];
 
 export interface MainNavigatorProps {

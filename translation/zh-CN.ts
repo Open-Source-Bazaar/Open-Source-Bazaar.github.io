@@ -77,10 +77,17 @@ export default {
   range_file: '文件',
   range_module: '模块',
   last_step: '上一步',
-  
+
   // Wiki
   knowledge_base: '知识库',
   contribute_content: '贡献内容',
   no_docs_available: '知识库暂无文档。',
   docs_auto_load_from_github: '文档将从 GitHub 仓库中自动加载。',
+  policy: '政策',
+  creation_date: '成文日期',
+  publication_date: '发布日期',
+  edit_on_github: '在 GitHub 编辑',
+  view_original: '查看原文',
+  github_document_description: '这是一个基于 GitHub 仓库的文档页面。',
+  view_or_edit_on_github: '在 GitHub 上查看或编辑此内容',
 };

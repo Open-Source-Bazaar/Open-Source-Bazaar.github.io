@@ -55,7 +55,7 @@ export default class CustomApp extends App<I18nProps> {
         <MainNavigator />
 
         <div className="mt-5 pt-2">
-          {asPath.startsWith('/article/') || asPath.startsWith('/wiki/') ? (
+          {asPath.startsWith('/article/') || asPath.startsWith('/policy/') ? (
             <PageContent>
               <Component {...pageProps} />
             </PageContent>

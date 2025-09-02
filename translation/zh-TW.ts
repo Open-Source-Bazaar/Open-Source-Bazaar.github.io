@@ -77,10 +77,17 @@ export default {
   range_file: '檔案',
   range_module: '模組',
   last_step: '上一步',
-  
+
   // Wiki
   knowledge_base: '知識庫',
   contribute_content: '貢獻內容',
   no_docs_available: '知識庫暫無文檔。',
   docs_auto_load_from_github: '文檔將從 GitHub 存儲庫中自動加載。',
+  policy: '政策',
+  creation_date: '成文日期',
+  publication_date: '發佈日期',
+  edit_on_github: '在 GitHub 編輯',
+  view_original: '查看原文',
+  github_document_description: '這是一個基於 GitHub 存儲庫的文檔頁面。',
+  view_or_edit_on_github: '在 GitHub 上查看或編輯此內容',
 };

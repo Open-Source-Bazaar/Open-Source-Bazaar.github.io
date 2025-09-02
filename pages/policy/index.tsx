@@ -30,7 +30,7 @@ const renderTree = (nodes: XContent[], level = 0) => (
     {nodes.map(({ path, name, type, meta, children }) => (
       <li key={path} className={level > 0 ? 'ms-3' : ''}>
         {type !== 'dir' ? (
-          <Link className="h4 d-flex align-items-center py-1" href={`/wiki/${path}`}>
+          <Link className="h4 d-flex align-items-center py-1" href={`/policy/${path}`}>
             {name}
 
             {meta?.['主题分类'] && (
@@ -56,11 +56,11 @@ const WikiIndexPage: FC<{ nodes: XContent[] }> = observer(({ nodes }) => {
 
   return (
     <Container className="py-4">
-      <PageHead title={`${t('wiki')} - ${t('knowledge_base')}`} />
+      <PageHead title={`${t('policy')} - ${t('knowledge_base')}`} />
 
       <hgroup className="d-flex justify-content-between align-items-center mb-4">
         <h1>
-          {t('wiki')} ({nodes.length})
+          {t('policy')} ({nodes.length})
         </h1>
         <Button
           href="https://github.com/fpsig/open-source-policy"

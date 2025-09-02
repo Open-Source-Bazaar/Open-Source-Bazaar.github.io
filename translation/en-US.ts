@@ -78,10 +78,17 @@ export default {
   range_file: 'file',
   range_module: 'module',
   last_step: 'back',
-  
+
   // Wiki
   knowledge_base: 'Knowledge Base',
   contribute_content: 'Contribute Content',
   no_docs_available: 'No documents available in the knowledge base.',
   docs_auto_load_from_github: 'Documents will be automatically loaded from GitHub repository.',
+  policy: 'Policy',
+  creation_date: 'Creation Date',
+  publication_date: 'Publication Date',
+  edit_on_github: 'Edit on GitHub',
+  view_original: 'View Original',
+  github_document_description: 'This is a document page based on a GitHub repository.',
+  view_or_edit_on_github: 'View or edit this content on GitHub',
 };
