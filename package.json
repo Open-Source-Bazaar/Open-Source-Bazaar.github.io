@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "prepare": "husky",
+    "install": "pnpx git-utility download https://github.com/Open-Source-Bazaar/key-vault main Open-Source-Bazaar.github.io  ||  true",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -13,8 +14,8 @@
   },
   "dependencies": {
     "@koa/router": "^14.0.0",
-    "@mdx-js/loader": "^3.1.0",
-    "@mdx-js/react": "^3.1.0",
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^15.5.2",
     "core-js": "^3.45.1",
     "file-type": "^21.0.0",
@@ -27,7 +28,7 @@
     "mobx": "^6.13.7",
     "mobx-github": "^0.4.0",
     "mobx-i18n": "^0.7.1",
-    "mobx-lark": "^2.4.0",
+    "mobx-lark": "^2.4.1",
     "mobx-react": "^9.2.0",
     "mobx-react-helper": "^0.5.1",
     "mobx-restful": "^2.1.0",
@@ -47,11 +48,11 @@
     "@babel/plugin-proposal-decorators": "^7.28.0",
     "@babel/plugin-transform-typescript": "^7.28.0",
     "@babel/preset-react": "^7.27.1",
-    "@cspell/eslint-plugin": "^9.2.0",
+    "@cspell/eslint-plugin": "^9.2.1",
     "@eslint/js": "^9.34.0",
     "@next/eslint-plugin-next": "^15.5.2",
     "@softonus/prettier-plugin-duplicate-remover": "^1.1.2",
-    "@stylistic/eslint-plugin": "^5.2.3",
+    "@stylistic/eslint-plugin": "^5.3.1",
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/koa": "^3.0.0",
     "@types/koa__router": "^12.0.4",
@@ -69,13 +70,13 @@
     "jiti": "^2.5.1",
     "less": "^4.4.1",
     "less-loader": "^12.3.0",
-    "lint-staged": "^16.1.5",
+    "lint-staged": "^16.1.6",
     "next-with-less": "^3.0.1",
     "prettier": "^3.6.2",
     "prettier-plugin-css-order": "^2.1.2",
     "sass": "^1.91.0",
     "typescript": "~5.9.2",
-    "typescript-eslint": "^8.41.0"
+    "typescript-eslint": "^8.42.0"
   },
   "resolutions": {
     "next": "$next"
