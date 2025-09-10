@@ -1,3 +1,10 @@
+# .coderabbit.yaml for a Next.js project
+
+# -----------------
+# 核心设置
+# -----------------
+
+# 设置 CodeRabbit 回复的语言 (e.g., "en", "zh-CN")
 language: "zh-CN"
 
 # .coderabbit.yaml for Open Source Bazaar 项目
@@ -20,7 +27,7 @@ exclude:
 
   # public 目录通常存放静态资源（图片、字体等），一般不需要代码审查。
   - "public/**"
-  
+
   # next export 的输出目录
   - "out/**"
 
