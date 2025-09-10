@@ -1,0 +1,94 @@
+language: "zh-CN"
+
+# .coderabbit.yaml for Open Source Bazaar 项目
+
+# -----------------
+# 核心设置
+# -----------------
+
+# -----------------
+# 内容过滤 (Next.js 项目关键)
+# -----------------
+
+# 排除 Next.js 项目中不需要审查的文件和目录
+exclude:
+  # 这是最重要的排除项！'.next' 目录包含了所有的构建输出、开发缓存和服务端代码。
+  - ".next/**"
+
+  # node_js 依赖
+  - "node_modules/**"
+
+  # public 目录通常存放静态资源（图片、字体等），一般不需要代码审查。
+  - "public/**"
+  
+  # next export 的输出目录
+  - "out/**"
+
+  # 自动生成的 TypeScript 类型定义文件
+  - "next-env.d.ts"
+
+  # 依赖锁定文件
+  - "package-lock.json"
+  - "pnpm-lock.yaml"
+  - "yarn.lock"
+
+  # 测试快照
+  - "**/__snapshots__/**"
+
+  # 文档文件
+  - "**/*.md"
+
+# -----------------
+# 审查定制 (为 Next.js 优化的指令)
+# -----------------
+
+# 这是配置的核心部分！我们为 AI 提供针对 Open Source Bazaar 项目的审查指令。
+extra_instructions: |
+  这是一个基于 Next.js 15 (Pages Router) + TypeScript + MobX + React Bootstrap 的项目。请像一位资深的开发者一样进行审查，并严格遵循以下规则：
+
+  1.  **React Bootstrap 组件使用**:
+      - 必须使用 React Bootstrap 组件替代自定义 HTML 元素
+      - 使用 `<Button variant="outline-primary">` 而不是 `<a className="btn btn-outline-primary">`
+      - 使用 `<Badge bg="secondary">` 而不是 `<span className="badge bg-secondary">`
+      - 优先使用现有的 Bootstrap 组件库
+
+  2.  **MobX 状态管理**:
+      - 检查 MobX store 的正确使用，包括 `@observer` 装饰器
+      - 确保 `@observable`、`@action`、`@computed` 的正确使用
+      - 验证组件正确连接到 MobX store
+
+  3.  **国际化 (i18n) 要求**:
+      - 所有用户界面文本必须使用 `t()` 函数进行翻译
+      - 检查翻译键是否在所有语言文件中存在 (zh-CN.ts, en-US.ts, zh-TW.ts)
+      - 使用通用术语如 `t('knowledge_base')` 而不是特定术语
+
+  4.  **GitHub API 集成**:
+      - 检查是否从 `models/Base.ts` 导入配置的 `githubClient`
+      - 验证 GitHub API 认证和错误处理的正确实现
+      - 确保 Base64 内容正确解码使用 `atob(item.content)`
+
+  5.  **Pages Router 最佳实践**:
+      - 检查 `getStaticProps` 和 `getServerSideProps` 的正确使用
+      - 验证 API 路由的结构和错误处理
+      - 确保静态生成时的错误处理（让错误自然冒泡）
+
+  6.  **TypeScript 类型安全**:
+      - 强类型定义，避免使用 `any` 类型
+      - 正确使用泛型和接口
+      - 确保 React 组件 props 正确类型化
+
+  7.  **性能优化**:
+      - 使用 `next/image` 组件进行图片优化
+      - 检查不必要的重新渲染
+      - 确保 MobX 的响应式性能优化
+
+  8.  **代码组织**:
+      - 遵循现有的项目结构
+      - 使用现有的工具库（如 `web-utility`）
+      - 保持代码的可读性和模块化
+
+# PR 的变更行数上限。如果超过，则跳过审查。
+line_limit: 1000
+
+# PR 变更总结的类型
+summarize: "default"
