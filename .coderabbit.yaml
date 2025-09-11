@@ -74,7 +74,7 @@ tone_instructions: |
   4.  **GitHub API 集成**:
       - 检查是否从 `models/Base.ts` 导入配置的 `githubClient`
       - 验证 GitHub API 认证和错误处理的正确实现
-      - 确保 Base64 内容正确解码使用 `atob(item.content)`
+      - 确保 Base64 内容编解码使用 `web-utility` 包中的 `encodeBase64()`、`decodeBase64()`，以便正确处理 Unicode
 
   5.  **Pages Router 最佳实践**:
       - 检查 `getStaticProps` 和 `getServerSideProps` 的正确使用
