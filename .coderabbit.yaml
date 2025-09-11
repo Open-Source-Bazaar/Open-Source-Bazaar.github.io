@@ -1,4 +1,4 @@
-# .coderabbit.yaml for a Next.js project
+# .coderabbit.yaml for Open Source Bazaar 项目
 
 # -----------------
 # 核心设置
@@ -7,50 +7,52 @@
 # 设置 CodeRabbit 回复的语言 (e.g., "en", "zh-CN")
 language: "zh-CN"
 
-# .coderabbit.yaml for Open Source Bazaar 项目
-
 # -----------------
-# 核心设置
+# 审查配置
 # -----------------
 
-# -----------------
-# 内容过滤 (Next.js 项目关键)
-# -----------------
+reviews:
+  # 高级摘要配置
+  high_level_summary: true
+  high_level_summary_placeholder: "这是 Open Source Bazaar 项目的 PR 变更摘要"
+  
+  # 路径过滤 - 排除 Next.js 项目中不需要审查的文件和目录
+  path_filters:
+    - "src/**"
+    - "pages/**"
+    - "components/**"
+    - "models/**"
+    - "!**/*.md"
+    - "!**/*.{bin,csv}"
+    - "!node_modules/**"
+    - "!.next/**"
+    - "!public/**"
+    - "!out/**"
+    - "!next-env.d.ts"
+    - "!package-lock.json"
+    - "!pnpm-lock.yaml"
+    - "!yarn.lock"
+    - "!**/__snapshots__/**"
 
-# 排除 Next.js 项目中不需要审查的文件和目录
-exclude:
-  # 这是最重要的排除项！'.next' 目录包含了所有的构建输出、开发缓存和服务端代码。
-  - ".next/**"
+  # 代码生成指令
+  code_generation:
+    docstrings:
+      path_instructions:
+        "pages/**": "确保所有用户界面文本使用 t() 函数进行国际化翻译"
+        "components/**": "必须使用 React Bootstrap 组件替代自定义 HTML 元素"
+        "models/**": "检查 MobX store 的正确使用，包括 @observer、@observable、@action、@computed"
 
-  # Node_js 依赖
-  - "node_modules/**"
+  # 工具配置
+  tools:
+    typescript:
+      enabled: true
+      config: "tsconfig.json"
+    eslint:
+      enabled: true
+      config: "eslint.config.ts"
 
-  # public 目录通常存放静态资源（图片、字体等），一般不需要代码审查。
-  - "public/**"
-
-  # next export 的输出目录
-  - "out/**"
-
-  # 自动生成的 TypeScript 类型定义文件
-  - "next-env.d.ts"
-
-  # 依赖锁定文件
-  - "package-lock.json"
-  - "pnpm-lock.yaml"
-  - "yarn.lock"
-
-  # 测试快照
-  - "**/__snapshots__/**"
-
-  # 文档文件
-  - "**/*.md"
-
-# -----------------
-# 审查定制 (为 Next.js 优化的指令)
-# -----------------
-
-# 这是配置的核心部分！我们为 AI 提供针对 Open Source Bazaar 项目的审查指令。
-extra_instructions: |
+# 全局语气指令
+tone_instructions: |
   这是一个基于 Next.js 15 (Pages Router) + TypeScript + MobX + React Bootstrap 的项目。请像一位资深的开发者一样进行审查，并严格遵循以下规则：
 
   1.  **React Bootstrap 组件使用**:
@@ -61,7 +63,7 @@ extra_instructions: |
 
   2.  **MobX 状态管理**:
       - 检查 MobX store 的正确使用，包括 `@observer` 装饰器
-      - 确保 `@observable`、`@action`、`@computed` 的正确使用
+      - 确保 `@observable`、`@action`、@computed` 的正确使用
       - 验证组件正确连接到 MobX store
 
   3.  **国际化 (i18n) 要求**:
@@ -93,9 +95,3 @@ extra_instructions: |
       - 遵循现有的项目结构
       - 使用现有的工具库（如 `web-utility`）
       - 保持代码的可读性和模块化
-
-# PR 的变更行数上限。如果超过，则跳过审查。
-line_limit: 1000
-
-# PR 变更总结的类型
-summarize: "default"
