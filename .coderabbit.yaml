@@ -12,86 +12,39 @@ language: "zh-CN"
 # -----------------
 
 reviews:
-  # 高级摘要配置
-  high_level_summary: true
-  high_level_summary_placeholder: "这是 Open Source Bazaar 项目的 PR 变更摘要"
-  
-  # 路径过滤 - 排除 Next.js 项目中不需要审查的文件和目录
-  path_filters:
-    - "src/**"
-    - "pages/**"
-    - "components/**"
-    - "models/**"
-    - "!**/*.md"
-    - "!**/*.{bin,csv}"
-    - "!node_modules/**"
-    - "!.next/**"
-    - "!public/**"
-    - "!out/**"
-    - "!next-env.d.ts"
-    - "!package-lock.json"
-    - "!pnpm-lock.yaml"
-    - "!yarn.lock"
-    - "!**/__snapshots__/**"
+    # 高级摘要配置
+    high_level_summary: true
+    high_level_summary_placeholder: "这是 Open Source Bazaar 项目的 PR 变更摘要"
 
-  # 代码生成指令
-  code_generation:
-    docstrings:
-      path_instructions:
-        "pages/**": "确保所有用户界面文本使用 t() 函数进行国际化翻译"
-        "components/**": "必须使用 React Bootstrap 组件替代自定义 HTML 元素"
-        "models/**": "检查 MobX store 的正确使用，包括 @observer、@observable、@action、@computed"
+    # 路径过滤 - 排除 Next.js 项目中不需要审查的文件和目录
+    path_filters:
+        - "src/**"
+        - "pages/**"
+        - "components/**"
+        - "models/**"
+        - "!**/*.md"
+        - "!**/*.{bin,csv}"
+        - "!node_modules/**"
+        - "!.next/**"
+        - "!public/**/*.{png,jpg,jpeg,gif,webp,svg,ico,mp4,mp3,woff,woff2,ttf,otf}"
+        - "!out/**"
+        - "!next-env.d.ts"
+        - "!package-lock.json"
+        - "!pnpm-lock.yaml"
+        - "!yarn.lock"
+        - "!**/__snapshots__/**"
 
-  # 工具配置
-  tools:
-    typescript:
-      enabled: true
-      config: "tsconfig.json"
-    eslint:
-      enabled: true
-      config: "eslint.config.ts"
+    # 代码生成指令
+    code_generation:
+        docstrings:
+            path_instructions:
+                "pages/**": "确保所有用户界面文本使用 t() 函数进行国际化翻译"
+                "components/**": "必须使用 React Bootstrap 组件替代自定义 HTML 元素"
+                "models/**": "检查 MobX store 的正确使用，包括 @observer、@observable、@action、@computed"
 
 # 全局语气指令
 tone_instructions: |
-  这是一个基于 Next.js 15 (Pages Router) + TypeScript + MobX + React Bootstrap 的项目。请像一位资深的开发者一样进行审查，并严格遵循以下规则：
-
-  1.  **React Bootstrap 组件使用**:
-      - 必须使用 React Bootstrap 组件替代自定义 HTML 元素
-      - 使用 `<Button variant="outline-primary">` 而不是 `<a className="btn btn-outline-primary">`
-      - 使用 `<Badge bg="secondary">` 而不是 `<span className="badge bg-secondary">`
-      - 优先使用现有的 Bootstrap 组件库
-
-  2.  **MobX 状态管理**:
-      - 检查 MobX store 的正确使用，包括 `@observer` 装饰器
-      - 确保 `@observable`、`@action`、@computed` 的正确使用
-      - 验证组件正确连接到 MobX store
-
-  3.  **国际化 (i18n) 要求**:
-      - 所有用户界面文本必须使用 `t()` 函数进行翻译
-      - 检查翻译键是否在所有语言文件中存在 (zh-CN.ts, en-US.ts, zh-TW.ts)
-      - 使用通用术语如 `t('knowledge_base')` 而不是特定术语
-
-  4.  **GitHub API 集成**:
-      - 检查是否从 `models/Base.ts` 导入配置的 `githubClient`
-      - 验证 GitHub API 认证和错误处理的正确实现
-      - 确保 Base64 内容编解码使用 `web-utility` 包中的 `encodeBase64()`、`decodeBase64()`，以便正确处理 Unicode
-
-  5.  **Pages Router 最佳实践**:
-      - 检查 `getStaticProps` 和 `getServerSideProps` 的正确使用
-      - 验证 API 路由的结构和错误处理
-      - 确保静态生成时的错误处理（让错误自然冒泡）
-
-  6.  **TypeScript 类型安全**:
-      - 强类型定义，避免使用 `any` 类型
-      - 正确使用泛型和接口
-      - 确保 React 组件 props 正确类型化
-
-  7.  **性能优化**:
-      - 使用 `next/image` 组件进行图片优化
-      - 检查不必要的重新渲染
-      - 确保 MobX 的响应式性能优化
-
-  8.  **代码组织**:
-      - 遵循现有的项目结构
-      - 使用现有的工具库（如 `web-utility`）
-      - 保持代码的可读性和模块化
+    使用专业中文语气。重点关注：1) 统一用 React Bootstrap；2) MobX
+    observer/observable/action/computed 是否正确；3) 全部 UI 文本用 t()；4) GitHub
+    API 认证/错误处理与 Base64 统一用 web-utility；5) Pages Router 的数据获取正确；
+    6) TypeScript 强类型；7) 性能（next/image、避免多余渲染）；8) 结构清晰。
