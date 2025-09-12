@@ -56,9 +56,6 @@ importers:
       mobx-i18n:
         specifier: ^0.7.1
         version: 0.7.1(mobx@6.13.7)(typescript@5.9.2)
-      mobx-lark:
-        specifier: ^2.4.1
-        version: 2.4.1(core-js@3.45.1)(react@19.1.1)(typescript@5.9.2)
       mobx-react:
         specifier: ^9.2.0
         version: 9.2.0(mobx@6.13.7)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -71,6 +68,9 @@ importers:
       mobx-restful-table:
         specifier: ^2.5.3
         version: 2.5.3(@types/react@19.1.12)(core-js@3.45.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.9.2)
+      mobx-strapi:
+        specifier: ^0.7.0
+        version: 0.7.0(core-js@3.45.1)(typescript@5.9.2)
       next:
         specifier: ^15.5.2
         version: 15.5.2(@babel/core@7.28.4)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.92.1)
@@ -3301,9 +3301,6 @@ packages:
   lodash.isstring@4.0.1:
     resolution: {integrity: sha512-0wJxfxH1wgO3GrbuP+dTTk7op+6L41QCXbGINEmD+ny/G/eCqGzxyCsh7159S+mgDDcoarnBw6PC1PS5+wUGgw==}
 
-  lodash.memoize@4.1.2:
-    resolution: {integrity: sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==}
-
   lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
 
@@ -3551,11 +3548,6 @@ packages:
     peerDependencies:
       mobx: '>=6.11'
 
-  mobx-lark@2.4.1:
-    resolution: {integrity: sha512-J/jS+5uR7eo+z5Svm1u+cn2rp4Z3KjM/JyDGl+dJ5FjIKKfHCNMtHNC79Dr1hd9NIJhC/cDDJ9vEALz9t+wBkw==}
-    peerDependencies:
-      react: '>=16'
-
   mobx-react-helper@0.4.1:
     resolution: {integrity: sha512-+chcWzOznL5/c6n33iswIGKvFJI/afmWRMFZ5NjjJyD3DJuoGuaiayEEhL3FITVKpwOkPKF2K5Werz8vhk6xEA==}
     peerDependencies:
@@ -3603,6 +3595,9 @@ packages:
     resolution: {integrity: sha512-5fuTDldCPwU+Ji/ea5UGza8Nd1FbM4qEI5w+e/SESTrimchcAx8nvO4zWuNB/OEm3dsVqo8eMASdhnaJ5FRS8g==}
     peerDependencies:
       mobx: '>=6.11'
+
+  mobx-strapi@0.7.0:
+    resolution: {integrity: sha512-NnJDolmD2KWQOdnQRgWakZlG5CvvT91Q4M2fh69jDRVZINy24s9l3MuE2XsoA+TMWj3y3cxvnuTQ4hrvNNflWg==}
 
   mobx@6.13.7:
     resolution: {integrity: sha512-aChaVU/DO5aRPmk1GX8L+whocagUUpBQqoPtJk+cm7UOXUk87J4PeWCh6nNmTTIfEhiR9DI/+FnA8dln/hTK7g==}
@@ -8296,8 +8291,6 @@ snapshots:
 
   lodash.isstring@4.0.1: {}
 
-  lodash.memoize@4.1.2: {}
-
   lodash.merge@4.6.2: {}
 
   lodash.once@4.1.1: {}
@@ -8746,23 +8739,6 @@ snapshots:
       - element-internals-polyfill
       - typescript
 
-  mobx-lark@2.4.1(core-js@3.45.1)(react@19.1.1)(typescript@5.9.2):
-    dependencies:
-      '@swc/helpers': 0.5.17
-      '@types/react': 19.1.12
-      koajax: 3.1.2(core-js@3.45.1)(typescript@5.9.2)
-      lodash.memoize: 4.1.2
-      mobx: 6.13.7
-      mobx-restful: 2.1.0(core-js@3.45.1)(mobx@6.13.7)(typescript@5.9.2)
-      react: 19.1.1
-      regenerator-runtime: 0.14.1
-      web-utility: 4.5.3(typescript@5.9.2)
-    transitivePeerDependencies:
-      - core-js
-      - element-internals-polyfill
-      - jsdom
-      - typescript
-
   mobx-react-helper@0.4.1(mobx@6.13.7)(react@19.1.1)(typescript@5.9.2):
     dependencies:
       '@swc/helpers': 0.5.17
@@ -8831,6 +8807,22 @@ snapshots:
       idb-keyval: 6.2.2
       koajax: 3.1.2(core-js@3.45.1)(typescript@5.9.2)
       mobx: 6.13.7
+      regenerator-runtime: 0.14.1
+      web-utility: 4.5.3(typescript@5.9.2)
+    transitivePeerDependencies:
+      - core-js
+      - element-internals-polyfill
+      - jsdom
+      - typescript
+
+  mobx-strapi@0.7.0(core-js@3.45.1)(typescript@5.9.2):
+    dependencies:
+      '@swc/helpers': 0.5.17
+      idb-keyval: 6.2.2
+      koajax: 3.1.2(core-js@3.45.1)(typescript@5.9.2)
+      mobx: 6.13.7
+      mobx-restful: 2.1.0(core-js@3.45.1)(mobx@6.13.7)(typescript@5.9.2)
+      qs: 6.14.0
       regenerator-runtime: 0.14.1
       web-utility: 4.5.3(typescript@5.9.2)
     transitivePeerDependencies:

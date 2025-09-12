@@ -90,4 +90,21 @@ export default {
   view_original: '查看原文',
   github_document_description: '這是一個基於 GitHub 存儲庫的文檔頁面。',
   view_or_edit_on_github: '在 GitHub 上查看或編輯此內容',
+
+  // China Public Interest Map
+  china_public_interest_map: '中國公益地圖',
+  china_public_interest_landscape: '中國公益生態圖',
+  landscape: '生態圖',
+  join_the_public_interest_map: '加入公益地圖',
+  about_china_public_interest_map: '關於中國公益地圖',
+  china_public_interest_map_description: 
+    '中國公益地圖是一個展示中國公益組織分佈和發展狀況的可視化平台，幫助公眾瞭解公益生態現狀。',
+  by_year: '按年份',
+  by_city: '按城市',
+  by_type: '按類型',
+  by_tag: '按標籤',
+  organizations: '組織',
+  no_data_available: '暫無數據',
+  landscape_data_loading_message: '公益組織數據正在加載中，請稍後再試。',
+  visit_website: '訪問官網',
 };

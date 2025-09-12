@@ -1,15 +1,13 @@
-import { TableCellValue } from 'mobx-lark';
 import { FC } from 'react';
 import { Image, ImageProps } from 'react-bootstrap';
 
-import { fileURLOf } from '../models/Base';
 import { DefaultImage } from '../models/configuration';
 
-export interface LarkImageProps extends Omit<ImageProps, 'src'> {
-  src?: TableCellValue;
+export interface SimpleImageProps extends ImageProps {
+  src?: string;
 }
 
-export const LarkImage: FC<LarkImageProps> = ({
+export const LarkImage: FC<SimpleImageProps> = ({
   src = DefaultImage,
   alt,
   ...props
@@ -18,18 +16,11 @@ export const LarkImage: FC<LarkImageProps> = ({
     fluid
     loading="lazy"
     {...props}
-    src={fileURLOf(src, true)}
+    src={src || DefaultImage}
     alt={alt}
     onError={({ currentTarget: image }) => {
-      const path = fileURLOf(src),
-        errorURL = decodeURI(image.src);
-
-      if (!path) return;
-
-      if (errorURL.endsWith(path)) {
-        if (!alt) image.src = DefaultImage;
-      } else if (!errorURL.endsWith(DefaultImage)) {
-        image.src = path;
+      if (image.src !== DefaultImage) {
+        image.src = DefaultImage;
       }
     }}
   />

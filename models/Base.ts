@@ -2,7 +2,6 @@ import 'core-js/full/array/from-async';
 
 import { HTTPClient } from 'koajax';
 import { githubClient } from 'mobx-github';
-import { TableCellAttachment, TableCellMedia, TableCellValue } from 'mobx-lark';
 import { DataObject } from 'mobx-restful';
 import { isEmpty } from 'web-utility';
 
@@ -11,7 +10,6 @@ import {
   GithubToken,
   isServer,
   ProxyBaseURL,
-  LARK_API_HOST,
 } from './configuration';
 
 export const ownClient = new HTTPClient({
@@ -49,19 +47,8 @@ export const makeGithubSearchCondition = (queryMap: DataObject) =>
     .map(([key, value]) => `${key}:${value}`)
     .join(' ');
 
-export const larkClient = new HTTPClient({
-  baseURI: LARK_API_HOST,
+// Strapi client for China NGO Database
+export const strapiClient = new HTTPClient({
+  baseURI: 'https://china-ngo-db.onrender.com/api/',
   responseType: 'json',
 });
-
-export function fileURLOf(field: TableCellValue, cache = false) {
-  if (!(field instanceof Array) || !field[0]) return field + '';
-
-  const file = field[0] as TableCellMedia | TableCellAttachment;
-
-  let URI = `/api/Lark/file/${'file_token' in file ? file.file_token : file.attachmentToken}/${file.name}`;
-
-  if (cache) URI += '?cache=1';
-
-  return URI;
-}
