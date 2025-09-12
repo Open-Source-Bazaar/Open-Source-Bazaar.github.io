@@ -1,117 +1,83 @@
+import { Dialog } from 'idea-react';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { FC, useContext, useEffect, useState } from 'react';
-import { Badge, Card, Col, Container, Row } from 'react-bootstrap';
+import { Component } from 'react';
+import { Modal } from 'react-bootstrap';
+import { splitArray } from 'web-utility';
 
 import { Organization, OrganizationModel } from '../../models/Organization';
-import { I18nContext } from '../../models/Translation';
+import { LarkImage } from '../LarkImage';
+import { OrganizationCard } from './Card';
 
-const organizationModel = new OrganizationModel();
+export type ChinaPublicInterestLandscapeProps = Pick<OrganizationModel, 'categoryMap'>;
 
-export const ChinaPublicInterestLandscape: FC = observer(() => {
-  const { t } = useContext(I18nContext);
-  const [tagMap, setTagMap] = useState<Record<string, Organization[]>>({});
-  const [loading, setLoading] = useState(false);
+@observer
+export class ChinaPublicInterestLandscape extends Component<ChinaPublicInterestLandscapeProps> {
+  @observable
+  accessor itemSize = 5;
 
-  useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      try {
-        const groupedData = await organizationModel.groupAllByTags();
-        setTagMap(groupedData);
-      } finally {
-        setLoading(false);
-      }
-    };
+  modal = new Dialog<{ name?: string }>(({ defer, name }) => (
+    <Modal show={!!defer} onHide={() => defer?.resolve()}>
+      <Modal.Header closeButton>
+        <Modal.Title>{name}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{this.renderCard(name!)}</Modal.Body>
+    </Modal>
+  ));
 
-    loadData();
-  }, []);
+  renderCard(name: string) {
+    const organization = Object.values(this.props.categoryMap)
+      .flat()
+      .find(({ name: n }) => n === name);
 
-  const tagEntries = Object.entries(tagMap).sort(([, a], [, b]) => b.length - a.length);
+    if (!organization) return <></>;
 
-  return (
-    <Container className="py-4">
-      <Row className="mb-4">
-        <Col>
-          <h1>{t('china_public_interest_landscape')}</h1>
-        </Col>
-      </Row>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id: _id, ...data } = organization;
 
-      {loading && (
-        <Row>
-          <Col className="text-center">
-            <div className="spinner-border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </Col>
-        </Row>
-      )}
+    return <OrganizationCard {...data} />;
+  }
 
-      {!loading && tagEntries.length === 0 && (
-        <Row>
-          <Col>
-            <Card>
-              <Card.Body className="text-center py-5">
-                <Card.Title>{t('no_data_available')}</Card.Title>
-                <Card.Text>{t('landscape_data_loading_message')}</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      )}
-
-      {!loading && tagEntries.map(([tag, organizations]) => (
-        <Row key={tag} className="mb-4">
-          <Col>
-            <Card>
-              <Card.Header className="d-flex justify-content-between align-items-center">
-                <h5 className="mb-0">{tag}</h5>
-                <Badge bg="primary">{organizations.length} {t('organizations')}</Badge>
-              </Card.Header>
-              <Card.Body>
-                <Row className="g-3">
-                  {organizations.map(org => (
-                    <Col key={org.id} md={6} lg={4}>
-                      <Card className="h-100">
-                        <Card.Body>
-                          <Card.Title className="h6">{org.name}</Card.Title>
-                          {org.description && (
-                            <Card.Text className="small text-muted">
-                              {org.description.length > 100
-                                ? `${org.description.substring(0, 100)}...`
-                                : org.description}
-                            </Card.Text>
-                          )}
-                          <div className="mt-2">
-                            {org.city && (
-                              <Badge bg="secondary" className="me-1">
-                                {org.city}
-                              </Badge>
-                            )}
-                            {org.type && (
-                              <Badge bg="info" className="me-1">
-                                {org.type}
-                              </Badge>
-                            )}
-                          </div>
-                          {org.website && (
-                            <Card.Link
-                              href={org.website}
-                              target="_blank"
-                              className="small"
-                            >
-                              {t('visit_website')}
-                            </Card.Link>
-                          )}
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      ))}
-    </Container>
+  renderLogo = ({ name, logo }: Organization) => (
+    <li
+      key={name as string}
+      className="border list-item"
+      style={{ cursor: 'pointer' }}
+      onClick={() => this.modal.open({ name: name as string })}
+    >
+      <LarkImage
+        className="object-fit-contain"
+        style={{ width: this.itemSize + 'rem', height: this.itemSize + 'rem' }}
+        src={logo?.data?.attributes?.url}
+      />
+    </li>
   );
-});
+
+  render() {
+    const rows = splitArray(Object.entries(this.props.categoryMap), 2);
+
+    return (
+      <>
+        {rows.map((row, index) => (
+          <ul
+            key={index}
+            className="list-unstyled d-flex flex-row gap-2"
+          >
+            {row.map(([name, list]) => (
+              <li key={name} className="flex-fill">
+                <h2 className="h5 p-2 text-white bg-primary">
+                  {name}
+                </h2>
+
+                <ol className="list-unstyled d-flex flex-wrap gap-2">
+                  {list.map(this.renderLogo)}
+                </ol>
+              </li>
+            ))}
+          </ul>
+        ))}
+        <this.modal.Component />
+      </>
+    );
+  }
+}

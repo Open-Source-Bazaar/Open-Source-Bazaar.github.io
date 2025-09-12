@@ -1,67 +1,50 @@
-import { FC, useEffect, useRef } from 'react';
-import { Card, Col, Container, Row, Spinner } from 'react-bootstrap';
+import { computed } from 'mobx';
+import { observer } from 'mobx-react';
+import { ObservedComponent } from 'mobx-react-helper';
+import dynamic from 'next/dynamic';
 
-export interface MapProps {
-  data?: { name: string; city?: string; province?: string; latitude?: number; longitude?: number }[];
-  loading?: boolean;
+import { OrganizationStatistic } from '../../models/Organization';
+
+const ChinaMap = dynamic(() => import('./ChinaMap'), { ssr: false });
+
+export interface CityStatisticMapProps {
+  data: OrganizationStatistic['city'];
+  onChange?: (city: string) => any;
 }
 
-export const Map: FC<MapProps> = ({ data = [], loading = false }) => {
-  const mapRef = useRef<HTMLDivElement>(null);
+@observer
+export class CityStatisticMap extends ObservedComponent<CityStatisticMapProps> {
+  @computed
+  get markers() {
+    const { data } = this.observedProps;
 
-  useEffect(() => {
-    // Placeholder for actual map implementation
-    // This would integrate with a mapping library like Leaflet, AMap, or MapBox
-  }, []);
-
-  if (loading) {
-    return (
-      <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '400px' }}>
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      </Container>
-    );
+    return data.map(({ label: city, count }) => ({
+      tooltip: `${city} ${count}`,
+      position: [34.32, 108.55] as [number, number], // Default center for now
+    }));
   }
 
-  return (
-    <Container>
-      <Row>
-        <Col>
-          <Card>
-            <Card.Body>
-              <div
-                ref={mapRef}
-                style={{
-                  width: '100%',
-                  height: '500px',
-                  backgroundColor: '#f8f9fa',
-                  border: '1px solid #dee2e6',
-                  borderRadius: '0.375rem',
-                  position: 'relative',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <div className="text-center text-muted">
-                  <h5>Interactive Map Coming Soon</h5>
-                  <p>Geographic visualization of {data.length} organizations</p>
-                  {data.length > 0 && (
-                    <small>
-                      Data includes organizations from{' '}
-                      {[...new Set(data.map(item => item.province || item.city).filter(Boolean))].length}{' '}
-                      locations
-                    </small>
-                  )}
-                </div>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
-  );
-};
+  handleChange = ({ latlng: { lat, lng } }: any) => {
+    const { markers } = this;
+    const { tooltip } = markers.find(({ position: p }) => 
+      p instanceof Array && lat === p[0] && lng === p[1]
+    ) || {};
+    const [city] = tooltip?.split(/\s+/) || [];
 
-export default Map;
+    this.props.onChange?.(city);
+  };
+
+  render() {
+    const { markers } = this;
+
+    return (
+      <ChinaMap
+        style={{ height: '70vh' }}
+        center={[34.32, 108.55]}
+        zoom={4}
+        markers={markers}
+        onMarkerClick={this.handleChange}
+      />
+    );
+  }
+}

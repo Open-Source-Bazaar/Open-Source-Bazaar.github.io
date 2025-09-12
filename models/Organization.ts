@@ -35,23 +35,11 @@ export class OrganizationModel extends StrapiListModel<Organization> {
   client = strapiClient;
 
   @observable
-  accessor tagMap: Record<string, Organization[]> = {};
+  accessor categoryMap: Record<string, Organization[]> = {};
 
-  async groupAllByTags(): Promise<Record<string, Organization[]>> {
+  async groupAllByTags() {
     const allData = await this.getAll();
-    const tagMap = groupBy(
-      allData.flatMap(org => 
-        (org.tags || []).map(tag => ({ tag, org }))
-      ),
-      'tag'
-    );
-    
-    const result: Record<string, Organization[]> = {};
-    for (const [tag, items] of Object.entries(tagMap)) {
-      result[tag] = items.map(item => item.org);
-    }
-    
-    this.tagMap = result;
-    return result;
+
+    return (this.categoryMap = groupBy(allData, item => item.tags?.[0] || 'Other'));
   }
 }
