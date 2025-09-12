@@ -6,6 +6,7 @@ import { Modal } from 'react-bootstrap';
 import { splitArray } from 'web-utility';
 
 import { Organization, OrganizationModel } from '../../models/Organization';
+import systemStore from '../../models/System';
 import { LarkImage } from '../LarkImage';
 import { OrganizationCard } from './Card';
 
@@ -33,7 +34,7 @@ export class ChinaPublicInterestLandscape extends Component<ChinaPublicInterestL
     if (!organization) return <></>;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { id: _id, ...data } = organization;
+    const { id, ...data } = organization;
 
     return <OrganizationCard {...data} />;
   }
@@ -54,6 +55,7 @@ export class ChinaPublicInterestLandscape extends Component<ChinaPublicInterestL
   );
 
   render() {
+    const { screenNarrow } = systemStore;
     const rows = splitArray(Object.entries(this.props.categoryMap), 2);
 
     return (
@@ -61,7 +63,7 @@ export class ChinaPublicInterestLandscape extends Component<ChinaPublicInterestL
         {rows.map((row, index) => (
           <ul
             key={index}
-            className="list-unstyled d-flex flex-row gap-2"
+            className={`list-unstyled d-flex flex-${screenNarrow ? 'column' : 'row'} gap-2`}
           >
             {row.map(([name, list]) => (
               <li key={name} className="flex-fill">

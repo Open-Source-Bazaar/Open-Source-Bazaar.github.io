@@ -7,9 +7,9 @@ import { Accordion, Button, Nav } from 'react-bootstrap';
 import { sum } from 'web-utility';
 
 import { OrganizationModel, OrganizationStatistic } from '../../models/Organization';
-import { i18n,I18nContext } from '../../models/Translation';
+import { i18n, I18nContext } from '../../models/Translation';
 import { TagNav } from '../Base/TagNav';
-import { CityStatisticMap } from '../Map/index';
+import { CityStatisticMap } from '../Map/CityStatisticMap';
 import { OrganizationCardProps } from './Card';
 import { OrganizationListLayout } from './List';
 
@@ -40,38 +40,39 @@ export class ChinaPublicInterestMap extends ObservedComponent<
   };
 
   renderFilter() {
-    const { type, tag } = this.props,
+    const { t } = this.observedContext,
+      { type, tag } = this.props,
       { filter, totalCount } = this.props.store;
     const count =
       totalCount != null && totalCount !== Infinity
         ? totalCount
-        : sum(...type.map(t => t.count)) || 0;
+        : (type[filter.type + ''] ?? tag[filter.tags + ''] ?? sum(...Object.values(type)));
 
     return (
       <Accordion as="header" className="sticky-top bg-white" style={{ top: '5rem' }}>
         <Accordion.Item eventKey="0">
           <Accordion.Header>
             <div className="w-100 d-flex justify-content-between align-items-center">
-              Filter
+              {t('filter')}
 
               <TagNav list={Object.values(filter) as string[]} />
 
-              Total Organizations: {count}
+              {`${t('total')} ${count} ${t('organizations')}`}
             </div>
           </Accordion.Header>
           <Accordion.Body as="form" onReset={() => this.switchFilter({})}>
             <fieldset className="mb-3">
-              <legend>Type</legend>
+              <legend>{t('type')}</legend>
 
-              <TagNav list={type.map(t => t.label)} onCheck={type => this.switchFilter({ type })} />
+              <TagNav list={Object.keys(type)} onCheck={type => this.switchFilter({ type })} />
             </fieldset>
             <fieldset className="mb-3">
-              <legend>Tag</legend>
+              <legend>{t('tag')}</legend>
 
-              <TagNav list={tag.map(t => t.label)} onCheck={tags => this.switchFilter({ tags })} />
+              <TagNav list={Object.keys(tag)} onCheck={tags => this.switchFilter({ tags })} />
             </fieldset>
             <Button type="reset" variant="warning" size="sm">
-              Reset
+              {t('reset')}
             </Button>
           </Accordion.Body>
         </Accordion.Item>
@@ -80,7 +81,8 @@ export class ChinaPublicInterestMap extends ObservedComponent<
   }
 
   renderTab() {
-    const { props, tabKey } = this;
+    const { t } = this.observedContext,
+      { props, tabKey } = this;
 
     return (
       <div>
@@ -91,10 +93,10 @@ export class ChinaPublicInterestMap extends ObservedComponent<
           onSelect={key => key && (this.tabKey = key as ChinaPublicInterestMap['tabKey'])}
         >
           <Nav.Item>
-            <Nav.Link eventKey="map">Map</Nav.Link>
+            <Nav.Link eventKey="map">{t('map')}</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="chart">Chart</Nav.Link>
+            <Nav.Link eventKey="chart">{t('chart')}</Nav.Link>
           </Nav.Item>
         </Nav>
 

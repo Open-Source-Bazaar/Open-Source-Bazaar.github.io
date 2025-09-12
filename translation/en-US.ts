@@ -108,6 +108,16 @@ export default {
   by_tag: 'By Tag',
   organizations: 'Organizations',
   no_data_available: 'No data available',
+  
+  // Organization interface translations
+  filter: 'Filter',
+  reset: 'Reset',
+  map: 'Map',
+  chart: 'Chart',
+  type: 'Type',
+  tag: 'Tag',
+  total: 'Total',
+  organizations: 'Organizations',
   landscape_data_loading_message: 'Public interest organization data is loading, please try again later.',
   visit_website: 'Visit Website',
 };

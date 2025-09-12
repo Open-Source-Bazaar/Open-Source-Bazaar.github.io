@@ -108,5 +108,15 @@ export default {
   organizations: '組織',
   no_data_available: '暫無數據',
   landscape_data_loading_message: '公益組織數據正在加載中，請稍後再試。',
+  
+  // Organization interface translations
+  filter: '篩選',
+  reset: '重置',
+  map: '地圖',
+  chart: '圖表',
+  type: '類型',
+  tag: '標籤',
+  total: '共',
+  organizations: '個組織',
   visit_website: '訪問官網',
 };

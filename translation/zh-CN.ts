@@ -108,5 +108,15 @@ export default {
   organizations: '组织',
   no_data_available: '暂无数据',
   landscape_data_loading_message: '公益组织数据正在加载中，请稍后再试。',
+  
+  // Organization interface translations
+  filter: '筛选',
+  reset: '重置',
+  map: '地图',
+  chart: '图表',
+  type: '类型',
+  tag: '标签',
+  total: '共',
+  organizations: '个组织',
   visit_website: '访问官网',
 };

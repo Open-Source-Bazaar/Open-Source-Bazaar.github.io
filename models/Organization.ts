@@ -23,12 +23,10 @@ export interface Organization extends Base {
   year?: number;
 }
 
-export interface OrganizationStatistic {
-  year: { label: string; count: number }[];
-  city: { label: string; count: number }[];
-  type: { label: string; count: number }[];
-  tag: { label: string; count: number }[];
-}
+export type OrganizationStatistic = Record<
+  'type' | 'tag' | 'year' | 'city',
+  Record<string, number>
+>;
 
 export class OrganizationModel extends StrapiListModel<Organization> {
   baseURI = 'organizations';
@@ -40,6 +38,6 @@ export class OrganizationModel extends StrapiListModel<Organization> {
   async groupAllByTags() {
     const allData = await this.getAll();
 
-    return (this.categoryMap = groupBy(allData, item => item.tags?.[0] || 'Other'));
+    return (this.categoryMap = groupBy(allData, ({ tags }) => tags?.[0] || 'Other'));
   }
 }

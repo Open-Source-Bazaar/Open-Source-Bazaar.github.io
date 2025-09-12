@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import { GetStaticProps } from 'next';
 import { FC, useContext } from 'react';
+import { Container } from 'react-bootstrap';
 
 import { PageHead } from '../../components/Layout/PageHead';
 import { ChinaPublicInterestMap } from '../../components/Organization/ChinaPublicInterestMap';
@@ -8,6 +9,11 @@ import { OrganizationModel, OrganizationStatistic } from '../../models/Organizat
 import { I18nContext } from '../../models/Translation';
 
 export interface NGOPageProps extends OrganizationStatistic {}
+
+const sortStatistic = (data: Record<string, number>) =>
+  Object.entries(data)
+    .map(([key, count]) => [key, count] as const)
+    .sort(([, vX], [, vY]) => vY - vX);
 
 export const getStaticProps: GetStaticProps<NGOPageProps> = async () => {
   try {
@@ -53,10 +59,10 @@ export const getStaticProps: GetStaticProps<NGOPageProps> = async () => {
 
     return {
       props: {
-        year: Object.entries(yearStats).map(([label, count]) => ({ label, count })),
-        city: Object.entries(cityStats).map(([label, count]) => ({ label, count })),
-        type: Object.entries(typeStats).map(([label, count]) => ({ label, count })),
-        tag: Object.entries(tagStats).map(([label, count]) => ({ label, count })),
+        year: Object.fromEntries(sortStatistic(yearStats)),
+        city: Object.fromEntries(sortStatistic(cityStats)),
+        type: Object.fromEntries(sortStatistic(typeStats)),
+        tag: Object.fromEntries(sortStatistic(tagStats)),
       },
       revalidate: 60 * 60 * 24, // Revalidate once per day
     };
@@ -66,29 +72,29 @@ export const getStaticProps: GetStaticProps<NGOPageProps> = async () => {
     // Return empty data structure when API is not available
     return {
       props: {
-        year: [],
-        city: [],
-        type: [],
-        tag: [],
+        year: {},
+        city: {},
+        type: {},
+        tag: {},
       },
       revalidate: 60 * 60 * 24,
     };
   }
 };
 
-const NGOPage: FC<NGOPageProps> = observer(({ year, city, type, tag }) => {
+const NGOPage: FC<NGOPageProps> = observer((statistics) => {
   const { t } = useContext(I18nContext);
+  const store = new OrganizationModel();
 
   return (
     <>
       <PageHead title={t('china_public_interest_map')} />
-      <ChinaPublicInterestMap 
-        store={new OrganizationModel()}
-        year={year}
-        city={city}
-        type={type}
-        tag={tag}
-      />
+      <Container className="py-4">
+        <ChinaPublicInterestMap 
+          store={store}
+          {...statistics}
+        />
+      </Container>
     </>
   );
 });
