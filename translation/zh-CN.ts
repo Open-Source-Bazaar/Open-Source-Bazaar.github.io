@@ -92,8 +92,10 @@ export default {
   view_or_edit_on_github: '在 GitHub 上查看或编辑此内容',
 
   // China Public Interest Map
+  ngo: '公益',
   china_public_interest_map: '中国公益地图',
   china_public_interest_landscape: '中国公益生态图',
+  open_source_public_interest_plan: '开源公益计划',
   landscape: '生态图',
   join_the_public_interest_map: '加入公益地图',
   about_china_public_interest_map: '关于中国公益地图',

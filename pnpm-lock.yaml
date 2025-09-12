@@ -56,6 +56,9 @@ importers:
       mobx-i18n:
         specifier: ^0.7.1
         version: 0.7.1(mobx@6.13.7)(typescript@5.9.2)
+      mobx-lark:
+        specifier: ^2.4.2
+        version: 2.4.2(core-js@3.45.1)(react@19.1.1)(typescript@5.9.2)
       mobx-react:
         specifier: ^9.2.0
         version: 9.2.0(mobx@6.13.7)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -3301,6 +3304,9 @@ packages:
   lodash.isstring@4.0.1:
     resolution: {integrity: sha512-0wJxfxH1wgO3GrbuP+dTTk7op+6L41QCXbGINEmD+ny/G/eCqGzxyCsh7159S+mgDDcoarnBw6PC1PS5+wUGgw==}
 
+  lodash.memoize@4.1.2:
+    resolution: {integrity: sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==}
+
   lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
 
@@ -3547,6 +3553,11 @@ packages:
     resolution: {integrity: sha512-J8iTlxkj19Rh75gst5IvNl8LnlBQVIRV7FAt8yaLBRhSSe4jaZxlDMwXiv0wuBZ6SUD71KYw1w4YTMAorL3O5w==}
     peerDependencies:
       mobx: '>=6.11'
+
+  mobx-lark@2.4.2:
+    resolution: {integrity: sha512-vYEl1SXss7sx9GgzJPLtjBr+sYPZdc32k+IdjQ7yOo7ZLr9gX4XWPvwaNXGw4OL+AmQBLPp4iWD93S40O3cy/A==}
+    peerDependencies:
+      react: '>=16'
 
   mobx-react-helper@0.4.1:
     resolution: {integrity: sha512-+chcWzOznL5/c6n33iswIGKvFJI/afmWRMFZ5NjjJyD3DJuoGuaiayEEhL3FITVKpwOkPKF2K5Werz8vhk6xEA==}
@@ -8291,6 +8302,8 @@ snapshots:
 
   lodash.isstring@4.0.1: {}
 
+  lodash.memoize@4.1.2: {}
+
   lodash.merge@4.6.2: {}
 
   lodash.once@4.1.1: {}
@@ -8737,6 +8750,23 @@ snapshots:
       web-utility: 4.5.3(typescript@5.9.2)
     transitivePeerDependencies:
       - element-internals-polyfill
+      - typescript
+
+  mobx-lark@2.4.2(core-js@3.45.1)(react@19.1.1)(typescript@5.9.2):
+    dependencies:
+      '@swc/helpers': 0.5.17
+      '@types/react': 19.1.12
+      koajax: 3.1.2(core-js@3.45.1)(typescript@5.9.2)
+      lodash.memoize: 4.1.2
+      mobx: 6.13.7
+      mobx-restful: 2.1.0(core-js@3.45.1)(mobx@6.13.7)(typescript@5.9.2)
+      react: 19.1.1
+      regenerator-runtime: 0.14.1
+      web-utility: 4.5.3(typescript@5.9.2)
+    transitivePeerDependencies:
+      - core-js
+      - element-internals-polyfill
+      - jsdom
       - typescript
 
   mobx-react-helper@0.4.1(mobx@6.13.7)(react@19.1.1)(typescript@5.9.2):

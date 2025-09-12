@@ -1,6 +1,8 @@
 import { observable } from 'mobx';
-import { HTTPClient } from 'koajax';
 import { StrapiListModel, Base } from 'mobx-strapi';
+import { groupBy } from 'web-utility';
+
+import { strapiClient } from './Base';
 
 // Define the organization data structure similar to China NGO database
 export interface Organization extends Base {
@@ -22,78 +24,34 @@ export interface Organization extends Base {
 }
 
 export interface OrganizationStatistic {
-  year: Array<{ label: string; count: number }>;
-  city: Array<{ label: string; count: number }>;
-  type: Array<{ label: string; count: number }>;
-  tag: Array<{ label: string; count: number }>;
+  year: { label: string; count: number }[];
+  city: { label: string; count: number }[];
+  type: { label: string; count: number }[];
+  tag: { label: string; count: number }[];
 }
 
-// Strapi client configuration
-const strapiClient = new HTTPClient({
-  baseURI: 'https://china-ngo-db.onrender.com/api/',
-  responseType: 'json',
-});
-
 export class OrganizationModel extends StrapiListModel<Organization> {
-  baseURI = '/organizations';
+  baseURI = 'organizations';
   client = strapiClient;
 
   @observable
   accessor tagMap: Record<string, Organization[]> = {};
 
   async groupAllByTags(): Promise<Record<string, Organization[]>> {
-    try {
-      const allData = await this.getAll();
-      const tagMap: Record<string, Organization[]> = {};
-
-      for (const org of allData) {
-        const tags = org.tags || [];
-        for (const tag of tags) {
-          if (!tagMap[tag]) {
-            tagMap[tag] = [];
-          }
-          tagMap[tag].push(org);
-        }
-      }
-
-      this.tagMap = tagMap;
-      return tagMap;
-    } catch (error) {
-      console.error('Failed to fetch organizations:', error);
-      return {};
+    const allData = await this.getAll();
+    const tagMap = groupBy(
+      allData.flatMap(org => 
+        (org.tags || []).map(tag => ({ tag, org }))
+      ),
+      'tag'
+    );
+    
+    const result: Record<string, Organization[]> = {};
+    for (const [tag, items] of Object.entries(tagMap)) {
+      result[tag] = items.map(item => item.org);
     }
+    
+    this.tagMap = result;
+    return result;
   }
 }
-
-export class OrganizationStatisticModel {
-  private client: HTTPClient<any>;
-  private collection: string;
-
-  constructor(baseId: string, collectionId: string) {
-    this.client = new HTTPClient({
-      baseURI: 'https://china-ngo-db.onrender.com/api/',
-      responseType: 'json',
-    });
-    this.collection = collectionId;
-  }
-
-  async countAll(): Promise<Array<{ label: string; count: number }>> {
-    try {
-      // This would need to be adapted based on the actual Strapi API structure
-      const response = await this.client.get(`${this.collection}`);
-      // Handle potential different response structures
-      const data = response.body?.data || response.body || [];
-      return Array.isArray(data) ? data : [];
-    } catch (error) {
-      console.error(`Failed to fetch statistics for ${this.collection}:`, error);
-      return [];
-    }
-  }
-}
-
-// Mock constants for now - these would be configured based on the actual Strapi setup
-export const COMMUNITY_BASE_ID = 'community';
-export const OSC_YEAR_STATISTIC_TABLE_ID = 'organization-year-stats';
-export const OSC_CITY_STATISTIC_TABLE_ID = 'organization-city-stats';
-export const OSC_TYPE_STATISTIC_TABLE_ID = 'organization-type-stats';
-export const OSC_TAG_STATISTIC_TABLE_ID = 'organization-tag-stats';

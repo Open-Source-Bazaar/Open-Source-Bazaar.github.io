@@ -53,10 +53,14 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
     ],
   },
   {
-    title: t('china_public_interest_map'),
+    title: t('ngo'),
     subs: [
-      { href: '/organization', title: t('china_public_interest_map') },
-      { href: '/organization/landscape', title: t('china_public_interest_landscape') },
+      { href: '/ngo', title: t('china_public_interest_map') },
+      { href: '/ngo/landscape', title: t('china_public_interest_landscape') },
+      { 
+        href: 'https://open-source-bazaar.feishu.cn/wiki/VGrMwiweVivWrHkTcvpcJTjjnoY', 
+        title: t('open_source_public_interest_plan') 
+      },
     ],
   },
 ];

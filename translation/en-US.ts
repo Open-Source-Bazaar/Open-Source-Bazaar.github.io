@@ -93,8 +93,10 @@ export default {
   view_or_edit_on_github: 'View or edit this content on GitHub',
 
   // China Public Interest Map
+  ngo: 'NGO',
   china_public_interest_map: 'China Public Interest Map',
   china_public_interest_landscape: 'China Public Interest Landscape',
+  open_source_public_interest_plan: 'Open Source Public Interest Plan',
   landscape: 'Landscape',
   join_the_public_interest_map: 'Join the Public Interest Map',
   about_china_public_interest_map: 'About China Public Interest Map',

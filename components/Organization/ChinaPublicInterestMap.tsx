@@ -1,91 +1,129 @@
 import { observer } from 'mobx-react';
-import { FC, useContext } from 'react';
-import { Badge,Card, Col, Row } from 'react-bootstrap';
+import { FC, useContext, useEffect, useState } from 'react';
+import { Card, Col, Container, Nav, Row } from 'react-bootstrap';
 
-import { OrganizationModel, OrganizationStatistic } from '../../models/Organization';
+import { Organization, OrganizationModel } from '../../models/Organization';
 import { I18nContext } from '../../models/Translation';
+import { Map } from '../Map';
 
-export interface ChinaPublicInterestMapProps extends OrganizationStatistic {
-  store: OrganizationModel;
-}
+const organizationModel = new OrganizationModel();
 
-export const ChinaPublicInterestMap: FC<ChinaPublicInterestMapProps> = observer(
-  ({ store, year, city, type, tag }) => {
-    const { t } = useContext(I18nContext);
+export const ChinaPublicInterestMap: FC = observer(() => {
+  const { t } = useContext(I18nContext);
+  const [loading, setLoading] = useState(false);
+  const [organizations, setOrganizations] = useState<Organization[]>([]);
 
-    return (
-      <div>
-        <Row className="g-4">
-          <Col md={6} lg={3}>
-            <Card>
-              <Card.Body>
-                <Card.Title>{t('by_year')}</Card.Title>
-                <div>
-                  {year.slice(0, 5).map(item => (
-                    <Badge key={item.label} bg="primary" className="me-2 mb-2">
-                      {item.label}: {item.count}
-                    </Badge>
-                  ))}
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-          
-          <Col md={6} lg={3}>
-            <Card>
-              <Card.Body>
-                <Card.Title>{t('by_city')}</Card.Title>
-                <div>
-                  {city.slice(0, 5).map(item => (
-                    <Badge key={item.label} bg="success" className="me-2 mb-2">
-                      {item.label}: {item.count}
-                    </Badge>
-                  ))}
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-          
-          <Col md={6} lg={3}>
-            <Card>
-              <Card.Body>
-                <Card.Title>{t('by_type')}</Card.Title>
-                <div>
-                  {type.slice(0, 5).map(item => (
-                    <Badge key={item.label} bg="info" className="me-2 mb-2">
-                      {item.label}: {item.count}
-                    </Badge>
-                  ))}
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-          
-          <Col md={6} lg={3}>
-            <Card>
-              <Card.Body>
-                <Card.Title>{t('by_tag')}</Card.Title>
-                <div>
-                  {tag.slice(0, 5).map(item => (
-                    <Badge key={item.label} bg="warning" className="me-2 mb-2">
-                      {item.label}: {item.count}
-                    </Badge>
-                  ))}
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      try {
+        const orgs = await organizationModel.getAll();
+        setOrganizations(orgs);
+      } catch (error) {
+        console.error('Failed to load organizations:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        <Card className="mt-4">
-          <Card.Body>
-            <Card.Title>{t('about_china_public_interest_map')}</Card.Title>
-            <Card.Text>
-              {t('china_public_interest_map_description')}
-            </Card.Text>
-          </Card.Body>
-        </Card>
-      </div>
-    );
-  },
-);
+    loadData();
+  }, []);
+
+  return (
+    <Container className="py-4">
+      <Row className="mb-4">
+        <Col>
+          <h1>{t('china_public_interest_map')}</h1>
+          <Nav className="mb-3">
+            <Nav.Link href="/ngo/landscape">{t('landscape')}</Nav.Link>
+            <Nav.Link href="/ngo">{t('join_the_public_interest_map')}</Nav.Link>
+          </Nav>
+        </Col>
+      </Row>
+
+      <Row className="mb-4">
+        <Col>
+          <Map data={organizations} loading={loading} />
+        </Col>
+      </Row>
+
+      <Row>
+        <Col md={3}>
+          <Card>
+            <Card.Header>{t('by_year')}</Card.Header>
+            <Card.Body>
+              {loading ? (
+                <div className="text-center">
+                  <div className="spinner-border spinner-border-sm" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-muted">{t('no_data_available')}</p>
+              )}
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={3}>
+          <Card>
+            <Card.Header>{t('by_city')}</Card.Header>
+            <Card.Body>
+              {loading ? (
+                <div className="text-center">
+                  <div className="spinner-border spinner-border-sm" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-muted">{t('no_data_available')}</p>
+              )}
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={3}>
+          <Card>
+            <Card.Header>{t('by_type')}</Card.Header>
+            <Card.Body>
+              {loading ? (
+                <div className="text-center">
+                  <div className="spinner-border spinner-border-sm" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-muted">{t('no_data_available')}</p>
+              )}
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={3}>
+          <Card>
+            <Card.Header>{t('by_tag')}</Card.Header>
+            <Card.Body>
+              {loading ? (
+                <div className="text-center">
+                  <div className="spinner-border spinner-border-sm" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-muted">{t('no_data_available')}</p>
+              )}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      <Row className="mt-4">
+        <Col>
+          <Card>
+            <Card.Body>
+              <h5>{t('about_china_public_interest_map')}</h5>
+              <p>{t('china_public_interest_map_description')}</p>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
+  );
+});
