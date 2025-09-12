@@ -25,6 +25,7 @@ export const getStaticProps: GetStaticProps<NGOLandscapePageProps> = async () =>
     };
   } catch (error) {
     console.error('Failed to load landscape data:', error);
+
     // Return empty data structure when API is not available
     return {
       props: {

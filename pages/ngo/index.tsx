@@ -62,6 +62,7 @@ export const getStaticProps: GetStaticProps<NGOPageProps> = async () => {
     };
   } catch (error) {
     console.error('Failed to load organization data:', error);
+
     // Return empty data structure when API is not available
     return {
       props: {
