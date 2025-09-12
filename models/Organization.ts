@@ -36,11 +36,7 @@ const strapiClient = new HTTPClient({
 
 export class OrganizationModel extends StrapiListModel<Organization> {
   baseURI = '/organizations';
-
-  constructor() {
-    super();
-    this.client = strapiClient;
-  }
+  client = strapiClient;
 
   @observable
   accessor tagMap: Record<string, Organization[]> = {};
@@ -85,7 +81,9 @@ export class OrganizationStatisticModel {
     try {
       // This would need to be adapted based on the actual Strapi API structure
       const response = await this.client.get(`${this.collection}`);
-      return response.body?.data || [];
+      // Handle potential different response structures
+      const data = response.body?.data || response.body || [];
+      return Array.isArray(data) ? data : [];
     } catch (error) {
       console.error(`Failed to fetch statistics for ${this.collection}:`, error);
       return [];

@@ -52,6 +52,13 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
       { href: '/policy', title: t('policy') },
     ],
   },
+  {
+    title: t('china_public_interest_map'),
+    subs: [
+      { href: '/organization', title: t('china_public_interest_map') },
+      { href: '/organization/landscape', title: t('china_public_interest_landscape') },
+    ],
+  },
 ];
 
 export interface MainNavigatorProps {
