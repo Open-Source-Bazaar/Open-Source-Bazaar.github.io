@@ -12,16 +12,27 @@ export interface NGOLandscapePageProps {
 }
 
 export const getStaticProps: GetStaticProps<NGOLandscapePageProps> = async () => {
-  const store = new OrganizationModel();
-  
-  const categoryMap = await store.groupAllByTags();
-  
-  return {
-    props: {
-      categoryMap,
-    },
-    revalidate: 60 * 60 * 24, // Revalidate once per day
-  };
+  try {
+    const store = new OrganizationModel();
+    
+    const categoryMap = await store.groupAllByTags();
+    
+    return {
+      props: {
+        categoryMap,
+      },
+      revalidate: 60 * 60 * 24, // Revalidate once per day
+    };
+  } catch (error) {
+    console.error('Failed to load landscape data:', error);
+    // Return empty data structure when API is not available
+    return {
+      props: {
+        categoryMap: {},
+      },
+      revalidate: 60 * 60 * 24,
+    };
+  }
 };
 
 const LandscapePage: FC<NGOLandscapePageProps> = ({ categoryMap }) => {
