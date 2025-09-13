@@ -94,13 +94,13 @@ export default {
 
   // China Public Interest Map
   ngo: 'NGO',
-  china_public_interest_map: 'China Public Interest Map',
+  China_NGO_Map: 'China Public Interest Map',
   china_public_interest_landscape: 'China Public Interest Landscape',
   open_source_public_interest_plan: 'Open Source Public Interest Plan',
   landscape: 'Landscape',
   join_the_public_interest_map: 'Join the Public Interest Map',
-  about_china_public_interest_map: 'About China Public Interest Map',
-  china_public_interest_map_description: 
+  about_China_NGO_Map: 'About China Public Interest Map',
+  China_NGO_Map_description: 
     'China Public Interest Map is a visualization platform showcasing the distribution and development status of public interest organizations in China, helping the public understand the current state of the public interest ecosystem.',
   by_year: 'By Year',
   by_city: 'By City',

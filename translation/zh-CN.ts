@@ -93,13 +93,13 @@ export default {
 
   // China Public Interest Map
   ngo: '公益',
-  china_public_interest_map: '中国公益地图',
+  China_NGO_Map: '中国公益地图',
   china_public_interest_landscape: '中国公益生态图',
   open_source_public_interest_plan: '开源公益计划',
   landscape: '生态图',
   join_the_public_interest_map: '加入公益地图',
-  about_china_public_interest_map: '关于中国公益地图',
-  china_public_interest_map_description: 
+  about_China_NGO_Map: '关于中国公益地图',
+  China_NGO_Map_description:
     '中国公益地图是一个展示中国公益组织分布和发展状况的可视化平台，帮助公众了解公益生态现状。',
   by_year: '按年份',
   by_city: '按城市',
@@ -108,7 +108,7 @@ export default {
   organizations: '组织',
   no_data_available: '暂无数据',
   landscape_data_loading_message: '公益组织数据正在加载中，请稍后再试。',
-  
+
   // Organization interface translations
   filter: '筛选',
   reset: '重置',
@@ -117,6 +117,5 @@ export default {
   type: '类型',
   tag: '标签',
   total: '共',
-  organizations: '个组织',
   visit_website: '访问官网',
 };

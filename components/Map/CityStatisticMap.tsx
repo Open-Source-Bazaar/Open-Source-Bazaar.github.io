@@ -10,7 +10,7 @@ import systemStore from '../../models/System';
 const ChinaMap = dynamic(() => import('./ChinaMap'), { ssr: false });
 
 export interface CityStatisticMapProps {
-  data: OrganizationStatistic['city'];
+  data: OrganizationStatistic['coverageArea'];
   onChange?: (city: string) => any;
 }
 

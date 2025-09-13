@@ -6,13 +6,7 @@ import { TableCellAttachment, TableCellMedia, TableCellValue } from 'mobx-lark';
 import { DataObject } from 'mobx-restful';
 import { isEmpty } from 'web-utility';
 
-import {
-  API_Host,
-  GithubToken,
-  isServer,
-  ProxyBaseURL,
-  LARK_API_HOST,
-} from './configuration';
+import { API_Host, GithubToken, isServer, ProxyBaseURL, LARK_API_HOST } from './configuration';
 
 export const ownClient = new HTTPClient({
   baseURI: `${API_Host}/api/`,
@@ -66,8 +60,13 @@ export function fileURLOf(field: TableCellValue, cache = false) {
   return URI;
 }
 
-// Strapi client for China NGO Database
 export const strapiClient = new HTTPClient({
   baseURI: 'https://china-ngo-db.onrender.com/api/',
   responseType: 'json',
+}).use(({ request }, next) => {
+  request.headers = {
+    ...request.headers,
+    'Strapi-Response-Format': 'v4',
+  };
+  return next();
 });
