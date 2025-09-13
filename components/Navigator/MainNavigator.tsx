@@ -52,6 +52,17 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
       { href: '/policy', title: t('policy') },
     ],
   },
+  {
+    title: t('ngo'),
+    subs: [
+      { href: '/ngo', title: t('China_NGO_Map') },
+      { href: '/ngo/landscape', title: t('china_public_interest_landscape') },
+      { 
+        href: 'https://open-source-bazaar.feishu.cn/wiki/VGrMwiweVivWrHkTcvpcJTjjnoY', 
+        title: t('open_source_public_interest_plan') 
+      },
+    ],
+  },
 ];
 
 export interface MainNavigatorProps {

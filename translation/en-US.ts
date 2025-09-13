@@ -91,4 +91,33 @@ export default {
   view_original: 'View Original',
   github_document_description: 'This is a document page based on a GitHub repository.',
   view_or_edit_on_github: 'View or edit this content on GitHub',
+
+  // China Public Interest Map
+  ngo: 'NGO',
+  China_NGO_Map: 'China Public Interest Map',
+  china_public_interest_landscape: 'China Public Interest Landscape',
+  open_source_public_interest_plan: 'Open Source Public Interest Plan',
+  landscape: 'Landscape',
+  join_the_public_interest_map: 'Join the Public Interest Map',
+  about_China_NGO_Map: 'About China Public Interest Map',
+  China_NGO_Map_description: 
+    'China Public Interest Map is a visualization platform showcasing the distribution and development status of public interest organizations in China, helping the public understand the current state of the public interest ecosystem.',
+  by_year: 'By Year',
+  by_city: 'By City',
+  by_type: 'By Type',
+  by_tag: 'By Tag',
+  organizations: 'Organizations',
+  no_data_available: 'No data available',
+  
+  // Organization interface translations
+  filter: 'Filter',
+  reset: 'Reset',
+  map: 'Map',
+  chart: 'Chart',
+  type: 'Type',
+  tag: 'Tag',
+  total: 'Total',
+  organizations: 'Organizations',
+  landscape_data_loading_message: 'Public interest organization data is loading, please try again later.',
+  visit_website: 'Visit Website',
 };
