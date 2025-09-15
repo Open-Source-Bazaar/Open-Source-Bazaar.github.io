@@ -19,6 +19,7 @@
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^15.5.3",
     "core-js": "^3.45.1",
+    "echarts-jsx": "^0.5.4",
     "file-type": "^21.0.0",
     "idea-react": "^2.0.0-rc.13",
     "koa": "^3.0.1",

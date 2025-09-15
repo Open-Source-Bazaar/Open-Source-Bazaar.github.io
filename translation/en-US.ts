@@ -95,7 +95,7 @@ export default {
   // China Public Interest Map
   ngo: 'NGO',
   China_NGO_Map: 'China Public Interest Map',
-  china_public_interest_landscape: 'China Public Interest Landscape',
+  China_NGO_Landscape: 'China Public Interest Landscape',
   open_source_public_interest_plan: 'Open Source Public Interest Plan',
   landscape: 'Landscape',
   join_the_public_interest_map: 'Join the Public Interest Map',

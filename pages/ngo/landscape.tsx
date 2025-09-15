@@ -1,52 +1,32 @@
-import { GetStaticProps } from 'next';
+import { observer } from 'mobx-react';
 import { FC, useContext } from 'react';
 import { Container } from 'react-bootstrap';
 
 import { PageHead } from '../../components/Layout/PageHead';
-import { ChinaPublicInterestLandscape } from '../../components/Organization/ChinaPublicInterestLandscape';
-import { Organization, OrganizationModel } from '../../models/Organization';
+import {
+  OpenCollaborationLandscape,
+  OpenCollaborationLandscapeProps,
+} from '../../components/Organization/ChinaPublicInterestLandscape';
 import { I18nContext } from '../../models/Translation';
+import { OrganizationModel } from '../../models/Organization';
 
-export interface NGOLandscapePageProps {
-  categoryMap: Record<string, Organization[]>;
-}
+export const getStaticProps = async () => {
+  const categoryMap = await new OrganizationModel().groupAllByTags({ establishedDate: '2008' });
 
-export const getStaticProps: GetStaticProps<NGOLandscapePageProps> = async () => {
-  try {
-    const store = new OrganizationModel();
-    
-    const categoryMap = await store.groupAllByTags();
-    
-    return {
-      props: {
-        categoryMap,
-      },
-      revalidate: 60 * 60 * 24, // Revalidate once per day
-    };
-  } catch (error) {
-    console.error('Failed to load landscape data:', error);
-
-    // Return empty data structure when API is not available
-    return {
-      props: {
-        categoryMap: {},
-      },
-      revalidate: 60 * 60 * 24,
-    };
-  }
+  return { props: JSON.parse(JSON.stringify({ categoryMap })) };
 };
 
-const LandscapePage: FC<NGOLandscapePageProps> = ({ categoryMap }) => {
+const LandscapePage: FC<OpenCollaborationLandscapeProps> = observer(props => {
   const { t } = useContext(I18nContext);
 
   return (
-    <>
-      <PageHead title={t('china_public_interest_landscape')} />
-      <Container className="py-4">
-        <ChinaPublicInterestLandscape categoryMap={categoryMap} />
-      </Container>
-    </>
-  );
-};
+    <Container className="mb-5">
+      <PageHead title={t('China_NGO_Landscape')} />
 
+      <h1 className="my-5 text-center">{t('China_NGO_Landscape')}</h1>
+
+      <OpenCollaborationLandscape {...props} />
+    </Container>
+  );
+});
 export default LandscapePage;

@@ -7,13 +7,13 @@ import { PageHead } from '../../components/Layout/PageHead';
 import { CityStatisticMap } from '../../components/Map';
 import { SearchBar } from '../../components/Navigator/SearchBar';
 import OrganizationCharts from '../../components/Organization/Charts';
+
 import { OrganizationModel, OrganizationStatistic } from '../../models/Organization';
 import { I18nContext } from '../../models/Translation';
 
 export const getStaticProps = async () => {
-  const props = await new OrganizationModel().countAll(['coverageArea', 'locale', 'entityType'], {
-    establishedDate: '2008',
-  });
+  const props = await new OrganizationModel().getStatistic({ establishedDate: '2008' });
+
   return { props, revalidate: Day / Second };
 };
 

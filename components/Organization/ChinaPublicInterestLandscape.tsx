@@ -2,18 +2,20 @@ import { Dialog } from 'idea-react';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { Component } from 'react';
-import { Modal } from 'react-bootstrap';
+import { Image, Modal } from 'react-bootstrap';
 import { splitArray } from 'web-utility';
 
-import { Organization, OrganizationModel } from '../../models/Organization';
+import { Organization } from '@open-source-bazaar/china-ngo-database';
 import systemStore from '../../models/System';
-import { LarkImage } from '../LarkImage';
-import { OrganizationCard } from './Card';
+import { OrganizationModel } from '../../models/Organization';
 
-export type ChinaPublicInterestLandscapeProps = Pick<OrganizationModel, 'categoryMap'>;
+import { OrganizationCard } from './Card';
+import styles from './LandScape.module.less';
+
+export type OpenCollaborationLandscapeProps = Pick<OrganizationModel, 'categoryMap'>;
 
 @observer
-export class ChinaPublicInterestLandscape extends Component<ChinaPublicInterestLandscapeProps> {
+export class OpenCollaborationLandscape extends Component<OpenCollaborationLandscapeProps> {
   @observable
   accessor itemSize = 5;
 
@@ -33,24 +35,22 @@ export class ChinaPublicInterestLandscape extends Component<ChinaPublicInterestL
 
     if (!organization) return <></>;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, ...data } = organization;
 
     return <OrganizationCard {...data} />;
   }
 
-  renderLogo = ({ name, logo }: Organization) => (
+  renderLogo = ({ name }: Organization) => (
     <li
       key={name as string}
-      className="border list-item"
-      style={{ cursor: 'pointer' }}
+      className={`border ${styles.listItem}`}
       onClick={() => this.modal.open({ name: name as string })}
     >
-      <LarkImage
-        className="object-fit-contain"
-        style={{ width: this.itemSize + 'rem', height: this.itemSize + 'rem' }}
-        src={logo?.data?.attributes?.url}
-      />
+      <div style={{ fontSize: this.itemSize + 'rem' }}>
+        {name.slice(0, 2)}
+        <br />
+        {name.slice(2, 4)}
+      </div>
     </li>
   );
 
@@ -60,16 +60,11 @@ export class ChinaPublicInterestLandscape extends Component<ChinaPublicInterestL
 
     return (
       <>
-        {rows.map((row, index) => (
-          <ul
-            key={index}
-            className={`list-unstyled d-flex flex-${screenNarrow ? 'column' : 'row'} gap-2`}
-          >
+        {rows.map(row => (
+          <ul className={`list-unstyled d-flex flex-${screenNarrow ? 'column' : 'row'} gap-2`}>
             {row.map(([name, list]) => (
               <li key={name} className="flex-fill">
-                <h2 className="h5 p-2 text-white bg-primary">
-                  {name}
-                </h2>
+                <h2 className={`h5 p-2 text-white ${styles.groupTitle}`}>{name}</h2>
 
                 <ol className="list-unstyled d-flex flex-wrap gap-2">
                   {list.map(this.renderLogo)}

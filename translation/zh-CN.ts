@@ -94,7 +94,7 @@ export default {
   // China Public Interest Map
   ngo: '公益',
   China_NGO_Map: '中国公益地图',
-  china_public_interest_landscape: '中国公益生态图',
+  China_NGO_Landscape: '中国公益生态图',
   open_source_public_interest_plan: '开源公益计划',
   landscape: '生态图',
   join_the_public_interest_map: '加入公益地图',
