@@ -1,14 +1,13 @@
+import { Organization } from '@open-source-bazaar/china-ngo-database';
 import { Dialog } from 'idea-react';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { Component } from 'react';
-import { Image, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { splitArray } from 'web-utility';
 
-import { Organization } from '@open-source-bazaar/china-ngo-database';
-import systemStore from '../../models/System';
 import { OrganizationModel } from '../../models/Organization';
-
+import systemStore from '../../models/System';
 import { OrganizationCard } from './Card';
 import styles from './LandScape.module.less';
 

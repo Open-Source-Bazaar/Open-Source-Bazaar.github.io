@@ -1,56 +1,110 @@
-import { FC } from 'react';
-import { Badge,Card } from 'react-bootstrap';
+import { Organization } from '@open-source-bazaar/china-ngo-database';
+import { Icon } from 'idea-react';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
+import { ObservedComponent } from 'mobx-react-helper';
+import { BadgeBar } from 'mobx-restful-table';
+import { HTMLAttributes } from 'react';
+import { Button, Card, CardProps, Image } from 'react-bootstrap';
 
-import { Organization } from '../../models/Organization';
+import { i18n, I18nContext } from '../../models/Translation';
 
-export interface OrganizationCardProps extends Partial<Organization> {
-  onSwitch?: (filter: { type?: string; tags?: string; city?: string }) => void;
+export interface OrganizationCardProps
+  extends Pick<HTMLAttributes<HTMLDivElement>, 'className' | 'style'>,
+    Omit<Organization, 'id'>,
+    CardProps {
+  onSwitch?: (filter: Partial<Pick<Organization, 'entityType' | 'coverageArea'>>) => any;
 }
 
-export const OrganizationCard: FC<OrganizationCardProps> = ({
-  name,
-  description,
-  type,
-  city,
-  website,
-  tags
-}) => (
-  <Card className="h-100">
-    <Card.Body>
-      <Card.Title className="h6">{name}</Card.Title>
-      {description && (
-        <Card.Text className="small text-muted">
-          {description.length > 100
-            ? `${description.substring(0, 100)}...`
-            : description}
-        </Card.Text>
-      )}
-      <div className="mt-2">
-        {city && (
-          <Badge bg="secondary" className="me-1">
-            {city}
-          </Badge>
+@observer
+export class OrganizationCard extends ObservedComponent<OrganizationCardProps, typeof i18n> {
+  static contextType = I18nContext;
+
+  @observable
+  accessor showQRC = false;
+
+  renderIcon() {
+    const { website, wechatPublic } = this.observedProps.internetContact || {};
+
+    return (
+      <div className="d-flex justify-content-around">
+        {/* {email && (
+          <Button title="E-mail" size="sm" variant="warning" href={`mailto:${email}`}>
+            <Icon name="mailbox2" />
+          </Button>
+        )} */}
+        {website && (
+          <Button title="WWW" size="sm" target="_blank" href={website}>
+            <Icon name="globe2" />
+          </Button>
         )}
-        {type && (
-          <Badge bg="info" className="me-1">
-            {type}
-          </Badge>
+        {wechatPublic && (
+          <Button
+            title="WeChat"
+            size="sm"
+            variant="success"
+            onClick={() => (this.showQRC = !this.showQRC)}
+          >
+            <Icon name="chat-fill" />
+          </Button>
         )}
-        {tags?.map(tag => (
-          <Badge key={tag} bg="light" text="dark" className="me-1">
-            {tag}
-          </Badge>
-        ))}
       </div>
-      {website && (
-        <Card.Link
-          href={website}
-          target="_blank"
-          className="small"
-        >
-          Visit Website
-        </Card.Link>
-      )}
-    </Card.Body>
-  </Card>
-);
+    );
+  }
+
+  render() {
+    const { t } = this.observedContext,
+      { name, entityType, services, description, internetContact, onSwitch, ...props } = this.props;
+    const { wechatPublic } = internetContact || {};
+
+    return (
+      <Card
+        {...props}
+        style={{
+          ...props.style,
+          contentVisibility: 'auto',
+          containIntrinsicHeight: '36rem',
+        }}
+      >
+        {/* <Card.Img
+          variant="top"
+          className="object-fit-contain"
+          style={{ height: '30vh' }}
+          src={logos}
+        /> */}
+        <Card.Body>
+          <Card.Title>
+            {name}
+            <BadgeBar className="ms-2" list={[{ text: entityType! }]} />
+          </Card.Title>
+
+          {services && (
+            <BadgeBar
+              className="justify-content-end"
+              list={services.map(({ serviceCategory }) => ({ text: serviceCategory! }))}
+            />
+          )}
+          <Card.Text
+            className="d-none d-sm-block text-wrap overflow-auto"
+            style={{ minHeight: '5rem', maxHeight: '10rem' }}
+          >
+            {description}
+          </Card.Text>
+        </Card.Body>
+
+        <Card.Footer>
+          {this.renderIcon()}
+
+          {this.showQRC && (
+            <Image
+              className="mt-2"
+              src={`https://open.weixin.qq.com/qr/code?username=${wechatPublic}`}
+              alt={wechatPublic}
+              fluid
+            />
+          )}
+        </Card.Footer>
+      </Card>
+    );
+  }
+}

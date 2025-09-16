@@ -2,8 +2,8 @@ import { BarSeries, PieSeries, SVGCharts, Title, Tooltip, XAxis, YAxis } from 'e
 import { observer } from 'mobx-react';
 import { FC, useContext } from 'react';
 
-import { I18nContext } from '../../models/Translation';
 import { OrganizationStatistic, sortStatistic } from '../../models/Organization';
+import { I18nContext } from '../../models/Translation';
 
 const OrganizationCharts: FC<OrganizationStatistic> = observer(
   ({ entityType, serviceCategory, coverageArea }) => {

@@ -6,9 +6,9 @@ import { PageHead } from '../../components/Layout/PageHead';
 import {
   OpenCollaborationLandscape,
   OpenCollaborationLandscapeProps,
-} from '../../components/Organization/ChinaPublicInterestLandscape';
-import { I18nContext } from '../../models/Translation';
+} from '../../components/Organization/Landscape';
 import { OrganizationModel } from '../../models/Organization';
+import { I18nContext } from '../../models/Translation';
 
 export const getStaticProps = async () => {
   const categoryMap = await new OrganizationModel().groupAllByTags({ establishedDate: '2008' });

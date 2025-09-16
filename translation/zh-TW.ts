@@ -99,7 +99,7 @@ export default {
   landscape: '生態圖',
   join_the_public_interest_map: '加入公益地圖',
   about_China_NGO_Map: '關於中國公益地圖',
-  China_NGO_Map_description: 
+  China_NGO_Map_description:
     '中國公益地圖是一個展示中國公益組織分佈和發展狀況的可視化平台，幫助公眾瞭解公益生態現狀。',
   by_year: '按年份',
   by_city: '按城市',
@@ -108,7 +108,7 @@ export default {
   organizations: '組織',
   no_data_available: '暫無數據',
   landscape_data_loading_message: '公益組織數據正在加載中，請稍後再試。',
-  
+
   // Organization interface translations
   filter: '篩選',
   reset: '重置',
@@ -117,6 +117,5 @@ export default {
   type: '類型',
   tag: '標籤',
   total: '共',
-  organizations: '個組織',
   visit_website: '訪問官網',
 };

@@ -25,11 +25,11 @@
     "koa": "^3.0.1",
     "koajax": "^3.1.2",
     "license-filter": "^0.2.5",
-    "marked": "^16.2.1",
+    "marked": "^16.3.0",
     "mime": "^4.1.0",
     "mobx": "^6.13.7",
     "mobx-github": "^0.5.1",
-    "mobx-i18n": "^0.7.1",
+    "mobx-i18n": "^0.7.2",
     "mobx-lark": "^2.4.2",
     "mobx-react": "^9.2.0",
     "mobx-react-helper": "^0.5.1",
@@ -39,7 +39,7 @@
     "next": "^15.5.3",
     "next-pwa": "^5.6.0",
     "next-ssr-middleware": "^1.0.3",
-    "open-react-map": "^0.9.0",
+    "open-react-map": "^0.9.1",
     "react": "^19.1.1",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.1",
@@ -47,7 +47,7 @@
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^5.2.0",
     "undici": "^7.16.0",
-    "web-utility": "^4.5.3",
+    "web-utility": "^4.6.0",
     "yaml": "^2.8.1"
   },
   "devDependencies": {
@@ -63,7 +63,7 @@
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/koa": "^3.0.0",
     "@types/next-pwa": "^5.6.9",
-    "@types/node": "^22.18.3",
+    "@types/node": "^22.18.4",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "eslint": "^9.35.0",
@@ -82,9 +82,10 @@
     "prettier-plugin-css-order": "^2.1.2",
     "sass": "^1.92.1",
     "typescript": "~5.9.2",
-    "typescript-eslint": "^8.43.0"
+    "typescript-eslint": "^8.44.0"
   },
   "resolutions": {
+    "mobx-react-helper": "$mobx-react-helper",
     "next": "$next"
   },
   "pnpm": {

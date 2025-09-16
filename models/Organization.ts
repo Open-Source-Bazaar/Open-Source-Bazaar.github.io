@@ -62,10 +62,7 @@ export class OrganizationModel extends Searchable<Organization & Base>(StrapiLis
     const serviceCategory = countBy(
       list,
       ({ services }) =>
-        services
-          ?.map(({ serviceCategory }) => serviceCategory!)
-          .flat()
-          .filter(Boolean) || [],
+        services?.map(({ serviceCategory }) => serviceCategory!).filter(Boolean) || [],
     );
     return (this.statistic = { ...statistic, serviceCategory } as OrganizationStatistic);
   }
@@ -76,10 +73,7 @@ export class OrganizationModel extends Searchable<Organization & Base>(StrapiLis
     return (this.categoryMap = groupBy(
       allData,
       ({ services }) =>
-        services
-          ?.map(({ serviceCategory }) => serviceCategory!)
-          .flat()
-          .filter(Boolean) || [],
+        services?.map(({ serviceCategory }) => serviceCategory!).filter(Boolean) || [],
     ));
   }
 }

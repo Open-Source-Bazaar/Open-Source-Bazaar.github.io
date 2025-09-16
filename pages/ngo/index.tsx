@@ -4,10 +4,9 @@ import { Button, Container } from 'react-bootstrap';
 import { Day, Second } from 'web-utility';
 
 import { PageHead } from '../../components/Layout/PageHead';
-import { CityStatisticMap } from '../../components/Map';
+import { CityStatisticMap } from '../../components/Map/CityStatisticMap';
 import { SearchBar } from '../../components/Navigator/SearchBar';
 import OrganizationCharts from '../../components/Organization/Charts';
-
 import { OrganizationModel, OrganizationStatistic } from '../../models/Organization';
 import { I18nContext } from '../../models/Translation';
 

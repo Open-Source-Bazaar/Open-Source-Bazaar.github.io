@@ -100,7 +100,7 @@ export default {
   landscape: 'Landscape',
   join_the_public_interest_map: 'Join the Public Interest Map',
   about_China_NGO_Map: 'About China Public Interest Map',
-  China_NGO_Map_description: 
+  China_NGO_Map_description:
     'China Public Interest Map is a visualization platform showcasing the distribution and development status of public interest organizations in China, helping the public understand the current state of the public interest ecosystem.',
   by_year: 'By Year',
   by_city: 'By City',
@@ -108,7 +108,7 @@ export default {
   by_tag: 'By Tag',
   organizations: 'Organizations',
   no_data_available: 'No data available',
-  
+
   // Organization interface translations
   filter: 'Filter',
   reset: 'Reset',
@@ -117,7 +117,7 @@ export default {
   type: 'Type',
   tag: 'Tag',
   total: 'Total',
-  organizations: 'Organizations',
-  landscape_data_loading_message: 'Public interest organization data is loading, please try again later.',
+  landscape_data_loading_message:
+    'Public interest organization data is loading, please try again later.',
   visit_website: 'Visit Website',
 };
