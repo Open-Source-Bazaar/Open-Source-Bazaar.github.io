@@ -97,14 +97,6 @@ export default {
   China_NGO_Landscape: '中国公益生态图',
   open_source_public_interest_plan: '开源公益计划',
   landscape: '生态图',
-  join_the_public_interest_map: '加入公益地图',
-  about_China_NGO_Map: '关于中国公益地图',
-  China_NGO_Map_description:
-    '中国公益地图是一个展示中国公益组织分布和发展状况的可视化平台，帮助公众了解公益生态现状。',
-  by_year: '按年份',
-  by_city: '按城市',
-  by_type: '按类型',
-  by_tag: '按标签',
   organizations: '组织',
   no_data_available: '暂无数据',
   landscape_data_loading_message: '公益组织数据正在加载中，请稍后再试。',
@@ -118,4 +110,18 @@ export default {
   tag: '标签',
   total: '共',
   visit_website: '访问官网',
+
+  // Chart distribution titles
+  ngo_area_distribution: 'NGO 地区分布',
+  ngo_service_distribution: 'NGO 服务分布', 
+  ngo_type_distribution: 'NGO 类型分布',
+
+  // Home page sections
+  participate: '参与',
+  code_work: '代码工作',
+  non_code_work: '非代码工作',
+  action: '行动',
+  we_are_organizing_bazaar: '我们正在筹办 3 月开源市集，欢迎参与！',
+  welcome_open_collaboration: '欢迎参与',
+  open_collaboration: '开放式协作',
 };

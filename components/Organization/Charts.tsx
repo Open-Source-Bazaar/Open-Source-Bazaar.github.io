@@ -16,7 +16,7 @@ const OrganizationCharts: FC<OrganizationStatistic> = observer(
     return (
       <div style={{ minHeight: '70vh' }}>
         <SVGCharts>
-          <Title>NGO 地区分布</Title>
+          <Title>{t('ngo_area_distribution')}</Title>
           <XAxis type="category" data={areaList.map(([key]) => key)} />
           <YAxis type="value" />
           <BarSeries data={areaList.map(([{}, value]) => value)} />
@@ -24,7 +24,7 @@ const OrganizationCharts: FC<OrganizationStatistic> = observer(
         </SVGCharts>
 
         <SVGCharts>
-          <Title>NGO 服务分布</Title>
+          <Title>{t('ngo_service_distribution')}</Title>
           <XAxis type="category" data={categoryList.map(([key]) => key)} />
           <YAxis type="value" />
           <BarSeries data={categoryList.map(([{}, value]) => value)} />
@@ -32,7 +32,7 @@ const OrganizationCharts: FC<OrganizationStatistic> = observer(
         </SVGCharts>
 
         <SVGCharts className="col-auto">
-          <Title>NGO 类型分布</Title>
+          <Title>{t('ngo_type_distribution')}</Title>
           <PieSeries data={typeList.map(([name, value]) => ({ name, value }))} />
           <Tooltip trigger="item" />
         </SVGCharts>

@@ -98,14 +98,6 @@ export default {
   China_NGO_Landscape: 'China Public Interest Landscape',
   open_source_public_interest_plan: 'Open Source Public Interest Plan',
   landscape: 'Landscape',
-  join_the_public_interest_map: 'Join the Public Interest Map',
-  about_China_NGO_Map: 'About China Public Interest Map',
-  China_NGO_Map_description:
-    'China Public Interest Map is a visualization platform showcasing the distribution and development status of public interest organizations in China, helping the public understand the current state of the public interest ecosystem.',
-  by_year: 'By Year',
-  by_city: 'By City',
-  by_type: 'By Type',
-  by_tag: 'By Tag',
   organizations: 'Organizations',
   no_data_available: 'No data available',
 
@@ -120,4 +112,18 @@ export default {
   landscape_data_loading_message:
     'Public interest organization data is loading, please try again later.',
   visit_website: 'Visit Website',
+
+  // Chart distribution titles
+  ngo_area_distribution: 'NGO Area Distribution',
+  ngo_service_distribution: 'NGO Service Distribution',
+  ngo_type_distribution: 'NGO Type Distribution',
+
+  // Home page sections
+  participate: 'Participate',
+  code_work: 'Code Work',
+  non_code_work: 'Non-Code Work',
+  action: 'Action',
+  we_are_organizing_bazaar: 'We are organizing the March Open Source Bazaar, welcome to participate!',
+  welcome_open_collaboration: 'Welcome to participate in',
+  open_collaboration: 'Open Collaboration',
 };
