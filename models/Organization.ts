@@ -1,6 +1,7 @@
 import { observable } from 'mobx';
+import { toggle } from 'mobx-restful';
 import { Base, Searchable, SearchableFilter, StrapiListModel } from 'mobx-strapi';
-import { changeMonth, countBy, formatDate, groupBy } from 'web-utility';
+import { countBy, groupBy } from 'web-utility';
 
 import { Organization } from '@open-source-bazaar/china-ngo-database';
 import { strapiClient } from './Base';
@@ -19,35 +20,33 @@ export class OrganizationModel extends Searchable<Organization & Base>(StrapiLis
   baseURI = 'organizations';
   client = strapiClient;
 
+  sort = { establishedDate: 'asc' } as const;
+
+  dateKeys = ['establishedDate'] as const;
+
   searchKeys = ['name', 'description', 'coverageArea'] as const;
 
   @observable
   accessor statistic = {} as OrganizationStatistic;
 
   @observable
-  accessor categoryMap: Record<string, Organization[]> = {};
+  accessor typeMap: Record<string, Organization[]> = {};
 
-  makeFilter(
-    pageIndex: number,
-    pageSize: number,
-    { keywords, ...filter }: SearchableFilter<Organization & Base>,
-  ) {
-    if (keywords) return super.makeFilter(pageIndex, pageSize, { keywords, ...filter });
+  @toggle('downloading')
+  async getYearRange() {
+    const now = Date.now(),
+      organizationStore = new OrganizationModel();
 
-    const meta = super.makeFilter(pageIndex, pageSize, filter);
+    const [{ establishedDate: start } = {}] = await organizationStore.getList({}, 1, 1);
 
-    const { establishedDate } = filter;
+    Object.assign(organizationStore, { sort: { establishedDate: 'desc' } });
 
-    const timeRangeFilter =
-      establishedDate?.length === 4
-        ? { $gte: `${establishedDate}-01-01`, $lt: `${+establishedDate + 1}-01-01` }
-        : establishedDate?.length === 7
-          ? {
-              $gte: `${establishedDate}-01`,
-              $lte: `${formatDate(changeMonth(establishedDate, 1), 'YYYY-MM')}-01`,
-            }
-          : {};
-    return { ...meta, filters: { ...meta.filters, establishedDate: timeRangeFilter } };
+    const [{ establishedDate: end } = {}] = await organizationStore.getList({}, 1, 1);
+
+    const startYear = new Date(start || now).getFullYear(),
+      endYear = new Date(end || now).getFullYear();
+
+    return [startYear, endYear] as const;
   }
 
   async getStatistic(filter?: SearchableFilter<Organization & Base>) {
@@ -67,14 +66,10 @@ export class OrganizationModel extends Searchable<Organization & Base>(StrapiLis
     return (this.statistic = { ...statistic, serviceCategory } as OrganizationStatistic);
   }
 
-  async groupAllByTags(filter?: SearchableFilter<Organization & Base>) {
+  async groupAllByType(filter?: SearchableFilter<Organization & Base>) {
     const allData = await this.getAll(filter);
 
-    return (this.categoryMap = groupBy(
-      allData,
-      ({ services }) =>
-        services?.map(({ serviceCategory }) => serviceCategory!).filter(Boolean) || [],
-    ));
+    return (this.typeMap = groupBy(allData, 'entityType'));
   }
 }
 export default new OrganizationModel();

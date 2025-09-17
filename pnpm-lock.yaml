@@ -70,14 +70,14 @@ importers:
         specifier: ^0.5.1
         version: 0.5.1(mobx@6.13.7)(react@19.1.1)(typescript@5.9.2)
       mobx-restful:
-        specifier: ^2.1.0
-        version: 2.1.0(core-js@3.45.1)(mobx@6.13.7)(typescript@5.9.2)
+        specifier: ^2.1.1
+        version: 2.1.1(core-js@3.45.1)(mobx@6.13.7)(typescript@5.9.2)
       mobx-restful-table:
         specifier: ^2.5.4
         version: 2.5.4(@types/react@19.1.13)(core-js@3.45.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.9.2)
       mobx-strapi:
-        specifier: ^0.7.2
-        version: 0.7.2(core-js@3.45.1)(typescript@5.9.2)
+        specifier: ^0.7.4
+        version: 0.7.4(core-js@3.45.1)(typescript@5.9.2)
       next:
         specifier: ^15.5.3
         version: 15.5.3(@babel/core@7.28.4)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.92.1)
@@ -112,8 +112,8 @@ importers:
         specifier: ^7.16.0
         version: 7.16.0
       web-utility:
-        specifier: ^4.6.0
-        version: 4.6.0(typescript@5.9.2)
+        specifier: ^4.6.1
+        version: 4.6.1(typescript@5.9.2)
       yaml:
         specifier: ^2.8.1
         version: 2.8.1
@@ -155,8 +155,8 @@ importers:
         specifier: ^5.6.9
         version: 5.6.9(@babel/core@7.28.4)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.92.1)
       '@types/node':
-        specifier: ^22.18.4
-        version: 22.18.4
+        specifier: ^22.18.5
+        version: 22.18.5
       '@types/react':
         specifier: ^19.1.13
         version: 19.1.13
@@ -1658,8 +1658,8 @@ packages:
   '@types/next-pwa@5.6.9':
     resolution: {integrity: sha512-KcymH+MtFYB5KVKIOH1DMqd0wUb8VLCxzHtsaRQQ7S8sGOaTH24Lo2vGZf6/0Ok9e+xWCKhqsSt6cgDJTk91Iw==}
 
-  '@types/node@22.18.4':
-    resolution: {integrity: sha512-UJdblFqXymSBhmZf96BnbisoFIr8ooiiBRMolQgg77Ea+VM37jXw76C2LQr9n8wm9+i/OvlUlW6xSvqwzwqznw==}
+  '@types/node@22.18.5':
+    resolution: {integrity: sha512-g9BpPfJvxYBXUWI9bV37j6d6LTMNQ88hPwdWWUeYZnMhlo66FIg9gCc1/DZb15QylJSKwOZjwrckvOTWpOiChg==}
 
   '@types/prop-types@15.7.15':
     resolution: {integrity: sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==}
@@ -2049,8 +2049,8 @@ packages:
   browser-fs-access@0.37.0:
     resolution: {integrity: sha512-MKpvZrKtv6pBJ2ACd+VwfS9XauBKTMVZg2UBibypuK1gfiXM7euZjbdKmvRsyxeQRhfzNVQrzCSVGXs19/LP8Q==}
 
-  browserslist@4.26.0:
-    resolution: {integrity: sha512-P9go2WrP9FiPwLv3zqRD/Uoxo0RSHjzFCiQz7d4vbmwNqQFo9T9WCeP/Qn5EbcKQY6DBbkxEXNcpJOmncNrb7A==}
+  browserslist@4.26.2:
+    resolution: {integrity: sha512-ECFzp6uFOSB+dcZ5BK/IBaGWssbSYBHvuMeMt3MMFyhI0Z8SqGgEkBLARgpRH3hutIgPVsALcMwbDrJqPxQ65A==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
@@ -2084,8 +2084,8 @@ packages:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
     engines: {node: '>=6'}
 
-  caniuse-lite@1.0.30001741:
-    resolution: {integrity: sha512-QGUGitqsc8ARjLdgAfxETDhRbJ0REsP6O3I96TAth/mVjh2cYzN2u+3AzPP3aVSm2FehEItaJw1xd+IGBXWeSw==}
+  caniuse-lite@1.0.30001743:
+    resolution: {integrity: sha512-e6Ojr7RV14Un7dz6ASD0aZDmQPT/A+eZU+nuTNfjqmRrmkmQlnTNWH0SKmqagx9PeW87UVqapSurtAXifmtdmw==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -2400,8 +2400,8 @@ packages:
     engines: {node: '>=0.10.0'}
     hasBin: true
 
-  electron-to-chromium@1.5.218:
-    resolution: {integrity: sha512-uwwdN0TUHs8u6iRgN8vKeWZMRll4gBkz+QMqdS7DDe49uiK68/UX92lFb61oiFPrpYZNeZIqa4bA7O6Aiasnzg==}
+  electron-to-chromium@1.5.219:
+    resolution: {integrity: sha512-JqaXfxHOS0WvKweEnrPHWRm8cnPVbdB7vXCQHPPFoAJFM3xig5/+/H08ZVkvJf4unvj8yncKy6MerOPj1NW1GQ==}
 
   emoji-regex@10.5.0:
     resolution: {integrity: sha512-lb49vf1Xzfx080OKA0o6l8DQQpV+6Vg95zyCJX9VB/BqKYlhG7N4wgROUUHRA+ZPUefLnteQOad7z1kT2bV7bg==}
@@ -3633,13 +3633,13 @@ packages:
     peerDependencies:
       react: '>=16.8'
 
-  mobx-restful@2.1.0:
-    resolution: {integrity: sha512-5fuTDldCPwU+Ji/ea5UGza8Nd1FbM4qEI5w+e/SESTrimchcAx8nvO4zWuNB/OEm3dsVqo8eMASdhnaJ5FRS8g==}
+  mobx-restful@2.1.1:
+    resolution: {integrity: sha512-xl9FtboM39Ec0aC7N8IESj6qmuMZP4G69cFiswOeITcqmAKydNM4H8i80kJz0hFPdwHQnV2RyEXUUYDlHCzekA==}
     peerDependencies:
       mobx: '>=6.11'
 
-  mobx-strapi@0.7.2:
-    resolution: {integrity: sha512-dmoNtHMQqVNxUYeDtfJ9BJyGugnvMmh1rAgZ/VBt/N1PoEH/DF1+Dced9L3SBlvjzc9hbJvwQpdv/2hN1cGgBw==}
+  mobx-strapi@0.7.4:
+    resolution: {integrity: sha512-PAjGf5A754UpW/rFwM/vMkkRGIABiTMn5OS3+5NO0qWnNfRFvEaEKS89IlEr4iJ7OakPVIUoO7ELq8n4klbFrg==}
 
   mobx@6.13.7:
     resolution: {integrity: sha512-aChaVU/DO5aRPmk1GX8L+whocagUUpBQqoPtJk+cm7UOXUk87J4PeWCh6nNmTTIfEhiR9DI/+FnA8dln/hTK7g==}
@@ -4663,8 +4663,8 @@ packages:
     resolution: {integrity: sha512-0rYDzGOh9EZpig92umN5g5D/9A1Kff7k0/mzPSSCY8jEQeYkgRMoY7LhbXtUCWzLCMX0TUE9aoHkjFNB7D9pfA==}
     engines: {node: '>= 8'}
 
-  web-utility@4.6.0:
-    resolution: {integrity: sha512-AQDfhUs69CWv7lS37kTL5tdF+keRYHM0JnlgMee5zGWbZX0/NQwRX+o3Ns0gC34kqKTFrFwJPr6FN+IlwWuXGg==}
+  web-utility@4.6.1:
+    resolution: {integrity: sha512-UjV8A0ELm0Dxmar4mUrX4WekHIJFeg67cWZU8pCO1rvB5l/6YBzrWrmRWxh/HdH3lrrjs+0EJ98XUkDGGjWqDg==}
     peerDependencies:
       element-internals-polyfill: '>=1'
       typescript: '>=4.1'
@@ -4842,7 +4842,7 @@ snapshots:
     dependencies:
       '@babel/compat-data': 7.28.4
       '@babel/helper-validator-option': 7.27.1
-      browserslist: 4.26.0
+      browserslist: 4.26.2
       lru-cache: 5.1.1
       semver: 6.3.1
 
@@ -6281,21 +6281,21 @@ snapshots:
 
   '@types/accepts@1.3.7':
     dependencies:
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
 
   '@types/body-parser@1.19.6':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
 
   '@types/co-body@6.1.3':
     dependencies:
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
       '@types/qs': 6.14.0
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
 
   '@types/content-disposition@0.5.9': {}
 
@@ -6304,7 +6304,7 @@ snapshots:
       '@types/connect': 3.4.38
       '@types/express': 5.0.3
       '@types/keygrip': 1.0.6
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
 
   '@types/debug@4.1.12':
     dependencies:
@@ -6322,7 +6322,7 @@ snapshots:
 
   '@types/express-serve-static-core@5.0.7':
     dependencies:
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.5
@@ -6338,7 +6338,7 @@ snapshots:
   '@types/glob@7.2.0':
     dependencies:
       '@types/minimatch': 6.0.0
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
 
   '@types/hast@3.0.4':
     dependencies:
@@ -6355,7 +6355,7 @@ snapshots:
   '@types/jsonwebtoken@9.0.10':
     dependencies:
       '@types/ms': 2.1.0
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
 
   '@types/keygrip@1.0.6': {}
 
@@ -6372,7 +6372,7 @@ snapshots:
       '@types/http-errors': 2.0.5
       '@types/keygrip': 1.0.6
       '@types/koa-compose': 3.2.8
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
 
   '@types/koa__router@12.0.4':
     dependencies:
@@ -6400,7 +6400,7 @@ snapshots:
 
   '@types/next-pwa@5.6.9(@babel/core@7.28.4)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.92.1)':
     dependencies:
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
       '@types/react': 19.1.13
       '@types/react-dom': 19.1.9(@types/react@19.1.13)
       next: 15.5.3(@babel/core@7.28.4)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.92.1)
@@ -6417,7 +6417,7 @@ snapshots:
       - sass
       - supports-color
 
-  '@types/node@22.18.4':
+  '@types/node@22.18.5':
     dependencies:
       undici-types: 6.21.0
 
@@ -6441,17 +6441,17 @@ snapshots:
 
   '@types/resolve@1.17.1':
     dependencies:
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
 
   '@types/send@0.17.5':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
 
   '@types/serve-static@1.15.8':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
       '@types/send': 0.17.5
 
   '@types/trusted-types@2.0.7': {}
@@ -6824,13 +6824,13 @@ snapshots:
 
   browser-fs-access@0.37.0: {}
 
-  browserslist@4.26.0:
+  browserslist@4.26.2:
     dependencies:
       baseline-browser-mapping: 2.8.4
-      caniuse-lite: 1.0.30001741
-      electron-to-chromium: 1.5.218
+      caniuse-lite: 1.0.30001743
+      electron-to-chromium: 1.5.219
       node-releases: 2.0.21
-      update-browserslist-db: 1.1.3(browserslist@4.26.0)
+      update-browserslist-db: 1.1.3(browserslist@4.26.2)
 
   buffer-equal-constant-time@1.0.1: {}
 
@@ -6859,7 +6859,7 @@ snapshots:
 
   callsites@3.1.0: {}
 
-  caniuse-lite@1.0.30001741: {}
+  caniuse-lite@1.0.30001743: {}
 
   ccount@2.0.1: {}
 
@@ -6983,7 +6983,7 @@ snapshots:
 
   core-js-compat@3.45.1:
     dependencies:
-      browserslist: 4.26.0
+      browserslist: 4.26.2
 
   core-js@3.45.1: {}
 
@@ -7177,7 +7177,7 @@ snapshots:
       echarts: 5.6.0
       lodash: 4.17.21
       react: 19.1.1
-      web-utility: 4.6.0(typescript@5.9.2)
+      web-utility: 4.6.1(typescript@5.9.2)
     transitivePeerDependencies:
       - element-internals-polyfill
       - typescript
@@ -7198,7 +7198,7 @@ snapshots:
       regenerator-runtime: 0.14.1
       turndown: 7.2.1
       turndown-plugin-gfm: 1.0.2
-      web-utility: 4.6.0(typescript@5.9.2)
+      web-utility: 4.6.1(typescript@5.9.2)
     transitivePeerDependencies:
       - element-internals-polyfill
       - typescript
@@ -7209,7 +7209,7 @@ snapshots:
     dependencies:
       jake: 10.9.4
 
-  electron-to-chromium@1.5.218: {}
+  electron-to-chromium@1.5.219: {}
 
   emoji-regex@10.5.0: {}
 
@@ -7937,7 +7937,7 @@ snapshots:
       react-dom: 19.1.1(react@19.1.1)
       react-editor-js: 2.1.0(@editorjs/editorjs@2.31.0)(@editorjs/paragraph@2.11.7)(react@19.1.1)
       react-element-to-jsx-string: 17.0.1(react-dom@19.1.1(react@19.1.1))(react-is@16.13.1)(react@19.1.1)
-      web-utility: 4.6.0(typescript@5.9.2)
+      web-utility: 4.6.1(typescript@5.9.2)
     transitivePeerDependencies:
       - '@types/react'
       - element-internals-polyfill
@@ -8172,13 +8172,13 @@ snapshots:
 
   jest-worker@26.6.2:
     dependencies:
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
       merge-stream: 2.0.0
       supports-color: 7.2.0
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -8288,7 +8288,7 @@ snapshots:
       core-js: 3.45.1
       regenerator-runtime: 0.14.1
       web-streams-polyfill: 4.2.0
-      web-utility: 4.6.0(typescript@5.9.2)
+      web-utility: 4.6.1(typescript@5.9.2)
     transitivePeerDependencies:
       - element-internals-polyfill
       - typescript
@@ -8817,8 +8817,8 @@ snapshots:
       koajax: 3.1.2(core-js@3.45.1)(typescript@5.9.2)
       lodash: 4.17.21
       mobx: 6.13.7
-      mobx-restful: 2.1.0(core-js@3.45.1)(mobx@6.13.7)(typescript@5.9.2)
-      web-utility: 4.6.0(typescript@5.9.2)
+      mobx-restful: 2.1.1(core-js@3.45.1)(mobx@6.13.7)(typescript@5.9.2)
+      web-utility: 4.6.1(typescript@5.9.2)
     transitivePeerDependencies:
       - core-js
       - element-internals-polyfill
@@ -8828,10 +8828,10 @@ snapshots:
   mobx-i18n@0.7.2(mobx@6.13.7)(typescript@5.9.2):
     dependencies:
       '@swc/helpers': 0.5.17
-      '@types/node': 22.18.4
+      '@types/node': 22.18.5
       mobx: 6.13.7
       regenerator-runtime: 0.14.1
-      web-utility: 4.6.0(typescript@5.9.2)
+      web-utility: 4.6.1(typescript@5.9.2)
     transitivePeerDependencies:
       - element-internals-polyfill
       - typescript
@@ -8843,10 +8843,10 @@ snapshots:
       koajax: 3.1.2(core-js@3.45.1)(typescript@5.9.2)
       lodash.memoize: 4.1.2
       mobx: 6.13.7
-      mobx-restful: 2.1.0(core-js@3.45.1)(mobx@6.13.7)(typescript@5.9.2)
+      mobx-restful: 2.1.1(core-js@3.45.1)(mobx@6.13.7)(typescript@5.9.2)
       react: 19.1.1
       regenerator-runtime: 0.14.1
-      web-utility: 4.6.0(typescript@5.9.2)
+      web-utility: 4.6.1(typescript@5.9.2)
     transitivePeerDependencies:
       - core-js
       - element-internals-polyfill
@@ -8859,7 +8859,7 @@ snapshots:
       lodash.isequalwith: 4.4.0
       mobx: 6.13.7
       react: 19.1.1
-      web-utility: 4.6.0(typescript@5.9.2)
+      web-utility: 4.6.1(typescript@5.9.2)
     transitivePeerDependencies:
       - element-internals-polyfill
       - typescript
@@ -8889,12 +8889,12 @@ snapshots:
       mobx-i18n: 0.7.2(mobx@6.13.7)(typescript@5.9.2)
       mobx-react: 9.2.0(mobx@6.13.7)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       mobx-react-helper: 0.5.1(mobx@6.13.7)(react@19.1.1)(typescript@5.9.2)
-      mobx-restful: 2.1.0(core-js@3.45.1)(mobx@6.13.7)(typescript@5.9.2)
+      mobx-restful: 2.1.1(core-js@3.45.1)(mobx@6.13.7)(typescript@5.9.2)
       react: 19.1.1
       react-bootstrap: 2.10.10(@types/react@19.1.13)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react-bootstrap-editor: 2.1.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.9.2)
       regenerator-runtime: 0.14.1
-      web-utility: 4.6.0(typescript@5.9.2)
+      web-utility: 4.6.1(typescript@5.9.2)
     transitivePeerDependencies:
       - '@types/react'
       - core-js
@@ -8904,30 +8904,30 @@ snapshots:
       - react-native
       - typescript
 
-  mobx-restful@2.1.0(core-js@3.45.1)(mobx@6.13.7)(typescript@5.9.2):
+  mobx-restful@2.1.1(core-js@3.45.1)(mobx@6.13.7)(typescript@5.9.2):
     dependencies:
       '@swc/helpers': 0.5.17
       idb-keyval: 6.2.2
       koajax: 3.1.2(core-js@3.45.1)(typescript@5.9.2)
       mobx: 6.13.7
       regenerator-runtime: 0.14.1
-      web-utility: 4.6.0(typescript@5.9.2)
+      web-utility: 4.6.1(typescript@5.9.2)
     transitivePeerDependencies:
       - core-js
       - element-internals-polyfill
       - jsdom
       - typescript
 
-  mobx-strapi@0.7.2(core-js@3.45.1)(typescript@5.9.2):
+  mobx-strapi@0.7.4(core-js@3.45.1)(typescript@5.9.2):
     dependencies:
       '@swc/helpers': 0.5.17
       idb-keyval: 6.2.2
       koajax: 3.1.2(core-js@3.45.1)(typescript@5.9.2)
       mobx: 6.13.7
-      mobx-restful: 2.1.0(core-js@3.45.1)(mobx@6.13.7)(typescript@5.9.2)
+      mobx-restful: 2.1.1(core-js@3.45.1)(mobx@6.13.7)(typescript@5.9.2)
       qs: 6.14.0
       regenerator-runtime: 0.14.1
-      web-utility: 4.6.0(typescript@5.9.2)
+      web-utility: 4.6.1(typescript@5.9.2)
     transitivePeerDependencies:
       - core-js
       - element-internals-polyfill
@@ -8985,7 +8985,7 @@ snapshots:
       next: 15.5.3(@babel/core@7.28.4)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.92.1)
       react: 19.1.1
       tslib: 2.8.1
-      web-utility: 4.6.0(typescript@5.9.2)
+      web-utility: 4.6.1(typescript@5.9.2)
     transitivePeerDependencies:
       - element-internals-polyfill
       - supports-color
@@ -9002,7 +9002,7 @@ snapshots:
     dependencies:
       '@next/env': 15.5.3
       '@swc/helpers': 0.5.15
-      caniuse-lite: 1.0.30001741
+      caniuse-lite: 1.0.30001743
       postcss: 8.4.31
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
@@ -9093,7 +9093,7 @@ snapshots:
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
       react-leaflet: 5.0.0(leaflet@1.9.4)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      web-utility: 4.6.0(typescript@5.9.2)
+      web-utility: 4.6.1(typescript@5.9.2)
     transitivePeerDependencies:
       - core-js
       - element-internals-polyfill
@@ -9271,7 +9271,7 @@ snapshots:
       mobx-react-helper: 0.5.1(mobx@6.13.7)(react@19.1.1)(typescript@5.9.2)
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
-      web-utility: 4.6.0(typescript@5.9.2)
+      web-utility: 4.6.1(typescript@5.9.2)
     transitivePeerDependencies:
       - element-internals-polyfill
       - react-native
@@ -10107,9 +10107,9 @@ snapshots:
 
   upath@1.2.0: {}
 
-  update-browserslist-db@1.1.3(browserslist@4.26.0):
+  update-browserslist-db@1.1.3(browserslist@4.26.2):
     dependencies:
-      browserslist: 4.26.0
+      browserslist: 4.26.2
       escalade: 3.2.0
       picocolors: 1.1.1
 
@@ -10147,7 +10147,7 @@ snapshots:
 
   web-streams-polyfill@4.2.0: {}
 
-  web-utility@4.6.0(typescript@5.9.2):
+  web-utility@4.6.1(typescript@5.9.2):
     dependencies:
       '@swc/helpers': 0.5.17
       regenerator-runtime: 0.14.1

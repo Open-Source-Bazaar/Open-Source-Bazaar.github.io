@@ -9,6 +9,7 @@ import { buildURLData } from 'web-utility';
 import { CardPage, CardPageProps } from '../../../components/Layout/CardPage';
 import { PageHead } from '../../../components/Layout/PageHead';
 import { SearchBar } from '../../../components/Navigator/SearchBar';
+import { OrganizationCard } from '../../../components/Organization/Card';
 import systemStore, { SearchPageMeta } from '../../../models/System';
 import { i18n, I18nContext } from '../../../models/Translation';
 
@@ -42,7 +43,7 @@ const SearchNameMap = ({ t }: typeof i18n): Record<string, string> => ({
 });
 
 const SearchCardMap: Record<string, CardPageProps['Card']> = {
-  NGO: ({ name }) => <div>{name}</div>,
+  NGO: OrganizationCard,
 };
 
 const SearchModelPage: FC<SearchModelPageProps> = observer(

@@ -11,12 +11,12 @@ import systemStore from '../../models/System';
 import { OrganizationCard } from './Card';
 import styles from './LandScape.module.less';
 
-export type OpenCollaborationLandscapeProps = Pick<OrganizationModel, 'categoryMap'>;
+export type OpenCollaborationLandscapeProps = Pick<OrganizationModel, 'typeMap'>;
 
 @observer
 export class OpenCollaborationLandscape extends Component<OpenCollaborationLandscapeProps> {
   @observable
-  accessor itemSize = 5;
+  accessor itemSize = 2;
 
   modal = new Dialog<{ name?: string }>(({ defer, name }) => (
     <Modal show={!!defer} onHide={() => defer?.resolve()}>
@@ -28,7 +28,7 @@ export class OpenCollaborationLandscape extends Component<OpenCollaborationLands
   ));
 
   renderCard(name: string) {
-    const organization = Object.values(this.props.categoryMap)
+    const organization = Object.values(this.props.typeMap)
       .flat()
       .find(({ name: n }) => n === name);
 
@@ -45,7 +45,7 @@ export class OpenCollaborationLandscape extends Component<OpenCollaborationLands
       className={`border ${styles.listItem}`}
       onClick={() => this.modal.open({ name: name as string })}
     >
-      <div style={{ fontSize: this.itemSize + 'rem' }}>
+      <div className="text-nowrap" style={{ fontSize: this.itemSize + 'rem' }}>
         {name.slice(0, 2)}
         <br />
         {name.slice(2, 4)}
@@ -55,7 +55,7 @@ export class OpenCollaborationLandscape extends Component<OpenCollaborationLands
 
   render() {
     const { screenNarrow } = systemStore;
-    const rows = splitArray(Object.entries(this.props.categoryMap), 2);
+    const rows = splitArray(Object.entries(this.props.typeMap), 2);
 
     return (
       <>
