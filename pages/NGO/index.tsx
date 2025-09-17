@@ -22,7 +22,7 @@ const OrganizationHomePage: FC<InferGetServerSidePropsType<typeof getServerSideP
     return (
       <Container className="py-5">
         <PageHead title={t('China_NGO_DB')} />
-        <h1 className="text-center">{t('China_NGO_DB')}</h1>
+        <h1 className="text-center my-4">{t('China_NGO_DB')} 2.0</h1>
 
         <ZodiacBar {...props} itemOf={year => ({ title: year, link: `/NGO/${year}` })} />
       </Container>
