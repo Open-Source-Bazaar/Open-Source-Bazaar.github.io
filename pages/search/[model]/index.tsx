@@ -39,7 +39,7 @@ export const getServerSideProps = compose<{ model: string }, SearchModelPageProp
 );
 
 const SearchNameMap = ({ t }: typeof i18n): Record<string, string> => ({
-  NGO: t('ngo'),
+  NGO: t('NGO'),
 });
 
 const SearchCardMap: Record<string, CardPageProps['Card']> = {

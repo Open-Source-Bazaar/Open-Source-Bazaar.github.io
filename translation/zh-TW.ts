@@ -19,6 +19,15 @@ export default {
   load_more: '加載更多……',
   no_more: '沒有更多',
 
+  // Home page sections
+  participate: '參與',
+  code_work: '代碼工作',
+  non_code_work: '非代碼工作',
+  action: '行動',
+  we_are_organizing_bazaar: '我們正在籌辦 3 月開源市集，歡迎參與！',
+  welcome_open_collaboration: '歡迎參與',
+  open_collaboration: '開放式協作',
+
   // Volunteer page
   volunteer: '志工',
   online_volunteer: '線上志工',
@@ -92,36 +101,15 @@ export default {
   view_or_edit_on_github: '在 GitHub 上查看或編輯此內容',
 
   // China Public Interest Map
-  ngo: '公益',
+  NGO: '公益',
+  China_NGO_DB: '中國公益數據庫',
   China_NGO_Map: '中國公益地圖',
   China_NGO_Landscape: '中國公益生態圖',
-  open_source_public_interest_plan: '開源公益計劃',
+  Open_Source_NGO_plan: '開源公益計劃',
   landscape: '生態圖',
-  organizations: '組織',
-  no_data_available: '暫無數據',
-  landscape_data_loading_message: '公益組織數據正在加載中，請稍後再試。',
-
-  // Organization interface translations
-  filter: '篩選',
-  reset: '重置',
-  map: '地圖',
-  chart: '圖表',
-  type: '類型',
-  tag: '標籤',
-  total: '共',
-  visit_website: '訪問官網',
 
   // Chart distribution titles
-  ngo_area_distribution: 'NGO 地區分佈',
-  ngo_service_distribution: 'NGO 服務分佈',
-  ngo_type_distribution: 'NGO 類型分佈',
-
-  // Home page sections
-  participate: '參與',
-  code_work: '代碼工作',
-  non_code_work: '非代碼工作',
-  action: '行動',
-  we_are_organizing_bazaar: '我們正在籌辦 3 月開源市集，歡迎參與！',
-  welcome_open_collaboration: '歡迎參與',
-  open_collaboration: '開放式協作',
+  NGO_area_distribution: 'NGO 地區分佈',
+  NGO_service_distribution: 'NGO 服務分佈',
+  NGO_type_distribution: 'NGO 類型分佈',
 };

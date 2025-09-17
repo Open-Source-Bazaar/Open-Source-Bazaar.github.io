@@ -53,13 +53,13 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
     ],
   },
   {
-    title: t('ngo'),
+    title: t('NGO'),
     subs: [
       { href: '/ngo', title: t('China_NGO_Map') },
       { href: '/ngo/landscape', title: t('China_NGO_Landscape') },
-      { 
-        href: 'https://open-source-bazaar.feishu.cn/wiki/VGrMwiweVivWrHkTcvpcJTjjnoY', 
-        title: t('open_source_public_interest_plan') 
+      {
+        href: 'https://open-source-bazaar.feishu.cn/wiki/VGrMwiweVivWrHkTcvpcJTjjnoY',
+        title: t('Open_Source_NGO_plan'),
       },
     ],
   },
