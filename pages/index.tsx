@@ -1,11 +1,17 @@
+import { observer } from 'mobx-react';
+import { FC, useContext } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { renderToStaticMarkup } from 'react-dom/server';
 import ReactTyped from 'react-typed-component';
 
 import { PageHead } from '../components/Layout/PageHead';
+import { I18nContext } from '../models/Translation';
 import styles from '../styles/Home.module.scss';
 
-const HomePage = () => (
+const HomePage: FC = observer(() => {
+  const { t } = useContext(I18nContext);
+
+  return (
   <>
     <PageHead />
 
@@ -38,7 +44,7 @@ const HomePage = () => (
             ),
             renderToStaticMarkup(
               <>
-                欢迎参与<strong>开放式协作</strong>
+                {t('welcome_open_collaboration')}<strong>{t('open_collaboration')}</strong>
               </>,
             ),
             renderToStaticMarkup(
@@ -54,11 +60,11 @@ const HomePage = () => (
     <section
       className={`flex-fill d-flex flex-column justify-content-center align-items-center pb-0 bg-warning bg-opacity-10 ${styles.main}`}
     >
-      <h2 className="text-start mb-5 mt-5 fw-bolder">参与</h2>
+      <h2 className="text-start mb-5 mt-5 fw-bolder">{t('participate')}</h2>
       <Row className="flex-fill d-flex justify-content-around align-items-center w-100 px-3">
         <Col xs={8} sm={7} md={4} className="pb-5">
           <Card body className={`shadow ${styles.activeCard}`}>
-            <h5 className="fw-bold mb-3">代码工作</h5>
+            <h5 className="fw-bold mb-3">{t('code_work')}</h5>
             <ul className="list-unstyled">
               <li className="mb-3">
                 <a
@@ -77,7 +83,7 @@ const HomePage = () => (
         </Col>
         <Col xs={8} sm={7} md={4} className="pb-5">
           <Card body className={`shadow overflow-auto ${styles.activeCard}`}>
-            <h5 className="fw-bold mb-3">非代码工作</h5>
+            <h5 className="fw-bold mb-3">{t('non_code_work')}</h5>
             <ul className="list-unstyled">
               <li className="mb-3">
                 <a href="/history" className="fw-bold">
@@ -113,12 +119,12 @@ const HomePage = () => (
     <section
       className={`flex-fill d-flex flex-column justify-content-center align-items-center pb-0 bg-success bg-opacity-10 ${styles.main}`}
     >
-      <h2 className="text-start mb-5 fw-bolder h1">行动</h2>
+      <h2 className="text-start mb-5 fw-bolder h1">{t('action')}</h2>
       <Row className="d-flex flex-column justify-content-start align-items-center w-100 mb-5">
         <Col className="text-center">
           <figure className="text-center">
             <blockquote className="blockquote mb-4">
-              <p className="h2">我们正在筹办 3 月开源市集，欢迎参与！</p>
+              <p className="h2">{t('we_are_organizing_bazaar')}</p>
             </blockquote>
             <figcaption className="h6 text-muted">
               即兴三月，开源开放！来都来了，玩就是了！👉
@@ -134,6 +140,7 @@ const HomePage = () => (
       </Row>
     </section>
   </>
-);
+  );
+});
 
 export default HomePage;

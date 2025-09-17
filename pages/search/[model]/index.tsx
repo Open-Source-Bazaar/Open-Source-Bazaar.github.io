@@ -1,11 +1,7 @@
 import { observer } from 'mobx-react';
-import {
-  cache,
-  compose,
-  errorLogger,
-  RouteProps,
-  router,
-} from 'next-ssr-middleware';
+import { DataObject } from 'mobx-restful';
+import { SearchableFilter } from 'mobx-strapi';
+import { cache, compose, errorLogger, RouteProps, router } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
 import { Container, Nav } from 'react-bootstrap';
 import { buildURLData } from 'web-utility';
@@ -13,15 +9,13 @@ import { buildURLData } from 'web-utility';
 import { CardPage, CardPageProps } from '../../../components/Layout/CardPage';
 import { PageHead } from '../../../components/Layout/PageHead';
 import { SearchBar } from '../../../components/Navigator/SearchBar';
+import { OrganizationCard } from '../../../components/Organization/Card';
 import systemStore, { SearchPageMeta } from '../../../models/System';
-import { I18nContext } from '../../../models/Translation';
+import { i18n, I18nContext } from '../../../models/Translation';
 
 type SearchModelPageProps = RouteProps<{ model: string }> & SearchPageMeta;
 
-export const getServerSideProps = compose<
-  { model: string },
-  SearchModelPageProps
->(
+export const getServerSideProps = compose<{ model: string }, SearchModelPageProps>(
   cache(),
   router,
   errorLogger,
@@ -32,7 +26,7 @@ export const getServerSideProps = compose<
 
     const store = new Model();
 
-    await store.getSearchList(keywords + '', +page, 9);
+    await store.getList({ keywords } as SearchableFilter<DataObject>, +page, 9);
 
     const { pageIndex, currentPage, pageCount } = store;
 
@@ -44,17 +38,22 @@ export const getServerSideProps = compose<
   },
 );
 
-const SearchNameMap: () => Record<string, string> = () => ({});
+const SearchNameMap = ({ t }: typeof i18n): Record<string, string> => ({
+  NGO: t('NGO'),
+});
 
-const SearchCardMap: Record<string, CardPageProps['Card']> = {};
+const SearchCardMap: Record<string, CardPageProps['Card']> = {
+  NGO: OrganizationCard,
+};
 
 const SearchModelPage: FC<SearchModelPageProps> = observer(
   ({ route: { params, query }, ...pageMeta }) => {
-    const { t } = useContext(I18nContext),
+    const i18n = useContext(I18nContext),
       { model } = params!,
       { keywords = '' } = query,
-      nameMap = SearchNameMap();
-    const name = nameMap[model],
+      nameMap = SearchNameMap(i18n);
+    const { t } = i18n,
+      name = nameMap[model],
       Card = SearchCardMap[model];
     const title = `${keywords} - ${name} ${t('search_results')}`;
 
@@ -65,18 +64,11 @@ const SearchModelPage: FC<SearchModelPageProps> = observer(
         <h1 className="my-3 text-center">{title}</h1>
 
         <header className="d-flex flex-wrap align-items-center gap-3">
-          <SearchBar
-            className="flex-fill"
-            action={`/search/${model}`}
-            defaultValue={keywords}
-          />
+          <SearchBar className="flex-fill" action={`/search/${model}`} defaultValue={keywords} />
           <Nav variant="pills" defaultActiveKey={model}>
             {Object.entries(nameMap).map(([key, value]) => (
               <Nav.Item key={key}>
-                <Nav.Link
-                  eventKey={key}
-                  href={`/search/${key}?keywords=${keywords}`}
-                >
+                <Nav.Link eventKey={key} href={`/search/${key}?keywords=${keywords}`}>
                   {value}
                 </Nav.Link>
               </Nav.Item>
@@ -87,9 +79,7 @@ const SearchModelPage: FC<SearchModelPageProps> = observer(
         <CardPage
           {...{ Card, ...pageMeta }}
           cardLinkOf={model === 'suit' ? id => `/suit/${id}` : undefined}
-          pageLinkOf={page =>
-            `/search/${model}?${buildURLData({ keywords, page })}`
-          }
+          pageLinkOf={page => `/search/${model}?${buildURLData({ keywords, page })}`}
         />
       </Container>
     );

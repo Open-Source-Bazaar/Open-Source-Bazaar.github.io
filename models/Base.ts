@@ -12,6 +12,8 @@ import {
   isServer,
   ProxyBaseURL,
   LARK_API_HOST,
+  STRAPI_API_HOST,
+  STRAPI_API_TOKEN,
 } from './configuration';
 
 export const ownClient = new HTTPClient({
@@ -65,3 +67,15 @@ export function fileURLOf(field: TableCellValue, cache = false) {
 
   return URI;
 }
+
+export const strapiClient = new HTTPClient({
+  baseURI: STRAPI_API_HOST,
+  responseType: 'json',
+}).use(({ request }, next) => {
+  request.headers = {
+    Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+    ...request.headers,
+    'Strapi-Response-Format': 'v4',
+  };
+  return next();
+});

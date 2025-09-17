@@ -19,6 +19,16 @@ export default {
   load_more: 'Load more...',
   no_more: 'No more',
 
+  // Home page sections
+  participate: 'Participate',
+  code_work: 'Code Work',
+  non_code_work: 'Non-Code Work',
+  action: 'Action',
+  we_are_organizing_bazaar:
+    'We are organizing the March Open Source Bazaar, welcome to participate!',
+  welcome_open_collaboration: 'Welcome to participate in',
+  open_collaboration: 'Open Collaboration',
+
   // Volunteer page
   volunteer: 'Volunteer',
   online_volunteer: 'Online Volunteer',
@@ -91,4 +101,17 @@ export default {
   view_original: 'View Original',
   github_document_description: 'This is a document page based on a GitHub repository.',
   view_or_edit_on_github: 'View or edit this content on GitHub',
+
+  // China NGO Map
+  NGO: 'NGO',
+  China_NGO_DB: 'China NGO Database',
+  China_NGO_Map: 'China NGO Map',
+  China_NGO_Landscape: 'China NGO Landscape',
+  Open_Source_NGO_plan: 'Open Source NGO Plan',
+  landscape: 'Landscape',
+
+  // Chart distribution titles
+  NGO_area_distribution: 'NGO Area Distribution',
+  NGO_service_distribution: 'NGO Service Distribution',
+  NGO_type_distribution: 'NGO Type Distribution',
 };

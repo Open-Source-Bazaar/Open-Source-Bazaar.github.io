@@ -19,6 +19,15 @@ export default {
   load_more: '加載更多……',
   no_more: '沒有更多',
 
+  // Home page sections
+  participate: '參與',
+  code_work: '代碼工作',
+  non_code_work: '非代碼工作',
+  action: '行動',
+  we_are_organizing_bazaar: '我們正在籌辦 3 月開源市集，歡迎參與！',
+  welcome_open_collaboration: '歡迎參與',
+  open_collaboration: '開放式協作',
+
   // Volunteer page
   volunteer: '志工',
   online_volunteer: '線上志工',
@@ -90,4 +99,17 @@ export default {
   view_original: '查看原文',
   github_document_description: '這是一個基於 GitHub 存儲庫的文檔頁面。',
   view_or_edit_on_github: '在 GitHub 上查看或編輯此內容',
+
+  // China Public Interest Map
+  NGO: '公益',
+  China_NGO_DB: '中國公益數據庫',
+  China_NGO_Map: '中國公益地圖',
+  China_NGO_Landscape: '中國公益生態圖',
+  Open_Source_NGO_plan: '開源公益計劃',
+  landscape: '生態圖',
+
+  // Chart distribution titles
+  NGO_area_distribution: 'NGO 地區分佈',
+  NGO_service_distribution: 'NGO 服務分佈',
+  NGO_type_distribution: 'NGO 類型分佈',
 };

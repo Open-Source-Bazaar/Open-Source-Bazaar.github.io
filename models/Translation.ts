@@ -1,7 +1,8 @@
-import { loadLanguageMapFrom, parseCookie, TranslationMap, TranslationModel } from 'mobx-i18n';
+import { loadLanguageMapFrom, TranslationMap, TranslationModel } from 'mobx-i18n';
 import { DataObject } from 'mobx-restful';
 import { NextPageContext } from 'next';
 import { createContext } from 'react';
+import { parseCookie } from 'web-utility';
 
 import zhCN from '../translation/zh-CN';
 
