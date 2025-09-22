@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react';
 import { GetStaticProps } from 'next';
-import Link from 'next/link';
 import React, { FC, useContext } from 'react';
-import { Badge, Button, Card, Container } from 'react-bootstrap';
+import { Button, Card, Container } from 'react-bootstrap';
 import { treeFrom } from 'web-utility';
 
+import { ContentTree } from '../../components/Layout/ContentTree';
 import { PageHead } from '../../components/Layout/PageHead';
 import { I18nContext } from '../../models/Translation';
 import { policyContentStore, XContent } from '../../models/Wiki';
@@ -24,32 +24,6 @@ export const getStaticProps: GetStaticProps<{ nodes: XContent[] }> = async () =>
     revalidate: 300, // Revalidate every 5 minutes
   };
 };
-
-const renderTree = (nodes: XContent[], level = 0) => (
-  <ol className={level === 0 ? 'list-unstyled' : ''}>
-    {nodes.map(({ path, name, type, meta, children }) => (
-      <li key={path} className={level > 0 ? 'ms-3' : ''}>
-        {type !== 'dir' ? (
-          <Link className="h4 d-flex align-items-center py-1" href={`/policy/${path}`}>
-            {name}
-
-            {meta?.['主题分类'] && (
-              <Badge bg="secondary" className="ms-2 small">
-                {meta['主题分类']}
-              </Badge>
-            )}
-          </Link>
-        ) : (
-          <details>
-            <summary className="h4">{name}</summary>
-
-            {renderTree(children || [], level + 1)}
-          </details>
-        )}
-      </li>
-    ))}
-  </ol>
-);
 
 const WikiIndexPage: FC<{ nodes: XContent[] }> = observer(({ nodes }) => {
   const { t } = useContext(I18nContext);
@@ -73,7 +47,11 @@ const WikiIndexPage: FC<{ nodes: XContent[] }> = observer(({ nodes }) => {
       </hgroup>
 
       {nodes[0] ? (
-        renderTree(treeFrom(nodes, 'path', 'parent_path', 'children'))
+        <ContentTree 
+          nodes={treeFrom(nodes, 'path', 'parent_path', 'children')} 
+          basePath="/policy"
+          metaKey="主题分类"
+        />
       ) : (
         <Card>
           <Card.Body className="text-muted text-center">

@@ -1,9 +1,10 @@
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
+import { BadgeBar } from 'mobx-restful-table';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { FC, useContext } from 'react';
-import { Badge, Breadcrumb, Button, Container } from 'react-bootstrap';
+import { Breadcrumb, Button, Container } from 'react-bootstrap';
 import { decodeBase64 } from 'web-utility';
 
 import { PageHead } from '../../components/Layout/PageHead';
@@ -68,25 +69,16 @@ const WikiPage: FC<XContent> = observer(({ name, path, parent_path, content, met
 
           {meta && (
             <div className="d-flex flex-wrap align-items-center gap-3 mb-3">
-              <ul className="mb-0">
-                {meta['主题分类'] && (
-                  <li>
-                    <Badge bg="primary">{meta['主题分类']}</Badge>
-                  </li>
-                )}
-                {meta['发文机构'] && (
-                  <li>
-                    <Badge bg="secondary">{meta['发文机构']}</Badge>
-                  </li>
-                )}
-                {meta['有效性'] && (
-                  <li>
-                    <Badge bg={meta['有效性'] === '现行有效' ? 'success' : 'warning'}>
-                      {meta['有效性']}
-                    </Badge>
-                  </li>
-                )}
-              </ul>
+              <BadgeBar 
+                list={[
+                  meta['主题分类'] && { text: meta['主题分类'], color: 'primary' },
+                  meta['发文机构'] && { text: meta['发文机构'], color: 'secondary' },
+                  meta['有效性'] && { 
+                    text: meta['有效性'], 
+                    color: meta['有效性'] === '现行有效' ? 'success' : 'warning' 
+                  }
+                ].filter(Boolean) as Array<{ text: string; color?: string }>}
+              />
             </div>
           )}
 

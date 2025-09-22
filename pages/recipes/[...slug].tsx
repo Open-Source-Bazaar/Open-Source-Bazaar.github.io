@@ -1,9 +1,10 @@
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
+import { BadgeBar } from 'mobx-restful-table';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { FC, useContext } from 'react';
-import { Badge, Breadcrumb, Button, Container } from 'react-bootstrap';
+import { Breadcrumb, Button, Container } from 'react-bootstrap';
 import { decodeBase64 } from 'web-utility';
 
 import { PageHead } from '../../components/Layout/PageHead';
@@ -68,23 +69,13 @@ const RecipePage: FC<XContent> = observer(({ name, path, parent_path, content, m
 
           {meta && (
             <div className="d-flex flex-wrap align-items-center gap-3 mb-3">
-              <ul className="mb-0">
-                {meta['category'] && (
-                  <li>
-                    <Badge bg="primary">{meta['category']}</Badge>
-                  </li>
-                )}
-                {meta['difficulty'] && (
-                  <li>
-                    <Badge bg="secondary">{meta['difficulty']}</Badge>
-                  </li>
-                )}
-                {meta['time'] && (
-                  <li>
-                    <Badge bg="success">{meta['time']}</Badge>
-                  </li>
-                )}
-              </ul>
+              <BadgeBar 
+                list={[
+                  meta['category'] && { text: meta['category'], color: 'primary' },
+                  meta['difficulty'] && { text: meta['difficulty'], color: 'secondary' },
+                  meta['time'] && { text: meta['time'], color: 'success' }
+                ].filter(Boolean) as Array<{ text: string; color?: string }>}
+              />
             </div>
           )}
 
@@ -133,7 +124,7 @@ const RecipePage: FC<XContent> = observer(({ name, path, parent_path, content, m
       <footer className="mt-5 pt-4 border-top">
         <div className="text-center">
           <p className="text-muted">
-            {t('github_recipe_description')}
+            {t('github_document_description')}
             <a
               href={`https://github.com/Gar-b-age/CookLikeHOC/blob/main/${path}`}
               target="_blank"

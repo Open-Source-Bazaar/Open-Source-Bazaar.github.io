@@ -104,7 +104,6 @@ export default {
   recipes: '菜谱',
   servings: '份数',
   prep_time: '准备时间',
-  github_recipe_description: '这是一个基于 GitHub 仓库的菜谱页面。',
 
   // China Public Interest Map
   NGO: '公益',

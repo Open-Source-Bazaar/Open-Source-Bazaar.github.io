@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react';
 import { GetStaticProps } from 'next';
-import Link from 'next/link';
 import React, { FC, useContext } from 'react';
-import { Badge, Button, Card, Container } from 'react-bootstrap';
+import { Button, Card, Container } from 'react-bootstrap';
 import { treeFrom } from 'web-utility';
 
+import { ContentTree } from '../../components/Layout/ContentTree';
 import { PageHead } from '../../components/Layout/PageHead';
 import { I18nContext } from '../../models/Translation';
 import { recipeContentStore, XContent } from '../../models/Wiki';
@@ -24,32 +24,6 @@ export const getStaticProps: GetStaticProps<{ nodes: XContent[] }> = async () =>
     revalidate: 300, // Revalidate every 5 minutes
   };
 };
-
-const renderTree = (nodes: XContent[], level = 0) => (
-  <ol className={level === 0 ? 'list-unstyled' : ''}>
-    {nodes.map(({ path, name, type, meta, children }) => (
-      <li key={path} className={level > 0 ? 'ms-3' : ''}>
-        {type !== 'dir' ? (
-          <Link className="h4 d-flex align-items-center py-1" href={`/recipes/${path}`}>
-            {name}
-
-            {meta?.['category'] && (
-              <Badge bg="secondary" className="ms-2 small">
-                {meta['category']}
-              </Badge>
-            )}
-          </Link>
-        ) : (
-          <details>
-            <summary className="h4">{name}</summary>
-
-            {renderTree(children || [], level + 1)}
-          </details>
-        )}
-      </li>
-    ))}
-  </ol>
-);
 
 const RecipeIndexPage: FC<{ nodes: XContent[] }> = observer(({ nodes }) => {
   const { t } = useContext(I18nContext);
@@ -72,8 +46,25 @@ const RecipeIndexPage: FC<{ nodes: XContent[] }> = observer(({ nodes }) => {
         </Button>
       </hgroup>
 
+      <div className="alert alert-info mb-4" role="alert">
+        <p className="mb-1">
+          <strong>感谢老乡鸡餐饮公司及开源菜谱仓库原作者</strong>
+        </p>
+        <p className="mb-0">
+          本菜谱内容来自{' '}
+          <a href="https://github.com/Gar-b-age/CookLikeHOC" target="_blank" rel="noopener noreferrer">
+            CookLikeHOC 开源菜谱项目
+          </a>
+          ，感谢原作者们的贡献与分享。
+        </p>
+      </div>
+
       {nodes[0] ? (
-        renderTree(treeFrom(nodes, 'path', 'parent_path', 'children'))
+        <ContentTree 
+          nodes={treeFrom(nodes, 'path', 'parent_path', 'children')} 
+          basePath="/recipes"
+          metaKey="category"
+        />
       ) : (
         <Card>
           <Card.Body className="text-muted text-center">

@@ -106,7 +106,6 @@ export default {
   recipes: 'Recipes',
   servings: 'Servings',
   prep_time: 'Prep Time',
-  github_recipe_description: 'This is a recipe page based on a GitHub repository.',
 
   // China NGO Map
   NGO: 'NGO',
