@@ -20,7 +20,7 @@ export const getStaticPaths: GetStaticPaths<RecipePageParams> = async () => {
   const nodes = await recipeContentStore.getAll();
 
   const paths = nodes
-    .filter(({ type }) => type === 'file')
+    .filter(({ type, name }) => type === 'file' && !name.startsWith('.'))
     .map(({ path }) => ({ params: { slug: path.split('/') } }));
 
   return { paths, fallback: 'blocking' };
@@ -49,7 +49,7 @@ const RecipePage: FC<XContent> = observer(({ name, path, parent_path, content, m
       <PageHead title={name} />
 
       <Breadcrumb className="mb-4">
-        <Breadcrumb.Item href="/recipes">{t('recipes')}</Breadcrumb.Item>
+        <Breadcrumb.Item href="/recipe">{t('recipe')}</Breadcrumb.Item>
 
         {parent_path?.split('/').map((segment, index, array) => {
           const breadcrumbPath = array.slice(0, index + 1).join('/');
@@ -67,37 +67,29 @@ const RecipePage: FC<XContent> = observer(({ name, path, parent_path, content, m
         <header className="mb-4">
           <h1>{name}</h1>
 
-          {meta && (
-            <div className="d-flex flex-wrap align-items-center gap-3 mb-3">
-              <BadgeBar 
-                list={[
-                  meta['category'] && { text: meta['category'], color: 'primary' },
-                  meta['difficulty'] && { text: meta['difficulty'], color: 'secondary' },
-                  meta['time'] && { text: meta['time'], color: 'success' }
-                ].filter(Boolean) as Array<{ text: string; color?: string }>}
-              />
-            </div>
-          )}
+          {meta && <BadgeBar list={Object.values(meta).map(text => ({ text }))} />}
 
           <div className="d-flex justify-content-between align-items-center text-muted small mb-3">
-            <div>
+            <dl>
               {meta?.['servings'] && (
-                <span>
-                  {t('servings')}: {meta['servings']}
-                </span>
+                <>
+                  <dt>{t('servings')}:</dt>
+                  <dd>{meta['servings']}</dd>
+                </>
               )}
-              {meta?.['prep_time'] && (
-                <span className="ms-3">
-                  {t('prep_time')}: {meta['prep_time']}
-                </span>
+              {meta?.['preparation_time'] && (
+                <>
+                  <dt>{t('preparation_time')}:</dt>
+                  <dd>{meta['preparation_time']}</dd>
+                </>
               )}
-            </div>
+            </dl>
 
             <div className="d-flex gap-2">
               <Button
                 variant="outline-primary"
                 size="sm"
-                href={`https://github.com/Gar-b-age/CookLikeHOC/blob/main/${path}`}
+                href={`https://github.com/Gar-b-age/CookLikeHOC/edit/main/${path}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

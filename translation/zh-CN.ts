@@ -100,10 +100,10 @@ export default {
   github_document_description: '这是一个基于 GitHub 仓库的文档页面。',
   view_or_edit_on_github: '在 GitHub 上查看或编辑此内容',
 
-  // Recipes
-  recipes: '菜谱',
+  // Recipe
+  recipe: '菜谱',
   servings: '份数',
-  prep_time: '准备时间',
+  preparation_time: '准备时间',
 
   // China Public Interest Map
   NGO: '公益',

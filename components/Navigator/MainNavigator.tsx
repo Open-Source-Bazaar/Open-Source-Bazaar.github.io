@@ -60,7 +60,7 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
     subs: [
       { href: '/wiki', title: t('wiki') },
       { href: '/policy', title: t('policy') },
-      { href: '/recipes', title: t('recipes') },
+      { href: '/recipe', title: t('recipe') },
     ],
   },
 ];

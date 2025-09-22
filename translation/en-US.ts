@@ -102,10 +102,10 @@ export default {
   github_document_description: 'This is a document page based on a GitHub repository.',
   view_or_edit_on_github: 'View or edit this content on GitHub',
 
-  // Recipes
-  recipes: 'Recipes',
+  // Recipe
+  recipe: 'Recipe',
   servings: 'Servings',
-  prep_time: 'Prep Time',
+  preparation_time: 'Preparation time',
 
   // China NGO Map
   NGO: 'NGO',

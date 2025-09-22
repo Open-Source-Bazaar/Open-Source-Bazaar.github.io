@@ -8,16 +8,10 @@ import { ContentTree } from '../../components/Layout/ContentTree';
 import { PageHead } from '../../components/Layout/PageHead';
 import { I18nContext } from '../../models/Translation';
 import { policyContentStore, XContent } from '../../models/Wiki';
-import { MD_pattern, splitFrontMatter } from '../api/core';
+import { filterMarkdownFiles } from '../api/core';
 
 export const getStaticProps: GetStaticProps<{ nodes: XContent[] }> = async () => {
-  const nodes = (await policyContentStore.getAll())
-    .filter(({ type, name }) => type !== 'file' || MD_pattern.test(name))
-    .map(({ content, ...rest }) => {
-      const { meta, markdown } = content ? splitFrontMatter(content) : {};
-
-      return { ...rest, content: markdown, meta };
-    });
+  const nodes = filterMarkdownFiles(await policyContentStore.getAll());
 
   return {
     props: JSON.parse(JSON.stringify({ nodes })),
@@ -47,8 +41,8 @@ const WikiIndexPage: FC<{ nodes: XContent[] }> = observer(({ nodes }) => {
       </hgroup>
 
       {nodes[0] ? (
-        <ContentTree 
-          nodes={treeFrom(nodes, 'path', 'parent_path', 'children')} 
+        <ContentTree
+          nodes={treeFrom(nodes, 'path', 'parent_path', 'children')}
           basePath="/policy"
           metaKey="主题分类"
         />

@@ -67,40 +67,29 @@ const WikiPage: FC<XContent> = observer(({ name, path, parent_path, content, met
         <header className="mb-4">
           <h1>{name}</h1>
 
-          {meta && (
-            <div className="d-flex flex-wrap align-items-center gap-3 mb-3">
-              <BadgeBar 
-                list={[
-                  meta['主题分类'] && { text: meta['主题分类'], color: 'primary' },
-                  meta['发文机构'] && { text: meta['发文机构'], color: 'secondary' },
-                  meta['有效性'] && { 
-                    text: meta['有效性'], 
-                    color: meta['有效性'] === '现行有效' ? 'success' : 'warning' 
-                  }
-                ].filter(Boolean) as Array<{ text: string; color?: string }>}
-              />
-            </div>
-          )}
+          {meta && <BadgeBar list={Object.values(meta).map(text => ({ text }))} />}
 
           <div className="d-flex justify-content-between align-items-center text-muted small mb-3">
-            <div>
+            <dl>
               {meta?.['成文日期'] && (
-                <span>
-                  {t('creation_date')}: {meta['成文日期']}
-                </span>
+                <>
+                  <dt>{t('creation_date')}:</dt>
+                  <dd>{meta['成文日期']}</dd>
+                </>
               )}
               {meta?.['发布日期'] && meta['发布日期'] !== meta['成文日期'] && (
-                <span className="ms-3">
-                  {t('publication_date')}: {meta['发布日期']}
-                </span>
+                <>
+                  <dt>{t('publication_date')}:</dt>
+                  <dd>{meta['发布日期']}</dd>
+                </>
               )}
-            </div>
+            </dl>
 
             <div className="d-flex gap-2">
               <Button
                 variant="outline-primary"
                 size="sm"
-                href={`https://github.com/fpsig/open-source-policy/blob/main/China/政策/${path}`}
+                href={`https://github.com/fpsig/open-source-policy/edit/main/China/政策/${path}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
