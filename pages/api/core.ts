@@ -2,6 +2,7 @@ import 'core-js/full/array/from-async';
 
 import { Context, Middleware } from 'koa';
 import { HTTPError } from 'koajax';
+import { Content } from 'mobx-github';
 import { DataObject } from 'mobx-restful';
 import { KoaOption, withKoa } from 'next-ssr-middleware';
 import Path from 'path';
@@ -123,3 +124,17 @@ export function* traverseTree<K extends string, N extends TreeNode<K>>(
     yield* traverseTree(node as N, key);
   }
 }
+
+export const filterMarkdownFiles = (nodes: Content[]) =>
+  nodes
+    .filter(
+      ({ path, type, name }) =>
+        !path.startsWith('.') &&
+        !name.startsWith('.') &&
+        (type !== 'file' || MD_pattern.test(name)),
+    )
+    .map(({ content, ...rest }) => {
+      const { meta, markdown } = content ? splitFrontMatter(content) : {};
+
+      return { ...rest, content: markdown, meta };
+    });

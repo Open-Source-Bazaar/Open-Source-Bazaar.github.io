@@ -13,6 +13,8 @@ export interface XContent extends Content {
 
 export const policyContentStore = new ContentModel('fpsig', 'open-source-policy');
 
+export const recipeContentStore = new ContentModel('Gar-b-age', 'CookLikeHOC');
+
 export class MyWikiNodeModel extends WikiNodeModel {
   client = lark.client;
 }

@@ -102,6 +102,11 @@ export default {
   github_document_description: 'This is a document page based on a GitHub repository.',
   view_or_edit_on_github: 'View or edit this content on GitHub',
 
+  // Recipe
+  recipe: 'Recipe',
+  servings: 'Servings',
+  preparation_time: 'Preparation time',
+
   // China NGO Map
   NGO: 'NGO',
   China_NGO_DB: 'China NGO Database',

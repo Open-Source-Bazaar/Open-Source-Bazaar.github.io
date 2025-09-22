@@ -38,6 +38,10 @@ const rewrites: NextConfig['rewrites'] = async () => ({
       source: '/proxy/geo.datav.aliyun.com/:path*',
       destination: 'https://geo.datav.aliyun.com/:path*',
     },
+    {
+      source: '/recipe/images/:path*',
+      destination: 'https://raw.githubusercontent.com/Gar-b-age/CookLikeHOC/main/images/:path*',
+    },
   ],
   afterFiles: [],
 });

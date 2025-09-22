@@ -9,27 +9,27 @@ import { decodeBase64 } from 'web-utility';
 
 import { PageHead } from '../../components/Layout/PageHead';
 import { I18nContext } from '../../models/Translation';
-import { policyContentStore, XContent } from '../../models/Wiki';
+import { recipeContentStore, XContent } from '../../models/Wiki';
 import { splitFrontMatter } from '../api/core';
 
-interface WikiPageParams extends ParsedUrlQuery {
+interface RecipePageParams extends ParsedUrlQuery {
   slug: string[];
 }
 
-export const getStaticPaths: GetStaticPaths<WikiPageParams> = async () => {
-  const nodes = await policyContentStore.getAll();
+export const getStaticPaths: GetStaticPaths<RecipePageParams> = async () => {
+  const nodes = await recipeContentStore.getAll();
 
   const paths = nodes
-    .filter(({ type }) => type === 'file')
+    .filter(({ type, name }) => type === 'file' && !name.startsWith('.'))
     .map(({ path }) => ({ params: { slug: path.split('/') } }));
 
   return { paths, fallback: 'blocking' };
 };
 
-export const getStaticProps: GetStaticProps<XContent, WikiPageParams> = async ({ params }) => {
+export const getStaticProps: GetStaticProps<XContent, RecipePageParams> = async ({ params }) => {
   const { slug } = params!;
 
-  const node = await policyContentStore.getOne(slug.join('/'));
+  const node = await recipeContentStore.getOne(slug.join('/'));
 
   const { meta, markdown } = splitFrontMatter(decodeBase64(node.content!));
 
@@ -41,7 +41,7 @@ export const getStaticProps: GetStaticProps<XContent, WikiPageParams> = async ({
   };
 };
 
-const WikiPage: FC<XContent> = observer(({ name, path, parent_path, content, meta }) => {
+const RecipePage: FC<XContent> = observer(({ name, path, parent_path, content, meta }) => {
   const { t } = useContext(I18nContext);
 
   return (
@@ -49,13 +49,13 @@ const WikiPage: FC<XContent> = observer(({ name, path, parent_path, content, met
       <PageHead title={name} />
 
       <Breadcrumb className="mb-4">
-        <Breadcrumb.Item href="/policy">{t('policy')}</Breadcrumb.Item>
+        <Breadcrumb.Item href="/recipe">{t('recipe')}</Breadcrumb.Item>
 
         {parent_path?.split('/').map((segment, index, array) => {
           const breadcrumbPath = array.slice(0, index + 1).join('/');
 
           return (
-            <Breadcrumb.Item key={breadcrumbPath} href={`/policy/${breadcrumbPath}`}>
+            <Breadcrumb.Item key={breadcrumbPath} href={`/recipes/${breadcrumbPath}`}>
               {segment}
             </Breadcrumb.Item>
           );
@@ -71,16 +71,16 @@ const WikiPage: FC<XContent> = observer(({ name, path, parent_path, content, met
 
           <div className="d-flex justify-content-between align-items-center text-muted small mb-3">
             <dl>
-              {meta?.['成文日期'] && (
+              {meta?.['servings'] && (
                 <>
-                  <dt>{t('creation_date')}:</dt>
-                  <dd>{meta['成文日期']}</dd>
+                  <dt>{t('servings')}:</dt>
+                  <dd>{meta['servings']}</dd>
                 </>
               )}
-              {meta?.['发布日期'] && meta['发布日期'] !== meta['成文日期'] && (
+              {meta?.['preparation_time'] && (
                 <>
-                  <dt>{t('publication_date')}:</dt>
-                  <dd>{meta['发布日期']}</dd>
+                  <dt>{t('preparation_time')}:</dt>
+                  <dd>{meta['preparation_time']}</dd>
                 </>
               )}
             </dl>
@@ -89,7 +89,7 @@ const WikiPage: FC<XContent> = observer(({ name, path, parent_path, content, met
               <Button
                 variant="outline-primary"
                 size="sm"
-                href={`https://github.com/fpsig/open-source-policy/edit/main/China/政策/${path}`}
+                href={`https://github.com/Gar-b-age/CookLikeHOC/edit/main/${path}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -118,7 +118,7 @@ const WikiPage: FC<XContent> = observer(({ name, path, parent_path, content, met
           <p className="text-muted">
             {t('github_document_description')}
             <a
-              href={`https://github.com/fpsig/open-source-policy/blob/main/China/政策/${path}`}
+              href={`https://github.com/Gar-b-age/CookLikeHOC/blob/main/${path}`}
               target="_blank"
               rel="noopener noreferrer"
               className="ms-2"
@@ -132,4 +132,4 @@ const WikiPage: FC<XContent> = observer(({ name, path, parent_path, content, met
   );
 });
 
-export default WikiPage;
+export default RecipePage;

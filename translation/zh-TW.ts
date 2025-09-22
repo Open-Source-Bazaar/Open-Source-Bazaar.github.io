@@ -100,6 +100,11 @@ export default {
   github_document_description: '這是一個基於 GitHub 存儲庫的文檔頁面。',
   view_or_edit_on_github: '在 GitHub 上查看或編輯此內容',
 
+  // Recipe
+  recipe: '菜譜',
+  servings: '份數',
+  preparation_time: '準備時間',
+
   // China Public Interest Map
   NGO: '公益',
   China_NGO_DB: '中國公益數據庫',
