@@ -11,7 +11,9 @@ import { recipeContentStore, XContent } from '../../models/Wiki';
 import { filterMarkdownFiles } from '../api/core';
 
 export const getStaticProps: GetStaticProps<{ nodes: XContent[] }> = async () => {
-  const nodes = filterMarkdownFiles(await recipeContentStore.getAll());
+  const nodes = filterMarkdownFiles(await recipeContentStore.getAll()).filter(
+    ({ path }) => !path.startsWith('index.'),
+  );
 
   return {
     props: JSON.parse(JSON.stringify({ nodes })),

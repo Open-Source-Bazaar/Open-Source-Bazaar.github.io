@@ -1,13 +1,13 @@
 import { observable } from 'mobx';
 import { BiSearchModelClass } from 'mobx-lark';
-import { BaseModel, DataObject, ListModel, toggle } from 'mobx-restful';
+import { BaseModel, ListModel, toggle } from 'mobx-restful';
 import { Base, SearchableFilter } from 'mobx-strapi';
 import { Constructor } from 'web-utility';
 
 import { ownClient } from './Base';
 import { OrganizationModel } from './Organization';
 
-export type SearchModel<T extends DataObject = any> = ListModel<T, SearchableFilter<T>>;
+export type SearchModel<T extends Base = any> = ListModel<T, SearchableFilter<T>>;
 
 export type SearchPageMeta = Pick<
   InstanceType<BiSearchModelClass>,

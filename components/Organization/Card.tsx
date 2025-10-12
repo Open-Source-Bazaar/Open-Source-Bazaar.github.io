@@ -53,8 +53,8 @@ export class OrganizationCard extends ObservedComponent<OrganizationCardProps, t
   }
 
   render() {
-    const { t } = this.observedContext,
-      { name, entityType, services, description, internetContact, onSwitch, ...props } = this.props;
+    const { name, entityType, services, description, internetContact, onSwitch, ...props } =
+      this.props;
     const { wechatPublic } = internetContact || {};
 
     return (

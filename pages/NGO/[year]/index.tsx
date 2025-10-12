@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react';
+import dynamic from 'next/dynamic';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
 import { Button, Container } from 'react-bootstrap';
@@ -6,9 +7,12 @@ import { Button, Container } from 'react-bootstrap';
 import { PageHead } from '../../../components/Layout/PageHead';
 import { CityStatisticMap } from '../../../components/Map/CityStatisticMap';
 import { SearchBar } from '../../../components/Navigator/SearchBar';
-import OrganizationCharts from '../../../components/Organization/Charts';
 import { OrganizationModel, OrganizationStatistic } from '../../../models/Organization';
 import { I18nContext } from '../../../models/Translation';
+
+const OrganizationCharts = dynamic(() => import('../../../components/Organization/Charts'), {
+  ssr: false,
+});
 
 interface OrganizationPageProps {
   year: string;

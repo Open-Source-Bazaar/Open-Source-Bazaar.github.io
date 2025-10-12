@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react';
-import { DataObject } from 'mobx-restful';
-import { SearchableFilter } from 'mobx-strapi';
+import { Base, SearchableFilter } from 'mobx-strapi';
 import { cache, compose, errorLogger, RouteProps, router } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
 import { Container, Nav } from 'react-bootstrap';
@@ -26,7 +25,7 @@ export const getServerSideProps = compose<{ model: string }, SearchModelPageProp
 
     const store = new Model();
 
-    await store.getList({ keywords } as SearchableFilter<DataObject>, +page, 9);
+    await store.getList({ keywords } as SearchableFilter<Base>, +page, 9);
 
     const { pageIndex, currentPage, pageCount } = store;
 

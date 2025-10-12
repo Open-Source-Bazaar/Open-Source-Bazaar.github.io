@@ -20,7 +20,10 @@ export const getStaticPaths: GetStaticPaths<RecipePageParams> = async () => {
   const nodes = await recipeContentStore.getAll();
 
   const paths = nodes
-    .filter(({ type, name }) => type === 'file' && !name.startsWith('.'))
+    .filter(
+      ({ type, name, path }) =>
+        type === 'file' && !name.startsWith('.') && !path.startsWith('index.'),
+    )
     .map(({ path }) => ({ params: { slug: path.split('/') } }));
 
   return { paths, fallback: 'blocking' };
