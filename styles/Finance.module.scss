@@ -1,0 +1,163 @@
+.financePage {
+  padding-bottom: 4rem;
+}
+
+.hero {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 32px;
+  background: linear-gradient(135deg, rgba(13, 110, 253, 0.08), rgba(25, 135, 84, 0.08));
+  padding-right: clamp(1.5rem, 4vw, 3rem);
+  padding-left: clamp(1.5rem, 4vw, 3rem);
+}
+
+.heroBadge {
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.heroChip {
+  border-radius: 999px;
+  background: rgba(13, 110, 253, 0.08);
+  padding: 0.35rem 0.9rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.heroStats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.heroStatCard {
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  border-radius: 20px;
+  background: #fff;
+  padding: 1.5rem;
+}
+
+.filterPanel {
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  border-radius: 24px;
+  background: #fff;
+  padding: 2rem;
+}
+
+.segmentedControl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+}
+
+.segmentedButton {
+  transition: all 0.2s ease;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  border-radius: 16px;
+  background: #f5f7fb;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.segmentedButtonActive {
+  box-shadow: 0 10px 30px rgba(13, 110, 253, 0.15);
+  border-color: rgba(13, 110, 253, 0.5);
+  background: linear-gradient(135deg, rgba(13, 110, 253, 0.12), rgba(25, 135, 84, 0.12));
+  color: #0d6efd;
+}
+
+.listSection {
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  border-radius: 24px;
+  background: #fff;
+  padding: 2rem;
+}
+
+.emptyState {
+  border: 1px dashed rgba(15, 23, 42, 0.2);
+  border-radius: 20px;
+  background: rgba(248, 249, 250, 0.7);
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.educationSection {
+  border-radius: 28px;
+  background: rgba(13, 110, 253, 0.05);
+  padding: 2rem;
+}
+
+.educationCard {
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  border-radius: 20px;
+  background: #fff;
+  padding: 1.75rem;
+  height: 100%;
+}
+
+.fundCard {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 20px;
+}
+
+.fundCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+}
+
+.fundCardHeader small {
+  line-height: 1.3;
+}
+
+.metricRow {
+  gap: 1.5rem;
+}
+
+.metricValue {
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.sparkline {
+  width: 100%;
+  height: 80px;
+}
+
+.sparkline svg {
+  width: 100%;
+  height: 100%;
+}
+
+.sparklinePlaceholder {
+  border: 1px dashed rgba(15, 23, 42, 0.2);
+  border-radius: 12px;
+  padding: 1rem;
+  color: rgba(15, 23, 42, 0.6);
+  text-align: center;
+}
+
+.tagBadge {
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.mutedText {
+  color: rgba(15, 23, 42, 0.6);
+}
+
+.positiveText {
+  color: #198754;
+}
+
+.negativeText {
+  color: #dc3545;
+}
