@@ -16,11 +16,7 @@ export async function requestAkShareJSON<T>(
     try {
       const url = new URL(endpoint.replace(/^\//, ''), host.endsWith('/') ? host : `${host}/`);
 
-      if (params) {
-        const serialized = buildURLData(params).toString();
-
-        if (serialized) url.search = serialized;
-      }
+      if (params) url.search = buildURLData(params) + '';
 
       const response = await fetch(url.toString(), {
         headers: { accept: 'application/json' },

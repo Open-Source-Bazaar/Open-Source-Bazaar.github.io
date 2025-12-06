@@ -1,0 +1,100 @@
+.financePage {
+  padding-bottom: 4rem;
+}
+
+.hero {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 32px;
+  background: linear-gradient(135deg, rgba(13, 110, 253, 0.08), rgba(25, 135, 84, 0.08));
+  padding-right: clamp(1.5rem, 4vw, 3rem);
+  padding-left: clamp(1.5rem, 4vw, 3rem);
+
+  .badge {
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .chip {
+    border-radius: 999px;
+    background: rgba(13, 110, 253, 0.08);
+    padding: 0.35rem 0.9rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .statCard {
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+    border: 1px solid rgba(15, 23, 42, 0.05);
+    border-radius: 20px;
+    background: #fff;
+    padding: 1.5rem;
+  }
+}
+
+.filterPanel {
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  border-radius: 24px;
+  background: #fff;
+  padding: 2rem;
+}
+
+.segmentedControl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+
+  .button {
+    transition: all 0.2s ease;
+    border: 1px solid rgba(15, 23, 42, 0.15);
+    border-radius: 16px;
+    background: #f5f7fb;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .active {
+    box-shadow: 0 10px 30px rgba(13, 110, 253, 0.15);
+    border-color: rgba(13, 110, 253, 0.5);
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.12), rgba(25, 135, 84, 0.12));
+    color: #0d6efd;
+  }
+}
+
+.listSection {
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  border-radius: 24px;
+  background: #fff;
+  padding: 2rem;
+}
+
+.emptyState {
+  border: 1px dashed rgba(15, 23, 42, 0.2);
+  border-radius: 20px;
+  background: rgba(248, 249, 250, 0.7);
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.education {
+  border-radius: 28px;
+  background: rgba(13, 110, 253, 0.05);
+  padding: 2rem;
+
+  .card {
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    border: 1px solid rgba(15, 23, 42, 0.05);
+    border-radius: 20px;
+    background: #fff;
+    padding: 1.75rem;
+    height: 100%;
+  }
+}

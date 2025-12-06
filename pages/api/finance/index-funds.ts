@@ -253,7 +253,7 @@ function applyFilters(
     category,
     riskLevel,
     limit,
-  }: { category?: string | string[]; riskLevel?: string | string[]; limit?: string | string[] },
+  }: Partial<Record<'category' | 'riskLevel' | 'limit', string | string[]>>,
 ) {
   const parsedCategory = Array.isArray(category) ? category[0] : category;
   const parsedRisk = Array.isArray(riskLevel) ? riskLevel[0] : riskLevel;
@@ -274,15 +274,8 @@ const router = createKoaRouter(import.meta.url);
 
 router.get('/', safeAPI, async (context: Context) => {
   const snapshots = await getCachedSnapshots();
-  const filtered = applyFilters(
-    snapshots,
-    context.query as {
-      category?: string | string[];
-      riskLevel?: string | string[];
-      limit?: string | string[];
-    },
-  );
 
+  const filtered = applyFilters(snapshots, context.query);
   const cached =
     cache != null &&
     Date.now() - cache.timestamp < CACHE_TTL_MS &&

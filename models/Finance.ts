@@ -22,11 +22,9 @@ export class IndexFundModel extends ListModel<IndexFundSnapshot, IndexFundFilter
   @observable accessor pageSize = 8;
 
   async loadPage(page = this.pageIndex, limit = this.pageSize, filter: IndexFundFilter = {}) {
-    const query = buildURLData({ ...filter, limit }).toString();
-    const path = query ? `${this.baseURI}?${query}` : this.baseURI;
-
-    const { body } = await this.client.get<IndexFundAPIResponse>(path);
-
+    const { body } = await this.client.get<IndexFundAPIResponse>(
+      `${this.baseURI}?${buildURLData({ ...filter, limit })}`,
+    );
     const pageData = body?.data || [];
     const totalCount = body?.meta?.total ?? pageData.length;
 

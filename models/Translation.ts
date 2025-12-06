@@ -18,6 +18,8 @@ export interface I18nProps {
   languageMap: typeof zhCN;
 }
 
+export type I18nKey = keyof typeof zhCN;
+
 export const createI18nStore = <N extends LanguageCode, K extends string>(
   language?: N,
   data?: TranslationMap<K>,
