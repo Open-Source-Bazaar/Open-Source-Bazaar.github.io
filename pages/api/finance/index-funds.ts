@@ -1,4 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { Context } from 'koa';
+import { createKoaRouter, withKoaRouter } from 'next-ssr-middleware';
+import { formatDate } from 'web-utility';
 
 import { requestAkShareJSON } from '../../../lib/akshare';
 import {
@@ -12,6 +14,7 @@ import type {
   IndexFundSnapshot,
   IndexHistoryPoint,
 } from '../../../types/finance';
+import { safeAPI } from '../core';
 
 const CACHE_TTL_MS = 60_000;
 const HISTORY_ENDPOINT = 'stock_zh_index_daily_em';
@@ -122,23 +125,17 @@ function unwrapAkShareRecords(payload: unknown): AkShareDailyRecord[] {
   throw new Error('Unexpected AkShare payload format');
 }
 
-function normalizeHistory(records: AkShareDailyRecord[]): IndexHistoryPoint[] {
-  return records
+const normalizeHistory = (records: AkShareDailyRecord[]): IndexHistoryPoint[] =>
+  records
     .map(({ date, 日期, close, 收盘 }) => {
       const normalizedDate = (date || 日期 || '').slice(0, 10);
       const value = Number(close ?? 收盘);
-
-      if (!normalizedDate || Number.isNaN(value)) return undefined;
-
-      return { date: normalizedDate, value };
+      if (normalizedDate && !Number.isNaN(value)) return { date: normalizedDate, value };
     })
     .filter((item): item is IndexHistoryPoint => !!item)
     .sort((a, b) => a.date.localeCompare(b.date));
-}
 
-function formatAkShareDate(input: Date) {
-  return input.toISOString().slice(0, 10).replace(/-/g, '');
-}
+const formatAkShareDate = (input: Date) => formatDate(input, 'YYYYMMDD');
 
 async function fetchHistorySeries(symbol: string) {
   const end = new Date();
@@ -195,7 +192,8 @@ function buildSyntheticSparkline(symbol: string, points = FALLBACK_HISTORY_POINT
 function buildSyntheticSnapshot(preset: IndexFundDefinition): IndexFundSnapshot {
   const sparkline = buildSyntheticSparkline(preset.symbol);
 
-  const latestValue = sparkline.at(-1)?.value ?? null;
+  const { value: latestValue = null, date: updatedAt = null } = (sparkline.at(-1) ||
+    {}) as Partial<IndexHistoryPoint>;
 
   return {
     ...preset,
@@ -204,7 +202,7 @@ function buildSyntheticSnapshot(preset: IndexFundDefinition): IndexFundSnapshot 
     oneYearReturnPct: computeOneYearReturn(sparkline),
     maxDrawdownPct: computeMaxDrawdown(sparkline),
     sparkline: buildSparkline(sparkline, HISTORY_SPARKLINE_POINTS),
-    updatedAt: sparkline.at(-1)?.date ?? null,
+    updatedAt,
     source: { historyEndpoint: `${HISTORY_ENDPOINT} (fallback)` },
     fallback: true,
   };
@@ -270,31 +268,36 @@ function applyFilters(
   return filtered;
 }
 
-export default async function handler(request: NextApiRequest, response: NextApiResponse) {
-  if (request.method !== 'GET')
-    return response.status(405).json({ message: 'Method Not Allowed, only GET supported' });
+export const config = { api: { bodyParser: false } };
 
-  try {
-    const snapshots = await getCachedSnapshots();
-    const filtered = applyFilters(snapshots, request.query);
+const router = createKoaRouter(import.meta.url);
 
-    response.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+router.get('/', safeAPI, async (context: Context) => {
+  const snapshots = await getCachedSnapshots();
+  const filtered = applyFilters(
+    snapshots,
+    context.query as {
+      category?: string | string[];
+      riskLevel?: string | string[];
+      limit?: string | string[];
+    },
+  );
 
-    return response.status(200).json({
-      data: filtered,
-      meta: {
-        total: snapshots.length,
-        returned: filtered.length,
-        cached:
-          cache != null &&
-          Date.now() - cache.timestamp < CACHE_TTL_MS &&
-          filtered.length === snapshots.length,
-        source: HISTORY_ENDPOINT,
-      },
-    });
-  } catch (error) {
-    console.error('[Finance] Failed to build index snapshot:', error);
+  const cached =
+    cache != null &&
+    Date.now() - cache.timestamp < CACHE_TTL_MS &&
+    filtered.length === snapshots.length;
 
-    return response.status(500).json({ message: (error as Error).message });
-  }
-}
+  context.set('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+  context.body = {
+    data: filtered,
+    meta: {
+      total: snapshots.length,
+      returned: filtered.length,
+      cached,
+      source: HISTORY_ENDPOINT,
+    },
+  };
+});
+
+export default withKoaRouter(router);

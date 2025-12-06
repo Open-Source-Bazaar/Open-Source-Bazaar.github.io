@@ -1,3 +1,5 @@
+import { buildURLData } from 'web-utility';
+
 const DEFAULT_HOSTS = [
   process.env.AKSHARE_API_BASE,
   'https://akshare.xyz/api/public',
@@ -8,8 +10,6 @@ export async function requestAkShareJSON<T>(
   endpoint: string,
   params?: Record<string, string | number | undefined>,
 ): Promise<T> {
-  if (!DEFAULT_HOSTS.length) throw new Error('No AkShare host configured');
-
   let lastError: Error | null = null;
 
   for (const host of DEFAULT_HOSTS) {
@@ -17,13 +17,7 @@ export async function requestAkShareJSON<T>(
       const url = new URL(endpoint.replace(/^\//, ''), host.endsWith('/') ? host : `${host}/`);
 
       if (params) {
-        const searchParams = new URLSearchParams();
-
-        Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined) searchParams.append(key, String(value));
-        });
-
-        const serialized = searchParams.toString();
+        const serialized = buildURLData(params).toString();
 
         if (serialized) url.search = serialized;
       }

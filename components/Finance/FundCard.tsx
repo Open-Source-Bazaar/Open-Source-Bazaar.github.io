@@ -1,36 +1,39 @@
-import { FC, useMemo } from 'react';
+import { FC, useContext, useMemo } from 'react';
 import { Badge, Card } from 'react-bootstrap';
 
-import { INDEX_CATEGORY_LABELS, INDEX_RISK_LABELS } from '../../constants/finance';
-import styles from '../../styles/Finance.module.scss';
+import { INDEX_CATEGORY_LABEL_KEYS, INDEX_RISK_LABEL_KEYS } from '../../constants/finance';
+import { I18nContext } from '../../models/Translation';
 import { IndexFundSnapshot, IndexHistoryPoint } from '../../types/finance';
+import styles from './Finance.module.less';
 
 export interface FundCardProps {
   data: IndexFundSnapshot;
 }
 
-const formatNumber = (value: number | null | undefined) =>
-  value == null ? '--' : value.toLocaleString('zh-CN', { maximumFractionDigits: 2 });
+const formatNumber = (value?: number | null) =>
+  value != null ? value.toLocaleString('zh-CN', { maximumFractionDigits: 2 }) : '--';
 
-const formatPercent = (value: number | null | undefined) =>
-  value == null ? '--' : `${(value * 100).toFixed(2)}%`;
+const formatPercent = (value?: number | null) =>
+  value != null ? `${(value * 100).toFixed(2)}%` : '--';
 
-const valueTone = (value: number | null | undefined) =>
-  value == null ? styles.mutedText : value >= 0 ? styles.positiveText : styles.negativeText;
+const valueTone = (value?: number | null) =>
+  value != null ? (value >= 0 ? styles.positiveText : styles.negativeText) : styles.mutedText;
 
 const Sparkline: FC<{ points: IndexHistoryPoint[]; chartId: string }> = ({ points, chartId }) => {
+  const { t } = useContext(I18nContext);
+
   const { polyline, gradientStops } = useMemo(() => {
     if (!points.length) return { polyline: '', gradientStops: [] as number[] };
 
-    const values = points.map(point => point.value);
+    const values = points.map(({ value }) => value);
     const min = Math.min(...values);
     const max = Math.max(...values);
     const delta = max - min || 1;
 
     const polylinePoints = points
-      .map((point, index) => {
-        const x = (index / Math.max(points.length - 1, 1)) * 100;
-        const y = ((max - point.value) / delta) * 40;
+      .map(({ value }, index, { length }) => {
+        const x = (index / Math.max(length - 1, 1)) * 100;
+        const y = ((max - value) / delta) * 40;
 
         return `${x.toFixed(2)},${y.toFixed(2)}`;
       })
@@ -40,14 +43,11 @@ const Sparkline: FC<{ points: IndexHistoryPoint[]; chartId: string }> = ({ point
 
     return { polyline: polylinePoints, gradientStops: gradientOffsets };
   }, [points]);
-
-  if (!points.length) return <div className={styles.sparklinePlaceholder}>数据准备中</div>;
-
   const gradientId = `${chartId}-gradient`;
 
   return (
     <div className={styles.sparkline}>
-      <svg viewBox="0 0 100 40" role="img" aria-label="近 60 日走势">
+      <svg viewBox="0 0 100 40" role="img" aria-label={t('index_sparkline_60d_label')}>
         <defs>
           <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
             {gradientStops.map(offset => (
@@ -73,22 +73,25 @@ const Sparkline: FC<{ points: IndexHistoryPoint[]; chartId: string }> = ({ point
   );
 };
 
-export const FundCard: FC<FundCardProps> = ({ data }) => {
-  const {
-    displayName,
-    category,
-    riskLevel,
-    latestValue,
-    dailyChangePct,
-    oneYearReturnPct,
-    maxDrawdownPct,
-    tags,
-    sparkline,
-    updatedAt,
-    fallback,
-    description,
-  } = data;
-  const sparklineId = useMemo(() => `fund-${data.symbol}`, [data.symbol]);
+export const FundCard: FC<IndexFundSnapshot> = ({
+  symbol,
+  displayName,
+  category,
+  riskLevel,
+  latestValue,
+  dailyChangePct,
+  oneYearReturnPct,
+  maxDrawdownPct,
+  tags,
+  sparkline,
+  updatedAt,
+  fallback,
+  description,
+  source,
+}) => {
+  const { t } = useContext(I18nContext);
+  const sparklineId = useMemo(() => `fund-${symbol}`, [symbol]);
+  const updatedAtISO = updatedAt ? new Date(updatedAt).toJSON() : undefined;
 
   return (
     <Card className={`${styles.fundCard} h-100`}>
@@ -100,7 +103,7 @@ export const FundCard: FC<FundCardProps> = ({ data }) => {
             <h3 className="h5 mb-1">{displayName}</h3>
             <div className="d-flex flex-wrap gap-2 align-items-center">
               <Badge bg="light" text="dark">
-                {INDEX_CATEGORY_LABELS[category]}
+                {t(INDEX_CATEGORY_LABEL_KEYS[category])}
               </Badge>
               <Badge
                 bg={
@@ -111,60 +114,58 @@ export const FundCard: FC<FundCardProps> = ({ data }) => {
                       : 'success'
                 }
               >
-                {INDEX_RISK_LABELS[riskLevel]}
+                {t(INDEX_RISK_LABEL_KEYS[riskLevel])}
               </Badge>
               {fallback && (
                 <Badge bg="secondary" text="light">
-                  离线数据
+                  {t('offline_data')}
                 </Badge>
               )}
             </div>
           </div>
           <small className="text-muted text-end">
-            数据源 <br />
-            {data.source.historyEndpoint}
+            {t('data_source')} <br />
+            {source.historyEndpoint}
           </small>
         </div>
 
         <p className="text-muted mb-0">{description}</p>
 
-        <div className={`${styles.metricRow} d-flex flex-wrap gap-4 align-items-center`}>
-          <div>
-            <p className="text-muted mb-1">最新点位</p>
-            <span className={styles.metricValue}>{formatNumber(latestValue)}</span>
-          </div>
-          <div>
-            <p className="text-muted mb-1">日涨跌</p>
-            <strong className={valueTone(dailyChangePct)}>{formatPercent(dailyChangePct)}</strong>
-          </div>
-          <div>
-            <p className="text-muted mb-1">近 1 年收益</p>
-            <strong className={valueTone(oneYearReturnPct)}>
-              {formatPercent(oneYearReturnPct)}
-            </strong>
-          </div>
-          <div>
-            <p className="text-muted mb-1">最大回撤</p>
-            <strong className={valueTone(maxDrawdownPct)}>{formatPercent(maxDrawdownPct)}</strong>
-          </div>
-        </div>
+        <dl className={`${styles.metricRow} d-flex flex-wrap gap-4 align-items-center`}>
+          <dt className="text-muted mb-1">{t('index_metric_latest_value')}</dt>
+          <dd className={styles.metricValue}>{formatNumber(latestValue)}</dd>
 
-        <Sparkline points={sparkline} chartId={sparklineId} />
+          <dt className="text-muted mb-1">{t('index_metric_daily_change')}</dt>
+          <dd className={valueTone(dailyChangePct)}>{formatPercent(dailyChangePct)}</dd>
 
-        <div className="d-flex flex-wrap gap-2">
+          <dt className="text-muted mb-1">{t('index_metric_one_year_return')}</dt>
+          <dd className={valueTone(oneYearReturnPct)}>{formatPercent(oneYearReturnPct)}</dd>
+
+          <dt className="text-muted mb-1">{t('index_metric_max_drawdown')}</dt>
+          <dd className={valueTone(maxDrawdownPct)}>{formatPercent(maxDrawdownPct)}</dd>
+        </dl>
+
+        {sparkline.length ? (
+          <Sparkline points={sparkline} chartId={sparklineId} />
+        ) : (
+          <div className={styles.sparklinePlaceholder}>{t('data_preparing')}</div>
+        )}
+
+        <ul className="list-unstyled m-0 d-flex flex-wrap gap-2">
           {tags?.map(tag => (
-            <Badge key={tag} bg="light" text="dark" className={styles.tagBadge}>
+            <Badge key={tag} as="li" bg="light" text="dark" className={styles.tagBadge}>
               {tag}
             </Badge>
           ))}
-        </div>
+        </ul>
 
-        <div className="d-flex justify-content-between align-items-center">
-          <small className="text-muted">更新于 {updatedAt || '--'}</small>
-          <a href={`/finance/${data.symbol}`} className="text-primary fw-semibold">
-            查看详情 →
-          </a>
-        </div>
+        <time className="small text-muted" dateTime={updatedAtISO}>
+          {t('updated_at')} {updatedAt || '--'}
+        </time>
+
+        <a href={`/finance/${symbol}`} className="text-primary fw-semibold">
+          {t('view_details')}
+        </a>
       </Card.Body>
     </Card>
   );

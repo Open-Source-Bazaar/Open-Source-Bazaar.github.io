@@ -2,11 +2,8 @@ import { IndexHistoryPoint } from '../types/finance';
 
 export const TRADING_DAYS_PER_YEAR = 252;
 
-export function computeChangePct(current?: number | null, base?: number | null) {
-  if (current == null || base == null || base === 0) return null;
-
-  return (current - base) / base;
-}
+export const computeChangePct = (current?: number | null, base?: number | null): number | null =>
+  current == null || base == null || base === 0 ? null : (current - base) / base;
 
 export function computeOneYearReturn(series: IndexHistoryPoint[]) {
   if (series.length < 2) return null;
@@ -16,12 +13,10 @@ export function computeOneYearReturn(series: IndexHistoryPoint[]) {
 
   if (recent.length < 2) return null;
 
-  const first = recent[0].value;
-  const last = recent[recent.length - 1].value;
+  const [{ value: first }] = recent;
+  const { value: last } = recent.at(-1)!;
 
-  if (!first) return null;
-
-  return (last - first) / first;
+  return computeChangePct(last, first);
 }
 
 export function computeMaxDrawdown(series: IndexHistoryPoint[]) {
@@ -32,35 +27,26 @@ export function computeMaxDrawdown(series: IndexHistoryPoint[]) {
   let peak = sorted[0].value;
   let maxDrawdown = 0;
 
-  sorted.forEach(point => {
-    const { value } = point;
-
+  for (const { value } of sorted) {
     if (value > peak) peak = value;
 
-    if (!peak) return;
+    if (!peak) break;
 
-    const drawdown = (value - peak) / peak;
+    const drawdown = computeChangePct(value, peak);
 
-    if (drawdown < maxDrawdown) maxDrawdown = drawdown;
-  });
+    if (drawdown != null && drawdown < maxDrawdown) maxDrawdown = drawdown;
+  }
 
-  return maxDrawdown || null;
+  return maxDrawdown;
 }
 
 export function computeDailyChange(series: IndexHistoryPoint[]) {
   if (series.length < 2) return null;
 
-  const sorted = [...series].sort((a, b) => a.date.localeCompare(b.date));
-  const latest = sorted[sorted.length - 1].value;
-  const previous = sorted[sorted.length - 2].value;
+  const [{ value: previous }, { value: latest }] = series.slice(-2);
 
   return computeChangePct(latest, previous);
 }
 
-export function buildSparkline(series: IndexHistoryPoint[], limit = 30) {
-  if (!series.length) return [];
-
-  const sorted = [...series].sort((a, b) => a.date.localeCompare(b.date));
-
-  return sorted.slice(-limit);
-}
+export const buildSparkline = (series: IndexHistoryPoint[], limit = 30) =>
+  [...series].sort((a, b) => a.date.localeCompare(b.date)).slice(-limit);
