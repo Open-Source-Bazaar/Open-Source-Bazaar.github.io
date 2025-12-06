@@ -1,0 +1,41 @@
+.fundCard {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 20px;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+  }
+
+  .header small {
+    line-height: 1.3;
+  }
+}
+
+.metric {
+  gap: 1.5rem;
+  .value {
+    font-weight: 700;
+    font-size: 2rem;
+  }
+}
+.tagBadge {
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.mutedText {
+  color: rgba(15, 23, 42, 0.6);
+}
+
+.positiveText {
+  color: #198754;
+}
+
+.negativeText {
+  color: #dc3545;
+}
