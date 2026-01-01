@@ -1,4 +1,4 @@
-// Tech-themed hackathon styling with blue-purple gradient
+// Tech-themed hackathon styling with blue-purple gradient and pink cards
 
 .hero {
   position: relative;
@@ -75,18 +75,19 @@
   font-size: 2rem;
 }
 
+// Agenda items with gradient pink background
 .agendaItem {
   transition: all 0.3s ease;
   margin-bottom: 1rem;
   border-left: 4px solid;
   border-radius: 8px;
-  background: rgba(30, 27, 75, 0.5);
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(219, 39, 119, 0.1));
   padding: 1.5rem;
 
   &:hover {
     transform: translateX(5px);
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.15);
-    background: rgba(30, 27, 75, 0.7);
+    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.2);
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(219, 39, 119, 0.15));
   }
 
   &.workshop {
@@ -110,27 +111,113 @@
   }
 }
 
-.personCard {
+// Frameless prize cards with gradient pink
+.prizeCard {
   transition: all 0.3s ease;
   margin-bottom: 1.5rem;
-  border: 1px solid rgba(99, 102, 241, 0.25);
+  border: none;
+  border-radius: 0;
+  background: linear-gradient(135deg, rgba(244, 114, 182, 0.12), rgba(236, 72, 153, 0.08));
+  padding: 1.5rem;
+
+  &:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, rgba(244, 114, 182, 0.18), rgba(236, 72, 153, 0.12));
+  }
+}
+
+.prizeImage {
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+}
+
+// Frameless organization cards with gradient pink
+.orgCard {
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+  border: none;
+  border-radius: 0;
+  background: linear-gradient(135deg, rgba(244, 114, 182, 0.12), rgba(236, 72, 153, 0.08));
+  padding: 2rem;
+
+  &:hover {
+    background: linear-gradient(135deg, rgba(244, 114, 182, 0.18), rgba(236, 72, 153, 0.12));
+  }
+}
+
+.logo {
+  box-shadow: 0 0 15px rgba(236, 72, 153, 0.2);
+  border: 2px solid rgba(236, 72, 153, 0.3);
   border-radius: 12px;
-  background: rgba(30, 27, 75, 0.6);
+  width: 80px;
+  height: 80px;
+}
+
+// Narrow template cards with gradient pink
+.templateCard {
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(236, 72, 153, 0.2);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(244, 114, 182, 0.1), rgba(236, 72, 153, 0.05));
   padding: 1.5rem;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
-    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 8px 25px rgba(236, 72, 153, 0.15);
+    border-color: rgba(236, 72, 153, 0.35);
+    background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(236, 72, 153, 0.1));
   }
 }
 
-.avatar {
-  box-shadow: 0 0 15px rgba(99, 102, 241, 0.25);
-  border: 3px solid rgba(99, 102, 241, 0.4);
+// Narrow project cards with gradient pink
+.projectCard {
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(236, 72, 153, 0.2);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(244, 114, 182, 0.1), rgba(236, 72, 153, 0.05));
+  padding: 1.5rem;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(236, 72, 153, 0.15);
+    border-color: rgba(236, 72, 153, 0.35);
+    background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(236, 72, 153, 0.1));
+  }
+}
+
+.scoreCircle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
   border-radius: 50%;
-  width: 100px;
-  height: 100px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  width: 60px;
+  height: 60px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+// Circular avatars only for participants
+.avatar {
+  box-shadow: 0 0 15px rgba(236, 72, 153, 0.25);
+  border: 3px solid rgba(236, 72, 153, 0.4);
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
+  }
 }
 
 .skillBadge {
@@ -144,113 +231,6 @@
   font-size: 0.85rem;
 }
 
-.orgCard {
-  transition: all 0.3s ease;
-  margin-bottom: 1.5rem;
-  border: 2px solid rgba(99, 102, 241, 0.3);
-  border-radius: 12px;
-  background: rgba(30, 27, 75, 0.65);
-  padding: 2rem;
-
-  &:hover {
-    box-shadow: 0 0 30px rgba(99, 102, 241, 0.25);
-    border-color: rgba(99, 102, 241, 0.5);
-  }
-}
-
-.logo {
-  box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
-  border: 2px solid rgba(99, 102, 241, 0.35);
-  border-radius: 12px;
-  width: 80px;
-  height: 80px;
-}
-
-.prizeCard {
-  transition: all 0.3s ease;
-  margin-bottom: 1.5rem;
-  border: 2px solid;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 165, 0, 0.05) 100%);
-  padding: 1.5rem;
-
-  &.gold {
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-    border-color: #ffd700;
-  }
-
-  &.silver {
-    box-shadow: 0 0 20px rgba(192, 192, 192, 0.3);
-    border-color: #c0c0c0;
-  }
-
-  &.bronze {
-    box-shadow: 0 0 20px rgba(205, 127, 50, 0.3);
-    border-color: #cd7f32;
-  }
-
-  &.special {
-    box-shadow: 0 0 20px rgba(167, 139, 250, 0.3);
-    border-color: #a78bfa;
-  }
-
-  &:hover {
-    transform: scale(1.02);
-  }
-}
-
-.prizeImage {
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  width: 100%;
-  height: 150px;
-  object-fit: contain;
-}
-
-.templateCard {
-  transition: all 0.3s ease;
-  margin-bottom: 1.5rem;
-  border: 1px solid rgba(99, 102, 241, 0.25);
-  border-radius: 12px;
-  background: rgba(30, 27, 75, 0.6);
-  padding: 1.5rem;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
-    border-color: rgba(99, 102, 241, 0.4);
-  }
-}
-
-.projectCard {
-  transition: all 0.3s ease;
-  margin-bottom: 2rem;
-  border: 2px solid rgba(16, 185, 129, 0.3);
-  border-radius: 12px;
-  background: rgba(30, 27, 75, 0.65);
-  padding: 2rem;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 30px rgba(16, 185, 129, 0.25);
-    border-color: rgba(16, 185, 129, 0.5);
-  }
-}
-
-.scoreCircle {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
-  border-radius: 50%;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  width: 80px;
-  height: 80px;
-  color: #fff;
-  font-weight: 700;
-  font-size: 1.5rem;
-}
-
 .techGradient {
   background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   -webkit-background-clip: text;
@@ -261,4 +241,13 @@
 
 .glowText {
   text-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+}
+
+.participantCloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
 }
