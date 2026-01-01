@@ -1,8 +1,8 @@
-// Tech-themed hackathon styling with dark/neon aesthetic
+// Tech-themed hackathon styling with blue-purple gradient
 
 .hero {
   position: relative;
-  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  background: radial-gradient(circle at top left, #312e81, #1e1b4b 55%, #0f172a);
   padding: 4rem 0;
   overflow: hidden;
   color: #fff;
@@ -12,7 +12,7 @@
     top: -50%;
     left: -50%;
     animation: grid-animation 20s linear infinite;
-    background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 1px, transparent 1px);
     background-size: 50px 50px;
     width: 200%;
     height: 200%;
@@ -34,7 +34,7 @@
   margin-bottom: 1rem;
   font-weight: 700;
   font-size: 3rem;
-  text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  text-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
 }
 
 .description {
@@ -48,15 +48,15 @@
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   margin-bottom: 1rem;
-  border: 1px solid rgba(0, 255, 255, 0.3);
+  border: 1px solid rgba(99, 102, 241, 0.3);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(15, 23, 42, 0.45);
   padding: 1.5rem;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-    border-color: rgba(0, 255, 255, 0.6);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.25);
+    border-color: rgba(99, 102, 241, 0.5);
   }
 }
 
@@ -69,7 +69,7 @@
   display: inline-block;
   margin-bottom: 2rem;
   border-bottom: 3px solid;
-  border-image: linear-gradient(90deg, #00ffff, #0080ff) 1;
+  border-image: linear-gradient(90deg, #6366f1, #4f46e5) 1;
   padding-bottom: 0.5rem;
   font-weight: 700;
   font-size: 2rem;
@@ -80,53 +80,54 @@
   margin-bottom: 1rem;
   border-left: 4px solid;
   border-radius: 8px;
-  background: linear-gradient(135deg, rgba(15, 12, 41, 0.8) 0%, rgba(48, 43, 99, 0.6) 100%);
+  background: rgba(30, 27, 75, 0.5);
   padding: 1.5rem;
 
   &:hover {
     transform: translateX(5px);
-    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.15);
+    background: rgba(30, 27, 75, 0.7);
   }
 
   &.workshop {
-    border-left-color: #00ffff;
+    border-left-color: #3b82f6;
   }
 
   &.presentation {
-    border-left-color: #ff6b6b;
+    border-left-color: #ef4444;
   }
 
   &.coding {
-    border-left-color: #51cf66;
+    border-left-color: #10b981;
   }
 
   &.break {
-    border-left-color: #ffd43b;
+    border-left-color: #f59e0b;
   }
 
   &.ceremony {
-    border-left-color: #a78bfa;
+    border-left-color: #8b5cf6;
   }
 }
 
 .personCard {
   transition: all 0.3s ease;
   margin-bottom: 1.5rem;
-  border: 1px solid rgba(0, 255, 255, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.25);
   border-radius: 12px;
-  background: linear-gradient(135deg, rgba(15, 12, 41, 0.9) 0%, rgba(48, 43, 99, 0.7) 100%);
+  background: rgba(30, 27, 75, 0.6);
   padding: 1.5rem;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 255, 255, 0.15);
-    border-color: rgba(0, 255, 255, 0.5);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
+    border-color: rgba(99, 102, 241, 0.4);
   }
 }
 
 .avatar {
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-  border: 3px solid rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.25);
+  border: 3px solid rgba(99, 102, 241, 0.4);
   border-radius: 50%;
   width: 100px;
   height: 100px;
@@ -135,9 +136,9 @@
 .skillBadge {
   display: inline-block;
   margin: 0.25rem;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
   border-radius: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   padding: 0.25rem 0.75rem;
   color: #fff;
   font-size: 0.85rem;
@@ -146,20 +147,20 @@
 .orgCard {
   transition: all 0.3s ease;
   margin-bottom: 1.5rem;
-  border: 2px solid rgba(0, 255, 255, 0.3);
+  border: 2px solid rgba(99, 102, 241, 0.3);
   border-radius: 12px;
-  background: linear-gradient(135deg, rgba(15, 12, 41, 0.95) 0%, rgba(36, 36, 62, 0.8) 100%);
+  background: rgba(30, 27, 75, 0.65);
   padding: 2rem;
 
   &:hover {
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
-    border-color: rgba(0, 255, 255, 0.6);
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.25);
+    border-color: rgba(99, 102, 241, 0.5);
   }
 }
 
 .logo {
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-  border: 2px solid rgba(0, 255, 255, 0.4);
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+  border: 2px solid rgba(99, 102, 241, 0.35);
   border-radius: 12px;
   width: 80px;
   height: 80px;
@@ -209,30 +210,30 @@
 .templateCard {
   transition: all 0.3s ease;
   margin-bottom: 1.5rem;
-  border: 1px solid rgba(0, 255, 255, 0.3);
+  border: 1px solid rgba(99, 102, 241, 0.25);
   border-radius: 12px;
-  background: linear-gradient(135deg, rgba(15, 12, 41, 0.9) 0%, rgba(48, 43, 99, 0.7) 100%);
+  background: rgba(30, 27, 75, 0.6);
   padding: 1.5rem;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 255, 255, 0.2);
-    border-color: rgba(0, 255, 255, 0.6);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
+    border-color: rgba(99, 102, 241, 0.4);
   }
 }
 
 .projectCard {
   transition: all 0.3s ease;
   margin-bottom: 2rem;
-  border: 2px solid rgba(81, 207, 102, 0.3);
+  border: 2px solid rgba(16, 185, 129, 0.3);
   border-radius: 12px;
-  background: linear-gradient(135deg, rgba(15, 12, 41, 0.95) 0%, rgba(48, 43, 99, 0.8) 100%);
+  background: rgba(30, 27, 75, 0.65);
   padding: 2rem;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 0 30px rgba(81, 207, 102, 0.2);
-    border-color: rgba(81, 207, 102, 0.6);
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.25);
+    border-color: rgba(16, 185, 129, 0.5);
   }
 }
 
@@ -240,9 +241,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 0 20px rgba(81, 207, 102, 0.4);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
   border-radius: 50%;
-  background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   width: 80px;
   height: 80px;
   color: #fff;
@@ -251,7 +252,7 @@
 }
 
 .techGradient {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -259,5 +260,5 @@
 }
 
 .glowText {
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  text-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
 }
