@@ -12,7 +12,7 @@
     top: -50%;
     left: -50%;
     animation: grid-animation 20s linear infinite;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 1px, transparent 1px);
+    background: radial-gradient(circle, rgb(99, 102, 241) 1px, transparent 1px);
     background-size: 50px 50px;
     width: 200%;
     height: 200%;
@@ -34,7 +34,7 @@
   margin-bottom: 1rem;
   font-weight: 700;
   font-size: 3rem;
-  text-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+  text-shadow: 0 0 20px rgb(99, 102, 241);
 }
 
 .description {
@@ -48,15 +48,15 @@
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   margin-bottom: 1rem;
-  border: 1px solid rgba(99, 102, 241, 0.3);
+  border: 1px solid rgb(99, 102, 241);
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.45);
+  background: rgb(15, 23, 42);
   padding: 1.5rem;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.25);
-    border-color: rgba(99, 102, 241, 0.5);
+    box-shadow: 0 0 20px rgb(99, 102, 241);
+    border-color: rgb(119, 122, 245);
   }
 }
 
@@ -80,14 +80,14 @@
   transition: all 0.3s ease;
   margin-bottom: 1rem;
   border-radius: 8px;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.15));
+  background: linear-gradient(135deg, rgb(99, 102, 241), rgb(139, 92, 246));
   padding: 1.5rem;
   color: #fff;
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(139, 92, 246, 0.2));
+    box-shadow: 0 8px 20px rgb(99, 102, 241);
+    background: linear-gradient(135deg, rgb(119, 122, 245), rgb(159, 112, 250));
   }
 }
 
@@ -96,14 +96,14 @@
   transition: all 0.3s ease;
   margin-bottom: 1rem;
   border-radius: 8px;
-  background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(236, 72, 153, 0.1));
+  background: linear-gradient(135deg, rgb(244, 114, 182), rgb(236, 72, 153));
   padding: 1.5rem;
   color: #1f2937;
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(244, 114, 182, 0.25);
-    background: linear-gradient(135deg, rgba(244, 114, 182, 0.2), rgba(236, 72, 153, 0.15));
+    box-shadow: 0 8px 20px rgb(244, 114, 182);
+    background: linear-gradient(135deg, rgb(248, 134, 196), rgb(240, 92, 167));
   }
 }
 
@@ -113,13 +113,13 @@
   margin-bottom: 1rem;
   border-left: 4px solid;
   border-radius: 8px;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.15));
+  background: linear-gradient(135deg, rgb(99, 102, 241), rgb(139, 92, 246));
   padding: 1.5rem;
 
   &:hover {
     transform: translateX(5px);
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(139, 92, 246, 0.2));
+    box-shadow: 0 4px 15px rgb(99, 102, 241);
+    background: linear-gradient(135deg, rgb(119, 122, 245), rgb(159, 112, 250));
   }
 
   &.workshop {
@@ -181,16 +181,16 @@
 .projectCard {
   transition: all 0.3s ease;
   margin-bottom: 1.5rem;
-  border: 1px solid rgba(244, 114, 182, 0.3);
+  border: 1px solid rgb(244, 114, 182);
   border-radius: 12px;
-  background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(236, 72, 153, 0.1));
+  background: linear-gradient(135deg, rgb(244, 114, 182), rgb(236, 72, 153));
   padding: 1.5rem;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(244, 114, 182, 0.25);
-    border-color: rgba(244, 114, 182, 0.5);
-    background: linear-gradient(135deg, rgba(244, 114, 182, 0.2), rgba(236, 72, 153, 0.15));
+    box-shadow: 0 8px 25px rgb(244, 114, 182);
+    border-color: rgb(248, 134, 196);
+    background: linear-gradient(135deg, rgb(248, 134, 196), rgb(240, 92, 167));
   }
 }
 
@@ -198,7 +198,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+  box-shadow: 0 0 20px rgb(16, 185, 129);
   border-radius: 50%;
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   width: 60px;
@@ -210,8 +210,8 @@
 
 // Circular avatars only for participants
 .avatar {
-  box-shadow: 0 0 15px rgba(236, 72, 153, 0.25);
-  border: 3px solid rgba(236, 72, 153, 0.4);
+  box-shadow: 0 0 15px rgb(236, 72, 153);
+  border: 3px solid rgb(236, 72, 153);
   border-radius: 50%;
   width: 80px;
   height: 80px;
@@ -220,14 +220,14 @@
 
   &:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
+    box-shadow: 0 0 20px rgb(236, 72, 153);
   }
 }
 
 .skillBadge {
   display: inline-block;
   margin: 0.25rem;
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
+  box-shadow: 0 2px 8px rgb(99, 102, 241);
   border-radius: 20px;
   background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   padding: 0.25rem 0.75rem;
@@ -244,7 +244,7 @@
 }
 
 .glowText {
-  text-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+  text-shadow: 0 0 10px rgb(99, 102, 241);
 }
 
 .participantCloud {
