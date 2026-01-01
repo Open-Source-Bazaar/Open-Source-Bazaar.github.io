@@ -123,7 +123,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ hackathon }) => {
                   </Col>
                   <Col md={4} className="text-md-end mt-3 mt-md-0">
                     <Badge bg={getTypeColor(item.type)} className="me-2 mb-2">
-                      {t(item.type)}
+                      {t(item.type as any)}
                     </Badge>
                     <div className="text-white-50 small mt-2">
                       {formatDateTime(item.startedAt)} - {formatDateTime(item.endedAt)}
@@ -148,7 +148,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ hackathon }) => {
                     </div>
                     <h5 className="text-white text-center mb-3">{person.name}</h5>
                     <div className="text-white-50 small mb-2">
-                      <strong>{t('gender')}:</strong> {t(person.gender)}
+                      <strong>{t('gender')}:</strong> {t(person.gender as any)}
                     </div>
                     <div className="text-white-50 small mb-2">
                       <strong>{t('age')}:</strong> {person.age}
@@ -231,7 +231,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ hackathon }) => {
                     <img src={prize.image} alt={prize.name} className={styles.prizeImage} />
                     <h5 className="text-white mb-3">{prize.name}</h5>
                     <div className="d-flex justify-content-between align-items-center mb-2">
-                      <Badge bg={getLevelColor(prize.level)}>{t(prize.level)}</Badge>
+                      <Badge bg={getLevelColor(prize.level)}>{t(prize.level as any)}</Badge>
                       <span className="text-white fw-bold">¥{prize.price.toLocaleString()}</span>
                     </div>
                     <div className="text-white-50 small mb-2">
