@@ -197,6 +197,7 @@ export default {
   participants: 'Participants',
   organizations: 'Organizations',
   prizes: 'Prizes',
+  hackathon_prizes: 'Hackathon Prizes',
   templates: 'Templates',
   projects: 'Projects',
   type: 'Type',

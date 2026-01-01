@@ -2,8 +2,10 @@ import { observer } from 'mobx-react';
 import { GetServerSideProps } from 'next';
 import { FC, useContext } from 'react';
 import { Badge, Button, Card, Col, Container, Row } from 'react-bootstrap';
+import { UserRankView } from 'idea-react';
 
 import { PageHead } from '../../components/Layout/PageHead';
+import { GitCard } from '../../components/Git/Card';
 import { generateMockHackathon, Hackathon } from '../../models/Hackathon';
 import { I18nContext } from '../../models/Translation';
 import styles from '../../styles/Hackathon.module.less';
@@ -135,95 +137,58 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ hackathon }) => {
             </section>
           </Col>
 
-          {/* Prizes Section - Frameless vertical cards */}
+          {/* Prizes Section - Using UserRankView */}
           <Col lg={6}>
-            <section className={styles.section}>
+            <section className={`${styles.section} ${styles.prizeSection}`}>
               <h2 className={styles.sectionTitle}>🏆 {t('prizes')}</h2>
               <div className="mt-4">
-                {hackathon.prizes.map((prize, index) => (
-                  <div key={index} className={styles.prizeCard}>
-                    <Row className="align-items-center">
-                      <Col xs={3}>
-                        <img src={prize.image} alt={prize.name} className={styles.prizeImage} />
-                      </Col>
-                      <Col xs={9}>
-                        <h5 className="text-white mb-2">{prize.name}</h5>
-                        <div className="d-flex justify-content-between align-items-center mb-2">
-                          <Badge bg={getLevelColor(prize.level)}>{t(prize.level as any)}</Badge>
-                          <span className="text-white fw-bold">
-                            ¥{prize.price.toLocaleString()}
-                          </span>
-                        </div>
-                        <div className="text-white-50 small">
-                          <strong>{t('sponsor')}:</strong> {prize.sponsor} • <strong>{t('amount')}:</strong> {prize.amount}
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
-                ))}
+                <UserRankView
+                  title={t('hackathon_prizes')}
+                  rank={hackathon.prizes.map((prize, index) => ({
+                    id: `prize-${index}`,
+                    name: prize.name,
+                    avatar: prize.image,
+                    score: prize.price,
+                    email: prize.sponsor,
+                  }))}
+                />
               </div>
             </section>
           </Col>
         </Row>
 
-        {/* Mid-front: Organizations - Frameless vertical cards */}
+        {/* Mid-front: Organizations - Horizontal logo layout */}
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>🏢 {t('organizations')}</h2>
-          <div className="mt-4">
+          <div className={styles.orgContainer}>
             {hackathon.organizations.map((org, index) => (
-              <div key={index} className={styles.orgCard}>
-                <Row className="align-items-center mb-3">
-                  <Col xs={2} md={1}>
-                    <img src={org.logo} alt={org.name} className={styles.logo} />
-                  </Col>
-                  <Col xs={10} md={11}>
-                    <h5 className="text-white mb-2">{org.name}</h5>
-                    <a href={org.link} target="_blank" rel="noreferrer" className="text-info small">
-                      {org.link}
-                    </a>
-                  </Col>
-                </Row>
-                <div className="text-white-50 small mb-2">
-                  <strong>{t('members')}:</strong> {org.members.join(', ')}
-                </div>
-                <div className="text-white-50 small">
-                  <strong>{t('prizes')}:</strong> {org.prizes.join(', ')}
-                </div>
-              </div>
+              <a
+                key={index}
+                href={org.link}
+                target="_blank"
+                rel="noreferrer"
+                title={org.name}
+              >
+                <img src={org.logo} alt={org.name} className={styles.orgLogo} />
+              </a>
             ))}
           </div>
         </section>
 
-        {/* Mid-back: Templates - Narrow cards, 3-4 per row */}
-        <section className={styles.section}>
+        {/* Mid-back: Templates - Using GitCard, 3-4 per row */}
+        <section className={`${styles.section} ${styles.templateSection}`}>
           <h2 className={styles.sectionTitle}>🛠️ {t('templates')}</h2>
           <Row className="mt-4">
             {hackathon.templates.map((template, index) => (
               <Col key={index} md={6} lg={4} xl={3}>
-                <Card className={styles.templateCard}>
-                  <Card.Body>
-                    <h6 className="text-white mb-3">{template.name}</h6>
-                    <p className="text-white-50 small mb-3">{template.summary}</p>
-                    <div className="d-flex flex-column gap-2">
-                      <Button
-                        variant="outline-primary"
-                        size="sm"
-                        href={template.sourceLink}
-                        target="_blank"
-                      >
-                        {t('source_code')}
-                      </Button>
-                      <Button
-                        variant="outline-success"
-                        size="sm"
-                        href={template.previewLink}
-                        target="_blank"
-                      >
-                        {t('preview')}
-                      </Button>
-                    </div>
-                  </Card.Body>
-                </Card>
+                <GitCard
+                  full_name={template.name}
+                  html_url={template.sourceLink}
+                  languages={[]}
+                  topics={[]}
+                  description={template.summary}
+                  homepage={template.previewLink}
+                />
               </Col>
             ))}
           </Row>

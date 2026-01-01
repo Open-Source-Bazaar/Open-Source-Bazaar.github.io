@@ -75,19 +75,51 @@
   font-size: 2rem;
 }
 
-// Agenda items with gradient pink background
+// Dark cards - Blue/Purple gradient background
+.darkCard {
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.15));
+  padding: 1.5rem;
+  color: #fff;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(139, 92, 246, 0.2));
+  }
+}
+
+// Light cards - Pink gradient background
+.lightCard {
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(236, 72, 153, 0.1));
+  padding: 1.5rem;
+  color: #1f2937;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(244, 114, 182, 0.25);
+    background: linear-gradient(135deg, rgba(244, 114, 182, 0.2), rgba(236, 72, 153, 0.15));
+  }
+}
+
+// Agenda items with dark background
 .agendaItem {
   transition: all 0.3s ease;
   margin-bottom: 1rem;
   border-left: 4px solid;
   border-radius: 8px;
-  background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(219, 39, 119, 0.1));
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.15));
   padding: 1.5rem;
 
   &:hover {
     transform: translateX(5px);
-    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.2);
-    background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(219, 39, 119, 0.15));
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(139, 92, 246, 0.2));
   }
 
   &.workshop {
@@ -111,82 +143,54 @@
   }
 }
 
-// Frameless prize cards with gradient pink
-.prizeCard {
-  transition: all 0.3s ease;
-  margin-bottom: 1.5rem;
-  border: none;
-  border-radius: 0;
-  background: linear-gradient(135deg, rgba(244, 114, 182, 0.12), rgba(236, 72, 153, 0.08));
-  padding: 1.5rem;
-
-  &:hover {
-    transform: translateY(-3px);
-    background: linear-gradient(135deg, rgba(244, 114, 182, 0.18), rgba(236, 72, 153, 0.12));
-  }
+// Prize section using UserRankView
+.prizeSection {
+  margin-bottom: 2rem;
 }
 
-.prizeImage {
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  width: 100%;
-  height: 120px;
+// Organization horizontal layout
+.orgContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+.orgLogo {
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  width: 100px;
+  height: 100px;
   object-fit: contain;
-}
-
-// Frameless organization cards with gradient pink
-.orgCard {
-  transition: all 0.3s ease;
-  margin-bottom: 1.5rem;
-  border: none;
-  border-radius: 0;
-  background: linear-gradient(135deg, rgba(244, 114, 182, 0.12), rgba(236, 72, 153, 0.08));
-  padding: 2rem;
+  filter: grayscale(0.3);
 
   &:hover {
-    background: linear-gradient(135deg, rgba(244, 114, 182, 0.18), rgba(236, 72, 153, 0.12));
+    transform: scale(1.1);
+    filter: grayscale(0);
   }
 }
 
-.logo {
-  box-shadow: 0 0 15px rgba(236, 72, 153, 0.2);
-  border: 2px solid rgba(236, 72, 153, 0.3);
-  border-radius: 12px;
-  width: 80px;
-  height: 80px;
+// Template section using GitCard
+.templateSection {
+  margin-bottom: 2rem;
 }
 
-// Narrow template cards with gradient pink
-.templateCard {
-  transition: all 0.3s ease;
-  margin-bottom: 1.5rem;
-  border: 1px solid rgba(236, 72, 153, 0.2);
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(244, 114, 182, 0.1), rgba(236, 72, 153, 0.05));
-  padding: 1.5rem;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(236, 72, 153, 0.15);
-    border-color: rgba(236, 72, 153, 0.35);
-    background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(236, 72, 153, 0.1));
-  }
-}
-
-// Narrow project cards with gradient pink
+// Project cards with light pink gradient
 .projectCard {
   transition: all 0.3s ease;
   margin-bottom: 1.5rem;
-  border: 1px solid rgba(236, 72, 153, 0.2);
+  border: 1px solid rgba(244, 114, 182, 0.3);
   border-radius: 12px;
-  background: linear-gradient(135deg, rgba(244, 114, 182, 0.1), rgba(236, 72, 153, 0.05));
+  background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(236, 72, 153, 0.1));
   padding: 1.5rem;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(236, 72, 153, 0.15);
-    border-color: rgba(236, 72, 153, 0.35);
-    background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(236, 72, 153, 0.1));
+    box-shadow: 0 8px 25px rgba(244, 114, 182, 0.25);
+    border-color: rgba(244, 114, 182, 0.5);
+    background: linear-gradient(135deg, rgba(244, 114, 182, 0.2), rgba(236, 72, 153, 0.15));
   }
 }
 

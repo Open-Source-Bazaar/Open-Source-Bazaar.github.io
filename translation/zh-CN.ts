@@ -193,6 +193,7 @@ export default {
   participants: '参与者',
   organizations: '组织方',
   prizes: '奖项',
+  hackathon_prizes: '黑客松奖项',
   templates: '项目模板',
   projects: '参赛项目',
   type: '类型',
