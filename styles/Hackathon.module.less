@@ -2,7 +2,7 @@
 
 .hero {
   position: relative;
-  background: radial-gradient(circle at top left, #312e81, #1e1b4b 55%, #0f172a);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
   padding: 4rem 0;
   overflow: hidden;
   color: #fff;
@@ -12,7 +12,7 @@
     top: -50%;
     left: -50%;
     animation: grid-animation 20s linear infinite;
-    background: radial-gradient(circle, rgb(99, 102, 241) 1px, transparent 1px);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
     background-size: 50px 50px;
     width: 200%;
     height: 200%;
@@ -34,7 +34,7 @@
   margin-bottom: 1rem;
   font-weight: 700;
   font-size: 3rem;
-  text-shadow: 0 0 20px rgb(99, 102, 241);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .description {
@@ -48,15 +48,15 @@
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   margin-bottom: 1rem;
-  border: 1px solid rgb(99, 102, 241);
-  border-radius: 12px;
-  background: rgb(15, 23, 42);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
   padding: 1.5rem;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 20px rgb(99, 102, 241);
-    border-color: rgb(119, 122, 245);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    border-color: rgba(255, 255, 255, 0.5);
   }
 }
 
@@ -68,78 +68,92 @@
 .sectionTitle {
   display: inline-block;
   margin-bottom: 2rem;
-  border-bottom: 3px solid;
-  border-image: linear-gradient(90deg, #6366f1, #4f46e5) 1;
+  border-bottom: 4px solid;
+  border-image: linear-gradient(90deg, #f093fb, #f5576c, #ffd140) 1;
   padding-bottom: 0.5rem;
   font-weight: 700;
   font-size: 2rem;
+  background: linear-gradient(90deg, #f093fb, #f5576c, #ffd140);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-// Dark cards - Blue/Purple gradient background
+// Vibrant cards - Multicolor gradient background
 .darkCard {
   transition: all 0.3s ease;
   margin-bottom: 1rem;
-  border-radius: 8px;
-  background: linear-gradient(135deg, rgb(99, 102, 241), rgb(139, 92, 246));
+  border-radius: 16px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  padding: 1.5rem;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+
+  &:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+    background: linear-gradient(135deg, #7d8ff5, #8a5cb8);
+  }
+}
+
+// Bright cards - Warm gradient background
+.lightCard {
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fa709a, #fee140);
+  padding: 1.5rem;
+  color: #1f2937;
+  box-shadow: 0 4px 15px rgba(250, 112, 154, 0.3);
+
+  &:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(250, 112, 154, 0.5);
+    background: linear-gradient(135deg, #ff6b9d, #ffa400);
+  }
+}
+
+// Agenda items with vibrant gradient backgrounds
+.agendaItem {
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  border-left: 5px solid;
+  border-radius: 12px;
   padding: 1.5rem;
   color: #fff;
 
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgb(99, 102, 241);
-    background: linear-gradient(135deg, rgb(119, 122, 245), rgb(159, 112, 250));
-  }
-}
-
-// Light cards - Pink gradient background
-.lightCard {
-  transition: all 0.3s ease;
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  background: linear-gradient(135deg, rgb(244, 114, 182), rgb(236, 72, 153));
-  padding: 1.5rem;
-  color: #1f2937;
-
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgb(244, 114, 182);
-    background: linear-gradient(135deg, rgb(248, 134, 196), rgb(240, 92, 167));
-  }
-}
-
-// Agenda items with dark background
-.agendaItem {
-  transition: all 0.3s ease;
-  margin-bottom: 1rem;
-  border-left: 4px solid;
-  border-radius: 8px;
-  background: linear-gradient(135deg, rgb(99, 102, 241), rgb(139, 92, 246));
-  padding: 1.5rem;
-
-  &:hover {
-    transform: translateX(5px);
-    box-shadow: 0 4px 15px rgb(99, 102, 241);
-    background: linear-gradient(135deg, rgb(119, 122, 245), rgb(159, 112, 250));
+    transform: translateX(8px) scale(1.02);
   }
 
   &.workshop {
-    border-left-color: #3b82f6;
+    background: linear-gradient(135deg, #00c9ff, #92fe9d);
+    border-left-color: #00c9ff;
+    box-shadow: 0 4px 15px rgba(0, 201, 255, 0.3);
   }
 
   &.presentation {
-    border-left-color: #ef4444;
+    background: linear-gradient(135deg, #f5576c, #f093fb);
+    border-left-color: #f5576c;
+    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
   }
 
   &.coding {
-    border-left-color: #10b981;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    border-left-color: #4facfe;
+    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
   }
 
   &.break {
-    border-left-color: #f59e0b;
+    background: linear-gradient(135deg, #ffd140, #ff6b6b);
+    border-left-color: #ffd140;
+    box-shadow: 0 4px 15px rgba(255, 209, 64, 0.3);
   }
 
   &.ceremony {
-    border-left-color: #8b5cf6;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-left-color: #667eea;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
   }
 }
 
@@ -177,20 +191,20 @@
   margin-bottom: 2rem;
 }
 
-// Project cards with light pink gradient
+// Project cards with vibrant gradient
 .projectCard {
   transition: all 0.3s ease;
   margin-bottom: 1.5rem;
-  border: 1px solid rgb(244, 114, 182);
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgb(244, 114, 182), rgb(236, 72, 153));
+  border: 2px solid transparent;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
   padding: 1.5rem;
+  color: #1f2937;
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgb(244, 114, 182);
-    border-color: rgb(248, 134, 196);
-    background: linear-gradient(135deg, rgb(248, 134, 196), rgb(240, 92, 167));
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(250, 112, 154, 0.4);
+    background: linear-gradient(135deg, #ff6b9d 0%, #ffa400 100%);
   }
 }
 
@@ -198,9 +212,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 0 20px rgb(16, 185, 129);
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
   border-radius: 50%;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
   width: 60px;
   height: 60px;
   color: #fff;
@@ -210,33 +224,36 @@
 
 // Circular avatars only for participants
 .avatar {
-  box-shadow: 0 0 15px rgb(236, 72, 153);
-  border: 3px solid rgb(236, 72, 153);
+  box-shadow: 0 0 20px rgba(250, 112, 154, 0.5);
+  border: 4px solid transparent;
   border-radius: 50%;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(135deg, #f093fb, #f5576c) border-box;
   width: 80px;
   height: 80px;
   transition: all 0.3s ease;
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 20px rgb(236, 72, 153);
+    transform: scale(1.15);
+    box-shadow: 0 0 30px rgba(250, 112, 154, 0.7);
   }
 }
 
 .skillBadge {
   display: inline-block;
   margin: 0.25rem;
-  box-shadow: 0 2px 8px rgb(99, 102, 241);
+  box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
   border-radius: 20px;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  padding: 0.25rem 0.75rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 0.35rem 0.85rem;
   color: #fff;
   font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .techGradient {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -244,7 +261,7 @@
 }
 
 .glowText {
-  text-shadow: 0 0 10px rgb(99, 102, 241);
+  text-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
 }
 
 .participantCloud {
