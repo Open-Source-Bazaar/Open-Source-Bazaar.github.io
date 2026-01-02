@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react';
 import { GetServerSideProps } from 'next';
 import { FC, useContext } from 'react';
-import { Badge, Button, Card, Col, Container, Row } from 'react-bootstrap';
-import { UserRankView } from 'idea-react';
+import { Badge, Card, Col, Container, Row } from 'react-bootstrap';
+import { text2color, UserRankView } from 'idea-react';
 
 import { PageHead } from '../../components/Layout/PageHead';
 import { GitCard } from '../../components/Git/Card';
@@ -44,39 +44,18 @@ interface HackathonDetailProps {
   };
 }
 
+const formatDateTime = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleString('zh-CN', {
+    month: 'numeric',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
+
 const HackathonDetail: FC<HackathonDetailProps> = observer(({ hackathon }) => {
   const { t } = useContext(I18nContext);
-
-  const formatDateTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleString('zh-CN', {
-      month: 'numeric',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
-  const getTypeColor = (type: string) => {
-    const colors: Record<string, string> = {
-      workshop: 'info',
-      presentation: 'danger',
-      coding: 'success',
-      break: 'warning',
-      ceremony: 'primary',
-    };
-    return colors[type] || 'secondary';
-  };
-
-  const getLevelColor = (level: string) => {
-    const colors: Record<string, string> = {
-      gold: 'warning',
-      silver: 'secondary',
-      bronze: 'dark',
-      special: 'info',
-    };
-    return colors[level] || 'primary';
-  };
 
   return (
     <>
@@ -112,63 +91,48 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ hackathon }) => {
       </section>
 
       <Container className="my-5">
-        {/* Header: Agenda and Prizes side by side */}
-        <Row>
-          {/* Agenda Section */}
-          <Col lg={6}>
-            <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>📅 {t('agenda')}</h2>
-              <div className="mt-4">
-                {hackathon.agenda.map((item, index) => (
-                  <div key={index} className={`${styles.agendaItem} ${styles[item.type]}`}>
-                    <h5 className="text-white mb-2">{item.name}</h5>
-                    <p className="text-white-50 small mb-2">{item.summary}</p>
-                    <div className="d-flex justify-content-between align-items-center">
-                      <Badge bg={getTypeColor(item.type)} className="me-2">
-                        {t(item.type as any)}
-                      </Badge>
-                      <div className="text-white-50 small">
-                        {formatDateTime(item.startedAt)} - {formatDateTime(item.endedAt)}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          </Col>
+        <section className={`${styles.section} ${styles.prizeSection}`}>
+          <h2 className={styles.sectionTitle}>🏆 {t('prizes')}</h2>
+          <div className="mt-4">
+            <UserRankView
+              title={t('hackathon_prizes')}
+              rank={hackathon.prizes.map((prize, index) => ({
+                id: `prize-${index}`,
+                name: prize.name,
+                avatar: prize.image,
+                score: prize.price,
+                email: prize.sponsor,
+              }))}
+            />
+          </div>
+        </section>
 
-          {/* Prizes Section - Using UserRankView */}
-          <Col lg={6}>
-            <section className={`${styles.section} ${styles.prizeSection}`}>
-              <h2 className={styles.sectionTitle}>🏆 {t('prizes')}</h2>
-              <div className="mt-4">
-                <UserRankView
-                  title={t('hackathon_prizes')}
-                  rank={hackathon.prizes.map((prize, index) => ({
-                    id: `prize-${index}`,
-                    name: prize.name,
-                    avatar: prize.image,
-                    score: prize.price,
-                    email: prize.sponsor,
-                  }))}
-                />
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>📅 {t('agenda')}</h2>
+          <div className="mt-4">
+            {hackathon.agenda.map((item, index) => (
+              <div key={index} className={`${styles.agendaItem} ${styles[item.type]}`}>
+                <h5 className="text-white mb-2">{item.name}</h5>
+                <p className="text-white-50 small mb-2">{item.summary}</p>
+                <div className="d-flex justify-content-between align-items-center">
+                  <Badge bg={text2color(item.type)} className="me-2">
+                    {t(item.type as any)}
+                  </Badge>
+                  <div className="text-white-50 small">
+                    {formatDateTime(item.startedAt)} - {formatDateTime(item.endedAt)}
+                  </div>
+                </div>
               </div>
-            </section>
-          </Col>
-        </Row>
+            ))}
+          </div>
+        </section>
 
         {/* Mid-front: Organizations - Horizontal logo layout */}
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>🏢 {t('organizations')}</h2>
           <div className={styles.orgContainer}>
             {hackathon.organizations.map((org, index) => (
-              <a
-                key={index}
-                href={org.link}
-                target="_blank"
-                rel="noreferrer"
-                title={org.name}
-              >
+              <a key={index} href={org.link} target="_blank" rel="noreferrer" title={org.name}>
                 <img src={org.logo} alt={org.name} className={styles.orgLogo} />
               </a>
             ))}

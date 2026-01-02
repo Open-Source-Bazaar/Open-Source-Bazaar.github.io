@@ -32,7 +32,7 @@
     "mobx": "^6.15.0",
     "mobx-github": "^0.6.2",
     "mobx-i18n": "^0.7.2",
-    "mobx-lark": "^2.6.0",
+    "mobx-lark": "^2.6.3",
     "mobx-react": "^9.2.1",
     "mobx-react-helper": "^0.5.1",
     "mobx-restful": "^2.1.4",
@@ -74,7 +74,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-simple-import-sort": "^12.1.1",
-    "globals": "^16.5.0",
+    "globals": "^17.0.0",
     "husky": "^9.1.7",
     "jiti": "^2.6.1",
     "less": "^4.5.1",
@@ -85,7 +85,7 @@
     "prettier-plugin-css-order": "^2.1.2",
     "sass": "^1.97.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.50.1"
+    "typescript-eslint": "^8.51.0"
   },
   "resolutions": {
     "mobx-react-helper": "$mobx-react-helper",
