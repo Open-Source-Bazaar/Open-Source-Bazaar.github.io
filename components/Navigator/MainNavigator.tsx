@@ -6,6 +6,7 @@ import { Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
 import { DefaultImage } from '../../models/configuration';
 import { i18n, I18nContext } from '../../models/Translation';
+import { SearchBar } from './SearchBar';
 
 const LanguageMenu = dynamic(() => import('./LanguageMenu'), { ssr: false });
 
@@ -107,7 +108,10 @@ export const MainNavigator: FC<MainNavigatorProps> = observer(({ menu }) => {
             )}
           </Nav>
 
-          <LanguageMenu />
+          <div className="d-flex justify-content-around gap-3">
+            <SearchBar />
+            <LanguageMenu />
+          </div>
         </Navbar.Collapse>
       </Container>
     </Navbar>

@@ -1,13 +1,16 @@
 import { observable } from 'mobx';
 import { BiSearchModelClass } from 'mobx-lark';
-import { BaseModel, ListModel, toggle } from 'mobx-restful';
-import { Base, SearchableFilter } from 'mobx-strapi';
+import { BaseModel, DataObject, Filter, ListModel, toggle } from 'mobx-restful';
 import { Constructor } from 'web-utility';
 
+import { SearchActivityModel } from './Activity';
 import { ownClient } from './Base';
 import { OrganizationModel } from './Organization';
 
-export type SearchModel<T extends Base = any> = ListModel<T, SearchableFilter<T>>;
+export type SearchableFilter<D extends DataObject> = Filter<D> & {
+  keywords?: string;
+};
+export type SearchModel<T extends DataObject = any> = ListModel<T, SearchableFilter<T>>;
 
 export type SearchPageMeta = Pick<
   InstanceType<BiSearchModelClass>,
@@ -18,8 +21,9 @@ export type CityCoordinateMap = Record<string, [number, number]>;
 
 export class SystemModel extends BaseModel {
   searchMap = {
+    activity: SearchActivityModel,
     NGO: OrganizationModel,
-  } as Record<string, Constructor<SearchModel<Base>>>;
+  } as Record<string, Constructor<SearchModel<DataObject>>>;
 
   @observable
   accessor screenNarrow = false;

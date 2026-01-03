@@ -33,3 +33,6 @@ const { hostname, pathname } = new URL(process.env.NEXT_PUBLIC_LARK_WIKI_URL!);
 
 export const LarkWikiDomain = hostname;
 export const LarkWikiId = pathname.split('/').pop()!;
+
+export const LarkBitableId = process.env.NEXT_PUBLIC_LARK_BITABLE_ID!,
+  ActivityTableId = process.env.NEXT_PUBLIC_ACTIVITY_TABLE_ID!;

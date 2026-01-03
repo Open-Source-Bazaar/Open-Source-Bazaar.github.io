@@ -1,0 +1,275 @@
+// Tech-themed hackathon styling with blue-purple gradient and pink cards
+
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  padding: 4rem 0;
+  overflow: hidden;
+  color: #fff;
+
+  &::before {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    animation: grid-animation 20s linear infinite;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    content: '';
+  }
+}
+
+@keyframes grid-animation {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+.title {
+  margin-bottom: 1rem;
+  font-weight: 700;
+  font-size: 3rem;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.description {
+  opacity: 0.9;
+  margin: 0 auto;
+  max-width: 800px;
+  font-size: 1.2rem;
+}
+
+.infoCard {
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  padding: 1.5rem;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.section {
+  position: relative;
+  padding: 3rem 0;
+}
+
+.sectionTitle {
+  display: inline-block;
+  margin-bottom: 2rem;
+  border-bottom: 4px solid;
+  border-image: linear-gradient(90deg, #f093fb, #f5576c, #ffd140) 1;
+  background: linear-gradient(90deg, #f093fb, #f5576c, #ffd140);
+  -webkit-background-clip: text;
+  padding-bottom: 0.5rem;
+  font-weight: 700;
+  font-size: 2rem;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Vibrant cards - Multicolor gradient background
+.darkCard {
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  border-radius: 16px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  padding: 1.5rem;
+  color: #fff;
+
+  &:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+    background: linear-gradient(135deg, #7d8ff5, #8a5cb8);
+  }
+}
+
+// Bright cards - Warm gradient background
+.lightCard {
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 15px rgba(250, 112, 154, 0.3);
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fa709a, #fee140);
+  padding: 1.5rem;
+  color: #1f2937;
+
+  &:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(250, 112, 154, 0.5);
+    background: linear-gradient(135deg, #ff6b9d, #ffa400);
+  }
+}
+
+// Agenda items with vibrant gradient backgrounds
+.agendaItem {
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  border-left: 5px solid;
+  border-radius: 12px;
+  padding: 1.5rem;
+  color: #fff;
+
+  &:hover {
+    transform: translateX(8px) scale(1.02);
+  }
+
+  &.formation {
+    box-shadow: 0 4px 15px rgba(0, 201, 255, 0.3);
+    border-left-color: #00c9ff;
+    background: linear-gradient(135deg, #00c9ff, #92fe9d);
+  }
+
+  &.enrollment {
+    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+    border-left-color: #f5576c;
+    background: linear-gradient(135deg, #f5576c, #f093fb);
+  }
+
+  &.competition {
+    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+    border-left-color: #4facfe;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+  }
+
+  &.break {
+    box-shadow: 0 4px 15px rgba(255, 209, 64, 0.3);
+    border-left-color: #ffd140;
+    background: linear-gradient(135deg, #ffd140, #ff6b6b);
+  }
+
+  &.evaluation {
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    border-left-color: #667eea;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+  }
+}
+
+// Prize section using UserRankView
+.prizeSection {
+  margin-bottom: 2rem;
+}
+
+// Organization horizontal layout
+.orgContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.orgLogo {
+  filter: grayscale(0.3);
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+
+  &:hover {
+    transform: scale(1.1);
+    filter: grayscale(0);
+  }
+}
+
+// Template section using GitCard
+.templateSection {
+  margin-bottom: 2rem;
+}
+
+// Project cards with vibrant gradient
+.projectCard {
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  padding: 1.5rem;
+  color: #1f2937;
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(250, 112, 154, 0.4);
+    background: linear-gradient(135deg, #ff6b9d 0%, #ffa400 100%);
+  }
+}
+
+.scoreCircle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  width: 60px;
+  height: 60px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+// Circular avatars only for participants
+.avatar {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(250, 112, 154, 0.5);
+  border: 4px solid transparent;
+  border-radius: 50%;
+  background:
+    linear-gradient(white, white) padding-box,
+    linear-gradient(135deg, #f093fb, #f5576c) border-box;
+  width: 80px;
+  height: 80px;
+
+  &:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 30px rgba(250, 112, 154, 0.7);
+  }
+}
+
+.skillBadge {
+  display: inline-block;
+  margin: 0.25rem;
+  box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+  border-radius: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 0.35rem 0.85rem;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.techGradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+.glowText {
+  text-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+}
+
+.participantCloud {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem 0;
+}
