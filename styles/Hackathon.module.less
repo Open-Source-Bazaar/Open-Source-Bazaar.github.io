@@ -70,11 +70,11 @@
   margin-bottom: 2rem;
   border-bottom: 4px solid;
   border-image: linear-gradient(90deg, #f093fb, #f5576c, #ffd140) 1;
+  background: linear-gradient(90deg, #f093fb, #f5576c, #ffd140);
+  -webkit-background-clip: text;
   padding-bottom: 0.5rem;
   font-weight: 700;
   font-size: 2rem;
-  background: linear-gradient(90deg, #f093fb, #f5576c, #ffd140);
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
@@ -83,11 +83,11 @@
 .darkCard {
   transition: all 0.3s ease;
   margin-bottom: 1rem;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
   border-radius: 16px;
   background: linear-gradient(135deg, #667eea, #764ba2);
   padding: 1.5rem;
   color: #fff;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 
   &:hover {
     transform: translateY(-5px) scale(1.02);
@@ -100,11 +100,11 @@
 .lightCard {
   transition: all 0.3s ease;
   margin-bottom: 1rem;
+  box-shadow: 0 4px 15px rgba(250, 112, 154, 0.3);
   border-radius: 16px;
   background: linear-gradient(135deg, #fa709a, #fee140);
   padding: 1.5rem;
   color: #1f2937;
-  box-shadow: 0 4px 15px rgba(250, 112, 154, 0.3);
 
   &:hover {
     transform: translateY(-5px) scale(1.02);
@@ -126,34 +126,34 @@
     transform: translateX(8px) scale(1.02);
   }
 
-  &.workshop {
-    background: linear-gradient(135deg, #00c9ff, #92fe9d);
-    border-left-color: #00c9ff;
+  &.formation {
     box-shadow: 0 4px 15px rgba(0, 201, 255, 0.3);
+    border-left-color: #00c9ff;
+    background: linear-gradient(135deg, #00c9ff, #92fe9d);
   }
 
-  &.presentation {
-    background: linear-gradient(135deg, #f5576c, #f093fb);
-    border-left-color: #f5576c;
+  &.enrollment {
     box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+    border-left-color: #f5576c;
+    background: linear-gradient(135deg, #f5576c, #f093fb);
   }
 
-  &.coding {
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
-    border-left-color: #4facfe;
+  &.competition {
     box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+    border-left-color: #4facfe;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
   }
 
   &.break {
-    background: linear-gradient(135deg, #ffd140, #ff6b6b);
-    border-left-color: #ffd140;
     box-shadow: 0 4px 15px rgba(255, 209, 64, 0.3);
+    border-left-color: #ffd140;
+    background: linear-gradient(135deg, #ffd140, #ff6b6b);
   }
 
-  &.ceremony {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border-left-color: #667eea;
+  &.evaluation {
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    border-left-color: #667eea;
+    background: linear-gradient(135deg, #667eea, #764ba2);
   }
 }
 
@@ -166,19 +166,19 @@
 .orgContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
   justify-content: center;
   align-items: center;
+  gap: 2rem;
   padding: 2rem 0;
 }
 
 .orgLogo {
+  filter: grayscale(0.3);
   transition: all 0.3s ease;
   border-radius: 12px;
   width: 100px;
   height: 100px;
   object-fit: contain;
-  filter: grayscale(0.3);
 
   &:hover {
     transform: scale(1.1);
@@ -224,15 +224,16 @@
 
 // Circular avatars only for participants
 .avatar {
+  transition: all 0.3s ease;
+  cursor: pointer;
   box-shadow: 0 0 20px rgba(250, 112, 154, 0.5);
   border: 4px solid transparent;
   border-radius: 50%;
-  background: linear-gradient(white, white) padding-box,
-              linear-gradient(135deg, #f093fb, #f5576c) border-box;
+  background:
+    linear-gradient(white, white) padding-box,
+    linear-gradient(135deg, #f093fb, #f5576c) border-box;
   width: 80px;
   height: 80px;
-  transition: all 0.3s ease;
-  cursor: pointer;
 
   &:hover {
     transform: scale(1.15);
@@ -248,8 +249,8 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 0.35rem 0.85rem;
   color: #fff;
-  font-size: 0.85rem;
   font-weight: 600;
+  font-size: 0.85rem;
 }
 
 .techGradient {
@@ -267,8 +268,8 @@
 .participantCloud {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
   justify-content: center;
   align-items: center;
+  gap: 1.5rem;
   padding: 2rem 0;
 }

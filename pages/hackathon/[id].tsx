@@ -1,46 +1,69 @@
+import { BiTableSchema, TableCellLocation, TableCellUser } from 'mobx-lark';
 import { observer } from 'mobx-react';
-import { GetServerSideProps } from 'next';
+import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap';
 import { text2color, UserRankView } from 'idea-react';
+import { formatDate } from 'web-utility';
 
-import { PageHead } from '../../components/Layout/PageHead';
 import { GitCard } from '../../components/Git/Card';
-import { generateMockHackathon, Hackathon } from '../../models/Hackathon';
-import { I18nContext } from '../../models/Translation';
+import { LarkImage } from '../../components/LarkImage';
+import { PageHead } from '../../components/Layout/PageHead';
+import { Activity, ActivityModel } from '../../models/Activity';
+import { fileURLOf } from '../../models/Base';
+import {
+  Agenda,
+  AgendaModel,
+  Organization,
+  OrganizationModel,
+  Person,
+  PersonModel,
+  Prize,
+  PrizeModel,
+  Project,
+  ProjectModel,
+  Template,
+  TemplateModel,
+} from '../../models/Hackathon';
+import { I18nContext, I18nKey } from '../../models/Translation';
 import styles from '../../styles/Hackathon.module.less';
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const id = params?.id as string;
-  const hackathon = generateMockHackathon(id);
+export const getServerSideProps = compose<{ id: string }>(
+  cache(),
+  errorLogger,
+  async ({ params }) => {
+    const activity = await new ActivityModel().getOne(params!.id);
 
-  return {
-    props: {
-      hackathon: {
-        ...hackathon,
-        startDate: hackathon.startDate.toISOString(),
-        endDate: hackathon.endDate.toISOString(),
-        agenda: hackathon.agenda.map(item => ({
-          ...item,
-          startedAt: item.startedAt.toISOString(),
-          endedAt: item.endedAt.toISOString(),
-        })),
+    // @ts-expect-error Upstream compatibility
+    const { appId, tableIdMap } = activity.databaseSchema as BiTableSchema;
+
+    const [people, organizations, agenda, prizes, templates, projects] = await Promise.all([
+      new PersonModel(appId, tableIdMap.Person).getAll(),
+      new OrganizationModel(appId, tableIdMap.Organization).getAll(),
+      new AgendaModel(appId, tableIdMap.Agenda).getAll(),
+      new PrizeModel(appId, tableIdMap.Prize).getAll(),
+      new TemplateModel(appId, tableIdMap.Template).getAll(),
+      new ProjectModel(appId, tableIdMap.Project).getAll(),
+    ]);
+
+    return {
+      props: {
+        activity,
+        hackathon: { people, organizations, agenda, prizes, templates, projects },
       },
-    },
-  };
-};
+    };
+  },
+);
 
 interface HackathonDetailProps {
-  hackathon: Omit<Hackathon, 'startDate' | 'endDate' | 'agenda'> & {
-    startDate: string;
-    endDate: string;
-    agenda: Array<{
-      summary: string;
-      name: string;
-      type: string;
-      startedAt: string;
-      endedAt: string;
-    }>;
+  activity: Activity;
+  hackathon: {
+    people: Person[];
+    organizations: Organization[];
+    agenda: Agenda[];
+    prizes: Prize[];
+    templates: Template[];
+    projects: Project[];
   };
 }
 
@@ -54,25 +77,30 @@ const formatDateTime = (dateString: string) => {
   });
 };
 
-const HackathonDetail: FC<HackathonDetailProps> = observer(({ hackathon }) => {
+const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackathon }) => {
   const { t } = useContext(I18nContext);
+
+  const { name, summary, location, startTime, endTime } = activity,
+    { people, organizations, agenda, prizes, templates, projects } = hackathon;
 
   return (
     <>
-      <PageHead title={`${hackathon.title} - ${t('hackathon_detail')}`} />
+      <PageHead title={name as string} />
 
       {/* Hero Section */}
       <section className={styles.hero}>
         <Container>
-          <h1 className={`text-center ${styles.title}`}>{hackathon.title}</h1>
-          <p className={`text-center ${styles.description}`}>{hackathon.description}</p>
+          <h1 className={`text-center ${styles.title}`}>{name as string}</h1>
+          <p className={`text-center ${styles.description}`}>{summary as string}</p>
 
           <Row className="mt-4 justify-content-center">
             <Col md={4}>
               <Card className={styles.infoCard}>
                 <Card.Body>
                   <h5 className="text-white mb-2">📍 {t('event_location')}</h5>
-                  <p className="text-white-50 mb-0">{hackathon.location}</p>
+                  <p className="text-white-50 mb-0">
+                    {(location as TableCellLocation).full_address}
+                  </p>
                 </Card.Body>
               </Card>
             </Col>
@@ -81,7 +109,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ hackathon }) => {
                 <Card.Body>
                   <h5 className="text-white mb-2">⏰ {t('event_duration')}</h5>
                   <p className="text-white-50 mb-0">
-                    {formatDateTime(hackathon.startDate)} - {formatDateTime(hackathon.endDate)}
+                    {formatDate(startTime as string)} - {formatDate(endTime as string)}
                   </p>
                 </Card.Body>
               </Card>
@@ -95,13 +123,12 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ hackathon }) => {
           <h2 className={styles.sectionTitle}>🏆 {t('prizes')}</h2>
           <div className="mt-4">
             <UserRankView
-              title={t('hackathon_prizes')}
-              rank={hackathon.prizes.map((prize, index) => ({
+              title={t('prizes')}
+              rank={prizes.map(({ name, image, price }, index) => ({
                 id: `prize-${index}`,
-                name: prize.name,
-                avatar: prize.image,
-                score: prize.price,
-                email: prize.sponsor,
+                name: name as string,
+                avatar: fileURLOf(image),
+                score: price as number,
               }))}
             />
           </div>
@@ -109,49 +136,58 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ hackathon }) => {
 
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>📅 {t('agenda')}</h2>
-          <div className="mt-4">
-            {hackathon.agenda.map((item, index) => (
-              <div key={index} className={`${styles.agendaItem} ${styles[item.type]}`}>
-                <h5 className="text-white mb-2">{item.name}</h5>
-                <p className="text-white-50 small mb-2">{item.summary}</p>
+          <ol className="list-unstyled mt-4">
+            {agenda.map(({ name, type, summary, startedAt, endedAt }) => (
+              <li
+                key={name as string}
+                className={`${styles.agendaItem} ${styles[type?.toString().toLowerCase() || 'break']}`}
+              >
+                <h5 className="text-white mb-2">{name as string}</h5>
+                <p className="text-white-50 small mb-2">{summary as string}</p>
                 <div className="d-flex justify-content-between align-items-center">
-                  <Badge bg={text2color(item.type)} className="me-2">
-                    {t(item.type as any)}
+                  <Badge bg={text2color(type as string)} className="me-2">
+                    {t(type as I18nKey)}
                   </Badge>
                   <div className="text-white-50 small">
-                    {formatDateTime(item.startedAt)} - {formatDateTime(item.endedAt)}
+                    {formatDate(startedAt as string)} - {formatDate(endedAt as string)}
                   </div>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </section>
 
         {/* Mid-front: Organizations - Horizontal logo layout */}
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>🏢 {t('organizations')}</h2>
-          <div className={styles.orgContainer}>
-            {hackathon.organizations.map((org, index) => (
-              <a key={index} href={org.link} target="_blank" rel="noreferrer" title={org.name}>
-                <img src={org.logo} alt={org.name} className={styles.orgLogo} />
+          <nav className={styles.orgContainer}>
+            {organizations.map(({ name, link, logo }) => (
+              <a
+                key={name as string}
+                href={link as string}
+                target="_blank"
+                rel="noreferrer"
+                title={name as string}
+              >
+                <LarkImage src={logo} alt={name as string} className={styles.orgLogo} />
               </a>
             ))}
-          </div>
+          </nav>
         </section>
 
         {/* Mid-back: Templates - Using GitCard, 3-4 per row */}
         <section className={`${styles.section} ${styles.templateSection}`}>
           <h2 className={styles.sectionTitle}>🛠️ {t('templates')}</h2>
-          <Row className="mt-4">
-            {hackathon.templates.map((template, index) => (
-              <Col key={index} md={6} lg={4} xl={3}>
+          <Row className="mt-4 g-3" md={2} lg={3} xl={4}>
+            {templates.map(({ name, languages, tags, sourceLink, summary, previewLink }) => (
+              <Col key={name as string}>
                 <GitCard
-                  full_name={template.name}
-                  html_url={template.sourceLink}
-                  languages={[]}
-                  topics={[]}
-                  description={template.summary}
-                  homepage={template.previewLink}
+                  full_name={name as string}
+                  html_url={sourceLink as string}
+                  languages={languages as string[]}
+                  topics={tags as string[]}
+                  description={summary as string}
+                  homepage={previewLink as string}
                 />
               </Col>
             ))}
@@ -161,26 +197,25 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ hackathon }) => {
         {/* Mid-back: Projects - Narrow cards, 3-4 per row */}
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>💡 {t('projects')}</h2>
-          <Row className="mt-4">
-            {hackathon.projects.map((project, index) => (
-              <Col key={index} md={6} lg={4} xl={3}>
-                <Card className={styles.projectCard}>
-                  <Card.Body>
-                    <div className="d-flex justify-content-between align-items-start mb-3">
-                      <h6 className="text-white flex-grow-1">{project.name}</h6>
-                      <div className={styles.scoreCircle}>{project.score}</div>
-                    </div>
-                    <p className="text-white-50 small mb-3">{project.summary}</p>
-                    <div className="text-white-50 small mb-2">
-                      <strong>{t('created_by')}:</strong> {project.createdBy}
-                    </div>
-                    <div className="text-white-50 small mb-2">
-                      <strong>{t('group')}:</strong> {project.group.join(', ')}
-                    </div>
-                    <div className="text-white-50 small">
-                      <strong>{t('members')}:</strong> {project.members.join(', ')}
-                    </div>
-                  </Card.Body>
+
+          <Row as="ul" className="list-unstyled mt-4 g-3" md={2} lg={3} xl={4}>
+            {projects.map(({ name, score, summary, createdBy, members }) => (
+              <Col as="li" key={name as string}>
+                <Card className={styles.projectCard} body>
+                  <div className="d-flex justify-content-between align-items-start mb-3">
+                    <h6 className="text-white flex-grow-1">{name as string}</h6>
+                    <div className={styles.scoreCircle}>{score as number}</div>
+                  </div>
+                  <p className="text-white-50 small mb-3">{summary as string}</p>
+                  <div className="text-white-50 small mb-2">
+                    <strong>{t('created_by')}:</strong>{' '}
+                    <a href={`mailto:${(createdBy as TableCellUser)?.email}`}>
+                      {(createdBy as TableCellUser)?.name}
+                    </a>
+                  </div>
+                  <div className="text-white-50 small">
+                    <strong>{t('members')}:</strong> {(members as string[]).join(', ')}
+                  </div>
                 </Card>
               </Col>
             ))}
@@ -190,18 +225,24 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ hackathon }) => {
         {/* Footer: Participants - Circular avatars only */}
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>👥 {t('participants')}</h2>
-          <div className={styles.participantCloud}>
-            {hackathon.people.map((person, index) => (
-              <div key={index} className="text-center">
-                <img
-                  src={person.avatar}
-                  alt={person.name}
+          <nav className={styles.participantCloud}>
+            {people.map(({ name, avatar, githubLink }) => (
+              <a
+                key={name as string}
+                className="text-center"
+                target="_blank"
+                rel="noreferrer"
+                href={githubLink as string}
+              >
+                <LarkImage
                   className={styles.avatar}
-                  title={person.name}
+                  src={avatar}
+                  alt={name as string}
+                  title={name as string}
                 />
-              </div>
+              </a>
             ))}
-          </div>
+          </nav>
         </section>
       </Container>
     </>
