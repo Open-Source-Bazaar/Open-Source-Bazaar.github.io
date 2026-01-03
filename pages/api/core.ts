@@ -7,14 +7,9 @@ import { HTTPError } from 'koajax';
 import { Content } from 'mobx-github';
 import { DataObject } from 'mobx-restful';
 import { KoaOption, withKoa } from 'next-ssr-middleware';
-import { ProxyAgent, setGlobalDispatcher } from 'undici';
 import { parse } from 'yaml';
 
 import { LarkAppMeta } from '../../models/configuration';
-
-const { HTTP_PROXY } = process.env;
-
-if (HTTP_PROXY) setGlobalDispatcher(new ProxyAgent(HTTP_PROXY));
 
 export type JWTContext = ParameterizedContext<
   { jwtOriginalError: JsonWebTokenError } | { user: DataObject }

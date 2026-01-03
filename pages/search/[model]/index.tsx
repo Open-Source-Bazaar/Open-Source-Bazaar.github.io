@@ -5,6 +5,7 @@ import { FC, useContext } from 'react';
 import { Container, Nav } from 'react-bootstrap';
 import { buildURLData } from 'web-utility';
 
+import { ActivityCard } from '../../../components/Activity/Card';
 import { CardPage, CardPageProps } from '../../../components/Layout/CardPage';
 import { PageHead } from '../../../components/Layout/PageHead';
 import { SearchBar } from '../../../components/Navigator/SearchBar';
@@ -38,10 +39,12 @@ export const getServerSideProps = compose<{ model: string }, SearchModelPageProp
 );
 
 const SearchNameMap = ({ t }: typeof i18n): Record<string, string> => ({
+  activity: t('activity'),
   NGO: t('NGO'),
 });
 
 const SearchCardMap: Record<string, CardPageProps['Card']> = {
+  activity: ActivityCard,
   NGO: OrganizationCard,
 };
 
@@ -57,7 +60,7 @@ const SearchModelPage: FC<SearchModelPageProps> = observer(
     const title = `${keywords} - ${name} ${t('search_results')}`;
 
     return (
-      <Container>
+      <Container className="my-5">
         <PageHead title={title} />
 
         <h1 className="my-3 text-center">{title}</h1>

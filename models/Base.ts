@@ -51,6 +51,8 @@ export const makeGithubSearchCondition = (queryMap: DataObject) =>
     .map(([key, value]) => `${key}:${value}`)
     .join(' ');
 
+export type LarkBase = Record<'id' | 'createdAt' | 'updatedAt', TableCellValue>;
+
 export const larkClient = new HTTPClient({
   baseURI: LARK_API_HOST,
   responseType: 'json',

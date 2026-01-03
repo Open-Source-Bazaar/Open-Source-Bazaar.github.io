@@ -5,6 +5,7 @@ export default {
   code_of_conduct: 'Code of Conduct',
   join_us: 'Join Us',
   open_collaborator_award: 'Open Collaborator Award',
+  activity: 'Activity',
   hackathon: 'Hackathon',
   open_source_projects: 'Open Source projects',
   open_source_bazaar: 'Open Source Bazaar',

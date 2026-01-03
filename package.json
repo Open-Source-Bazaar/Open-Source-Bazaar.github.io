@@ -48,7 +48,6 @@
     "react-typed-component": "^1.0.6",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^5.2.0",
-    "undici": "^7.16.0",
     "web-utility": "^4.6.4",
     "yaml": "^2.8.2"
   },
@@ -111,6 +110,6 @@
     ]
   },
   "lint-staged": {
-    "*.{html,md,scss,json,yml,js,mjs,ts,tsx}": "prettier --write"
+    "*.{html,md,less,json,yml,js,mjs,ts,tsx}": "prettier --write"
   }
 }
