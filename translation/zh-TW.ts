@@ -229,4 +229,18 @@ export default {
   male: '男',
   female: '女',
   other: '其他',
+
+  // Team detail page
+  team_members: '團隊成員',
+  team_works: '團隊作品',
+  latest_news: '最新動態',
+  no_news_yet: '暫無動態',
+  join_team: '加入團隊',
+  leave_team: '退出團隊',
+  manage_team: '管理團隊',
+  cancel_application: '取消申請',
+  please_make_sure: '請確認',
+  success: '成功',
+  team_description: '團隊描述',
+  team_details: '團隊詳情',
 };
