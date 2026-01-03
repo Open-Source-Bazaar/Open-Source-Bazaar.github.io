@@ -5,14 +5,11 @@ import { FC, useContext } from 'react';
 import { Badge, Card, Col, Container, Row, Tab, Tabs } from 'react-bootstrap';
 
 import { CommentBox } from '../../../../components/Activity/CommentBox';
-import { LarkImage } from '../../../../components/LarkImage';
 import { PageHead } from '../../../../components/Layout/PageHead';
 import { Activity, ActivityModel } from '../../../../models/Activity';
 import {
   Member,
   MemberModel,
-  Person,
-  PersonModel,
   Product,
   ProductModel,
   Project,
@@ -39,16 +36,6 @@ export const getServerSideProps = compose<{ id: string; tid: string }>(
       status: 'approved',
     });
 
-    // Get person details for members
-    const personModel = new PersonModel(appId, tableIdMap.Person);
-    const allPeople = await personModel.getAll();
-
-    // Filter team members from all people based on member records
-    const memberPersonNames = members.map((m) => m.person as string);
-    const teamMembers = allPeople.filter((person) =>
-      memberPersonNames.includes(person.name as string),
-    );
-
     // Get products for this project
     const products = await new ProductModel(appId, tableIdMap.Product).getAll({
       project: team.name as string,
@@ -58,7 +45,6 @@ export const getServerSideProps = compose<{ id: string; tid: string }>(
       props: {
         activity,
         team,
-        teamMembers,
         members,
         products,
       },
@@ -69,12 +55,11 @@ export const getServerSideProps = compose<{ id: string; tid: string }>(
 interface TeamPageProps {
   activity: Activity;
   team: Project;
-  teamMembers: Person[];
   members: Member[];
   products: Product[];
 }
 
-const TeamPage: FC<TeamPageProps> = observer(({ activity, team, teamMembers, products }) => {
+const TeamPage: FC<TeamPageProps> = observer(({ activity, team, members, products }) => {
   const { t } = useContext(I18nContext);
 
   const { name: activityName } = activity;
@@ -124,28 +109,21 @@ const TeamPage: FC<TeamPageProps> = observer(({ activity, team, teamMembers, pro
                 👥 {t('team_members')}
               </h2>
               <ul className="list-unstyled">
-                {teamMembers.map((member) => (
-                  <li key={member.id as string} className="mb-3">
-                    <div className="d-flex align-items-center">
-                      <LarkImage
-                        src={member.avatar}
-                        alt={member.name as string}
-                        className="rounded-circle me-2"
-                        style={{ width: '40px', height: '40px' }}
-                      />
-                      <div>
-                        <div className="fw-bold">{member.name as string}</div>
-                        {member.githubLink && (
-                          <a
-                            href={member.githubLink as string}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-muted small"
-                          >
-                            {t('view_github')}
-                          </a>
-                        )}
-                      </div>
+                {members.map(({ id, person, summary, githubAccount }) => (
+                  <li key={id as string} className="mb-3">
+                    <div>
+                      <div className="fw-bold">{person as string}</div>
+                      {summary && <p className="text-muted small mb-1">{summary as string}</p>}
+                      {githubAccount && (
+                        <a
+                          href={`https://github.com/${githubAccount}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-muted small"
+                        >
+                          @{githubAccount as string}
+                        </a>
+                      )}
                     </div>
                   </li>
                 ))}
@@ -162,37 +140,33 @@ const TeamPage: FC<TeamPageProps> = observer(({ activity, team, teamMembers, pro
               <div className="mt-3">
                 {products && products.length > 0 ? (
                   <ul className="list-unstyled">
-                    {products.map((product) => (
-                      <li key={product.id as string} className="mb-3">
-                        <Card>
-                          <Card.Body>
-                            <h5>{product.name as string}</h5>
-                            {product.summary && (
-                              <p className="text-muted">{product.summary as string}</p>
+                    {products.map(({ id, name, summary, link, sourceLink }) => (
+                      <li key={id as string} className="mb-3">
+                        <Card body>
+                          <h5>{name as string}</h5>
+                          {summary && <p className="text-muted">{summary as string}</p>}
+                          <div className="d-flex gap-2 mt-2">
+                            {link && (
+                              <a
+                                href={link as string}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="btn btn-sm btn-outline-primary"
+                              >
+                                {t('preview')}
+                              </a>
                             )}
-                            <div className="d-flex gap-2 mt-2">
-                              {product.link && (
-                                <a
-                                  href={product.link as string}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="btn btn-sm btn-outline-primary"
-                                >
-                                  {t('preview')}
-                                </a>
-                              )}
-                              {product.sourceLink && (
-                                <a
-                                  href={product.sourceLink as string}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="btn btn-sm btn-outline-secondary"
-                                >
-                                  {t('source_code')}
-                                </a>
-                              )}
-                            </div>
-                          </Card.Body>
+                            {sourceLink && (
+                              <a
+                                href={sourceLink as string}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="btn btn-sm btn-outline-secondary"
+                              >
+                                {t('source_code')}
+                              </a>
+                            )}
+                          </div>
                         </Card>
                       </li>
                     ))}
