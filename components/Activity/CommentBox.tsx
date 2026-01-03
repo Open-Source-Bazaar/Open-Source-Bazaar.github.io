@@ -1,13 +1,25 @@
-import { FC } from 'react';
-import { Card } from 'react-bootstrap';
+import Giscus from '@giscus/react';
+import { observer } from 'mobx-react';
+import { useContext } from 'react';
 
-export const CommentBox: FC = () => {
+import { I18nContext } from '../../models/Translation';
+
+export const CommentBox = observer(() => {
+  const { currentLanguage } = useContext(I18nContext);
+
   return (
-    <Card className="mt-4">
-      <Card.Body>
-        <h3 className="h5">Comments</h3>
-        <p className="text-muted">Comment functionality coming soon...</p>
-      </Card.Body>
-    </Card>
+    <Giscus
+      repo="Open-Source-Bazaar/Open-Source-Bazaar.github.io"
+      repoId="R_kgDOGzCrLg"
+      category="Comments"
+      categoryId="DIC_kwDOGzCrLs4C0g_6"
+      mapping="pathname"
+      strict="0"
+      reactionsEnabled="1"
+      emitMetadata="0"
+      inputPosition="bottom"
+      theme="preferred_color_scheme"
+      lang={currentLanguage.startsWith('zh-') ? currentLanguage : currentLanguage.split('-')[0]}
+    />
   );
-};
+});

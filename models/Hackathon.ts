@@ -6,6 +6,7 @@ import {
   normalizeText,
   TableCellRelation,
   TableCellText,
+  TableCellUser,
   TableCellValue,
   TableRecord,
 } from 'mobx-lark';
@@ -24,7 +25,7 @@ export class AgendaModel extends BiDataTable<Agenda>() {
     return {
       ...meta,
       ...fields,
-      summary: normalizeText(summary as TableCellText),
+      summary: (summary as TableCellText[])!.map(normalizeText),
     };
   }
 }
@@ -149,10 +150,16 @@ export class MemberModel extends BiDataTable<Member>() {
 
   queryOptions: BiDataQueryOptions = { text_field_as_array: false };
 
-  extractFields({ fields: { githubAccount, ...fields }, ...meta }: TableRecord<Member>) {
+  extractFields({
+    fields: { summary, person, skills, githubAccount, ...fields },
+    ...meta
+  }: TableRecord<Member>) {
     return {
       ...meta,
       ...fields,
+      person: (person as TableCellUser[])?.[0],
+      summary: (summary as TableCellText[])!.map(normalizeText),
+      skills: skills?.toString().split(/\s*,\s*/) || [],
       githubAccount: normalizeText(githubAccount as TableCellText),
     };
   }

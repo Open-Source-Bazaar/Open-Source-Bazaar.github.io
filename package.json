@@ -14,6 +14,7 @@
     "test": "lint-staged  &&  tsc --noEmit"
   },
   "dependencies": {
+    "@giscus/react": "^3.1.0",
     "@koa/router": "^15.1.1",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
