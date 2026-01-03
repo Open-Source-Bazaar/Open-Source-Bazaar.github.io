@@ -140,3 +140,41 @@ export class ProjectModel extends BiDataTable<Project>() {
     };
   }
 }
+
+export type Member = LarkBase &
+  Record<'summary' | 'person' | 'skills' | 'githubAccount' | 'project' | 'status', TableCellValue>;
+
+export class MemberModel extends BiDataTable<Member>() {
+  client = larkClient;
+
+  queryOptions: BiDataQueryOptions = { text_field_as_array: false };
+
+  extractFields({ fields: { githubAccount, ...fields }, ...meta }: TableRecord<Member>) {
+    return {
+      ...meta,
+      ...fields,
+      githubAccount: normalizeText(githubAccount as TableCellText),
+    };
+  }
+}
+
+export type Product = LarkBase &
+  Record<
+    'name' | 'project' | 'template' | 'link' | 'sourceLink' | 'file' | 'summary',
+    TableCellValue
+  >;
+
+export class ProductModel extends BiDataTable<Product>() {
+  client = larkClient;
+
+  queryOptions: BiDataQueryOptions = { text_field_as_array: false };
+
+  extractFields({ fields: { link, sourceLink, ...fields }, ...meta }: TableRecord<Product>) {
+    return {
+      ...meta,
+      ...fields,
+      link: normalizeText(link as TableCellText),
+      sourceLink: normalizeText(sourceLink as TableCellText),
+    };
+  }
+}
