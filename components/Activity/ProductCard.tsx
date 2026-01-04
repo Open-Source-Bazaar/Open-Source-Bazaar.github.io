@@ -5,93 +5,73 @@ import { CardProps, Card, Button } from 'react-bootstrap';
 import { formatDate } from 'web-utility';
 
 import { Product } from '../../models/Hackathon';
+import styles from '../../styles/Hackathon.module.less';
 
 export type ProductCardProps = Product & Omit<CardProps, 'id' | 'title'>;
 
 export const ProductCard: FC<ProductCardProps> = observer(
-  ({ className = '', id, createdAt, name, sourceLink, link = sourceLink, summary, ...props }) => {
-    if (!sourceLink) return null;
+  ({ className = '', id, createdAt, name, sourceLink, link = sourceLink, summary, ...props }) => (
+    <Card className={`${styles.projectCard} ${className}`} {...props}>
+      <Card.Body className="d-flex flex-column">
+        <Card.Title
+          as="a"
+          className="text-dark fw-bold"
+          title={name as string}
+          target="_blank"
+          href={link as string}
+        >
+          {(name || link) as string}
+        </Card.Title>
+        <p className="text-dark opacity-75 mb-3">{summary as string}</p>
+        <div className="flex-fill mb-3">
+          <FilePreview className="w-100" path={link as string} />
+        </div>
 
-    return (
-      <Card className={`border-success ${className}`} {...props}>
-        <Card.Body className="d-flex flex-column">
-          <Card.Title
-            as="a"
-            className="text-primary"
-            title={name as string}
-            target="_blank"
-            href={link as string}
-          >
-            {(name || link) as string}
-          </Card.Title>
-          <p className="border-bottom p-2 text-muted text-truncate">{summary as string}</p>
-          <div className="border-bottom py-2 my-2 flex-fill">
-            <FilePreview className="w-100" path={link as string} />
-
-            <div className="d-flex flex-wrap gap-2 mt-2">
-              <Button
-                variant="dark"
-                size="sm"
-                href={sourceLink as string}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <img
-                  src="https://img.shields.io/badge/GitHub-181717?logo=github"
-                  alt="GitHub"
-                  style={{ height: '20px' }}
-                />
-              </Button>
-              <Button
-                variant="primary"
-                size="sm"
-                href={`https://github.dev/${(sourceLink as string).replace('https://github.com/', '')}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <img
-                  src="https://img.shields.io/badge/GitHub.dev-blue?logo=visualstudio"
-                  alt="GitHub.dev"
-                  style={{ height: '20px' }}
-                />
-              </Button>
-              <Button
-                variant="dark"
-                size="sm"
-                href={`https://codespaces.new/${(sourceLink as string).replace('https://github.com/', '')}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <img
-                  src="https://img.shields.io/badge/GitHub_codespaces-black?logo=github"
-                  alt="GitHub Codespaces"
-                  style={{ height: '20px' }}
-                />
-              </Button>
-              <Button
-                variant="warning"
-                size="sm"
-                href={`https://gitpod.io/#${sourceLink as string}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <img
-                  src="https://img.shields.io/badge/GitPod.io-orange?logo=git"
-                  alt="GitPod"
-                  style={{ height: '20px' }}
-                />
-              </Button>
-            </div>
+        {sourceLink && (
+          <div className="d-flex flex-wrap gap-2 mb-3">
+            <Button
+              variant="dark"
+              size="sm"
+              href={sourceLink as string}
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitHub
+            </Button>
+            <Button
+              variant="primary"
+              size="sm"
+              href={`https://github.dev/${(sourceLink as string).replace('https://github.com/', '')}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitHub.dev
+            </Button>
+            <Button
+              variant="dark"
+              size="sm"
+              href={`https://codespaces.new/${(sourceLink as string).replace('https://github.com/', '')}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Codespaces
+            </Button>
+            <Button
+              variant="warning"
+              size="sm"
+              href={`https://gitpod.io/#${sourceLink as string}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitPod
+            </Button>
           </div>
-          <time
-            className="d-block p-2 text-truncate"
-            dateTime={new Date(createdAt as number).toJSON()}
-          >
-            📅
-            {formatDate(createdAt as number)}
-          </time>
-        </Card.Body>
-      </Card>
-    );
-  },
+        )}
+
+        <time className="text-dark opacity-75 small" dateTime={new Date(createdAt as number).toJSON()}>
+          📅 {formatDate(createdAt as number)}
+        </time>
+      </Card.Body>
+    </Card>
+  ),
 );
