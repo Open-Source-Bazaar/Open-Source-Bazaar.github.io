@@ -2,6 +2,7 @@ import {
   BiDataQueryOptions,
   BiDataTable,
   BiSearch,
+  BiTableSchema,
   LarkPageData,
   makeSimpleFilter,
   normalizeText,
@@ -34,7 +35,9 @@ export type Activity = LarkBase &
     | 'liveLink'
     | `database${'' | 'Schema'}`,
     TableCellValue
-  >;
+  > & {
+    databaseSchema: BiTableSchema;
+  };
 
 export class ActivityModel extends BiDataTable<Activity>() {
   client = larkClient;

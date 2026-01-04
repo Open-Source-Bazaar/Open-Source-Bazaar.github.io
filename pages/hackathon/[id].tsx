@@ -35,7 +35,6 @@ export const getServerSideProps = compose<{ id: string }>(
   async ({ params }) => {
     const activity = await new ActivityModel().getOne(params!.id);
 
-    // @ts-expect-error Upstream compatibility
     const { appId, tableIdMap } = activity.databaseSchema as BiTableSchema;
 
     const [people, organizations, agenda, prizes, templates, projects] = await Promise.all([

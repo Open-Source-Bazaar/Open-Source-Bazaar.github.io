@@ -37,22 +37,20 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
   async ({ params }) => {
     const activity = await new ActivityModel().getOne(params!.id);
 
-    // @ts-expect-error Upstream compatibility
     const { appId, tableIdMap } = activity.databaseSchema;
 
     const project = await new ProjectModel(appId, tableIdMap.Project).getOne(params!.tid);
 
     // Get approved members for this project
-    const members = await new MemberModel(appId, tableIdMap.Member).getAll({
-      project: project.name as string,
-      status: 'approved',
-    });
-
-    // Get products for this project
-    const products = await new ProductModel(appId, tableIdMap.Product).getAll({
-      project: project.name as string,
-    });
-
+    const [members, products] = await Promise.all([
+      new MemberModel(appId, tableIdMap.Member).getAll({
+        project: project.name as string,
+        status: 'approved',
+      }),
+      new ProductModel(appId, tableIdMap.Product).getAll({
+        project: project.name as string,
+      }),
+    ]);
     return { props: { activity, project, members, products } };
   },
 );
@@ -128,8 +126,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
               <Col as="li" key={id as string}>
                 <Card className={styles.darkCard} body>
                   <div className="d-flex gap-3 align-items-center">
-                    {/* @ts-expect-error Upstream compatibility */}
-                    <Avatar src={(person as TableCellUser).avatar_url} size={60} />
+                    <Avatar src={(person as TableCellUser).avatar_url} />
                     <div className="flex-grow-1">
                       <h3 className="fs-6 m-0 fw-bold text-white">
                         {(person as TableCellUser).name}
