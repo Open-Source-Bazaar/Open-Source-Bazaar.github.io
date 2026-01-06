@@ -41,6 +41,7 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
       { href: '/project', title: t('open_source_projects') },
       { href: '/issue', title: 'GitHub issues' },
       { href: '/license-filter', title: t('license_filter') },
+      { href: '/finance', title: t('finance_page_title') },
     ],
   },
   {
@@ -58,18 +59,17 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
         href: 'https://test.hackathon.fcc-cd.dev/open-source',
         title: textJoin(t('hackathon'), t('open_source_projects')),
       },
-      { href: '/bounty', title: t('bounty') },
-      { href: '/license-filter', title: t('license_filter') },
     ],
   },
+  { href: '/bounty', title: t('bounty') },
   {
     title: t('NGO'),
     subs: [
-      { href: '/NGO', title: t('China_NGO_DB') },
       {
         href: 'https://open-source-bazaar.feishu.cn/wiki/VGrMwiweVivWrHkTcvpcJTjjnoY',
         title: t('Open_Source_NGO_plan'),
       },
+      { href: '/NGO', title: t('China_NGO_DB') },
     ],
   },
   {
