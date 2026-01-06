@@ -39,13 +39,13 @@ export default {
   bounty_page_title: 'Open Source Bounty',
   bounty_page_description: 'Participate in open source projects and earn bounty rewards',
   bounty_dashboard: 'Dashboard',
-  bounty_token_leaderboard: 'Token Leaderboard',
-  bounty_task_leaderboard: 'Task Leaderboard',
+  bounty_token_rank: 'Token Rank',
+  bounty_task_rank: 'Task Rank',
   bounty_task_submission: 'Task Submission Form',
-  bounty_achievement_leaderboard: 'Achievement Leaderboard',
+  bounty_achievement_rank: 'Achievement Rank',
   bounty_achievement_submission: 'Achievement Submission Form',
-  bounty_hero_leaderboard: 'Hero Leaderboard',
-  bounty_debt_leaderboard: 'Debt Leaderboard',
+  bounty_hero_rank: 'Hero Rank',
+  bounty_debt_rank: 'Debt Rank',
 
   //License-tool Page
   license_filter: 'Open Source License Selector',

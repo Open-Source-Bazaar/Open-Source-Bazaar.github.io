@@ -38,13 +38,13 @@ export default {
   bounty_page_title: '開源懸賞',
   bounty_page_description: '參與開源項目，獲得懸賞獎勵',
   bounty_dashboard: '儀表板',
-  bounty_token_leaderboard: '代幣榜',
-  bounty_task_leaderboard: '任務榜',
+  bounty_token_rank: '代幣榜',
+  bounty_task_rank: '任務榜',
   bounty_task_submission: '任務發布表單',
-  bounty_achievement_leaderboard: '成果榜',
+  bounty_achievement_rank: '成果榜',
   bounty_achievement_submission: '成果提交表單',
-  bounty_hero_leaderboard: '英雄榜',
-  bounty_debt_leaderboard: '欠條榜',
+  bounty_hero_rank: '英雄榜',
+  bounty_debt_rank: '欠條榜',
 
   //License-tool Page
   license_filter: '開源許可證選擇器',
