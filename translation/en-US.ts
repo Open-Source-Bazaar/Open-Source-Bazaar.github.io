@@ -246,4 +246,18 @@ export default {
   male: 'Male',
   female: 'Female',
   other: 'Other',
+
+  // Team detail page
+  team_members: 'Team Members',
+  team_works: 'Team Works',
+  latest_news: 'Latest News',
+  no_news_yet: 'No news yet',
+  join_team: 'Join Team',
+  leave_team: 'Leave Team',
+  manage_team: 'Manage Team',
+  cancel_application: 'Cancel Application',
+  please_make_sure: 'Please confirm',
+  success: 'Success',
+  team_description: 'Team Description',
+  team_details: 'Team Details',
 };

@@ -6,6 +6,7 @@ import {
   normalizeText,
   TableCellRelation,
   TableCellText,
+  TableCellUser,
   TableCellValue,
   TableRecord,
 } from 'mobx-lark';
@@ -24,7 +25,7 @@ export class AgendaModel extends BiDataTable<Agenda>() {
     return {
       ...meta,
       ...fields,
-      summary: normalizeText(summary as TableCellText),
+      summary: (summary as TableCellText[])!.map(normalizeText),
     };
   }
 }
@@ -137,6 +138,50 @@ export class ProjectModel extends BiDataTable<Project>() {
       ...fields,
       members: (members as TableCellRelation[])?.map(normalizeText),
       products: (products as TableCellRelation[])?.map(normalizeText),
+    };
+  }
+}
+
+export type Member = LarkBase &
+  Record<'summary' | 'person' | 'skills' | 'githubAccount' | 'project' | 'status', TableCellValue>;
+
+export class MemberModel extends BiDataTable<Member>() {
+  client = larkClient;
+
+  queryOptions: BiDataQueryOptions = { text_field_as_array: false };
+
+  extractFields({
+    fields: { summary, person, skills, githubAccount, ...fields },
+    ...meta
+  }: TableRecord<Member>) {
+    return {
+      ...meta,
+      ...fields,
+      person: (person as TableCellUser[])?.[0],
+      summary: (summary as TableCellText[])!.map(normalizeText),
+      skills: skills?.toString().split(/\s*,\s*/) || [],
+      githubAccount: normalizeText(githubAccount as TableCellText),
+    };
+  }
+}
+
+export type Product = LarkBase &
+  Record<
+    'name' | 'project' | 'template' | 'link' | 'sourceLink' | 'file' | 'summary',
+    TableCellValue
+  >;
+
+export class ProductModel extends BiDataTable<Product>() {
+  client = larkClient;
+
+  queryOptions: BiDataQueryOptions = { text_field_as_array: false };
+
+  extractFields({ fields: { link, sourceLink, ...fields }, ...meta }: TableRecord<Product>) {
+    return {
+      ...meta,
+      ...fields,
+      link: normalizeText(link as TableCellText),
+      sourceLink: normalizeText(sourceLink as TableCellText),
     };
   }
 }
