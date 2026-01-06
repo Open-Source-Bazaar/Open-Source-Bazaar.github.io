@@ -1,0 +1,113 @@
+// Fresh and lively bounty page styling inspired by hackathon page
+
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  padding: 4rem 0;
+  overflow: hidden;
+  color: #fff;
+
+  &::before {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    animation: grid-animation 20s linear infinite;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    content: '';
+  }
+}
+
+@keyframes grid-animation {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+.title {
+  margin-bottom: 1rem;
+  font-weight: 700;
+  font-size: 3rem;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.description {
+  opacity: 0.9;
+  margin: 0 auto;
+  max-width: 800px;
+  font-size: 1.2rem;
+}
+
+.bountyCard {
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+  height: 100%;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(240, 147, 251, 0.15));
+  }
+}
+
+.cardTitle {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid;
+  border-image: linear-gradient(90deg, #f093fb, #f5576c, #ffd140) 1;
+  background: linear-gradient(90deg, #f093fb, #f5576c, #ffd140);
+  -webkit-background-clip: text;
+  padding-bottom: 0.5rem;
+  font-weight: 700;
+  font-size: 1.3rem;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.iframeContainer {
+  position: relative;
+  width: 100%;
+  padding-bottom: 75%; // 4:3 aspect ratio
+  overflow: hidden;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bountyIframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: none;
+  border-radius: 12px;
+  width: 100%;
+  height: 100%;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .description {
+    font-size: 1rem;
+  }
+
+  .cardTitle {
+    font-size: 1.1rem;
+  }
+
+  .iframeContainer {
+    padding-bottom: 100%; // More square on mobile
+  }
+}

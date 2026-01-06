@@ -7,6 +7,7 @@ export default {
   open_collaborator_award: 'Open Collaborator Award',
   activity: 'Activity',
   hackathon: 'Hackathon',
+  bounty: 'Open Source Bounty',
   open_source_projects: 'Open Source projects',
   open_source_bazaar: 'Open Source Bazaar',
   home_page: 'Home Page',
@@ -33,6 +34,18 @@ export default {
   // Volunteer page
   volunteer: 'Volunteer',
   online_volunteer: 'Online Volunteer',
+
+  // Bounty page
+  bounty_page_title: 'Open Source Bounty',
+  bounty_page_description: 'Participate in open source projects and earn bounty rewards',
+  bounty_dashboard: 'Dashboard',
+  bounty_token_leaderboard: 'Token Leaderboard',
+  bounty_task_leaderboard: 'Task Leaderboard',
+  bounty_task_submission: 'Task Submission Form',
+  bounty_achievement_leaderboard: 'Achievement Leaderboard',
+  bounty_achievement_submission: 'Achievement Submission Form',
+  bounty_hero_leaderboard: 'Hero Leaderboard',
+  bounty_debt_leaderboard: 'Debt Leaderboard',
 
   //License-tool Page
   license_filter: 'Open Source License Selector',

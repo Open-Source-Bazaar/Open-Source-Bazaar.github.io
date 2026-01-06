@@ -43,6 +43,7 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
         href: 'https://github.com/Open-Source-Bazaar/Git-Hackathon-scaffold',
         title: t('hackathon'),
       },
+      { href: '/bounty', title: t('bounty') },
       { href: '/license-filter', title: t('license_filter') },
     ],
   },
