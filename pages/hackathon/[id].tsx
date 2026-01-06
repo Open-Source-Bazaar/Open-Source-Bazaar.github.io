@@ -1,5 +1,6 @@
 import { BiTableSchema, TableCellLocation, TableCellUser } from 'mobx-lark';
 import { observer } from 'mobx-react';
+import Link from 'next/link';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap';
@@ -34,7 +35,6 @@ export const getServerSideProps = compose<{ id: string }>(
   async ({ params }) => {
     const activity = await new ActivityModel().getOne(params!.id);
 
-    // @ts-expect-error Upstream compatibility
     const { appId, tableIdMap } = activity.databaseSchema as BiTableSchema;
 
     const [people, organizations, agenda, prizes, templates, projects] = await Promise.all([
@@ -199,11 +199,18 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
           <h2 className={styles.sectionTitle}>💡 {t('projects')}</h2>
 
           <Row as="ul" className="list-unstyled mt-4 g-3" md={2} lg={3} xl={4}>
-            {projects.map(({ name, score, summary, createdBy, members }) => (
+            {projects.map(({ id, name, score, summary, createdBy, members }) => (
               <Col as="li" key={name as string}>
                 <Card className={styles.projectCard} body>
                   <div className="d-flex justify-content-between align-items-start mb-3">
-                    <h6 className="text-white flex-grow-1">{name as string}</h6>
+                    <h6 className="text-white flex-grow-1">
+                      <Link
+                        className="stretched-link"
+                        href={`${ActivityModel.getLink(activity)}/team/${id}`}
+                      >
+                        {name as string}
+                      </Link>
+                    </h6>
                     <div className={styles.scoreCircle}>{score as number}</div>
                   </div>
                   <p className="text-white-50 small mb-3">{summary as string}</p>

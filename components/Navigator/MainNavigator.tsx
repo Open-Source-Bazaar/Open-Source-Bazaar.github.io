@@ -1,3 +1,4 @@
+import { textJoin } from 'mobx-i18n';
 import { observer } from 'mobx-react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -39,11 +40,24 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
     subs: [
       { href: '/project', title: t('open_source_projects') },
       { href: '/issue', title: 'GitHub issues' },
+      { href: '/license-filter', title: t('license_filter') },
+    ],
+  },
+  {
+    title: t('hackathon'),
+    subs: [
       {
         href: 'https://github.com/Open-Source-Bazaar/Git-Hackathon-scaffold',
-        title: t('hackathon'),
+        title: textJoin('GitHub', t('hackathon')),
       },
-      { href: '/license-filter', title: t('license_filter') },
+      {
+        href: '/search/activity?keywords=Hackathon',
+        title: textJoin('Lark', t('hackathon')),
+      },
+      {
+        href: 'https://test.hackathon.fcc-cd.dev/open-source',
+        title: textJoin(t('hackathon'), t('open_source_projects')),
+      },
     ],
   },
   {
