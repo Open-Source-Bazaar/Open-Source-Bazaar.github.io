@@ -9,6 +9,7 @@ export default {
   open_source_projects: '開源項目',
   activity: '活動',
   hackathon: '黑客馬拉松',
+  bounty: '開源懸賞',
   home_page: '主頁',
   wiki: '知識庫',
 
@@ -32,6 +33,18 @@ export default {
   // Volunteer page
   volunteer: '志工',
   online_volunteer: '線上志工',
+
+  // Bounty page
+  bounty_page_title: '開源懸賞',
+  bounty_page_description: '參與開源項目，獲得懸賞獎勵',
+  bounty_dashboard: '儀表板',
+  bounty_token_rank: '代幣榜',
+  bounty_task_rank: '任務榜',
+  bounty_task_submission: '任務發布表單',
+  bounty_achievement_rank: '成果榜',
+  bounty_achievement_submission: '成果提交表單',
+  bounty_hero_rank: '英雄榜',
+  bounty_debt_rank: '欠條榜',
 
   //License-tool Page
   license_filter: '開源許可證選擇器',

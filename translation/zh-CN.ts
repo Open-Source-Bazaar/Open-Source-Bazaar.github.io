@@ -9,6 +9,7 @@ export default {
   open_source_projects: '开源项目',
   activity: '活动',
   hackathon: '黑客马拉松',
+  bounty: '开源悬赏',
   home_page: '主页',
   wiki: '知识库',
 
@@ -32,6 +33,18 @@ export default {
   // Volunteer page
   volunteer: '志愿者',
   online_volunteer: '线上志愿者',
+
+  // Bounty page
+  bounty_page_title: '开源悬赏',
+  bounty_page_description: '参与开源项目，获得悬赏奖励',
+  bounty_dashboard: '仪表盘',
+  bounty_token_rank: '代币榜',
+  bounty_task_rank: '任务榜',
+  bounty_task_submission: '任务发布表单',
+  bounty_achievement_rank: '成果榜',
+  bounty_achievement_submission: '成果提交表单',
+  bounty_hero_rank: '英雄榜',
+  bounty_debt_rank: '欠条榜',
 
   //License-tool Page
   license_filter: '开源协议选择器',
