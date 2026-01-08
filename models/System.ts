@@ -4,6 +4,7 @@ import { BaseModel, DataObject, Filter, ListModel, toggle } from 'mobx-restful';
 import { Constructor } from 'web-utility';
 
 import { SearchActivityModel } from './Activity';
+import { SearchAwardModel } from './Award';
 import { ownClient } from './Base';
 import { OrganizationModel } from './Organization';
 import { SearchProjectModel } from './Project';
@@ -24,6 +25,7 @@ export class SystemModel extends BaseModel {
   searchMap = {
     activity: SearchActivityModel,
     project: SearchProjectModel,
+    award: SearchAwardModel,
     NGO: OrganizationModel,
   } as Record<string, Constructor<SearchModel<DataObject>>>;
 
