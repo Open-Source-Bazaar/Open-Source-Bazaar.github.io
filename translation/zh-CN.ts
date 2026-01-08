@@ -7,6 +7,8 @@ export default {
   join_us: '参与',
   open_collaborator_award: '开放协作人奖',
   open_source_projects: '开源项目',
+  self_developed_projects: '自研项目',
+  bazaar_projects: '市集项目',
   activity: '活动',
   hackathon: '黑客马拉松',
   bounty: '开源悬赏',

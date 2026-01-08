@@ -6,6 +6,7 @@ import { Constructor } from 'web-utility';
 import { SearchActivityModel } from './Activity';
 import { ownClient } from './Base';
 import { OrganizationModel } from './Organization';
+import { SearchProjectModel } from './Project';
 
 export type SearchableFilter<D extends DataObject> = Filter<D> & {
   keywords?: string;
@@ -22,6 +23,7 @@ export type CityCoordinateMap = Record<string, [number, number]>;
 export class SystemModel extends BaseModel {
   searchMap = {
     activity: SearchActivityModel,
+    project: SearchProjectModel,
     NGO: OrganizationModel,
   } as Record<string, Constructor<SearchModel<DataObject>>>;
 
