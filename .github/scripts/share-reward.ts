@@ -19,28 +19,37 @@ interface PRMeta {
   assignees: components['schemas']['simple-user'][];
 }
 
-const PR_URL = await $`gh api graphql -f query='{
+const PR_DATA = await $`gh api graphql -f query='{
   repository(owner: "${repositoryOwner}", name: "${repositoryName}") {
     issue(number: ${issueNumber}) {
       closedByPullRequestsReferences(first: 10) {
         nodes {
           url
           merged
+          mergeCommit {
+            oid
+          }
         }
       }
     }
   }
-}' --jq '.data.repository.issue.closedByPullRequestsReferences.nodes[] | select(.merged == true) | .url' | head -n 1`;
+}' --jq '.data.repository.issue.closedByPullRequestsReferences.nodes[] | select(.merged == true) | {url: .url, mergeCommitSha: .mergeCommit.oid}' | head -n 1`;
 
-if (!PR_URL.text().trim())
-  throw new ReferenceError('No merged PR is found for the given issue number.');
+const prData = PR_DATA.text().trim();
+
+if (!prData) throw new ReferenceError('No merged PR is found for the given issue number.');
+
+const { url: PR_URL, mergeCommitSha } = JSON.parse(prData);
+
+if (!PR_URL || !mergeCommitSha) throw new Error('Missing required fields in PR data');
+
+console.table({ PR_URL, mergeCommitSha });
 
 const { author, assignees }: PRMeta = await (
   await $`gh pr view ${PR_URL} --json author,assignees`
 ).json();
 
-// Function to check if a user is a Copilot/bot user
-function isCopilotUser(login: string): boolean {
+function isBotUser(login: string) {
   const lowerLogin = login.toLowerCase();
   return (
     lowerLogin.includes('copilot') ||
@@ -50,19 +59,17 @@ function isCopilotUser(login: string): boolean {
   );
 }
 
-// Filter out Copilot and bot users from the list
+// Filter out Bot users from the list
 const allUsers = [author.login, ...assignees.map(({ login }) => login)];
-const users = allUsers.filter(login => !isCopilotUser(login));
+const users = allUsers.filter(login => !isBotUser(login));
 
 console.log(`All users: ${allUsers.join(', ')}`);
-console.log(`Filtered users (excluding bots/copilot): ${users.join(', ')}`);
+console.log(`Filtered users (excluding bots): ${users.join(', ')}`);
 
-// Handle case where all users are bots/copilot
-if (users.length === 0) {
-  console.log('No real users found (all users are bots/copilot). Skipping reward distribution.');
-  console.log(`Filtered users: ${allUsers.join(', ')}`);
-  process.exit(0);
-}
+if (!users[0])
+  throw new ReferenceError(
+    'No real users found (all users are bots). Skipping reward distribution.',
+  );
 
 const rewardNumber = parseFloat(reward);
 
@@ -86,7 +93,7 @@ console.log(listText);
 
 await $`git config --global user.name "github-actions[bot]"`;
 await $`git config --global user.email "github-actions[bot]@users.noreply.github.com"`;
-await $`git tag -a "reward-${issueNumber}" -m ${listText}`;
+await $`git tag -a "reward-${issueNumber}" ${mergeCommitSha} -m ${listText}`;
 await $`git push origin --tags`;
 
 const commentBody = `## Reward data

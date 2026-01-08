@@ -9,6 +9,8 @@ export default {
   hackathon: 'Hackathon',
   bounty: 'Open Source Bounty',
   open_source_projects: 'Open Source projects',
+  self_developed_projects: 'Self-developed projects',
+  bazaar_projects: 'Bazaar projects',
   open_source_bazaar: 'Open Source Bazaar',
   home_page: 'Home Page',
   wiki: 'Wiki',

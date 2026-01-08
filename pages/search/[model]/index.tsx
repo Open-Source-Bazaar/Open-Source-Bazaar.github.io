@@ -10,6 +10,7 @@ import { CardPage, CardPageProps } from '../../../components/Layout/CardPage';
 import { PageHead } from '../../../components/Layout/PageHead';
 import { SearchBar } from '../../../components/Navigator/SearchBar';
 import { OrganizationCard } from '../../../components/Organization/Card';
+import { ProjectCard } from '../../../components/Project/Card';
 import systemStore, { SearchPageMeta } from '../../../models/System';
 import { i18n, I18nContext } from '../../../models/Translation';
 
@@ -40,11 +41,13 @@ export const getServerSideProps = compose<{ model: string }, SearchModelPageProp
 
 const SearchNameMap = ({ t }: typeof i18n): Record<string, string> => ({
   activity: t('activity'),
+  project: t('open_source_projects'),
   NGO: t('NGO'),
 });
 
 const SearchCardMap: Record<string, CardPageProps['Card']> = {
   activity: ActivityCard,
+  project: ProjectCard,
   NGO: OrganizationCard,
 };
 
