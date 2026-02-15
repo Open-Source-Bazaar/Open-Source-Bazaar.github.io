@@ -105,6 +105,12 @@ export default {
   range_module: 'module',
   last_step: 'back',
 
+  // Signature page
+  sign: 'Sign',
+  generate_key_pair: 'Generate Key Pair',
+  signature_disclaimer:
+    'This page is a public service that provides Key Pair & Signature generation based on Web crypto API. Due to the sandbox environment of web browsers, the generated Private Key is only securely stored locally on the user, while the Public Key and Signature will be sent to the following third-party Web page for authentication. Please confirm the security of that website yourself.',
+
   // Wiki
   knowledge_base: 'Knowledge Base',
   contribute_content: 'Contribute Content',

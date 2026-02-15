@@ -103,6 +103,12 @@ export default {
   range_module: '模块',
   last_step: '上一步',
 
+  // Signature page
+  sign: '签名',
+  generate_key_pair: '生成密钥对',
+  signature_disclaimer:
+    '本页为公共服务，基于 Web crypto API 提供生成密钥对和签名功能。由于网页浏览器的沙盒环境，生成的私钥仅安全地保存在用户本地，公钥、签名会传给以下第三方网页用于身份验证，请自行确认该网站的安全性。',
+
   // Wiki
   knowledge_base: '知识库',
   contribute_content: '贡献内容',
