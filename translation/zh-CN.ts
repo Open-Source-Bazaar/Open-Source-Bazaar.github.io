@@ -103,6 +103,10 @@ export default {
   range_module: '模块',
   last_step: '上一步',
 
+  // Signature page
+  sign: '签名',
+  generate_key_pair: '生成密钥对',
+
   // Wiki
   knowledge_base: '知识库',
   contribute_content: '贡献内容',

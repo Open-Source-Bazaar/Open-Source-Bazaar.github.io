@@ -105,6 +105,10 @@ export default {
   range_module: 'module',
   last_step: 'back',
 
+  // Signature page
+  sign: 'Sign',
+  generate_key_pair: 'Generate Key Pair',
+
   // Wiki
   knowledge_base: 'Knowledge Base',
   contribute_content: 'Contribute Content',
