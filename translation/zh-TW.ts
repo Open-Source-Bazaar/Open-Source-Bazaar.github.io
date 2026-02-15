@@ -106,6 +106,8 @@ export default {
   // Signature page
   sign: '簽名',
   generate_key_pair: '生成密鑰對',
+  signature_disclaimer:
+    '本頁為公共服務，基於 Web crypto API 提供生成密鑰對和簽名功能。由於網頁瀏覽器的沙盒環境，生成的私鑰僅安全地保存在用戶本地，公鑰、簽名會傳給以下第三方網頁用於身份驗證，請自行確認該網站的安全性。',
 
   // Wiki
   knowledge_base: '知識庫',

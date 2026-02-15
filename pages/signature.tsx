@@ -45,7 +45,8 @@ export default class SignaturePage extends ObservedComponent<RouteProps, typeof 
     const { t } = this.observedContext,
       { value, iframeLink } = this.props.route.query;
 
-    const title = value ? textJoin(t('sign'), value + '') : t('generate_key_pair');
+    const title = value ? textJoin(t('sign'), value + '') : t('generate_key_pair'),
+      link = `${iframeLink}?${this.linkData}`;
 
     return (
       <Container>
@@ -53,10 +54,21 @@ export default class SignaturePage extends ObservedComponent<RouteProps, typeof 
 
         <h1 className="my-5 text-truncate">{title}</h1>
 
+        <section className="markdown-body bg-white py-4">
+          <blockquote>{t('signature_disclaimer')}</blockquote>
+          <pre>
+            <code>
+              <a href={link} target="_blank" rel="noopener noreferrer">
+                {link}
+              </a>
+            </code>
+          </pre>
+        </section>
+
         <iframe
           className="border-0 w-100 vh-100"
           sandbox="allow-scripts allow-same-origin allow-forms"
-          src={`${iframeLink}?${this.linkData}`}
+          src={link}
         />
       </Container>
     );
