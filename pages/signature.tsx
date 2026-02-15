@@ -24,7 +24,7 @@ export default class SignaturePage extends ObservedComponent<RouteProps, typeof 
     const { route } = this.observedProps;
     const { valueName, algorithmName, publicKeyName, signatureName, value } = route.query,
       { algorithm, publicKey } = this.signatureStore;
-    const signature = this.signatureStore.signatureMap[value + ''] || {};
+    const signature = this.signatureStore.signatureMap[value + ''];
 
     return buildURLData({
       [valueName + '']: value,
@@ -53,7 +53,11 @@ export default class SignaturePage extends ObservedComponent<RouteProps, typeof 
 
         <h1 className="my-5 text-truncate">{title}</h1>
 
-        <iframe className="border-0 w-100 vh-100" src={`${iframeLink}?${this.linkData}`} />
+        <iframe
+          className="border-0 w-100 vh-100"
+          sandbox="allow-scripts allow-same-origin allow-forms"
+          src={`${iframeLink}?${this.linkData}`}
+        />
       </Container>
     );
   }
