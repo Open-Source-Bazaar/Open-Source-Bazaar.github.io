@@ -34,6 +34,14 @@ export default class SignaturePage extends ObservedComponent<RouteProps, typeof 
     });
   }
 
+  @computed
+  get link() {
+    const { iframeLink } = this.observedProps.route.query;
+    const [path, search, hash] = (iframeLink + '').split(/\?|#/);
+
+    return `${path}?${search ? search + '&' : ''}${this.linkData}${hash ? '#' + hash : ''}`;
+  }
+
   componentDidMount() {
     const { value = '' } = this.props.route.query;
 
@@ -43,10 +51,10 @@ export default class SignaturePage extends ObservedComponent<RouteProps, typeof 
 
   render() {
     const { t } = this.observedContext,
-      { value, iframeLink } = this.props.route.query;
+      { value } = this.props.route.query;
 
     const title = value ? textJoin(t('sign'), value + '') : t('generate_key_pair'),
-      link = `${iframeLink}?${this.linkData}`;
+      { link } = this;
 
     return (
       <Container>
