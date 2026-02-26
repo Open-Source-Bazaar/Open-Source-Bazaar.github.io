@@ -8,6 +8,7 @@ import {
   SMTP_PORT,
   SMTP_USER,
 } from '../../../../../models/configuration';
+import { safeAPI, verifyJWT } from '../../../core';
 
 export const config = { api: { bodyParser: false } };
 
@@ -19,7 +20,7 @@ const router = createKoaRouter(import.meta.url),
     auth: { user: SMTP_USER, pass: SMTP_PASSWORD },
   });
 
-router.post('/bot/message', async context => {
+router.post('/bot/message', safeAPI, verifyJWT, async context => {
   const input = Reflect.get(context.request, 'body') as Mail.Options;
 
   context.body = await transporter.sendMail({ ...input, from: SMTP_USER });
