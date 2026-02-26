@@ -6,7 +6,15 @@ export const Name = process.env.NEXT_PUBLIC_SITE_NAME,
   Summary = process.env.NEXT_PUBLIC_SITE_SUMMARY,
   DefaultImage = process.env.NEXT_PUBLIC_LOGO!;
 
-export const { VERCEL, VERCEL_URL, STRAPI_API_TOKEN } = process.env;
+export const {
+  SMTP_HOST,
+  SMTP_PORT = 465,
+  SMTP_USER,
+  SMTP_PASSWORD,
+  VERCEL,
+  VERCEL_URL,
+  STRAPI_API_TOKEN,
+} = process.env;
 
 export const API_Host = isServer()
   ? VERCEL_URL
