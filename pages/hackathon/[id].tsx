@@ -17,9 +17,14 @@ import {
 import { text2color, UserRankView } from 'idea-react';
 import { formatDate } from 'web-utility';
 
+import { StaticHackathonDetail } from '../../components/Activity/StaticHackathonDetail';
 import { GitCard } from '../../components/Git/Card';
 import { LarkImage } from '../../components/LarkImage';
 import { PageHead } from '../../components/Layout/PageHead';
+import {
+  getStaticHackathonProfile,
+  type StaticHackathonProfile,
+} from '../../constants/staticHackathons';
 import { Activity, ActivityModel } from '../../models/Activity';
 import { fileURLOf } from '../../models/Base';
 import {
@@ -43,6 +48,10 @@ export const getServerSideProps = compose<{ id: string }>(
   cache(),
   errorLogger,
   async ({ params }) => {
+    const staticHackathon = getStaticHackathonProfile(params!.id);
+
+    if (staticHackathon) return { props: { staticHackathon } };
+
     const activity = await new ActivityModel().getOne(params!.id);
 
     const { appId, tableIdMap } = activity.databaseSchema as BiTableSchema;
@@ -59,15 +68,22 @@ export const getServerSideProps = compose<{ id: string }>(
     return {
       props: {
         activity,
-        hackathon: { people, organizations, agenda, prizes, templates, projects },
+        hackathon: {
+          people,
+          organizations,
+          agenda,
+          prizes,
+          templates,
+          projects,
+        },
       },
     };
   },
 );
 
 interface HackathonDetailProps {
-  activity: Activity;
-  hackathon: {
+  activity?: Activity;
+  hackathon?: {
     people: Person[];
     organizations: Organization[];
     agenda: Agenda[];
@@ -75,11 +91,14 @@ interface HackathonDetailProps {
     templates: Template[];
     projects: Project[];
   };
+  staticHackathon?: StaticHackathonProfile;
 }
 
 const FormButtonBar = ['Person', 'Project', 'Product', 'Evaluation'];
 
 const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackathon }) => {
+  if (!activity || !hackathon) return null;
+
   const { t } = useContext(I18nContext);
 
   const { name, summary, location, startTime, endTime, databaseSchema } = activity,
@@ -286,4 +305,16 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
   );
 });
 
-export default HackathonDetail;
+const HackathonPage: FC<HackathonDetailProps> = props => {
+  if (props.staticHackathon)
+    return (
+      <>
+        <PageHead title={props.staticHackathon.name} />
+        <StaticHackathonDetail profile={props.staticHackathon} />
+      </>
+    );
+
+  return <HackathonDetail {...props} />;
+};
+
+export default HackathonPage;

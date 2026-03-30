@@ -19,6 +19,7 @@ import {
 import { CommentBox } from '../../../../components/Activity/CommentBox';
 import { ProductCard } from '../../../../components/Activity/ProductCard';
 import { PageHead } from '../../../../components/Layout/PageHead';
+import { getStaticHackathonProfile } from '../../../../constants/staticHackathons';
 import { Activity, ActivityModel } from '../../../../models/Activity';
 import {
   Member,
@@ -35,6 +36,8 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
   cache(),
   errorLogger,
   async ({ params }) => {
+    if (getStaticHackathonProfile(params!.id)) return { notFound: true, props: {} };
+
     const activity = await new ActivityModel().getOne(params!.id);
 
     const { appId, tableIdMap } = activity.databaseSchema;
