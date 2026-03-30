@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Container } from 'react-bootstrap';
 
+import type { HackathonAwardsMeta } from './HackathonAwards';
 import styles from './HackathonSchedule.module.less';
 
 export type HackathonScheduleTone =
@@ -10,10 +11,8 @@ export type HackathonScheduleTone =
   | 'evaluation'
   | 'formation';
 
-export interface HackathonScheduleFact {
-  label: string;
+export interface HackathonScheduleFact extends HackathonAwardsMeta {
   meta: string;
-  value: string;
 }
 
 export interface HackathonScheduleItem {
@@ -69,15 +68,9 @@ const ScheduleCard: FC<HackathonScheduleItem & { phaseLabel: string }> = ({
   </article>
 );
 
-export const HackathonSchedule: FC<HackathonScheduleProps & { phaseLabel: string }> = ({
-  items,
-  kicker,
-  lead,
-  overviewPills,
-  phaseLabel,
-  subtitle,
-  title,
-}) => (
+export const HackathonSchedule: FC<
+  HackathonScheduleProps & { phaseLabel: string }
+> = ({ items, kicker, lead, overviewPills, phaseLabel, subtitle, title }) => (
   <section id="schedule" className={styles.section}>
     <Container>
       <header className={styles.sectionHeader}>
@@ -86,21 +79,21 @@ export const HackathonSchedule: FC<HackathonScheduleProps & { phaseLabel: string
         <div className={styles.accentLine} />
       </header>
 
-      <div className={styles.scheduleIntro}>
+      <hgroup className={styles.scheduleIntro}>
         <p className={styles.scheduleKicker}>{kicker}</p>
         <h3 className={styles.scheduleLead}>{lead}</h3>
-      </div>
+      </hgroup>
 
-      <div className={styles.scheduleOverview}>
-        {overviewPills.map(pill => (
-          <div key={pill} className={styles.schedulePill}>
+      <ul className={`list-unstyled ${styles.scheduleOverview}`}>
+        {overviewPills.map((pill) => (
+          <li key={pill} className={styles.schedulePill}>
             {pill}
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
 
       <div className={styles.scheduleDays}>
-        {items.map(item => (
+        {items.map((item) => (
           <ScheduleCard key={item.id} {...item} phaseLabel={phaseLabel} />
         ))}
       </div>

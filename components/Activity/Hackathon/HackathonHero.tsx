@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { Container } from 'react-bootstrap';
 
 import { LarkImage } from '../../LarkImage';
+import type { HackathonAwardsMeta } from './HackathonAwards';
 import styles from './HackathonHero.module.less';
 
 export interface HackathonHeroAction {
@@ -17,10 +18,7 @@ export interface HackathonHeroCard {
   title: string;
 }
 
-export interface HackathonHeroStat {
-  label: string;
-  value: number;
-}
+export type HackathonHeroStat = HackathonAwardsMeta<number>;
 
 export interface HackathonHeroProps {
   badges: string[];
@@ -48,12 +46,14 @@ const BadgeToneClass = [
   styles.heroBadgeRose,
 ];
 
-const HeroLink: FC<{ action: HackathonHeroAction; variant: 'ghost' | 'primary' }> = ({
-  action,
-  variant,
-}) => (
+const HeroLink: FC<{
+  action: HackathonHeroAction;
+  variant: 'ghost' | 'primary';
+}> = ({ action, variant }) => (
   <a
-    className={variant === 'primary' ? styles.actionButton : styles.actionButtonGhost}
+    className={
+      variant === 'primary' ? styles.actionButton : styles.actionButtonGhost
+    }
     href={action.href}
     {...(action.external && { target: '_blank', rel: 'noreferrer' })}
   >
@@ -61,10 +61,10 @@ const HeroLink: FC<{ action: HackathonHeroAction; variant: 'ghost' | 'primary' }
   </a>
 );
 
-const FloatingCard: FC<{ card: HackathonHeroCard; position: 'bottom' | 'top' }> = ({
-  card,
-  position,
-}) => (
+const FloatingCard: FC<{
+  card: HackathonHeroCard;
+  position: 'bottom' | 'top';
+}> = ({ card, position }) => (
   <div
     className={`${styles.heroFloatingCard} ${position === 'top' ? styles.heroFloatingCardTop : styles.heroFloatingCardBottom}`}
   >
@@ -140,7 +140,11 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
               <div className={styles.mascotGlow} />
 
               {image ? (
-                <LarkImage src={image} alt={name} className="w-100 h-100 object-fit-cover" />
+                <LarkImage
+                  src={image}
+                  alt={name}
+                  className="w-100 h-100 object-fit-cover"
+                />
               ) : (
                 <div className={styles.heroImageFallback}>{imageFallback}</div>
               )}

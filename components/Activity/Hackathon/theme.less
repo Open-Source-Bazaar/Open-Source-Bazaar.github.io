@@ -10,8 +10,8 @@
 @rose: #ff78ba;
 @purple: #7b61ff;
 @shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
-@heading: 'Orbitron', 'Avenir Next', 'Segoe UI', sans-serif;
-@body: 'Outfit', 'Avenir Next', 'Segoe UI', sans-serif;
+@heading: "Orbitron", "Avenir Next", "Segoe UI", sans-serif;
+@body: "Outfit", "Avenir Next", "Segoe UI", sans-serif;
 
 .panel-card() {
   box-shadow: @shadow;
@@ -24,8 +24,34 @@
 .section-shell() {
   position: relative;
   padding: clamp(4rem, 7vw, 6rem) 0;
-  background: linear-gradient(180deg, rgba(5, 8, 20, 0.98), rgba(7, 12, 26, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(5, 8, 20, 0.98),
+    rgba(7, 12, 26, 0.98)
+  );
   color: @copy;
+}
+
+.section-frame() {
+  .section {
+    .section-shell();
+  }
+
+  .sectionHeader {
+    .section-header();
+  }
+
+  .sectionTitle {
+    .section-title();
+  }
+
+  .sectionSubtitle {
+    .section-subtitle();
+  }
+
+  .accentLine {
+    .accent-line();
+  }
 }
 
 .section-header() {

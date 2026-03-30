@@ -1,4 +1,4 @@
-@import './theme.less';
+@import "./theme.less";
 
 .section {
   .section-shell();
@@ -10,11 +10,19 @@
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
   gap: 1.5rem;
   align-items: start;
+
+  @media (max-width: 1199px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .registerCard {
   .panel-card();
-  background: linear-gradient(135deg, rgba(44, 232, 255, 0.08), rgba(123, 97, 255, 0.14));
+  background: linear-gradient(
+    135deg,
+    rgba(44, 232, 255, 0.08),
+    rgba(123, 97, 255, 0.14)
+  );
 }
 
 .registerCardInner,
@@ -131,10 +139,4 @@
   font-size: 0.72rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-}
-
-@media (max-width: 1199px) {
-  .registerWrap {
-    grid-template-columns: 1fr;
-  }
 }

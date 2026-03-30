@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, type PropsWithChildren } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
 import { HackathonHeroAction } from './HackathonHero';
@@ -18,17 +18,18 @@ export interface HackathonActionHubProps {
   primaryAction?: HackathonHeroAction;
   primaryDescription: string;
   primaryTitle: string;
-  secondaryAction: HackathonHeroAction;
   subtitle: string;
   title: string;
 }
 
-const ActionHubLink: FC<{ action: HackathonHeroAction; variant: 'ghost' | 'primary' }> = ({
-  action,
-  variant,
-}) => (
+export const HackathonActionHubLink: FC<{
+  action: HackathonHeroAction;
+  variant: 'ghost' | 'primary';
+}> = ({ action, variant }) => (
   <a
-    className={variant === 'primary' ? styles.actionButton : styles.actionButtonGhost}
+    className={
+      variant === 'primary' ? styles.actionButton : styles.actionButtonGhost
+    }
     href={action.href}
     {...(action.external && { target: '_blank', rel: 'noreferrer' })}
   >
@@ -36,7 +37,10 @@ const ActionHubLink: FC<{ action: HackathonHeroAction; variant: 'ghost' | 'prima
   </a>
 );
 
-const ActionEntryCard: FC<{ entry: HackathonActionHubEntry; step: string }> = ({ entry, step }) => (
+const ActionEntryCard: FC<{ entry: HackathonActionHubEntry; step: string }> = ({
+  entry,
+  step,
+}) => (
   <article className={styles.entryCard}>
     <span className={styles.entryStep}>
       {step} · {entry.eyebrow}
@@ -50,7 +54,7 @@ const ActionEntryCard: FC<{ entry: HackathonActionHubEntry; step: string }> = ({
     </div>
 
     <nav className={styles.entryLinks} aria-label={entry.title}>
-      {entry.links.map(link => (
+      {entry.links.map((link) => (
         <a
           key={`${link.label}-${link.href}`}
           className={styles.entryLink}
@@ -64,13 +68,15 @@ const ActionEntryCard: FC<{ entry: HackathonActionHubEntry; step: string }> = ({
   </article>
 );
 
-export const HackathonActionHub: FC<HackathonActionHubProps> = ({
+export const HackathonActionHub: FC<
+  PropsWithChildren<HackathonActionHubProps>
+> = ({
+  children,
   entries,
   facts,
   primaryAction,
   primaryDescription,
   primaryTitle,
-  secondaryAction,
   subtitle,
   title,
 }) => (
@@ -84,12 +90,17 @@ export const HackathonActionHub: FC<HackathonActionHubProps> = ({
             <p className={styles.regDesc}>{primaryDescription}</p>
 
             <nav className={styles.regActions} aria-label={title}>
-              {primaryAction && <ActionHubLink action={primaryAction} variant="primary" />}
-              <ActionHubLink action={secondaryAction} variant="ghost" />
+              {primaryAction && (
+                <HackathonActionHubLink
+                  action={primaryAction}
+                  variant="primary"
+                />
+              )}
+              {children}
             </nav>
 
             <ul className={`list-unstyled ${styles.regFacts}`}>
-              {facts.map(fact => (
+              {facts.map((fact) => (
                 <li key={fact}>{fact}</li>
               ))}
             </ul>
@@ -105,7 +116,10 @@ export const HackathonActionHub: FC<HackathonActionHubProps> = ({
           <Row as="ol" className="list-unstyled g-3 mb-0">
             {entries.map((entry, index) => (
               <Col as="li" key={entry.title} md={6}>
-                <ActionEntryCard entry={entry} step={String(index + 1).padStart(2, '0')} />
+                <ActionEntryCard
+                  entry={entry}
+                  step={String(index + 1).padStart(2, '0')}
+                />
               </Col>
             ))}
           </Row>

@@ -1,29 +1,15 @@
-@import './theme.less';
+@import "./theme.less";
 
-.section {
-  .section-shell();
-}
-
-.sectionHeader {
-  .section-header();
-}
-
-.sectionTitle {
-  .section-title();
-}
-
-.sectionSubtitle {
-  .section-subtitle();
-}
-
-.accentLine {
-  .accent-line();
-}
+.section-frame();
 
 .participantCloud {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 1rem;
+
+  @media (max-width: 767px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .participantCard {
@@ -56,10 +42,4 @@
 .participantName {
   font-size: 0.92rem;
   line-height: 1.4;
-}
-
-@media (max-width: 767px) {
-  .participantCloud {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }

@@ -1,24 +1,9 @@
-@import './theme.less';
+@import "./theme.less";
 
-.section {
-  .section-shell();
-}
+.section-frame();
 
-.sectionHeader {
-  .section-header();
-}
-
-.sectionTitle {
-  .section-title();
-}
-
-.sectionSubtitle,
 .supportEyebrow {
   .section-subtitle();
-}
-
-.accentLine {
-  .accent-line();
 }
 
 .awardsGrid {
@@ -116,6 +101,10 @@
   gap: 1.25rem;
   margin-top: 1.4rem;
   padding: 1.55rem;
+
+  @media (max-width: 1199px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .supportTitle {
@@ -145,10 +134,4 @@
   max-width: 100%;
   max-height: 58px;
   object-fit: contain;
-}
-
-@media (max-width: 1199px) {
-  .supportCard {
-    grid-template-columns: 1fr;
-  }
 }

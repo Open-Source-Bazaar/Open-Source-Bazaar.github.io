@@ -1,24 +1,6 @@
-@import './theme.less';
+@import "./theme.less";
 
-.section {
-  .section-shell();
-}
-
-.sectionHeader {
-  .section-header();
-}
-
-.sectionTitle {
-  .section-title();
-}
-
-.sectionSubtitle {
-  .section-subtitle();
-}
-
-.accentLine {
-  .accent-line();
-}
+.section-frame();
 
 .scheduleIntro {
   margin-bottom: 1.35rem;
@@ -58,12 +40,20 @@
   font-size: 0.74rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+
+  @media (max-width: 767px) {
+    font-size: 0.72rem;
+  }
 }
 
 .scheduleDays {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
+
+  @media (max-width: 991px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .dayCard {
@@ -73,23 +63,43 @@
 }
 
 .formation {
-  background: linear-gradient(135deg, rgba(44, 232, 255, 0.1), rgba(14, 43, 80, 0.86));
+  background: linear-gradient(
+    135deg,
+    rgba(44, 232, 255, 0.1),
+    rgba(14, 43, 80, 0.86)
+  );
 }
 
 .enrollment {
-  background: linear-gradient(135deg, rgba(123, 97, 255, 0.12), rgba(28, 20, 67, 0.86));
+  background: linear-gradient(
+    135deg,
+    rgba(123, 97, 255, 0.12),
+    rgba(28, 20, 67, 0.86)
+  );
 }
 
 .competition {
-  background: linear-gradient(135deg, rgba(255, 201, 77, 0.12), rgba(60, 35, 8, 0.88));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 201, 77, 0.12),
+    rgba(60, 35, 8, 0.88)
+  );
 }
 
 .break {
-  background: linear-gradient(135deg, rgba(255, 120, 186, 0.1), rgba(72, 18, 48, 0.88));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 120, 186, 0.1),
+    rgba(72, 18, 48, 0.88)
+  );
 }
 
 .evaluation {
-  background: linear-gradient(135deg, rgba(72, 241, 168, 0.12), rgba(14, 50, 39, 0.88));
+  background: linear-gradient(
+    135deg,
+    rgba(72, 241, 168, 0.12),
+    rgba(14, 50, 39, 0.88)
+  );
 }
 
 .dayCardHead {
@@ -167,17 +177,5 @@
     color: @muted;
     font-size: 0.92rem;
     line-height: 1.55;
-  }
-}
-
-@media (max-width: 991px) {
-  .scheduleDays {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 767px) {
-  .schedulePill {
-    font-size: 0.72rem;
   }
 }
