@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { Container } from 'react-bootstrap';
 
-import type { HackathonAwardsMeta } from './HackathonAwards';
-import styles from './HackathonSchedule.module.less';
+import type { HackathonAwardsMeta } from './Awards';
+import styles from './Schedule.module.less';
 
 export type HackathonScheduleTone =
   | 'break'
@@ -68,9 +68,15 @@ const ScheduleCard: FC<HackathonScheduleItem & { phaseLabel: string }> = ({
   </article>
 );
 
-export const HackathonSchedule: FC<
-  HackathonScheduleProps & { phaseLabel: string }
-> = ({ items, kicker, lead, overviewPills, phaseLabel, subtitle, title }) => (
+export const HackathonSchedule: FC<HackathonScheduleProps & { phaseLabel: string }> = ({
+  items,
+  kicker,
+  lead,
+  overviewPills,
+  phaseLabel,
+  subtitle,
+  title,
+}) => (
   <section id="schedule" className={styles.section}>
     <Container>
       <header className={styles.sectionHeader}>
@@ -85,7 +91,7 @@ export const HackathonSchedule: FC<
       </hgroup>
 
       <ul className={`list-unstyled ${styles.scheduleOverview}`}>
-        {overviewPills.map((pill) => (
+        {overviewPills.map(pill => (
           <li key={pill} className={styles.schedulePill}>
             {pill}
           </li>
@@ -93,7 +99,7 @@ export const HackathonSchedule: FC<
       </ul>
 
       <div className={styles.scheduleDays}>
-        {items.map((item) => (
+        {items.map(item => (
           <ScheduleCard key={item.id} {...item} phaseLabel={phaseLabel} />
         ))}
       </div>

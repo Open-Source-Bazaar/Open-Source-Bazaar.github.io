@@ -1,9 +1,6 @@
 @import './theme.less';
 
-.section-frame();
-
 .supportEyebrow {
-  .section-subtitle();
 }
 
 .awardsGrid {
@@ -13,7 +10,6 @@
 }
 
 .badgeTile {
-  .panel-card();
   overflow: hidden;
 }
 
@@ -24,8 +20,8 @@
 .badgeArt {
   border-radius: 22px;
   background: rgba(255, 255, 255, 0.04);
-  width: 100%;
   aspect-ratio: 1;
+  width: 100%;
   object-fit: cover;
 }
 
@@ -35,8 +31,8 @@
 
 .badgeTierLabel {
   color: @gold;
-  font-family: @heading;
   font-size: 0.74rem;
+  font-family: @heading;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -45,8 +41,8 @@
 .supportTitle {
   margin: 0;
   color: #fff;
-  font-family: @heading;
   font-weight: 800;
+  font-family: @heading;
 }
 
 .badgeTileTitle {
@@ -71,8 +67,8 @@
   div {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 0.8rem;
     align-items: start;
+    gap: 0.8rem;
   }
 
   dt,
@@ -82,8 +78,8 @@
 
   dt {
     color: @muted;
-    font-family: @heading;
     font-size: 0.72rem;
+    font-family: @heading;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -95,7 +91,6 @@
 }
 
 .supportCard {
-  .panel-card();
   display: grid;
   grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
   gap: 1.25rem;
@@ -115,19 +110,19 @@
 .partnerGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: 0.8rem;
   align-items: center;
+  gap: 0.8rem;
 }
 
 .partnerLink {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.04);
-  min-height: 104px;
   padding: 1rem;
+  min-height: 104px;
 }
 
 .partnerLogo {

@@ -1,7 +1,5 @@
 @import './theme.less';
 
-.section-frame();
-
 .scheduleIntro {
   margin-bottom: 1.35rem;
   text-align: center;
@@ -10,8 +8,8 @@
 .scheduleKicker {
   margin: 0 0 0.35rem;
   color: @cyan;
-  font-family: @heading;
   font-size: 0.8rem;
+  font-family: @heading;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -19,9 +17,9 @@
 .scheduleLead {
   margin: 0;
   color: #fff;
-  font-family: @heading;
-  font-size: clamp(1.45rem, 3vw, 2.05rem);
   font-weight: 800;
+  font-size: clamp(1.45rem, 3vw, 2.05rem);
+  font-family: @heading;
 }
 
 .scheduleOverview {
@@ -33,11 +31,10 @@
 }
 
 .schedulePill {
-  .chip();
   padding: 0.58rem 0.9rem;
   color: @copy;
-  font-family: @heading;
   font-size: 0.74rem;
+  font-family: @heading;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 
@@ -57,60 +54,38 @@
 }
 
 .dayCard {
-  .panel-card();
-  height: 100%;
   padding: 1.35rem;
+  height: 100%;
 }
 
 .formation {
-  background: linear-gradient(
-    135deg,
-    rgba(44, 232, 255, 0.1),
-    rgba(14, 43, 80, 0.86)
-  );
+  background: linear-gradient(135deg, rgba(44, 232, 255, 0.1), rgba(14, 43, 80, 0.86));
 }
 
 .enrollment {
-  background: linear-gradient(
-    135deg,
-    rgba(123, 97, 255, 0.12),
-    rgba(28, 20, 67, 0.86)
-  );
+  background: linear-gradient(135deg, rgba(123, 97, 255, 0.12), rgba(28, 20, 67, 0.86));
 }
 
 .competition {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 201, 77, 0.12),
-    rgba(60, 35, 8, 0.88)
-  );
+  background: linear-gradient(135deg, rgba(255, 201, 77, 0.12), rgba(60, 35, 8, 0.88));
 }
 
 .break {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 120, 186, 0.1),
-    rgba(72, 18, 48, 0.88)
-  );
+  background: linear-gradient(135deg, rgba(255, 120, 186, 0.1), rgba(72, 18, 48, 0.88));
 }
 
 .evaluation {
-  background: linear-gradient(
-    135deg,
-    rgba(72, 241, 168, 0.12),
-    rgba(14, 50, 39, 0.88)
-  );
+  background: linear-gradient(135deg, rgba(72, 241, 168, 0.12), rgba(14, 50, 39, 0.88));
 }
 
 .dayCardHead {
   display: flex;
   justify-content: space-between;
-  gap: 0.75rem;
   align-items: baseline;
+  gap: 0.75rem;
 }
 
 .dayNo {
-  .section-subtitle();
 }
 
 .dayDate {
@@ -121,8 +96,8 @@
 .dayTitle {
   margin: 0.9rem 0 0.45rem;
   color: #fff;
-  font-family: @heading;
   font-size: 1.08rem;
+  font-family: @heading;
 }
 
 .daySub {
@@ -139,8 +114,8 @@
   div {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 0.8rem;
     align-items: start;
+    gap: 0.8rem;
   }
 
   dt,
@@ -154,11 +129,11 @@
   align-items: center;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.08);
-  min-height: 30px;
   padding: 0.4rem 0.75rem;
+  min-height: 30px;
   color: @copy;
-  font-family: @heading;
   font-size: 0.72rem;
+  font-family: @heading;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }

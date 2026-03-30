@@ -1,15 +1,14 @@
 @import './theme.less';
 
 .section {
-  .section-shell();
   padding-top: clamp(3rem, 5vw, 4rem);
 }
 
 .registerWrap {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  gap: 1.5rem;
   align-items: start;
+  gap: 1.5rem;
 
   @media (max-width: 1199px) {
     grid-template-columns: 1fr;
@@ -17,12 +16,7 @@
 }
 
 .registerCard {
-  .panel-card();
-  background: linear-gradient(
-    135deg,
-    rgba(44, 232, 255, 0.08),
-    rgba(123, 97, 255, 0.14)
-  );
+  background: linear-gradient(135deg, rgba(44, 232, 255, 0.08), rgba(123, 97, 255, 0.14));
 }
 
 .registerCardInner,
@@ -33,17 +27,16 @@
 .regEyebrow,
 .entryEyebrow,
 .entryStep {
-  .eyebrow();
 }
 
 .regTitle,
 .entryTitle {
   margin: 0;
   color: #fff;
-  font-family: @heading;
-  font-size: clamp(1.55rem, 3vw, 2.1rem);
   font-weight: 800;
+  font-size: clamp(1.55rem, 3vw, 2.1rem);
   line-height: 1.3;
+  font-family: @heading;
 }
 
 .regTitle {
@@ -68,12 +61,10 @@
 }
 
 .actionButton {
-  .button-primary();
 }
 
 .actionButtonGhost,
 .entryLink {
-  .button-ghost();
 }
 
 .regFacts {
@@ -83,7 +74,6 @@
   margin: 1.3rem 0 0;
 
   li {
-    .chip();
     padding: 0.48rem 0.85rem;
     color: @copy;
     font-size: 0.9rem;
@@ -91,7 +81,6 @@
 }
 
 .entryHub {
-  .panel-card();
 }
 
 .entryHubHead {
@@ -104,9 +93,8 @@
 }
 
 .entryCard {
-  .panel-card();
-  height: 100%;
   padding: 1.3rem;
+  height: 100%;
 }
 
 .entryStep {
@@ -116,8 +104,8 @@
 .entryCard h4 {
   margin: 0.55rem 0 0.45rem;
   color: #fff;
-  font-family: @heading;
   font-size: 1.02rem;
+  font-family: @heading;
 }
 
 .entryCard p {
@@ -132,11 +120,10 @@
 }
 
 .entryMeta {
-  .chip();
   padding: 0.35rem 0.7rem;
   color: @gold;
-  font-family: @heading;
   font-size: 0.72rem;
+  font-family: @heading;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }

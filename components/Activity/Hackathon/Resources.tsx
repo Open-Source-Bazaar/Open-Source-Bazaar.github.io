@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
-import type { HackathonAwardsMeta } from './HackathonAwards';
-import styles from './HackathonResources.module.less';
+import type { HackathonAwardsMeta } from './Awards';
+import styles from './Resources.module.less';
 
 export interface HackathonTemplateItem {
   description: string;
@@ -55,12 +55,12 @@ const TemplateCard: FC<HackathonTemplateItem> = ({
     <p className={styles.resourceDescription}>{description}</p>
 
     <ul className={`list-unstyled ${styles.topicList}`}>
-      {languages.map((language) => (
+      {languages.map(language => (
         <li key={language} className={styles.topicChip}>
           {language}
         </li>
       ))}
-      {tags.map((tag) => (
+      {tags.map(tag => (
         <li key={tag} className={styles.topicChipMuted}>
           {tag}
         </li>
@@ -69,22 +69,12 @@ const TemplateCard: FC<HackathonTemplateItem> = ({
 
     <nav className={styles.resourceLinks} aria-label={title}>
       {sourceUrl && (
-        <a
-          className={styles.entryLink}
-          href={sourceUrl}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className={styles.entryLink} href={sourceUrl} target="_blank" rel="noreferrer">
           {sourceLabel}
         </a>
       )}
       {previewUrl && (
-        <a
-          className={styles.entryLink}
-          href={previewUrl}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className={styles.entryLink} href={previewUrl} target="_blank" rel="noreferrer">
           {previewLabel}
         </a>
       )}
@@ -92,13 +82,7 @@ const TemplateCard: FC<HackathonTemplateItem> = ({
   </article>
 );
 
-const ProjectCard: FC<HackathonProjectItem> = ({
-  description,
-  link,
-  meta,
-  score,
-  title,
-}) => (
+const ProjectCard: FC<HackathonProjectItem> = ({ description, link, meta, score, title }) => (
   <article className={styles.projectCard}>
     <div className={styles.projectTop}>
       <hgroup className={styles.projectHead}>
@@ -140,7 +124,7 @@ export const HackathonResources: FC<HackathonResourcesProps> = ({
           </header>
 
           <Row className="g-3">
-            {templateItems.map((template) => (
+            {templateItems.map(template => (
               <Col key={template.id} md={6} xl={4}>
                 <TemplateCard {...template} />
               </Col>
@@ -158,7 +142,7 @@ export const HackathonResources: FC<HackathonResourcesProps> = ({
           </header>
 
           <Row className="g-3">
-            {projectItems.map((project) => (
+            {projectItems.map(project => (
               <Col key={project.id} md={6} xl={4}>
                 <ProjectCard {...project} />
               </Col>

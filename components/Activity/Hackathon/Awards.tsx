@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Container } from 'react-bootstrap';
 
 import { LarkImage } from '../../LarkImage';
-import styles from './HackathonAwards.module.less';
+import styles from './Awards.module.less';
 
 export interface HackathonAwardsMeta<Value = string> {
   label: string;
@@ -36,13 +36,7 @@ export interface HackathonAwardsProps {
   title: string;
 }
 
-const PrizeCard: FC<HackathonPrizeItem> = ({
-  description,
-  image,
-  meta,
-  tier,
-  title,
-}) => (
+const PrizeCard: FC<HackathonPrizeItem> = ({ description, image, meta, tier, title }) => (
   <article className={styles.badgeTile}>
     {image && (
       <div className={styles.badgeArtWrap}>
@@ -67,23 +61,11 @@ const PrizeCard: FC<HackathonPrizeItem> = ({
   </article>
 );
 
-const OrganizationLogo: FC<HackathonOrganizationItem> = ({
-  href,
-  logo,
-  name,
-}) => {
-  const imageNode = (
-    <LarkImage src={logo} alt={name} className={styles.partnerLogo} />
-  );
+const OrganizationLogo: FC<HackathonOrganizationItem> = ({ href, logo, name }) => {
+  const imageNode = <LarkImage src={logo} alt={name} className={styles.partnerLogo} />;
 
   return href ? (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      title={name}
-      className={styles.partnerLink}
-    >
+    <a href={href} target="_blank" rel="noreferrer" title={name} className={styles.partnerLink}>
       {imageNode}
     </a>
   ) : (
@@ -113,7 +95,7 @@ export const HackathonAwards: FC<HackathonAwardsProps> = ({
           </header>
 
           <div className={styles.awardsGrid}>
-            {prizes.map((prize) => (
+            {prizes.map(prize => (
               <PrizeCard key={prize.id} {...prize} />
             ))}
           </div>
@@ -129,7 +111,7 @@ export const HackathonAwards: FC<HackathonAwardsProps> = ({
           </div>
 
           <nav className={styles.partnerGrid} aria-label={supportEyebrow}>
-            {organizations.map((organization) => (
+            {organizations.map(organization => (
               <OrganizationLogo key={organization.id} {...organization} />
             ))}
           </nav>

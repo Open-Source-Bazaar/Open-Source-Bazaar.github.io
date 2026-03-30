@@ -2,12 +2,8 @@
 
 .hero {
   position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at top left, rgba(44, 232, 255, 0.18), transparent 32%),
-    radial-gradient(circle at 85% 12%, rgba(255, 120, 186, 0.15), transparent 24%),
-    linear-gradient(180deg, @bg 0%, #091022 48%, #050814 100%);
   padding: clamp(4.5rem, 8vw, 6.75rem) 0 clamp(3.5rem, 6vw, 5rem);
+  overflow: hidden;
   color: @copy;
 
   &::before,
@@ -19,28 +15,28 @@
   }
 
   &::before {
+    opacity: 0.45;
+    mask-image: radial-gradient(circle at center, black 42%, transparent 100%);
     background-image:
       linear-gradient(rgba(44, 232, 255, 0.08) 1px, transparent 1px),
       linear-gradient(90deg, rgba(44, 232, 255, 0.08) 1px, transparent 1px);
     background-size: 54px 54px;
-    mask-image: radial-gradient(circle at center, black 42%, transparent 100%);
-    opacity: 0.45;
   }
 
   &::after {
     inset: auto 0 0;
-    height: 140px;
     background: linear-gradient(180deg, transparent, rgba(5, 8, 20, 0.95));
+    height: 140px;
   }
 }
 
 .heroInner {
-  position: relative;
-  z-index: 1;
   display: grid;
+  position: relative;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
-  gap: clamp(2rem, 4vw, 4rem);
   align-items: center;
+  gap: clamp(2rem, 4vw, 4rem);
+  z-index: 1;
 }
 
 .heroContent {
@@ -64,9 +60,9 @@
   background: rgba(255, 255, 255, 0.06);
   padding: 0.42rem 0.9rem;
   color: @copy;
-  font-family: @heading;
-  font-size: 0.78rem;
   font-weight: 700;
+  font-size: 0.78rem;
+  font-family: @heading;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -100,11 +96,11 @@
   flex-direction: column;
   gap: 0.2rem;
   margin: 0;
-  font-family: @heading;
-  font-size: clamp(2.6rem, 5vw, 4.45rem);
   font-weight: 900;
-  letter-spacing: 0.02em;
+  font-size: clamp(2.6rem, 5vw, 4.45rem);
   line-height: 1;
+  font-family: @heading;
+  letter-spacing: 0.02em;
 }
 
 .heroTitlePrimary {
@@ -122,26 +118,18 @@
 }
 
 .description {
-  max-width: 62ch;
   margin: 0;
+  max-width: 62ch;
   color: @muted;
-  font-family: @body;
   font-size: 1.05rem;
   line-height: 1.8;
+  font-family: @body;
 }
 
 .heroActions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.9rem;
-}
-
-.actionButton {
-  .button-primary();
-}
-
-.actionButtonGhost {
-  .button-ghost();
 }
 
 .heroStats {
@@ -155,16 +143,16 @@
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
-  min-width: 108px;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.06);
   padding: 0.85rem 1rem;
+  min-width: 108px;
 
   strong {
-    font-family: @heading;
     font-size: 1.25rem;
     line-height: 1.1;
+    font-family: @heading;
   }
 
   span {
@@ -181,11 +169,10 @@
 }
 
 .heroVisualCard {
-  .panel-card();
   position: relative;
   z-index: 1;
-  overflow: hidden;
   background: linear-gradient(180deg, rgba(11, 19, 40, 0.95), rgba(8, 18, 39, 0.9));
+  overflow: hidden;
 }
 
 .heroVisualHead {
@@ -198,9 +185,9 @@
 .visualKicker,
 .visualChip,
 .floatingLabel {
-  font-family: @heading;
-  font-size: 0.75rem;
   font-weight: 700;
+  font-size: 0.75rem;
+  font-family: @heading;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -216,12 +203,12 @@
 
 .heroImageFrame {
   position: relative;
-  overflow: hidden;
   margin: 1rem 1.25rem 0;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
   background: linear-gradient(135deg, rgba(44, 232, 255, 0.08), rgba(123, 97, 255, 0.14));
   min-height: 340px;
+  overflow: hidden;
 
   :global(img) {
     position: relative;
@@ -231,22 +218,22 @@
 
 .mascotGlow {
   position: absolute;
-  inset: 12% 18%;
   z-index: 1;
+  filter: blur(28px);
+  inset: 12% 18%;
   border-radius: 999px;
   background: radial-gradient(circle, rgba(44, 232, 255, 0.35), transparent 70%);
-  filter: blur(28px);
 }
 
 .heroImageFallback {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   min-height: 340px;
   color: @cyan;
-  font-family: @heading;
-  font-size: clamp(1.25rem, 3vw, 2rem);
   font-weight: 900;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-family: @heading;
   letter-spacing: 0.12em;
   text-align: center;
   text-transform: uppercase;
@@ -259,8 +246,8 @@
 .heroVisualTitle {
   margin: 0 0 0.35rem;
   color: #fff;
-  font-family: @heading;
   font-size: 1rem;
+  font-family: @heading;
 }
 
 .heroVisualCopy,
@@ -273,12 +260,12 @@
 .heroFloatingCard {
   position: absolute;
   z-index: 2;
-  max-width: 260px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.28);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 22px;
   background: rgba(8, 18, 39, 0.88);
   padding: 1rem 1.1rem;
+  max-width: 260px;
 
   strong {
     display: block;
@@ -337,8 +324,8 @@
 
   .heroFloatingCard {
     position: static;
-    max-width: none;
     margin-top: 1rem;
+    max-width: none;
   }
 
   .heroVisual {

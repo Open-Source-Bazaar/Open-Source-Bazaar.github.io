@@ -3,8 +3,8 @@ import { FC } from 'react';
 import { Container } from 'react-bootstrap';
 
 import { LarkImage } from '../../LarkImage';
-import type { HackathonAwardsMeta } from './HackathonAwards';
-import styles from './HackathonHero.module.less';
+import type { HackathonAwardsMeta } from './Awards';
+import styles from './Hero.module.less';
 
 export interface HackathonHeroAction {
   external?: boolean;
@@ -51,9 +51,7 @@ const HeroLink: FC<{
   variant: 'ghost' | 'primary';
 }> = ({ action, variant }) => (
   <a
-    className={
-      variant === 'primary' ? styles.actionButton : styles.actionButtonGhost
-    }
+    className={variant === 'primary' ? styles.actionButton : styles.actionButtonGhost}
     href={action.href}
     {...(action.external && { target: '_blank', rel: 'noreferrer' })}
   >
@@ -140,11 +138,7 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
               <div className={styles.mascotGlow} />
 
               {image ? (
-                <LarkImage
-                  src={image}
-                  alt={name}
-                  className="w-100 h-100 object-fit-cover"
-                />
+                <LarkImage src={image} alt={name} className="w-100 h-100 object-fit-cover" />
               ) : (
                 <div className={styles.heroImageFallback}>{imageFallback}</div>
               )}

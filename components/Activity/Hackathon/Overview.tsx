@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
-import styles from './HackathonOverview.module.less';
+import styles from './Overview.module.less';
 
 export interface HackathonOverviewCard {
   description: string;

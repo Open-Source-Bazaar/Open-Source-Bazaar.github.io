@@ -1,25 +1,19 @@
 @import './theme.less';
 
-.section-frame();
-
 .themePanel {
   margin-bottom: 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 28px;
-  background: linear-gradient(
-    135deg,
-    rgba(44, 232, 255, 0.08),
-    rgba(123, 97, 255, 0.12)
-  );
+  background: linear-gradient(135deg, rgba(44, 232, 255, 0.08), rgba(123, 97, 255, 0.12));
   padding: 1.5rem 1.6rem;
 }
 
 .themeText {
   margin-bottom: 0.4rem;
   color: #fff;
-  font-family: @heading;
-  font-size: clamp(1.35rem, 2.6vw, 2rem);
   font-weight: 900;
+  font-size: clamp(1.35rem, 2.6vw, 2rem);
+  font-family: @heading;
 }
 
 .themeSub {
@@ -29,12 +23,11 @@
 }
 
 .trackCard {
-  .panel-card();
   transition:
     transform 0.22s ease,
     border-color 0.22s ease;
-  height: 100%;
   padding: 1.4rem;
+  height: 100%;
 
   &:hover {
     transform: translateY(-4px);
@@ -44,8 +37,8 @@
 
 .trackIcon {
   display: inline-flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   margin-bottom: 1rem;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
   border-radius: 18px;
@@ -58,24 +51,24 @@
 .trackName {
   margin: 0;
   color: #fff;
-  font-family: @heading;
-  font-size: 1.08rem;
   font-weight: 800;
+  font-size: 1.08rem;
   line-height: 1.3;
+  font-family: @heading;
 }
 
 .trackDesc {
-  min-height: 4.8rem;
   margin: 0.75rem 0 0.95rem;
+  min-height: 4.8rem;
   color: @muted;
   line-height: 1.75;
 }
 
 .trackMetric {
   color: @cyan;
-  font-family: @heading;
-  font-size: 0.78rem;
   font-weight: 700;
+  font-size: 0.78rem;
+  font-family: @heading;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }

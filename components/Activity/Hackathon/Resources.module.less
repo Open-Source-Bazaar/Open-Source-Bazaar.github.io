@@ -1,24 +1,21 @@
 @import './theme.less';
 
-.section-frame();
-
 .projectHeader {
   margin-top: 2.75rem;
 }
 
 .resourceCard,
 .projectCard {
-  .panel-card();
-  height: 100%;
   padding: 1.25rem;
+  height: 100%;
 }
 
 .resourceHead,
 .projectTop {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
   align-items: start;
+  gap: 1rem;
 }
 
 .projectHead {
@@ -31,9 +28,9 @@
 .projectTitle {
   margin: 0;
   color: #fff;
-  font-family: @heading;
-  font-size: 1.02rem;
   font-weight: 800;
+  font-size: 1.02rem;
+  font-family: @heading;
 }
 
 .projectTitle a {
@@ -90,13 +87,12 @@
 }
 
 .entryLink {
-  .button-ghost();
 }
 
 .scoreCircle {
   display: inline-flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   box-shadow: 0 0 24px rgba(44, 232, 255, 0.18);
   border: 1px solid rgba(44, 232, 255, 0.2);
   border-radius: 50%;
@@ -104,9 +100,9 @@
   width: 62px;
   height: 62px;
   color: @cyan;
-  font-family: @heading;
-  font-size: 1.05rem;
   font-weight: 800;
+  font-size: 1.05rem;
+  font-family: @heading;
 
   @media (max-width: 767px) {
     width: 54px;
@@ -123,8 +119,8 @@
   div {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 0.8rem;
     align-items: start;
+    gap: 0.8rem;
   }
 
   dt,
@@ -134,8 +130,8 @@
 
   dt {
     color: @muted;
-    font-family: @heading;
     font-size: 0.72rem;
+    font-family: @heading;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }

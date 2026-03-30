@@ -4,6 +4,7 @@ import {
   BiDataQueryOptions,
   BiDataTable,
   normalizeText,
+  normalizeTextArray,
   TableCellRelation,
   TableCellText,
   TableCellUser,
@@ -50,11 +51,15 @@ export class PersonModel extends BiDataTable<Person>() {
 
   queryOptions: BiDataQueryOptions = { text_field_as_array: false };
 
-  extractFields({ fields: { githubLink, ...fields }, ...meta }: TableRecord<Person>) {
+  extractFields({
+    fields: { githubLink, organizations, ...fields },
+    ...meta
+  }: TableRecord<Person>) {
     return {
       ...meta,
       ...fields,
       githubLink: normalizeText(githubLink as TableCellText),
+      organizations: normalizeTextArray(organizations as TableCellRelation[]),
     };
   }
 }
@@ -67,11 +72,16 @@ export class OrganizationModel extends BiDataTable<Organization>() {
 
   queryOptions: BiDataQueryOptions = { text_field_as_array: false };
 
-  extractFields({ fields: { link, ...fields }, ...meta }: TableRecord<Organization>) {
+  extractFields({
+    fields: { link, members, prizes, ...fields },
+    ...meta
+  }: TableRecord<Organization>) {
     return {
       ...meta,
       ...fields,
       link: normalizeText(link as TableCellText),
+      members: normalizeTextArray(members as TableCellRelation[]),
+      prizes: normalizeTextArray(prizes as TableCellRelation[]),
     };
   }
 }
@@ -93,6 +103,15 @@ export class PrizeModel extends BiDataTable<Prize>() {
   client = larkClient;
 
   queryOptions: BiDataQueryOptions = { text_field_as_array: false };
+
+  extractFields({ fields: { summary, sponsor, ...fields }, ...meta }: TableRecord<Prize>) {
+    return {
+      ...meta,
+      ...fields,
+      summary: (summary as TableCellText[])!.map(normalizeText),
+      sponsor: normalizeText(sponsor as TableCellText),
+    };
+  }
 }
 
 export type Template = LarkBase &
@@ -160,7 +179,7 @@ export class MemberModel extends BiDataTable<Member>() {
       person: (person as TableCellUser[])?.[0],
       summary: (summary as TableCellText[])!.map(normalizeText),
       skills: skills?.toString().split(/\s*,\s*/) || [],
-      githubAccount: normalizeText(githubAccount as TableCellText),
+      githubAccount: (githubAccount as TableCellText[])!.map(normalizeText),
     };
   }
 }

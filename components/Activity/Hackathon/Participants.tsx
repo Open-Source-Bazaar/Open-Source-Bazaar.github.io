@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Container } from 'react-bootstrap';
 
 import { LarkImage } from '../../LarkImage';
-import styles from './HackathonParticipants.module.less';
+import styles from './Participants.module.less';
 
 export interface HackathonParticipantItem {
   avatar?: TableCellValue;

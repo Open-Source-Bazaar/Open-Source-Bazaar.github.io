@@ -1,8 +1,8 @@
 import type { FC, PropsWithChildren } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
-import { HackathonHeroAction } from './HackathonHero';
-import styles from './HackathonActionHub.module.less';
+import { HackathonHeroAction } from './Hero';
+import styles from './ActionHub.module.less';
 
 export interface HackathonActionHubEntry {
   count: number;
@@ -27,9 +27,7 @@ export const HackathonActionHubLink: FC<{
   variant: 'ghost' | 'primary';
 }> = ({ action, variant }) => (
   <a
-    className={
-      variant === 'primary' ? styles.actionButton : styles.actionButtonGhost
-    }
+    className={variant === 'primary' ? styles.actionButton : styles.actionButtonGhost}
     href={action.href}
     {...(action.external && { target: '_blank', rel: 'noreferrer' })}
   >
@@ -37,10 +35,7 @@ export const HackathonActionHubLink: FC<{
   </a>
 );
 
-const ActionEntryCard: FC<{ entry: HackathonActionHubEntry; step: string }> = ({
-  entry,
-  step,
-}) => (
+const ActionEntryCard: FC<{ entry: HackathonActionHubEntry; step: string }> = ({ entry, step }) => (
   <article className={styles.entryCard}>
     <span className={styles.entryStep}>
       {step} · {entry.eyebrow}
@@ -54,7 +49,7 @@ const ActionEntryCard: FC<{ entry: HackathonActionHubEntry; step: string }> = ({
     </div>
 
     <nav className={styles.entryLinks} aria-label={entry.title}>
-      {entry.links.map((link) => (
+      {entry.links.map(link => (
         <a
           key={`${link.label}-${link.href}`}
           className={styles.entryLink}
@@ -68,9 +63,7 @@ const ActionEntryCard: FC<{ entry: HackathonActionHubEntry; step: string }> = ({
   </article>
 );
 
-export const HackathonActionHub: FC<
-  PropsWithChildren<HackathonActionHubProps>
-> = ({
+export const HackathonActionHub: FC<PropsWithChildren<HackathonActionHubProps>> = ({
   children,
   entries,
   facts,
@@ -90,17 +83,12 @@ export const HackathonActionHub: FC<
             <p className={styles.regDesc}>{primaryDescription}</p>
 
             <nav className={styles.regActions} aria-label={title}>
-              {primaryAction && (
-                <HackathonActionHubLink
-                  action={primaryAction}
-                  variant="primary"
-                />
-              )}
+              {primaryAction && <HackathonActionHubLink action={primaryAction} variant="primary" />}
               {children}
             </nav>
 
             <ul className={`list-unstyled ${styles.regFacts}`}>
-              {facts.map((fact) => (
+              {facts.map(fact => (
                 <li key={fact}>{fact}</li>
               ))}
             </ul>
@@ -116,10 +104,7 @@ export const HackathonActionHub: FC<
           <Row as="ol" className="list-unstyled g-3 mb-0">
             {entries.map((entry, index) => (
               <Col as="li" key={entry.title} md={6}>
-                <ActionEntryCard
-                  entry={entry}
-                  step={String(index + 1).padStart(2, '0')}
-                />
+                <ActionEntryCard entry={entry} step={String(index + 1).padStart(2, '0')} />
               </Col>
             ))}
           </Row>
