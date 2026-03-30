@@ -3,28 +3,13 @@ import { observer } from 'mobx-react';
 import Link from 'next/link';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
-import {
-  Badge,
-  Button,
-  ButtonGroup,
-  Card,
-  Col,
-  Container,
-  Dropdown,
-  DropdownButton,
-  Row,
-} from 'react-bootstrap';
+import { Badge, Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { text2color, UserRankView } from 'idea-react';
 import { formatDate } from 'web-utility';
 
-import { StaticHackathonDetail } from '../../components/Activity/StaticHackathonDetail';
 import { GitCard } from '../../components/Git/Card';
 import { LarkImage } from '../../components/LarkImage';
 import { PageHead } from '../../components/Layout/PageHead';
-import {
-  getStaticHackathonProfile,
-  type StaticHackathonProfile,
-} from '../../constants/staticHackathons';
 import { Activity, ActivityModel } from '../../models/Activity';
 import { fileURLOf } from '../../models/Base';
 import {
@@ -48,10 +33,6 @@ export const getServerSideProps = compose<{ id: string }>(
   cache(),
   errorLogger,
   async ({ params }) => {
-    const staticHackathon = getStaticHackathonProfile(params!.id);
-
-    if (staticHackathon) return { props: { staticHackathon } };
-
     const activity = await new ActivityModel().getOne(params!.id);
 
     const { appId, tableIdMap } = activity.databaseSchema as BiTableSchema;
@@ -68,22 +49,15 @@ export const getServerSideProps = compose<{ id: string }>(
     return {
       props: {
         activity,
-        hackathon: {
-          people,
-          organizations,
-          agenda,
-          prizes,
-          templates,
-          projects,
-        },
+        hackathon: { people, organizations, agenda, prizes, templates, projects },
       },
     };
   },
 );
 
 interface HackathonDetailProps {
-  activity?: Activity;
-  hackathon?: {
+  activity: Activity;
+  hackathon: {
     people: Person[];
     organizations: Organization[];
     agenda: Agenda[];
@@ -91,83 +65,240 @@ interface HackathonDetailProps {
     templates: Template[];
     projects: Project[];
   };
-  staticHackathon?: StaticHackathonProfile;
 }
 
-const FormButtonBar = ['Person', 'Project', 'Product', 'Evaluation'];
+type FormGroupKey = 'Person' | 'Project' | 'Product' | 'Evaluation';
+
+interface FormLink {
+  name: string;
+  shared_limit?: string;
+  shared_url: string;
+}
+
+interface FormGroupMeta {
+  description: string;
+  eyebrow: string;
+  title: string;
+}
+
+interface FormGroup {
+  key: FormGroupKey;
+  list: FormLink[];
+  meta: FormGroupMeta;
+}
+
+const FormButtonBar: FormGroupKey[] = ['Person', 'Project', 'Product', 'Evaluation'];
+
+const FormSectionMeta: Record<FormGroupKey, FormGroupMeta> = {
+  Person: {
+    eyebrow: 'Participants',
+    title: '参与者登记',
+    description: '收集报名成员、建立参赛者池，并为后续组队和通知打底。',
+  },
+  Project: {
+    eyebrow: 'Team Lead',
+    title: '项目注册',
+    description: '由队长登记项目名称、成员、赛道和一句话介绍，完成队伍锁定。',
+  },
+  Product: {
+    eyebrow: 'Submission',
+    title: '作品提交',
+    description: '比赛截止前统一提交最终作品、演示链接和补充说明。',
+  },
+  Evaluation: {
+    eyebrow: 'Review',
+    title: '评审入口',
+    description: '评委或导师在评审阶段使用，用于评分、复核与结果整理。',
+  },
+};
+
+const isPublicForm = ({ shared_limit }: FormLink) => shared_limit === 'anyone_editable';
 
 const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackathon }) => {
-  if (!activity || !hackathon) return null;
-
   const { t } = useContext(I18nContext);
 
-  const { name, summary, location, startTime, endTime, databaseSchema } = activity,
+  const {
+      name,
+      summary,
+      location,
+      startTime,
+      endTime,
+      databaseSchema,
+      host,
+      image,
+      type: activityType,
+    } = activity,
     { people, organizations, agenda, prizes, templates, projects } = hackathon;
-  const { forms } = databaseSchema as BiTableSchema;
+  const forms = (((databaseSchema as BiTableSchema).forms || {}) as Partial<
+    Record<FormGroupKey, FormLink[]>
+  >)!;
+  const formGroups = FormButtonBar.flatMap<FormGroup>(key => {
+    const list = forms[key]?.filter(isPublicForm) || [];
+
+    return list[0] ? [{ key, list, meta: FormSectionMeta[key] }] : [];
+  });
+  const primaryForm =
+    formGroups.find(({ key }) => key === 'Person') ||
+    formGroups.find(({ key }) => key === 'Project') ||
+    formGroups[0];
+  const secondaryForm =
+    formGroups.find(({ key }) => key === 'Project' && key !== primaryForm?.key) ||
+    formGroups.find(({ key }) => key !== primaryForm?.key);
+  const heroStats = [
+    { label: t('participants'), value: people.length },
+    { label: t('projects'), value: projects.length },
+    { label: t('templates'), value: templates.length },
+    { label: t('organizations'), value: organizations.length },
+  ];
+  const hostTags = ((host as string[] | undefined) || []).slice(0, 3);
+  const agendaPreview = agenda.slice(0, 3);
 
   return (
     <>
       <PageHead title={name as string} />
 
-      {/* Hero Section */}
       <section className={styles.hero}>
         <Container>
-          <h1 className={`text-center ${styles.title}`}>{name as string}</h1>
-          <p className={`text-center ${styles.description}`}>{summary as string}</p>
+          <Row className="align-items-center g-4">
+            <Col lg={7}>
+              <div className={styles.heroEyebrow}>
+                <span className={styles.heroTag}>{(activityType as string) || t('hackathon')}</span>
+                {hostTags.map(tag => (
+                  <span key={tag} className={styles.heroTag}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
 
-          <Row className="mt-4 justify-content-center">
-            <Col md={4}>
-              <Card className={styles.infoCard}>
-                <Card.Body>
-                  <h5 className="text-white mb-2">📍 {t('event_location')}</h5>
-                  <p className="text-white-50 mb-0">
-                    {(location as TableCellLocation)?.full_address}
-                  </p>
-                </Card.Body>
-              </Card>
+              <h1 className={styles.title}>{name as string}</h1>
+              <p className={styles.description}>{summary as string}</p>
+
+              <div className={styles.heroStats}>
+                {heroStats.map(({ label, value }) => (
+                  <span key={label} className={styles.statChip}>
+                    {value} {label}
+                  </span>
+                ))}
+              </div>
+
+              <div className={styles.heroActions}>
+                {primaryForm && (
+                  <Button href={primaryForm.list[0].shared_url} target="_blank" rel="noreferrer">
+                    {primaryForm.meta.title}
+                  </Button>
+                )}
+                {secondaryForm && (
+                  <Button
+                    href={secondaryForm.list[0].shared_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    variant="light"
+                  >
+                    {secondaryForm.meta.title}
+                  </Button>
+                )}
+                {formGroups[0] && (
+                  <Button href="#entry-hub" variant="outline-light">
+                    查看全部入口
+                  </Button>
+                )}
+              </div>
+
+              <Row className="mt-4 g-3">
+                <Col md={6}>
+                  <Card className={styles.infoCard}>
+                    <Card.Body>
+                      <h5 className="text-white mb-2">📍 {t('event_location')}</h5>
+                      <p className="text-white-50 mb-0">
+                        {(location as TableCellLocation)?.full_address}
+                      </p>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col md={6}>
+                  <Card className={styles.infoCard}>
+                    <Card.Body>
+                      <h5 className="text-white mb-2">⏰ {t('event_duration')}</h5>
+                      <p className="text-white-50 mb-0">
+                        {formatDate(startTime as string)} - {formatDate(endTime as string)}
+                      </p>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
             </Col>
-            <Col md={4}>
-              <Card className={styles.infoCard}>
+
+            <Col lg={5}>
+              <Card className={styles.heroVisualCard}>
+                {image && (
+                  <div className={styles.heroImageWrap}>
+                    <LarkImage src={image} alt={name as string} className={styles.heroImage} />
+                  </div>
+                )}
                 <Card.Body>
-                  <h5 className="text-white mb-2">⏰ {t('event_duration')}</h5>
-                  <p className="text-white-50 mb-0">
-                    {formatDate(startTime as string)} - {formatDate(endTime as string)}
-                  </p>
+                  <div className={styles.heroVisualHead}>
+                    <span className={styles.heroVisualKicker}>Agenda Preview</span>
+                    <strong>{agendaPreview[0]?.name as string}</strong>
+                  </div>
+
+                  <div className={styles.heroVisualList}>
+                    {agendaPreview.map(({ name, startedAt, endedAt }) => (
+                      <div
+                        key={`${name as string}-${startedAt as string}`}
+                        className={styles.heroVisualItem}
+                      >
+                        <strong>{name as string}</strong>
+                        <span>
+                          {formatDate(startedAt as string)} - {formatDate(endedAt as string)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </Card.Body>
               </Card>
             </Col>
           </Row>
-
-          <ButtonGroup className="d-flex mt-3">
-            {FormButtonBar.map((key, index) => {
-              const list = forms[key]?.filter(
-                // @ts-expect-error Upstream types bug
-                ({ shared_limit }) => shared_limit === 'anyone_editable',
-              );
-
-              return !list?.[0] ? null : list.length < 2 ? (
-                <Button href={list[0].shared_url} target="_blank" rel="noreferrer">
-                  {index + 1}. {list[0].name}
-                </Button>
-              ) : (
-                <DropdownButton
-                  as={ButtonGroup}
-                  title={`${index + 1}. ${t('product_submission')}`}
-                  id={`dropdown-${key}`}
-                >
-                  {list.map(({ name, shared_url }) => (
-                    <Dropdown.Item key={name} href={shared_url} target="_blank" rel="noreferrer">
-                      {name}
-                    </Dropdown.Item>
-                  ))}
-                </DropdownButton>
-              );
-            })}
-          </ButtonGroup>
         </Container>
       </section>
 
       <Container className="my-5">
+        {formGroups[0] && (
+          <section id="entry-hub" className={styles.section}>
+            <p className={styles.sectionEyebrow}>Action Hub · Forms</p>
+            <h2 className={styles.sectionTitle}>报名与提交流程</h2>
+            <p className={styles.sectionLead}>
+              入口根据活动当前配置自动生成。不同活动可以复用同一套页面结构，而不是为每次活动单开专页。
+            </p>
+
+            <Row className="mt-4 g-3" md={2} xl={4}>
+              {formGroups.map(({ key, list, meta }, index) => (
+                <Col key={key}>
+                  <Card className={styles.entryCard} body>
+                    <span className={styles.entryStep}>
+                      Step {String(index + 1).padStart(2, '0')} · {meta.eyebrow}
+                    </span>
+                    <h3 className="h5 text-white mt-2">{meta.title}</h3>
+                    <p className="text-white-50 mb-3">{meta.description}</p>
+                    <div className="d-grid gap-2">
+                      {list.map(({ name, shared_url }) => (
+                        <Button
+                          key={name}
+                          href={shared_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          variant="light"
+                        >
+                          {name}
+                        </Button>
+                      ))}
+                    </div>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </section>
+        )}
+
         <section className={`${styles.section} ${styles.prizeSection}`}>
           <h2 className={styles.sectionTitle}>🏆 {t('prizes')}</h2>
           <div className="mt-4">
@@ -206,7 +337,6 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
           </ol>
         </section>
 
-        {/* Mid-front: Organizations - Horizontal logo layout */}
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>🏢 {t('organizations')}</h2>
           <nav className={styles.orgContainer}>
@@ -224,7 +354,6 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
           </nav>
         </section>
 
-        {/* Mid-back: Templates - Using GitCard, 3-4 per row */}
         <section className={`${styles.section} ${styles.templateSection}`}>
           <h2 className={styles.sectionTitle}>🛠️ {t('templates')}</h2>
           <Row className="mt-4 g-3" md={2} lg={3} xl={4}>
@@ -243,7 +372,6 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
           </Row>
         </section>
 
-        {/* Mid-back: Projects - Narrow cards, 3-4 per row */}
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>💡 {t('projects')}</h2>
 
@@ -278,7 +406,6 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
           </Row>
         </section>
 
-        {/* Footer: Participants - Circular avatars only */}
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>👥 {t('participants')}</h2>
           <nav className={styles.participantCloud}>
@@ -305,16 +432,4 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
   );
 });
 
-const HackathonPage: FC<HackathonDetailProps> = props => {
-  if (props.staticHackathon)
-    return (
-      <>
-        <PageHead title={props.staticHackathon.name} />
-        <StaticHackathonDetail profile={props.staticHackathon} />
-      </>
-    );
-
-  return <HackathonDetail {...props} />;
-};
-
-export default HackathonPage;
+export default HackathonDetail;
