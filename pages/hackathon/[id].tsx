@@ -173,35 +173,26 @@ export const getServerSideProps = compose<{ id: string }>(
   errorLogger,
   async ({ params }) => {
     const activity = await new ActivityModel().getOne(params!.id);
-    const { appId, tableIdMap } = (activity.databaseSchema ||
-      {}) as BiTableSchema;
+    const schema = activity.databaseSchema as Partial<BiTableSchema> | undefined;
+    const tableIdMap = schema?.tableIdMap as Partial<Record<RequiredTableKey, string>> | undefined;
 
-    if (!appId || !tableIdMap) return { notFound: true, props: {} };
+    if (!schema?.appId || !tableIdMap) return { notFound: true, props: {} };
 
-    for (const key of RequiredTableKeys)
-      if (!tableIdMap[key]) return { notFound: true, props: {} };
+    for (const key of RequiredTableKeys) if (!tableIdMap[key]) return { notFound: true, props: {} };
 
-    const [people, organizations, agenda, prizes, templates, projects] =
-      await Promise.all([
-        new PersonModel(appId, tableIdMap.Person).getAll(),
-        new OrganizationModel(appId, tableIdMap.Organization).getAll(),
-        new AgendaModel(appId, tableIdMap.Agenda).getAll(),
-        new PrizeModel(appId, tableIdMap.Prize).getAll(),
-        new TemplateModel(appId, tableIdMap.Template).getAll(),
-        new ProjectModel(appId, tableIdMap.Project).getAll(),
-      ]);
+    const [people, organizations, agenda, prizes, templates, projects] = await Promise.all([
+      new PersonModel(schema.appId, tableIdMap.Person).getAll(),
+      new OrganizationModel(schema.appId, tableIdMap.Organization).getAll(),
+      new AgendaModel(schema.appId, tableIdMap.Agenda).getAll(),
+      new PrizeModel(schema.appId, tableIdMap.Prize).getAll(),
+      new TemplateModel(schema.appId, tableIdMap.Template).getAll(),
+      new ProjectModel(schema.appId, tableIdMap.Project).getAll(),
+    ]);
 
     return {
       props: {
         activity,
-        hackathon: {
-          people,
-          organizations,
-          agenda,
-          prizes,
-          templates,
-          projects,
-        },
+        hackathon: { people, organizations, agenda, prizes, templates, projects },
       },
     };
   },

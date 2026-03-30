@@ -1,4 +1,4 @@
-import { FC, type PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
 import { HackathonHeroAction } from './HackathonHero';

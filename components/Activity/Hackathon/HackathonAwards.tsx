@@ -5,9 +5,10 @@ import { Container } from 'react-bootstrap';
 import { LarkImage } from '../../LarkImage';
 import styles from './HackathonAwards.module.less';
 
-export type HackathonAwardsMeta<Value = string> = Record<'label', string> & {
+export interface HackathonAwardsMeta<Value = string> {
+  label: string;
   value: Value;
-};
+}
 
 export interface HackathonPrizeItem {
   description: string;
