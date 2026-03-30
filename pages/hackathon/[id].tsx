@@ -1,29 +1,19 @@
-import {
-  BiTableSchema,
-  TableCellLocation,
-  TableCellUser,
-  TableCellValue,
-  TableFormView,
-} from 'mobx-lark';
+import { BiTableSchema, TableCellLocation, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
-import { formatDate } from 'web-utility';
 
 import {
   HackathonActionHub,
   HackathonActionHubLink,
 } from '../../components/Activity/Hackathon/ActionHub';
 import { HackathonAwards } from '../../components/Activity/Hackathon/Awards';
-import type { HackathonAwardsMeta } from '../../components/Activity/Hackathon/Awards';
+import { HackathonFAQ } from '../../components/Activity/Hackathon/FAQ';
 import { HackathonHero } from '../../components/Activity/Hackathon/Hero';
 import { HackathonOverview } from '../../components/Activity/Hackathon/Overview';
 import { HackathonParticipants } from '../../components/Activity/Hackathon/Participants';
 import { HackathonResources } from '../../components/Activity/Hackathon/Resources';
-import {
-  HackathonSchedule,
-  HackathonScheduleTone,
-} from '../../components/Activity/Hackathon/Schedule';
+import { HackathonSchedule } from '../../components/Activity/Hackathon/Schedule';
 import { PageHead } from '../../components/Layout/PageHead';
 import { Activity, ActivityModel } from '../../models/Activity';
 import {
@@ -40,19 +30,37 @@ import {
   Template,
   TemplateModel,
 } from '../../models/Hackathon';
-import { I18nContext, I18nKey } from '../../models/Translation';
-
-const RequiredTableKeys = [
-  'Person',
-  'Organization',
-  'Agenda',
-  'Prize',
-  'Template',
-  'Project',
-] as const;
-
-type RequiredTableKey = (typeof RequiredTableKeys)[number];
-type FormGroupKey = 'Evaluation' | 'Person' | 'Product' | 'Project';
+import { I18nContext } from '../../models/Translation';
+import {
+  buildCountdownUnitLabels,
+  buildFAQItems,
+  buildHighlightCards,
+  buildJudgingCriteria,
+  buildOrganizationItems,
+  buildParticipantItems,
+  buildPrizeItems,
+  buildProjectItems,
+  buildScheduleItems,
+  buildTemplateItems,
+  FormButtonBar,
+  FormGroupKey,
+  FormGroupView,
+  buildFormSectionMeta,
+  heroNavigation,
+  RequiredTableKeys,
+} from '../../components/Activity/Hackathon/constant';
+import {
+  agendaTypeLabelOf,
+  compactDateKeyOf,
+  compactSummaryOf,
+  dateKeyOf,
+  daysBetween,
+  formatMoment,
+  formatPeriod,
+  isPublicForm,
+  normalizeAgendaType,
+  previewText,
+} from '../../components/Activity/Hackathon/utility';
 
 interface HackathonDetailProps {
   activity: Activity;
@@ -65,100 +73,6 @@ interface HackathonDetailProps {
     templates: Template[];
   };
 }
-
-interface FormGroupMeta {
-  description: I18nKey;
-  eyebrow: I18nKey;
-  title: I18nKey;
-}
-
-interface FormGroupView {
-  description: string;
-  eyebrow: string;
-  key: FormGroupKey;
-  links: { external: true; href: string; label: string }[];
-  title: string;
-}
-
-const FormButtonBar = ['Person', 'Project', 'Product', 'Evaluation'] as const;
-
-const FormSectionMeta: Record<FormGroupKey, FormGroupMeta> = {
-  Person: {
-    eyebrow: 'participants',
-    title: 'hackathon_participant_registration',
-    description: 'hackathon_participant_registration_description',
-  },
-  Project: {
-    eyebrow: 'hackathon_team_lead',
-    title: 'hackathon_project_registration',
-    description: 'hackathon_project_registration_description',
-  },
-  Product: {
-    eyebrow: 'hackathon_submission',
-    title: 'product_submission',
-    description: 'hackathon_product_submission_description',
-  },
-  Evaluation: {
-    eyebrow: 'hackathon_review',
-    title: 'hackathon_evaluation_entry',
-    description: 'hackathon_evaluation_entry_description',
-  },
-};
-
-const AgendaTypeClassMap: Partial<Record<string, HackathonScheduleTone>> = {
-  workshop: 'formation',
-  formation: 'formation',
-  presentation: 'enrollment',
-  enrollment: 'enrollment',
-  coding: 'competition',
-  competition: 'competition',
-  break: 'break',
-  ceremony: 'evaluation',
-  evaluation: 'evaluation',
-};
-
-const AgendaTypeLabelMap: Partial<Record<string, I18nKey>> = {
-  workshop: 'workshop',
-  presentation: 'presentation',
-  coding: 'coding',
-  break: 'break',
-  ceremony: 'ceremony',
-};
-
-const isPublicForm = ({ shared_limit }: TableFormView) =>
-  ['anyone_editable'].includes(shared_limit as string);
-
-const formatMoment = (value?: TableCellValue) => (value ? formatDate(value as string) : '');
-
-const formatPeriod = (startedAt?: TableCellValue, endedAt?: TableCellValue) =>
-  [formatMoment(startedAt), formatMoment(endedAt)].filter(Boolean).join(' - ');
-
-const previewText = (items: TableCellValue[], fallback: string) =>
-  items
-    .map(item => item?.toString())
-    .filter(Boolean)
-    .slice(0, 2)
-    .join(' · ') || fallback;
-
-const agendaToneClassOf = (type: TableCellValue, index: number) => {
-  const normalized = type?.toString().toLowerCase() || '';
-  const fallbackOrder: HackathonScheduleTone[] = [
-    'formation',
-    'enrollment',
-    'competition',
-    'break',
-    'evaluation',
-  ];
-
-  return AgendaTypeClassMap[normalized] || fallbackOrder[index % fallbackOrder.length];
-};
-
-const agendaTypeLabelOf = (type: TableCellValue, t: (key: I18nKey) => string, fallback = '-') => {
-  const normalized = type?.toString().toLowerCase() || '';
-  const i18nKey = AgendaTypeLabelMap[normalized];
-
-  return i18nKey ? t(i18nKey) : type?.toString() || fallback;
-};
 
 export const getServerSideProps = compose<{ id: string }>(
   cache(),
@@ -191,8 +105,8 @@ export const getServerSideProps = compose<{ id: string }>(
 );
 
 const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackathon }) => {
-  const { t } = useContext(I18nContext);
-
+  const i18n = useContext(I18nContext);
+  const { t } = i18n;
   const {
       name,
       summary,
@@ -215,19 +129,100 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
   const hostTags = (host as string[] | undefined)?.slice(0, 2) || [];
   const eventRange = formatPeriod(startTime, endTime);
   const locationText = (location as TableCellLocation | undefined)?.full_address || '-';
-  const heroBadges = [
-    (activityType as string) || t('hackathon'),
-    ...hostTags,
-    formatMoment(startTime),
-    formatMoment(endTime),
-  ].filter((value): value is string => Boolean(value));
-  const heroStats = [
-    { label: t('participants'), value: people.length },
-    { label: t('projects'), value: projects.length },
-    { label: t('templates'), value: templates.length },
-    { label: t('prizes'), value: prizes.length },
-  ];
+  const phaseBadges = agendaItems
+    .slice(0, 4)
+    .map(({ type, startedAt, endedAt }) => {
+      const phase = agendaTypeLabelOf(type, t, t('agenda'));
+      const start = compactDateKeyOf(startedAt);
+      const end = compactDateKeyOf(endedAt);
+      const period =
+        start && end && start !== end
+          ? `${start} - ${end}`
+          : start || end || formatMoment(startedAt);
+
+      return [phase, period].filter(Boolean).join(' ');
+    })
+    .filter(Boolean);
+  const heroBadges =
+    phaseBadges[0] && phaseBadges[1]
+      ? phaseBadges
+      : [
+          (activityType as string) || t('hackathon'),
+          ...hostTags,
+          formatMoment(startTime),
+          formatMoment(endTime),
+        ].filter((value): value is string => Boolean(value));
   const agendaPreview = agendaItems.slice(0, 3);
+  const scheduleOverviewPills = agendaItems.slice(0, 6).map(({ id, name, type, startedAt }) => {
+    const label = agendaTypeLabelOf(type, t, (name as string) || t('agenda'));
+    const dateText = dateKeyOf(startedAt) || formatMoment(startedAt);
+
+    return [label, dateText].filter(Boolean).join(' · ') || (id as string);
+  });
+  const heroStatChips = [
+    activityType ? `🎯 ${activityType as string}` : `🎯 ${t('hackathon')}`,
+    ...scheduleOverviewPills.slice(0, 4),
+  ].filter(Boolean) as string[];
+  const countdownUnitLabels = buildCountdownUnitLabels(i18n);
+  const heroPrimaryActionLabel = t('hackathon_register_now');
+  const scheduleKeyDates = agendaItems
+    .slice(0, 6)
+    .map(({ id, name, type, startedAt, endedAt }) => {
+      const beginText = dateKeyOf(startedAt);
+      const endText = dateKeyOf(endedAt);
+      const dateLabel =
+        beginText && endText && beginText !== endText
+          ? `${beginText} - ${endText}`
+          : beginText || endText || '-';
+
+      return {
+        id: id as string,
+        date: dateLabel,
+        label: (name as string) || agendaTypeLabelOf(type, t, t('agenda')),
+      };
+    })
+    .filter(({ date, label }) => Boolean(date && label));
+  const now = Date.now();
+  const nextAgendaItem = agendaItems.find(({ startedAt, endedAt }) => {
+    const started = new Date((startedAt as string) || 0).getTime();
+    const ended = new Date((endedAt as string) || 0).getTime();
+
+    return Number.isFinite(started) && Number.isFinite(ended) && now <= ended;
+  });
+  const nextAgendaStarted = nextAgendaItem?.startedAt as string | undefined;
+  const nextAgendaEnded = nextAgendaItem?.endedAt as string | undefined;
+  const countdownTo =
+    (nextAgendaStarted && new Date(nextAgendaStarted).getTime() > now
+      ? nextAgendaStarted
+      : nextAgendaEnded) ||
+    ((startTime as string | undefined) && new Date(startTime as string).getTime() > now
+      ? (startTime as string)
+      : (endTime as string | undefined));
+  const countdownLabel = nextAgendaItem
+    ? agendaTypeLabelOf(nextAgendaItem.type, t, t('agenda'))
+    : t('event_duration');
+  const enrollmentPhase = agendaItems.find(
+    ({ type }) => normalizeAgendaType(type) === 'enrollment',
+  );
+  const formationPhase = agendaItems.find(({ type }) => normalizeAgendaType(type) === 'formation');
+  const competitionPhase = agendaItems.find(
+    ({ type }) => normalizeAgendaType(type) === 'competition',
+  );
+  const evaluationPhase = agendaItems.find(
+    ({ type }) => normalizeAgendaType(type) === 'evaluation',
+  );
+  const scheduleNarrativeLead = [
+    enrollmentPhase &&
+      `${t('enrollment')} ${daysBetween(enrollmentPhase.startedAt, enrollmentPhase.endedAt)}${t('countdown_days')}`,
+    formationPhase &&
+      `${t('formation')} ${daysBetween(formationPhase.startedAt, formationPhase.endedAt)}${t('countdown_days')}`,
+    competitionPhase &&
+      `${t('competition')} ${daysBetween(competitionPhase.startedAt, competitionPhase.endedAt)}${t('countdown_days')}`,
+    evaluationPhase &&
+      `${t('evaluation')} ${daysBetween(evaluationPhase.startedAt, evaluationPhase.endedAt)}${t('countdown_days')}`,
+  ]
+    .filter(Boolean)
+    .join('，');
 
   const formGroups = FormButtonBar.flatMap<FormGroupView>(key => {
     const list = (formMap[key] || []).filter(isPublicForm);
@@ -236,9 +231,9 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
       ? [
           {
             key,
-            eyebrow: t(FormSectionMeta[key].eyebrow),
-            title: t(FormSectionMeta[key].title),
-            description: t(FormSectionMeta[key].description),
+            eyebrow: buildFormSectionMeta(i18n)[key].eyebrow,
+            title: buildFormSectionMeta(i18n)[key].title,
+            description: buildFormSectionMeta(i18n)[key].description,
             links: list.map(({ name, shared_url }) => ({
               label: name as string,
               href: shared_url,
@@ -261,159 +256,57 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
       .filter(Boolean)
       .slice(0, 2)
       .join(' · ') || t('hackathon_action_hub');
+  const actionHubFacts = [
+    eventRange || t('event_duration'),
+    locationText,
+    ...scheduleOverviewPills.slice(0, 2),
+    formPreview,
+  ]
+    .filter(Boolean)
+    .slice(0, 4);
 
-  const highlightCards = [
-    {
-      icon: '👥',
-      title: t('participants'),
-      value: people.length,
-      description: t(FormSectionMeta.Person.description),
-    },
-    {
-      icon: '🚀',
-      title: t('projects'),
-      value: projects.length,
-      description: t(FormSectionMeta.Project.description),
-    },
-    {
-      icon: '🛠',
-      title: t('templates'),
-      value: templates.length,
-      description: previewText(
-        templates.map(({ name }) => name),
-        t('templates'),
-      ),
-    },
-    {
-      icon: '🏆',
-      title: t('prizes'),
-      value: prizes.length,
-      description: previewText(
-        prizes.map(({ name }) => name),
-        t('hackathon_prizes'),
-      ),
-    },
-    {
-      icon: '🤝',
-      title: t('organizations'),
-      value: organizations.length,
-      description: previewText(
-        organizations.map(({ name }) => name),
-        t('organizations'),
-      ),
-    },
-    {
-      icon: '📅',
-      title: t('agenda'),
-      value: agendaItems.length,
-      description: previewText(
-        agendaItems.map(({ name }) => name),
-        eventRange || t('agenda'),
-      ),
-    },
-  ];
-
-  const scheduleItems = agendaItems.map(
-    ({ id, name, type, summary, startedAt, endedAt }, index) => {
-      const typeLabel = agendaTypeLabelOf(type, t);
-      const description = (summary as string) || typeLabel;
-
-      return {
-        id: id as string,
-        phase: String(index + 1).padStart(2, '0'),
-        dateText: formatPeriod(startedAt, endedAt),
-        title: name as string,
-        description,
-        tone: agendaToneClassOf(type, index),
-        facts: [
-          {
-            label: t('type'),
-            value: typeLabel,
-            meta: description || eventRange || locationText,
-          },
-          {
-            label: t('start_time'),
-            value: formatMoment(startedAt),
-            meta: t('event_duration'),
-          },
-          {
-            label: t('end_time'),
-            value: formatMoment(endedAt),
-            meta: `${t('event_location')}: ${locationText}`,
-          },
-        ],
-      };
-    },
-  );
-
-  const prizeItems = prizes.map(
-    ({ id, name, image, summary, level, sponsor, price, amount }, index) => ({
-      id: id as string,
-      title: name as string,
-      tier: (level as string) || `#${index + 1}`,
-      description: (summary as string) || previewText([sponsor, price, amount], t('prizes')),
-      image,
-      meta: [
-        sponsor ? { label: t('sponsor'), value: sponsor as string } : null,
-        price ? { label: t('price'), value: price as string } : null,
-        amount ? { label: t('amount'), value: amount as string } : null,
-      ].filter(Boolean) as HackathonAwardsMeta[],
-    }),
-  );
-
-  const organizationItems = organizations.map(({ id, name, link, logo }) => ({
-    id: id as string,
-    name: name as string,
-    href: link as string | undefined,
-    logo,
-  }));
-
-  const templateItems = templates.map(
-    ({ id, name, languages, tags, sourceLink, summary, previewLink }) => ({
-      id: id as string,
-      title: name as string,
-      description: (summary as string) || '',
-      languages: ((languages as string[] | undefined) || []).filter(Boolean),
-      tags: ((tags as string[] | undefined) || []).filter(Boolean),
-      sourceUrl: sourceLink as string | undefined,
-      sourceLabel: t('source_code'),
-      previewUrl: previewLink as string | undefined,
-      previewLabel: t('preview'),
-    }),
-  );
-
-  const projectItems = projects.map(({ id, name, score, summary, createdBy, members }) => {
-    const creator = createdBy as TableCellUser | undefined;
-    const scoreText = score === null || score === undefined || score === '' ? '—' : `${score}`;
-
-    return {
-      id: id as string,
-      title: name as string,
-      link: `${ActivityModel.getLink(activity)}/team/${id}`,
-      score: scoreText,
-      description: (summary as string) || '',
-      meta: [
-        creator
-          ? {
-              label: t('created_by'),
-              value: creator.name || '—',
-              valueHref: creator.email ? `mailto:${creator.email}` : undefined,
-            }
-          : { label: t('created_by'), value: '—' },
-        {
-          label: t('members'),
-          value: (members as string[] | undefined)?.join(', ') || '—',
-        },
-      ],
-    };
+  const highlightCards = buildHighlightCards(i18n, {
+    agendaItems,
+    eventRange,
+    organizations,
+    prizes,
+    templates,
   });
 
-  const participantItems = people.map(({ id, name, avatar, githubLink }) => ({
-    id: id as string,
-    name: name as string,
-    avatar,
-    githubLink: githubLink as string | undefined,
-  }));
+  const scheduleItems = buildScheduleItems(i18n, { agendaItems, locationText });
+
+  const prizeItems = buildPrizeItems(i18n, prizes);
+
+  const organizationItems = buildOrganizationItems(organizations);
+  const judgingCriteria = buildJudgingCriteria(i18n);
+  const supportAction = organizations.find(({ link }) => Boolean(link))?.link
+    ? {
+        label: t('hackathon_support_action'),
+        href: organizations.find(({ link }) => Boolean(link))!.link as string,
+        external: true,
+      }
+    : undefined;
+
+  const templateItems = buildTemplateItems(i18n, templates);
+
+  const projectItems = buildProjectItems(i18n, { projects, activity });
+
+  const participantItems = buildParticipantItems(people);
+  const resourceSummary = previewText(
+    [templates[0]?.name, projects[0]?.name, organizations[0]?.name].filter(Boolean),
+    t('hackathon_resource_zone_subtitle'),
+  );
+  const faqItems = buildFAQItems(i18n, {
+    eventRange,
+    locationText,
+    organizationsCount: organizations.length,
+    primaryForm,
+    projectsCount: projects.length,
+    resourceSummary,
+    scheduleOverviewPills,
+    secondaryForm,
+    templatesCount: templates.length,
+  });
 
   return (
     <div
@@ -429,52 +322,69 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
       <HackathonHero
         badges={heroBadges}
         bottomCard={
-          agendaPreview[0]
+          agendaItems[0] || agendaItems[agendaItems.length - 1]
             ? {
-                eyebrow: t('hackathon_agenda_preview'),
-                title: agendaPreview[0].name as string,
-                description: formatPeriod(agendaPreview[0].startedAt, agendaPreview[0].endedAt),
+                eyebrow: t('event_duration'),
+                title:
+                  eventRange ||
+                  [
+                    formatMoment(agendaItems[0]?.startedAt),
+                    formatMoment(agendaItems[agendaItems.length - 1]?.endedAt),
+                  ]
+                    .filter(Boolean)
+                    .join(' - '),
+                description:
+                  agendaPreview[0]?.name?.toString() ||
+                  agendaTypeLabelOf(agendaItems[0]?.type, t, t('agenda')),
               }
             : undefined
         }
+        countdownLabel={countdownLabel}
+        countdownUnitLabels={countdownUnitLabels}
+        countdownTo={countdownTo}
         description={summaryText}
         image={image}
         imageFallback={(activityType as string) || t('hackathon')}
         locationText={locationText}
         name={name as string}
+        navigation={heroNavigation(i18n)}
         primaryAction={
           primaryForm
             ? {
-                label: primaryForm.title,
+                label: heroPrimaryActionLabel,
                 href: primaryForm.links[0].href,
                 external: true,
               }
-            : { label: t('hackathon_entry_flow'), href: '#entry-hub' }
+            : { label: heroPrimaryActionLabel, href: '#entry-hub' }
         }
         secondaryAction={{ label: t('agenda'), href: '#schedule' }}
-        stats={heroStats}
+        chips={heroStatChips}
         subtitle={(activityType as string) || t('hackathon_detail')}
         topCard={
-          primaryForm
+          summaryText || activityType
             ? {
-                eyebrow: primaryForm.eyebrow,
-                title: primaryForm.title,
-                description: primaryForm.description,
+                eyebrow: t('event_description'),
+                title: compactSummaryOf(
+                  summaryText,
+                  (activityType as string) || t('hackathon_detail'),
+                  36,
+                ),
+                description: locationText,
               }
             : undefined
         }
-        visualChip={t('hackathon_detail')}
-        visualCopy={summaryText}
-        visualKicker={t('event_info')}
-        visualTitle={eventRange || summaryText}
+        visualChip={(activityType as string) || t('hackathon_detail')}
+        visualCopy={eventRange || locationText}
+        visualKicker={t('main_visual')}
+        visualTitle={compactSummaryOf(summaryText, t('hackathon_detail'), 48)}
       />
 
       <HackathonOverview
         cards={highlightCards}
-        subtitle={t('event_description')}
+        subtitle={t('hackathon_highlights_subtitle')}
         themeSub={summaryText}
         themeText={(activityType as string) || t('hackathon')}
-        title={t('event_info')}
+        title={t('hackathon_highlights')}
       />
 
       {formGroups[0] && (
@@ -486,7 +396,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
             links,
             count: links.length,
           }))}
-          facts={[eventRange || t('event_duration'), locationText, formPreview]}
+          facts={actionHubFacts}
           primaryAction={
             primaryForm
               ? {
@@ -519,21 +429,25 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
       {scheduleItems[0] && (
         <HackathonSchedule
           items={scheduleItems}
-          kicker={eventRange}
-          lead={name as string}
-          overviewPills={agendaItems.slice(0, 6).map(({ name }) => name as string)}
+          keyDates={scheduleKeyDates.map(({ date, label }) => ({ date, label }))}
+          kicker={t('hackathon_event_schedule')}
+          lead={scheduleNarrativeLead || summaryText || (name as string)}
+          overviewPills={scheduleOverviewPills}
           phaseLabel={t('hackathon_phase')}
-          subtitle={t('event_duration')}
+          stageGoalLabel={t('hackathon_schedule_goal_label')}
+          subtitle={eventRange || t('event_description')}
           title={t('agenda')}
         />
       )}
 
       {(prizeItems[0] || organizationItems[0]) && (
         <HackathonAwards
+          criteria={judgingCriteria}
           organizations={organizationItems}
           prizes={prizeItems}
-          subtitle={t('hackathon_prizes')}
-          supportDescription={summaryText}
+          subtitle={t('hackathon_judging_title')}
+          supportAction={supportAction}
+          supportDescription={summaryText || eventRange || locationText}
           supportEyebrow={t('organizations')}
           supportTitle={previewText(
             organizations.map(({ name }) => name),
@@ -543,22 +457,37 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
         />
       )}
 
-      {(templateItems[0] || projectItems[0]) && (
-        <HackathonResources
-          projectItems={projectItems}
-          projectSubtitle={t('products')}
-          projectTitle={t('projects')}
-          templateItems={templateItems}
-          templateSubtitle={t('source_code')}
-          templateTitle={t('templates')}
+      {faqItems[0] && (
+        <HackathonFAQ
+          items={faqItems}
+          subtitle={t('hackathon_faq_subtitle')}
+          title={t('common_questions')}
         />
       )}
 
       {participantItems[0] && (
         <HackathonParticipants
+          initialVisible={8}
           participants={participantItems}
-          subtitle={t('github_account')}
-          title={t('participants')}
+          showLessLabel={t('hackathon_show_less')}
+          showMoreLabel={t('hackathon_show_more')}
+          subtitle={t('hackathon_people_showcase_subtitle')}
+          title={t('hackathon_people_showcase')}
+        />
+      )}
+
+      {(templateItems[0] || projectItems[0]) && (
+        <HackathonResources
+          projectInitialVisible={2}
+          projectItems={projectItems}
+          projectSubtitle={t('products')}
+          projectTitle={t('projects')}
+          showLessLabel={t('hackathon_show_less')}
+          showMoreLabel={t('hackathon_show_more')}
+          templateInitialVisible={6}
+          templateItems={templateItems}
+          templateSubtitle={t('hackathon_resource_zone_subtitle')}
+          templateTitle={t('hackathon_resource_zone')}
         />
       )}
     </div>

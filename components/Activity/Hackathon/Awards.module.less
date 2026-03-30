@@ -1,6 +1,19 @@
 @import './theme.less';
 
+;
+
 .supportEyebrow {
+  margin: 0 0 0.4rem;
+  color: @cyan;
+  font-weight: 700;
+  font-size: 0.75rem;
+  font-family: @heading;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.supportCopy {
+  min-width: 0;
 }
 
 .awardsGrid {
@@ -9,8 +22,75 @@
   gap: 1rem;
 }
 
+.judgingCard {
+  margin-top: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 201, 77, 0.08), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)),
+    rgba(8, 18, 39, 0.82);
+  padding: 1.4rem;
+}
+
+.judgingTitle {
+  margin: 0;
+  color: #fff;
+  font-size: 1rem;
+  font-family: @heading;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.criteriaGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+
+  @media (max-width: 991px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.criterion {
+  grid-template-columns: auto 1fr;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.9rem;
+}
+
+.criterionWeight {
+  color: @cyan;
+  font-size: 1.15rem;
+  font-family: @heading;
+}
+
+.criterionTitle {
+  display: block;
+  color: #fff;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.criterionDescription {
+  margin: 0;
+  color: @muted;
+  font-size: 0.87rem;
+  line-height: 1.6;
+}
+
 .badgeTile {
+  ;
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease;
   overflow: hidden;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 201, 77, 0.32);
+  }
 }
 
 .badgeArtWrap {
@@ -91,10 +171,11 @@
 }
 
 .supportCard {
+  ;
   display: grid;
   grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
   gap: 1.25rem;
-  margin-top: 1.4rem;
+  margin-top: 0;
   padding: 1.55rem;
 
   @media (max-width: 1199px) {
@@ -103,7 +184,7 @@
 }
 
 .supportTitle {
-  margin-top: 0.35rem;
+  margin-top: 0;
   font-size: 1.45rem;
 }
 
@@ -114,10 +195,28 @@
   gap: 0.8rem;
 }
 
+.supportLink {
+  justify-self: start;
+  margin-top: 0;
+  border: 1px solid rgba(44, 232, 255, 0.3);
+  border-radius: 10px;
+  background: rgba(44, 232, 255, 0.08);
+  padding: 0.65rem 1rem;
+  color: #fff;
+  font-size: 0.82rem;
+  font-family: @heading;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  &:hover {
+    border-color: rgba(44, 232, 255, 0.52);
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
 .partnerLink {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.04);

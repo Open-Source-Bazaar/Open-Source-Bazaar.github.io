@@ -3,29 +3,24 @@ import { Col, Container, Row } from 'react-bootstrap';
 
 import styles from './Overview.module.less';
 
-export interface HackathonOverviewCard {
-  description: string;
-  icon: string;
-  title: string;
-  value: number;
-}
+export type HackathonOverviewCard = Record<'title' | 'description' | 'icon', string>;
 
-export interface HackathonOverviewProps {
+export type HackathonOverviewProps = Record<
+  'title' | 'subtitle' | 'themeText' | 'themeSub',
+  string
+> & {
   cards: HackathonOverviewCard[];
-  subtitle: string;
-  themeSub: string;
-  themeText: string;
-  title: string;
-}
+};
 
-const OverviewCard: FC<HackathonOverviewCard> = ({ description, icon, title, value }) => (
+const OverviewCard: FC<HackathonOverviewCard> = ({ description, icon, title }) => (
   <article className={styles.trackCard}>
-    <span className={styles.trackIcon}>{icon}</span>
-    <div className={styles.trackName}>{title}</div>
-    <p className={styles.trackDesc}>{description}</p>
-    <span className={styles.trackMetric}>
-      {value} {title}
+    <span
+      className={`${styles.trackIcon} d-inline-flex justify-content-center align-items-center mb-3`}
+    >
+      {icon}
     </span>
+    <div className={styles.trackName}>{title}</div>
+    <p className={`${styles.trackDesc} mt-3 mb-0`}>{description}</p>
   </article>
 );
 
@@ -36,7 +31,7 @@ export const HackathonOverview: FC<HackathonOverviewProps> = ({
   themeText,
   title,
 }) => (
-  <section className={styles.section}>
+  <section id="tracks" className={styles.section}>
     <Container>
       <header className={styles.sectionHeader}>
         <h2 className={styles.sectionTitle}>{title}</h2>
@@ -44,8 +39,8 @@ export const HackathonOverview: FC<HackathonOverviewProps> = ({
         <div className={styles.accentLine} />
       </header>
 
-      <div className={styles.themePanel}>
-        <div className={styles.themeText}>{themeText}</div>
+      <div className={`${styles.themePanel} mb-4`}>
+        <div className={`${styles.themeText} mb-2`}>{themeText}</div>
         <p className={styles.themeSub}>{themeSub}</p>
       </div>
 

@@ -1,12 +1,13 @@
 @import './theme.less';
 
+;
+
 .scheduleIntro {
-  margin-bottom: 1.35rem;
-  text-align: center;
+  margin-bottom: 0;
 }
 
 .scheduleKicker {
-  margin: 0 0 0.35rem;
+  margin: 0;
   color: @cyan;
   font-size: 0.8rem;
   font-family: @heading;
@@ -23,16 +24,14 @@
 }
 
 .scheduleOverview {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
 }
 
 .schedulePill {
-  padding: 0.58rem 0.9rem;
-  color: @copy;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  color: @muted;
   font-size: 0.74rem;
   font-family: @heading;
   letter-spacing: 0.06em;
@@ -54,54 +53,152 @@
 }
 
 .dayCard {
+  ;
+  position: relative;
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
   padding: 1.35rem;
   height: 100%;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.4);
+    border-color: rgba(44, 232, 255, 0.28);
+  }
 }
 
 .formation {
-  background: linear-gradient(135deg, rgba(44, 232, 255, 0.1), rgba(14, 43, 80, 0.86));
+  background: linear-gradient(135deg, rgba(123, 97, 255, 0.12), rgba(28, 20, 67, 0.86));
+
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    background: linear-gradient(90deg, @purple, @cyan);
+    height: 2px;
+    content: '';
+  }
+
+  .dayNo {
+    background: rgba(123, 97, 255, 0.18);
+    color: @purple;
+  }
 }
 
 .enrollment {
-  background: linear-gradient(135deg, rgba(123, 97, 255, 0.12), rgba(28, 20, 67, 0.86));
+  background: linear-gradient(135deg, rgba(44, 232, 255, 0.1), rgba(14, 43, 80, 0.86));
+
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    background: linear-gradient(90deg, @cyan, @purple);
+    height: 2px;
+    content: '';
+  }
+
+  .dayNo {
+    background: rgba(44, 232, 255, 0.14);
+    color: @cyan;
+  }
 }
 
 .competition {
   background: linear-gradient(135deg, rgba(255, 201, 77, 0.12), rgba(60, 35, 8, 0.88));
+
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    background: linear-gradient(90deg, @gold, @rose);
+    height: 2px;
+    content: '';
+  }
+
+  .dayNo {
+    background: rgba(255, 201, 77, 0.16);
+    color: @gold;
+  }
 }
 
 .break {
   background: linear-gradient(135deg, rgba(255, 120, 186, 0.1), rgba(72, 18, 48, 0.88));
+
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    background: linear-gradient(90deg, @rose, @purple);
+    height: 2px;
+    content: '';
+  }
+
+  .dayNo {
+    background: rgba(255, 120, 186, 0.16);
+    color: @rose;
+  }
 }
 
 .evaluation {
   background: linear-gradient(135deg, rgba(72, 241, 168, 0.12), rgba(14, 50, 39, 0.88));
+
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    background: linear-gradient(90deg, @green, @cyan);
+    height: 2px;
+    content: '';
+  }
+
+  .dayNo {
+    background: rgba(72, 241, 168, 0.16);
+    color: @green;
+  }
 }
 
 .dayCardHead {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.75rem;
+  min-width: 0;
 }
 
 .dayNo {
+  border-radius: 999px;
+  background: rgba(44, 232, 255, 0.12);
+  padding: 0.3rem 0.85rem;
+  color: @cyan;
+  font-weight: 700;
+  font-size: 0.72rem;
+  font-family: @heading;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .dayDate {
-  color: @copy;
-  font-size: 0.85rem;
+  color: @muted;
+  font-size: 0.82rem;
+  font-family: @heading;
+  letter-spacing: 0.04em;
 }
 
 .dayTitle {
-  margin: 0.9rem 0 0.45rem;
+  margin: 0;
   color: #fff;
-  font-size: 1.08rem;
+  font-weight: 800;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
   font-family: @heading;
+  letter-spacing: 0.04em;
 }
 
 .daySub {
-  margin: 0 0 1rem;
+  margin: 0;
   color: @muted;
   line-height: 1.7;
 }
@@ -125,8 +222,6 @@
 }
 
 .timePill {
-  display: inline-flex;
-  align-items: center;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.08);
   padding: 0.4rem 0.75rem;
@@ -139,9 +234,7 @@
 }
 
 .agendaCopy {
-  display: flex;
-  flex-direction: column;
-  gap: 0.14rem;
+  min-width: 0;
 
   strong {
     color: #fff;
@@ -153,4 +246,65 @@
     font-size: 0.92rem;
     line-height: 1.55;
   }
+}
+
+.stageGoal {
+  margin: 0;
+  border-top: 1px dashed rgba(255, 255, 255, 0.16);
+  padding-top: 0;
+
+  strong {
+    color: @cyan;
+    font-size: 0.78rem;
+    font-family: @heading;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  span {
+    color: #fff;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+}
+
+.keyDates {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin: 0;
+
+  @media (max-width: 991px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 575px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.keyDateCard {
+  border: 1px solid rgba(44, 232, 255, 0.24);
+  border-radius: 14px;
+  background: rgba(44, 232, 255, 0.08);
+  padding: 0.95rem 1rem;
+}
+
+.keyDateCardWarn {
+  border-color: rgba(255, 201, 77, 0.26);
+  background: rgba(255, 201, 77, 0.08);
+}
+
+.keyDateValue {
+  color: #fff;
+  font-size: 1.2rem;
+  line-height: 1.2;
+  font-family: @heading;
+  letter-spacing: 0.04em;
+}
+
+.keyDateLabel {
+  color: @muted;
+  font-size: 0.84rem;
+  line-height: 1.6;
 }

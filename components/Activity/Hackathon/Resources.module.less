@@ -1,26 +1,28 @@
 @import './theme.less';
 
-.projectHeader {
-  margin-top: 2.75rem;
-}
+;
 
 .resourceCard,
 .projectCard {
+  ;
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease;
   padding: 1.25rem;
   height: 100%;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: rgba(44, 232, 255, 0.26);
+  }
 }
 
 .resourceHead,
 .projectTop {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  gap: 1rem;
+  min-width: 0;
 }
 
 .projectHead {
-  display: grid;
-  gap: 0.8rem;
   margin: 0;
 }
 
@@ -45,22 +47,16 @@
 
 .resourceDescription,
 .projectSummary {
-  margin: 0.8rem 0 1rem;
   color: @muted;
   line-height: 1.75;
 }
 
 .topicList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem;
-  margin: 0 0 1rem;
+  margin: 0;
 }
 
 .topicChip,
 .topicChipMuted {
-  display: inline-flex;
-  align-items: center;
   border-radius: 999px;
   padding: 0.34rem 0.72rem;
   font-size: 0.76rem;
@@ -81,18 +77,47 @@
 }
 
 .resourceLinks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.9rem;
+  min-width: 0;
 }
 
 .entryLink {
+  border: 1px solid rgba(44, 232, 255, 0.24);
+  border-radius: 8px;
+  background: rgba(44, 232, 255, 0.06);
+  padding: 0.42rem 0.85rem;
+  color: @cyan;
+  font-size: 0.8rem;
+  font-family: @heading;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  &:hover {
+    border-color: rgba(44, 232, 255, 0.48);
+    background: rgba(44, 232, 255, 0.12);
+    color: @cyan;
+    text-decoration: none;
+  }
+}
+
+.toggleButton {
+  border: 1px solid rgba(44, 232, 255, 0.28);
+  border-radius: 10px;
+  background: rgba(44, 232, 255, 0.06);
+  padding: 0.62rem 0.95rem;
+  color: #fff;
+  font-size: 0.78rem;
+  font-family: @heading;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  &:hover {
+    border-color: rgba(44, 232, 255, 0.48);
+    background: rgba(44, 232, 255, 0.11);
+  }
 }
 
 .scoreCircle {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
   box-shadow: 0 0 24px rgba(44, 232, 255, 0.18);
   border: 1px solid rgba(44, 232, 255, 0.2);
   border-radius: 50%;

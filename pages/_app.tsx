@@ -43,6 +43,8 @@ export default class CustomApp extends App<I18nProps> {
       { t } = this.i18nStore;
     const thisFullYear = new Date().getFullYear(),
       { asPath } = router;
+    const isArticlePage = asPath.startsWith('/article/') || asPath.startsWith('/policy/'),
+      isActivityPage = asPath.startsWith('/hackathon');
 
     return (
       <I18nContext.Provider value={this.i18nStore}>
@@ -52,18 +54,23 @@ export default class CustomApp extends App<I18nProps> {
           <title>{t('open_source_bazaar')}</title>
         </Head>
 
-        <MainNavigator />
+        {isActivityPage ? (
+          <Component {...pageProps} />
+        ) : (
+          <>
+            <MainNavigator />
 
-        <div className="mt-5 pt-2">
-          {asPath.startsWith('/article/') || asPath.startsWith('/policy/') ? (
-            <PageContent>
-              <Component {...pageProps} />
-            </PageContent>
-          ) : (
-            <Component {...pageProps} />
-          )}
-        </div>
-
+            <div className="mt-5 pt-2">
+              {isArticlePage ? (
+                <PageContent>
+                  <Component {...pageProps} />
+                </PageContent>
+              ) : (
+                <Component {...pageProps} />
+              )}
+            </div>
+          </>
+        )}
         <footer className="mw-100 bg-dark text-white">
           <p className="text-center my-0 py-3">
             <span className="pr-3">

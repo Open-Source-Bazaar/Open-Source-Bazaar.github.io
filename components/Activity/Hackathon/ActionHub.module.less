@@ -16,6 +16,7 @@
 }
 
 .registerCard {
+  ;
   background: linear-gradient(135deg, rgba(44, 232, 255, 0.08), rgba(123, 97, 255, 0.14));
 }
 
@@ -25,8 +26,23 @@
 }
 
 .regEyebrow,
-.entryEyebrow,
+.entryEyebrow {
+  margin: 0;
+  color: @cyan;
+  font-weight: 700;
+  font-size: 0.75rem;
+  font-family: @heading;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .entryStep {
+  color: @cyan;
+  font-weight: 700;
+  font-size: 0.72rem;
+  font-family: @heading;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .regTitle,
@@ -40,7 +56,7 @@
 }
 
 .regTitle {
-  margin-top: 0.4rem;
+  margin-top: 0;
 }
 
 .regDesc,
@@ -50,51 +66,83 @@
 }
 
 .regDesc {
-  margin: 0.9rem 0 1.2rem;
+  margin: 0;
 }
 
 .regActions,
 .entryLinks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.9rem;
+  min-width: 0;
 }
 
 .actionButton {
+  ;
 }
 
-.actionButtonGhost,
-.entryLink {
-}
+.actionButtonGhost {
+  ;
+  border-color: rgba(255, 255, 255, 0.18);
+  color: @muted;
 
-.regFacts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin: 1.3rem 0 0;
-
-  li {
-    padding: 0.48rem 0.85rem;
-    color: @copy;
-    font-size: 0.9rem;
+  &:hover {
+    border-color: rgba(44, 232, 255, 0.36);
+    color: @cyan;
   }
 }
 
-.entryHub {
+.entryLink {
+  border: 1px solid rgba(44, 232, 255, 0.24);
+  border-radius: 8px;
+  background: rgba(44, 232, 255, 0.06);
+  padding: 0.42rem 0.85rem;
+  color: @cyan;
+  font-size: 0.8rem;
+  font-family: @heading;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  &:hover {
+    border-color: rgba(44, 232, 255, 0.48);
+    background: rgba(44, 232, 255, 0.12);
+    color: @cyan;
+    text-decoration: none;
+  }
+}
+
+.regFacts {
+  margin: 0;
+
+  li {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.44rem 0.9rem;
+    color: @copy;
+    font-size: 0.82rem;
+  }
 }
 
 .entryHubHead {
-  margin-bottom: 1.25rem;
+  margin-bottom: 0;
 }
 
 .entryTitle {
-  margin-top: 0.35rem;
+  margin-top: 0;
   font-size: 1.55rem;
 }
 
 .entryCard {
+  ;
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease;
   padding: 1.3rem;
   height: 100%;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: rgba(44, 232, 255, 0.26);
+  }
 }
 
 .entryStep {
@@ -102,7 +150,7 @@
 }
 
 .entryCard h4 {
-  margin: 0.55rem 0 0.45rem;
+  margin: 0;
   color: #fff;
   font-size: 1.02rem;
   font-family: @heading;
@@ -113,17 +161,17 @@
 }
 
 .entryMetaRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin: 1rem 0;
+  margin: 0;
 }
 
 .entryMeta {
-  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(255, 201, 77, 0.12);
+  padding: 0.28rem 0.7rem;
   color: @gold;
+  font-weight: 700;
   font-size: 0.72rem;
   font-family: @heading;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
