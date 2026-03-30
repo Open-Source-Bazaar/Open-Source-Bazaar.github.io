@@ -213,6 +213,27 @@ export default {
   event_duration: '活动时间',
   product_submission: '产品提交',
   agenda: '日程安排',
+  hackathon_participant_registration: '参与者登记',
+  hackathon_participant_registration_description:
+    '收集报名成员、建立参赛者池，并为后续组队和通知打底。',
+  hackathon_team_lead: '队长',
+  hackathon_project_registration: '项目注册',
+  hackathon_project_registration_description:
+    '登记项目名称、成员、赛道和一句话介绍，完成队伍锁定。',
+  hackathon_submission: '提交',
+  hackathon_product_submission_description:
+    '比赛截止前统一提交最终作品、演示链接和补充说明。',
+  hackathon_review: '评审',
+  hackathon_evaluation_entry: '评审入口',
+  hackathon_evaluation_entry_description:
+    '评委或导师在评审阶段使用，用于评分、复核与结果整理。',
+  hackathon_view_all_entries: '查看全部入口',
+  hackathon_agenda_preview: '议程预览',
+  hackathon_action_hub: '入口中心 · 表单',
+  hackathon_entry_flow: '报名与提交流程',
+  hackathon_entry_flow_description:
+    '入口根据活动当前配置自动生成。不同活动可以复用同一套页面结构，而不是为每次活动单开专页。',
+  hackathon_step: '步骤',
   participants: '参与者',
   organizations: '组织方',
   prizes: '奖项',

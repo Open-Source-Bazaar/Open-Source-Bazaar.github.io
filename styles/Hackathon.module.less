@@ -44,13 +44,6 @@
   font-size: 1.2rem;
 }
 
-.heroEyebrow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-
 .heroTag {
   display: inline-flex;
   align-items: center;
@@ -64,13 +57,6 @@
   font-size: 0.9rem;
 }
 
-.heroStats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-}
-
 .statChip {
   display: inline-flex;
   align-items: center;
@@ -80,13 +66,6 @@
   color: #fff;
   font-weight: 600;
   font-size: 0.9rem;
-}
-
-.heroActions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1.75rem;
 }
 
 .heroVisualCard {
@@ -109,25 +88,11 @@
   object-fit: cover;
 }
 
-.heroVisualHead {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.75rem;
-  align-items: center;
-}
-
 .heroVisualKicker {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   opacity: 0.72;
   font-size: 0.8rem;
-}
-
-.heroVisualList {
-  display: grid;
-  gap: 0.75rem;
-  margin-top: 1rem;
 }
 
 .heroVisualItem {
@@ -139,9 +104,21 @@
   background: rgba(255, 255, 255, 0.06);
   padding: 0.85rem 1rem;
 
-  span {
+  dt {
+    margin: 0;
+  }
+
+  dd {
     opacity: 0.74;
+    margin: 0;
     font-size: 0.88rem;
+  }
+}
+
+.heroVisualHead {
+  dd {
+    opacity: 1;
+    font-size: 1rem;
   }
 }
 
@@ -152,7 +129,6 @@
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 16px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  padding: 1.5rem;
 
   &:hover {
     transform: translateY(-5px);

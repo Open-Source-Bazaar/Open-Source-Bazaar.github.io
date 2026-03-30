@@ -1,4 +1,4 @@
-import { BiTableSchema, TableCellLocation, TableCellUser } from 'mobx-lark';
+import { BiTableSchema, TableCellLocation, TableCellUser, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
@@ -67,18 +67,15 @@ interface HackathonDetailProps {
   };
 }
 
-type FormGroupKey = 'Person' | 'Project' | 'Product' | 'Evaluation';
+const FormButtonBar = ['Person', 'Project', 'Product', 'Evaluation'] as const;
 
-interface FormLink {
-  name: string;
-  shared_limit?: string;
-  shared_url: string;
-}
+type FormGroupKey = (typeof FormButtonBar)[number];
+type FormLink = TableFormView;
 
 interface FormGroupMeta {
-  description: string;
-  eyebrow: string;
-  title: string;
+  description: I18nKey;
+  eyebrow: I18nKey;
+  title: I18nKey;
 }
 
 interface FormGroup {
@@ -87,32 +84,31 @@ interface FormGroup {
   meta: FormGroupMeta;
 }
 
-const FormButtonBar: FormGroupKey[] = ['Person', 'Project', 'Product', 'Evaluation'];
-
 const FormSectionMeta: Record<FormGroupKey, FormGroupMeta> = {
   Person: {
-    eyebrow: 'Participants',
-    title: '参与者登记',
-    description: '收集报名成员、建立参赛者池，并为后续组队和通知打底。',
+    eyebrow: 'participants',
+    title: 'hackathon_participant_registration',
+    description: 'hackathon_participant_registration_description',
   },
   Project: {
-    eyebrow: 'Team Lead',
-    title: '项目注册',
-    description: '由队长登记项目名称、成员、赛道和一句话介绍，完成队伍锁定。',
+    eyebrow: 'hackathon_team_lead',
+    title: 'hackathon_project_registration',
+    description: 'hackathon_project_registration_description',
   },
   Product: {
-    eyebrow: 'Submission',
-    title: '作品提交',
-    description: '比赛截止前统一提交最终作品、演示链接和补充说明。',
+    eyebrow: 'hackathon_submission',
+    title: 'product_submission',
+    description: 'hackathon_product_submission_description',
   },
   Evaluation: {
-    eyebrow: 'Review',
-    title: '评审入口',
-    description: '评委或导师在评审阶段使用，用于评分、复核与结果整理。',
+    eyebrow: 'hackathon_review',
+    title: 'hackathon_evaluation_entry',
+    description: 'hackathon_evaluation_entry_description',
   },
 };
 
-const isPublicForm = ({ shared_limit }: FormLink) => shared_limit === 'anyone_editable';
+const isPublicForm = ({ shared, shared_limit }: FormLink) =>
+  shared || ['tenant_editable', 'anyone_editable'].includes(shared_limit as string);
 
 const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackathon }) => {
   const { t } = useContext(I18nContext);
@@ -150,7 +146,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
     { label: t('templates'), value: templates.length },
     { label: t('organizations'), value: organizations.length },
   ];
-  const hostTags = ((host as string[] | undefined) || []).slice(0, 3);
+  const hostTags = (host as string[] | undefined)?.slice(0, 3) || [];
   const agendaPreview = agenda.slice(0, 3);
 
   return (
@@ -161,30 +157,30 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
         <Container>
           <Row className="align-items-center g-4">
             <Col lg={7}>
-              <div className={styles.heroEyebrow}>
-                <span className={styles.heroTag}>{(activityType as string) || t('hackathon')}</span>
+              <ul className="list-unstyled d-flex flex-wrap gap-3 mb-3">
+                <li className={styles.heroTag}>{(activityType as string) || t('hackathon')}</li>
                 {hostTags.map(tag => (
-                  <span key={tag} className={styles.heroTag}>
+                  <li key={tag} className={styles.heroTag}>
                     {tag}
-                  </span>
+                  </li>
                 ))}
-              </div>
+              </ul>
 
               <h1 className={styles.title}>{name as string}</h1>
               <p className={styles.description}>{summary as string}</p>
 
-              <div className={styles.heroStats}>
+              <ul className="list-unstyled d-flex flex-wrap gap-3 mt-4 mb-0">
                 {heroStats.map(({ label, value }) => (
-                  <span key={label} className={styles.statChip}>
+                  <li key={label} className={styles.statChip}>
                     {value} {label}
-                  </span>
+                  </li>
                 ))}
-              </div>
+              </ul>
 
-              <div className={styles.heroActions}>
+              <nav className="d-flex flex-wrap gap-3 mt-4">
                 {primaryForm && (
                   <Button href={primaryForm.list[0].shared_url} target="_blank" rel="noreferrer">
-                    {primaryForm.meta.title}
+                    {t(primaryForm.meta.title)}
                   </Button>
                 )}
                 {secondaryForm && (
@@ -194,35 +190,32 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
                     rel="noreferrer"
                     variant="light"
                   >
-                    {secondaryForm.meta.title}
+                    {t(secondaryForm.meta.title)}
                   </Button>
                 )}
                 {formGroups[0] && (
                   <Button href="#entry-hub" variant="outline-light">
-                    查看全部入口
+                    {t('hackathon_view_all_entries')}
                   </Button>
                 )}
-              </div>
+              </nav>
 
-              <Row className="mt-4 g-3">
-                <Col md={6}>
-                  <Card className={styles.infoCard}>
-                    <Card.Body>
-                      <h5 className="text-white mb-2">📍 {t('event_location')}</h5>
-                      <p className="text-white-50 mb-0">
-                        {(location as TableCellLocation)?.full_address}
-                      </p>
-                    </Card.Body>
+              <Row className="mt-4 g-3" md={2}>
+                <Col>
+                  <Card className={styles.infoCard} body>
+                    <h5 className="text-white mb-2">📍 {t('event_location')}</h5>
+                    <address className="text-white-50 mb-0 fst-normal">
+                      {(location as TableCellLocation)?.full_address}
+                    </address>
                   </Card>
                 </Col>
-                <Col md={6}>
-                  <Card className={styles.infoCard}>
-                    <Card.Body>
-                      <h5 className="text-white mb-2">⏰ {t('event_duration')}</h5>
-                      <p className="text-white-50 mb-0">
-                        {formatDate(startTime as string)} - {formatDate(endTime as string)}
-                      </p>
-                    </Card.Body>
+                <Col>
+                  <Card className={styles.infoCard} body>
+                    <h5 className="text-white mb-2">⏰ {t('event_duration')}</h5>
+                    <p className="text-white-50 mb-0">
+                      <time dateTime={startTime as string}>{formatDate(startTime as string)}</time>{' '}
+                      - <time dateTime={endTime as string}>{formatDate(endTime as string)}</time>
+                    </p>
                   </Card>
                 </Col>
               </Row>
@@ -236,24 +229,32 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
                   </div>
                 )}
                 <Card.Body>
-                  <div className={styles.heroVisualHead}>
-                    <span className={styles.heroVisualKicker}>Agenda Preview</span>
-                    <strong>{agendaPreview[0]?.name as string}</strong>
-                  </div>
-
-                  <div className={styles.heroVisualList}>
-                    {agendaPreview.map(({ name, startedAt, endedAt }) => (
-                      <div
-                        key={`${name as string}-${startedAt as string}`}
-                        className={styles.heroVisualItem}
-                      >
-                        <strong>{name as string}</strong>
-                        <span>
-                          {formatDate(startedAt as string)} - {formatDate(endedAt as string)}
-                        </span>
+                  {agendaPreview[0] && (
+                    <dl className="d-grid gap-3 mb-0">
+                      <div className={`${styles.heroVisualHead} ${styles.heroVisualItem}`}>
+                        <dt className={styles.heroVisualKicker}>{t('hackathon_agenda_preview')}</dt>
+                        <dd className="fw-semibold">{agendaPreview[0].name as string}</dd>
                       </div>
-                    ))}
-                  </div>
+
+                      {agendaPreview.map(({ name, startedAt, endedAt }) => (
+                        <div
+                          key={`${name as string}-${startedAt as string}`}
+                          className={styles.heroVisualItem}
+                        >
+                          <dt className="fw-semibold">{name as string}</dt>
+                          <dd>
+                            <time dateTime={startedAt as string}>
+                              {formatDate(startedAt as string)}
+                            </time>{' '}
+                            -{' '}
+                            <time dateTime={endedAt as string}>
+                              {formatDate(endedAt as string)}
+                            </time>
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+                  )}
                 </Card.Body>
               </Card>
             </Col>
@@ -264,22 +265,23 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
       <Container className="my-5">
         {formGroups[0] && (
           <section id="entry-hub" className={styles.section}>
-            <p className={styles.sectionEyebrow}>Action Hub · Forms</p>
-            <h2 className={styles.sectionTitle}>报名与提交流程</h2>
-            <p className={styles.sectionLead}>
-              入口根据活动当前配置自动生成。不同活动可以复用同一套页面结构，而不是为每次活动单开专页。
-            </p>
+            <hgroup className="mb-0">
+              <p className={styles.sectionEyebrow}>{t('hackathon_action_hub')}</p>
+              <h2 className={styles.sectionTitle}>{t('hackathon_entry_flow')}</h2>
+              <p className={styles.sectionLead}>{t('hackathon_entry_flow_description')}</p>
+            </hgroup>
 
-            <Row className="mt-4 g-3" md={2} xl={4}>
+            <Row as="ol" className="list-unstyled mt-4 g-3" md={2} xl={4}>
               {formGroups.map(({ key, list, meta }, index) => (
-                <Col key={key}>
+                <Col as="li" key={key}>
                   <Card className={styles.entryCard} body>
                     <span className={styles.entryStep}>
-                      Step {String(index + 1).padStart(2, '0')} · {meta.eyebrow}
+                      {t('hackathon_step')} {String(index + 1).padStart(2, '0')} ·{' '}
+                      {t(meta.eyebrow)}
                     </span>
-                    <h3 className="h5 text-white mt-2">{meta.title}</h3>
-                    <p className="text-white-50 mb-3">{meta.description}</p>
-                    <div className="d-grid gap-2">
+                    <h3 className="h5 text-white mt-2">{t(meta.title)}</h3>
+                    <p className="text-white-50 mb-3">{t(meta.description)}</p>
+                    <nav className="d-grid gap-2">
                       {list.map(({ name, shared_url }) => (
                         <Button
                           key={name}
@@ -291,7 +293,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
                           {name}
                         </Button>
                       ))}
-                    </div>
+                    </nav>
                   </Card>
                 </Col>
               ))}

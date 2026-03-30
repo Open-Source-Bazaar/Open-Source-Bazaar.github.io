@@ -217,6 +217,27 @@ export default {
   event_duration: 'Duration',
   product_submission: 'Product Submission Form',
   agenda: 'Agenda',
+  hackathon_participant_registration: 'Participant Registration',
+  hackathon_participant_registration_description:
+    'Collect participant profiles to support sign-up, team formation, and updates.',
+  hackathon_team_lead: 'Team Lead',
+  hackathon_project_registration: 'Project Registration',
+  hackathon_project_registration_description:
+    'Register the project name, teammates, track, and one-line pitch to lock the team.',
+  hackathon_submission: 'Submission',
+  hackathon_product_submission_description:
+    'Submit the final build, demo link, and supporting notes before the deadline.',
+  hackathon_review: 'Review',
+  hackathon_evaluation_entry: 'Evaluation Portal',
+  hackathon_evaluation_entry_description:
+    'Used by judges or mentors during scoring, review, and result consolidation.',
+  hackathon_view_all_entries: 'View All Forms',
+  hackathon_agenda_preview: 'Agenda Preview',
+  hackathon_action_hub: 'Action Hub · Forms',
+  hackathon_entry_flow: 'Registration and Submission Flow',
+  hackathon_entry_flow_description:
+    'Entries are generated from the current activity schema so different events can reuse the same page structure.',
+  hackathon_step: 'Step',
   participants: 'Participants',
   organizations: 'Organizations',
   prizes: 'Prizes',

@@ -213,6 +213,27 @@ export default {
   event_duration: '活動時間',
   product_submission: '產品提交',
   agenda: '日程安排',
+  hackathon_participant_registration: '參與者登記',
+  hackathon_participant_registration_description:
+    '收集報名成員、建立參賽者池，並為後續組隊和通知打底。',
+  hackathon_team_lead: '隊長',
+  hackathon_project_registration: '項目註冊',
+  hackathon_project_registration_description:
+    '登記項目名稱、成員、賽道和一句話介紹，完成隊伍鎖定。',
+  hackathon_submission: '提交',
+  hackathon_product_submission_description:
+    '比賽截止前統一提交最終作品、演示連結和補充說明。',
+  hackathon_review: '評審',
+  hackathon_evaluation_entry: '評審入口',
+  hackathon_evaluation_entry_description:
+    '評委或導師在評審階段使用，用於評分、複核與結果整理。',
+  hackathon_view_all_entries: '查看全部入口',
+  hackathon_agenda_preview: '議程預覽',
+  hackathon_action_hub: '入口中心 · 表單',
+  hackathon_entry_flow: '報名與提交流程',
+  hackathon_entry_flow_description:
+    '入口會根據活動當前配置自動生成。不同活動可以共用同一套頁面結構，而不是為每次活動單開專頁。',
+  hackathon_step: '步驟',
   participants: '參與者',
   organizations: '組織方',
   prizes: '獎項',
