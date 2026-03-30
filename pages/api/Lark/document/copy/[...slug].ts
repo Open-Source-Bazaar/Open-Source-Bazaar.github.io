@@ -18,7 +18,7 @@ router.post('/:type/:id', safeAPI, verifyJWT, async (context: Context) => {
       ? await lark.copyFile(`${type as 'wiki'}/${id}`, name, parentToken)
       : await lark.copyFile(`${type as LarkDocumentPathType}/${id}`, name, parentToken);
 
-  const newId = 'token' in copiedFile ? copiedFile.token : copiedFile.obj_token;
+  const newId = 'token' in copiedFile ? copiedFile.token : copiedFile.node_token;
 
   if (ownerType && ownerId)
     try {
