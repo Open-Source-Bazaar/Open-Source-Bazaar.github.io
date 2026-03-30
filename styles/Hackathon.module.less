@@ -1,382 +1,1138 @@
-// Tech-themed hackathon styling with blue-purple gradient and pink cards
+@bg: #050814;
+@bg-soft: #0b1328;
+@panel: rgba(8, 18, 39, 0.76);
+@panel-strong: rgba(6, 13, 30, 0.92);
+@border: rgba(120, 160, 255, 0.18);
+@copy: #eef5ff;
+@muted: rgba(220, 232, 255, 0.72);
+@cyan: #2ce8ff;
+@gold: #ffc94d;
+@green: #48f1a8;
+@rose: #ff78ba;
+@purple: #7b61ff;
+@shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
+@heading: "Orbitron", "Avenir Next", "Segoe UI", sans-serif;
+@body: "Outfit", "Avenir Next", "Segoe UI", sans-serif;
 
 .hero {
   position: relative;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-  padding: 4rem 0;
   overflow: hidden;
-  color: #fff;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(44, 232, 255, 0.18),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 85% 12%,
+      rgba(255, 120, 186, 0.15),
+      transparent 24%
+    ),
+    linear-gradient(180deg, @bg 0%, #091022 48%, #050814 100%);
+  padding: clamp(4.5rem, 8vw, 6.75rem) 0 clamp(3.5rem, 6vw, 5rem);
+  color: @copy;
+
+  &::before,
+  &::after {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    content: "";
+  }
 
   &::before {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    animation: grid-animation 20s linear infinite;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 50px 50px;
-    width: 200%;
-    height: 200%;
-    pointer-events: none;
-    content: '';
+    background-image:
+      linear-gradient(rgba(44, 232, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(44, 232, 255, 0.08) 1px, transparent 1px);
+    background-size: 54px 54px;
+    mask-image: radial-gradient(circle at center, black 42%, transparent 100%);
+    opacity: 0.45;
+  }
+
+  &::after {
+    inset: auto 0 0;
+    height: 140px;
+    background: linear-gradient(180deg, transparent, rgba(5, 8, 20, 0.95));
   }
 }
 
-@keyframes grid-animation {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(50px, 50px);
-  }
-}
-
-.title {
-  margin-bottom: 1rem;
-  font-weight: 700;
-  font-size: 3rem;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-.description {
-  opacity: 0.9;
-  margin: 0 auto;
-  max-width: 800px;
-  font-size: 1.2rem;
-}
-
-.heroTag {
-  display: inline-flex;
+.heroInner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
+  gap: clamp(2rem, 4vw, 4rem);
   align-items: center;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 999px;
-  background: rgba(4, 4, 15, 0.28);
-  padding: 0.45rem 0.9rem;
-  color: #fff;
-  font-weight: 600;
-  font-size: 0.9rem;
 }
 
-.statChip {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  padding: 0.5rem 0.95rem;
-  color: #fff;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.heroVisualCard {
-  box-shadow: 0 18px 50px rgba(10, 12, 30, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 24px;
-  background: linear-gradient(135deg, rgba(10, 12, 30, 0.82), rgba(37, 44, 84, 0.62));
-  overflow: hidden;
-  color: #fff;
-}
-
-.heroImageWrap {
-  background: rgba(255, 255, 255, 0.05);
-  aspect-ratio: 16 / 10;
-}
-
-.heroVisualKicker {
-  opacity: 0.72;
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.heroVisualItem {
+.heroContent {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.06);
-  padding: 0.85rem 1rem;
-
-  dt {
-    margin: 0;
-  }
-
-  dd {
-    opacity: 0.74;
-    margin: 0;
-    font-size: 0.88rem;
-  }
+  gap: 1.35rem;
 }
 
-.heroVisualHead dd {
-  opacity: 1;
-  font-size: 1rem;
-}
-
-.infoCard {
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  margin-bottom: 1rem;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 16px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-    border-color: rgba(255, 255, 255, 0.5);
-  }
-}
-
-.section {
-  position: relative;
-  padding: 3rem 0;
-}
-
-.sectionTitle {
-  display: inline-block;
-  margin-bottom: 2rem;
-  border-bottom: 4px solid;
-  border-image: linear-gradient(90deg, #f093fb, #f5576c, #ffd140) 1;
-  background: linear-gradient(90deg, #f093fb, #f5576c, #ffd140);
-  -webkit-background-clip: text;
-  padding-bottom: 0.5rem;
-  font-weight: 700;
-  font-size: 2rem;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.sectionEyebrow {
-  margin-bottom: 0.5rem;
-  color: #7d8ff5;
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.sectionLead {
+.heroEyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   margin: 0;
-  max-width: 760px;
-  color: rgba(33, 37, 41, 0.72);
-  font-size: 1rem;
-  line-height: 1.7;
 }
 
-.entryCard {
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  background: linear-gradient(135deg, #1d2f72, #5c2f91);
-  min-height: 100%;
-  color: #fff;
-
-  &:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba(35, 48, 116, 0.25);
-  }
-}
-
-.entryStep {
-  opacity: 0.72;
-  font-size: 0.82rem;
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.42rem 0.9rem;
+  color: @copy;
+  font-family: @heading;
+  font-size: 0.78rem;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-// Vibrant cards - Multicolor gradient background
-.darkCard {
-  transition: all 0.3s ease;
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-  border-radius: 16px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  padding: 1.5rem;
+.heroBadgeCyan {
+  box-shadow: 0 0 18px rgba(44, 232, 255, 0.22);
+  border-color: rgba(44, 232, 255, 0.28);
+  color: @cyan;
+}
+
+.heroBadgeGold {
+  box-shadow: 0 0 18px rgba(255, 201, 77, 0.18);
+  border-color: rgba(255, 201, 77, 0.24);
+  color: @gold;
+}
+
+.heroBadgeGreen {
+  box-shadow: 0 0 18px rgba(72, 241, 168, 0.2);
+  border-color: rgba(72, 241, 168, 0.24);
+  color: @green;
+}
+
+.heroBadgeRose {
+  box-shadow: 0 0 18px rgba(255, 120, 186, 0.18);
+  border-color: rgba(255, 120, 186, 0.24);
+  color: @rose;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0;
+  font-family: @heading;
+  font-size: clamp(2.6rem, 5vw, 4.45rem);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.heroTitlePrimary {
   color: #fff;
+}
+
+.heroTitleSecondary {
+  background: linear-gradient(90deg, @cyan, @gold 78%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-size: clamp(1.05rem, 2vw, 1.6rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.description {
+  max-width: 62ch;
+  margin: 0;
+  color: @muted;
+  font-family: @body;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.heroActions,
+.regActions,
+.resourceLinks,
+.entryLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+.actionButton,
+.actionButtonGhost,
+.entryLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease,
+    color 0.22s ease;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 0.9rem 1.35rem;
+  font-family: @heading;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
 
   &:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
-    background: linear-gradient(135deg, #7d8ff5, #8a5cb8);
+    transform: translateY(-2px);
+    text-decoration: none;
   }
 }
 
-// Bright cards - Warm gradient background
+.actionButton {
+  box-shadow: 0 0 24px rgba(44, 232, 255, 0.18);
+  border-color: rgba(44, 232, 255, 0.3);
+  background: rgba(44, 232, 255, 0.12);
+  color: @cyan;
+
+  &:hover {
+    box-shadow: 0 0 34px rgba(44, 232, 255, 0.28);
+    background: rgba(44, 232, 255, 0.2);
+    color: #fff;
+  }
+}
+
+.actionButtonGhost,
+.entryLink {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: @copy;
+
+  &:hover {
+    border-color: rgba(255, 201, 77, 0.24);
+    background: rgba(255, 201, 77, 0.1);
+    color: @gold;
+  }
+}
+
+.heroStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin: 0;
+}
+
+.statChip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 108px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.85rem 1rem;
+
+  strong {
+    font-family: @heading;
+    font-size: 1.25rem;
+    line-height: 1.1;
+  }
+
+  span {
+    color: @muted;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+}
+
+.heroVisual {
+  position: relative;
+  min-height: 580px;
+}
+
+.heroVisualCard,
+.registerCard,
+.entryHub,
+.trackCard,
+.badgeTile,
+.resourceCard,
+.projectCard,
+.dayCard,
+.supportCard,
+.darkCard,
 .lightCard {
-  transition: all 0.3s ease;
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 15px rgba(250, 112, 154, 0.3);
-  border-radius: 16px;
-  background: linear-gradient(135deg, #fa709a, #fee140);
-  padding: 1.5rem;
-  color: #1f2937;
+  box-shadow: @shadow;
+  border: 1px solid @border;
+  border-radius: 28px;
+  background: @panel;
+  backdrop-filter: blur(18px);
+}
 
-  &:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 10px 30px rgba(250, 112, 154, 0.5);
-    background: linear-gradient(135deg, #ff6b9d, #ffa400);
+.heroVisualCard {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 19, 40, 0.95),
+    rgba(8, 18, 39, 0.9)
+  );
+}
+
+.heroVisualHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 1.15rem 1.25rem 0;
+}
+
+.visualKicker,
+.visualChip,
+.floatingLabel,
+.regEyebrow,
+.entryEyebrow,
+.supportEyebrow,
+.entryStep,
+.dayNo,
+.sectionSubtitle {
+  font-family: @heading;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.visualKicker,
+.floatingLabel,
+.sectionSubtitle,
+.regEyebrow,
+.entryEyebrow,
+.supportEyebrow {
+  color: @muted;
+}
+
+.visualChip {
+  color: @gold;
+}
+
+.heroImageFrame {
+  position: relative;
+  overflow: hidden;
+  margin: 1rem 1.25rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  background: linear-gradient(
+    135deg,
+    rgba(44, 232, 255, 0.08),
+    rgba(123, 97, 255, 0.14)
+  );
+  min-height: 340px;
+
+  :global(img) {
+    position: relative;
+    z-index: 2;
   }
 }
 
-// Agenda items with vibrant gradient backgrounds
-.agendaItem {
-  transition: all 0.3s ease;
-  margin-bottom: 1rem;
-  border-left: 5px solid;
-  border-radius: 12px;
-  padding: 1.5rem;
+.mascotGlow {
+  position: absolute;
+  inset: 12% 18%;
+  z-index: 1;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(44, 232, 255, 0.35),
+    transparent 70%
+  );
+  filter: blur(28px);
+}
+
+.heroImageFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 340px;
+  color: @cyan;
+  font-family: @heading;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.heroVisualFoot {
+  padding: 1.15rem 1.25rem 1.35rem;
+}
+
+.heroVisualTitle {
+  margin: 0 0 0.35rem;
   color: #fff;
+  font-family: @heading;
+  font-size: 1rem;
+}
+
+.heroVisualCopy {
+  margin: 0;
+  color: @muted;
+  line-height: 1.75;
+}
+
+.heroFloatingCard {
+  position: absolute;
+  z-index: 2;
+  max-width: 260px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  background: rgba(8, 18, 39, 0.88);
+  padding: 1rem 1.1rem;
+
+  strong {
+    display: block;
+    margin-top: 0.35rem;
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  p {
+    margin: 0.45rem 0 0;
+    color: @muted;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+}
+
+.heroFloatingCardTop {
+  top: 2.5rem;
+  left: -1.5rem;
+}
+
+.heroFloatingCardBottom {
+  right: -1.5rem;
+  bottom: 1.5rem;
+}
+
+.section,
+.registerSection {
+  position: relative;
+  padding: clamp(4rem, 7vw, 6rem) 0;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 8, 20, 0.98),
+    rgba(7, 12, 26, 0.98)
+  );
+  color: @copy;
+}
+
+.registerSection {
+  padding-top: clamp(3rem, 5vw, 4rem);
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: clamp(2.3rem, 4vw, 3rem);
+}
+
+.sectionTitle {
+  display: inline-block;
+  margin: 0;
+  background: linear-gradient(135deg, #fff 20%, @cyan 80%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-family: @heading;
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.accentLine {
+  width: 72px;
+  height: 2px;
+  margin: 1rem auto 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, @cyan, @purple);
+  box-shadow: 0 0 14px rgba(44, 232, 255, 0.32);
+}
+
+.themePanel {
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  background: linear-gradient(
+    135deg,
+    rgba(44, 232, 255, 0.08),
+    rgba(123, 97, 255, 0.12)
+  );
+  padding: 1.5rem 1.6rem;
+}
+
+.themeText {
+  margin-bottom: 0.4rem;
+  color: #fff;
+  font-family: @heading;
+  font-size: clamp(1.35rem, 2.6vw, 2rem);
+  font-weight: 900;
+}
+
+.themeSub {
+  margin: 0;
+  color: @muted;
+  line-height: 1.75;
+}
+
+.trackCard {
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease;
+  height: 100%;
+  padding: 1.4rem;
 
   &:hover {
-    transform: translateX(8px) scale(1.02);
-  }
-
-  &.formation {
-    box-shadow: 0 4px 15px rgba(0, 201, 255, 0.3);
-    border-left-color: #00c9ff;
-    background: linear-gradient(135deg, #00c9ff, #92fe9d);
-  }
-
-  &.enrollment {
-    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
-    border-left-color: #f5576c;
-    background: linear-gradient(135deg, #f5576c, #f093fb);
-  }
-
-  &.competition {
-    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
-    border-left-color: #4facfe;
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
-  }
-
-  &.break {
-    box-shadow: 0 4px 15px rgba(255, 209, 64, 0.3);
-    border-left-color: #ffd140;
-    background: linear-gradient(135deg, #ffd140, #ff6b6b);
-  }
-
-  &.evaluation {
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    border-left-color: #667eea;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    transform: translateY(-4px);
+    border-color: rgba(44, 232, 255, 0.26);
   }
 }
 
-// Prize section using UserRankView
-.prizeSection {
-  margin-bottom: 2rem;
+.trackIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  width: 54px;
+  height: 54px;
+  font-size: 1.35rem;
 }
 
-// Organization horizontal layout
-.orgContainer {
+.trackName,
+.regTitle,
+.entryTitle,
+.scheduleLead,
+.badgeTileTitle,
+.resourceTitle,
+.projectTitle,
+.supportTitle {
+  margin: 0;
+  color: #fff;
+  font-family: @heading;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.trackName {
+  font-size: 1.08rem;
+}
+
+.trackDesc,
+.regDesc,
+.entryCopy,
+.scheduleCopy,
+.badgeTileCopy,
+.resourceDescription,
+.projectSummary,
+.supportDescription {
+  color: @muted;
+  line-height: 1.75;
+}
+
+.trackDesc {
+  min-height: 4.8rem;
+  margin: 0.75rem 0 0.95rem;
+}
+
+.trackMetric {
+  color: @cyan;
+  font-family: @heading;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.registerWrap {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.registerCard {
+  background: linear-gradient(
+    135deg,
+    rgba(44, 232, 255, 0.08),
+    rgba(123, 97, 255, 0.14)
+  );
+}
+
+.registerCardInner,
+.entryHub,
+.supportCard {
+  padding: 1.55rem;
+}
+
+.regTitle {
+  margin-top: 0.4rem;
+  font-size: clamp(1.55rem, 3vw, 2.1rem);
+}
+
+.regDesc {
+  margin: 0.9rem 0 1.2rem;
+}
+
+.regFacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.3rem 0 0;
+
+  li {
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.48rem 0.85rem;
+    color: @copy;
+    font-size: 0.9rem;
+  }
+}
+
+.entryHubHead {
+  margin-bottom: 1.25rem;
+}
+
+.entryTitle {
+  margin-top: 0.35rem;
+  font-size: 1.55rem;
+}
+
+.entryCard {
+  height: 100%;
+  padding: 1.3rem;
+}
+
+.entryStep {
+  color: @cyan;
+}
+
+.entryCard h4 {
+  margin: 0.55rem 0 0.45rem;
+  color: #fff;
+  font-family: @heading;
+  font-size: 1.02rem;
+}
+
+.entryCard p {
+  margin: 0;
+  color: @muted;
+  line-height: 1.7;
+}
+
+.entryMetaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+
+.entryMeta {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.35rem 0.7rem;
+  color: @gold;
+  font-family: @heading;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.scheduleIntro {
+  margin-bottom: 1.35rem;
+  text-align: center;
+}
+
+.scheduleKicker {
+  margin: 0 0 0.35rem;
+  color: @cyan;
+  font-family: @heading;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.scheduleLead {
+  font-size: clamp(1.45rem, 3vw, 2.05rem);
+}
+
+.scheduleCopy {
+  max-width: 72ch;
+  margin: 0.8rem auto 0;
+}
+
+.scheduleOverview {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  padding: 2rem 0;
-}
-
-.orgLogo {
-  filter: grayscale(0.3);
-  transition: all 0.3s ease;
-  border-radius: 12px;
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
-
-  &:hover {
-    transform: scale(1.1);
-    filter: grayscale(0);
-  }
-}
-
-// Template section using GitCard
-.templateSection {
-  margin-bottom: 2rem;
-}
-
-// Project cards with vibrant gradient
-.projectCard {
-  transition: all 0.3s ease;
+  gap: 0.75rem;
   margin-bottom: 1.5rem;
-  border: 2px solid transparent;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-  padding: 1.5rem;
-  color: #1f2937;
-
-  &:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 12px 35px rgba(250, 112, 154, 0.4);
-    background: linear-gradient(135deg, #ff6b9d 0%, #ffa400 100%);
-  }
 }
 
-.scoreCircle {
+.schedulePill {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.58rem 0.9rem;
+  color: @copy;
+  font-family: @heading;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.scheduleDays {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.dayCard {
+  height: 100%;
+  padding: 1.35rem;
+}
+
+.formation {
+  background: linear-gradient(
+    135deg,
+    rgba(44, 232, 255, 0.1),
+    rgba(14, 43, 80, 0.86)
+  );
+}
+
+.enrollment {
+  background: linear-gradient(
+    135deg,
+    rgba(123, 97, 255, 0.12),
+    rgba(28, 20, 67, 0.86)
+  );
+}
+
+.competition {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 201, 77, 0.12),
+    rgba(60, 35, 8, 0.88)
+  );
+}
+
+.break {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 120, 186, 0.1),
+    rgba(72, 18, 48, 0.88)
+  );
+}
+
+.evaluation {
+  background: linear-gradient(
+    135deg,
+    rgba(72, 241, 168, 0.12),
+    rgba(14, 50, 39, 0.88)
+  );
+}
+
+.dayCardHead {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
-  border-radius: 50%;
-  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-  width: 60px;
-  height: 60px;
-  color: #fff;
-  font-weight: 700;
-  font-size: 1.2rem;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: baseline;
 }
 
-// Circular avatars only for participants
-.avatar {
-  transition: all 0.3s ease;
-  cursor: pointer;
-  box-shadow: 0 0 20px rgba(250, 112, 154, 0.5);
-  border: 4px solid transparent;
-  border-radius: 50%;
-  background:
-    linear-gradient(white, white) padding-box,
-    linear-gradient(135deg, #f093fb, #f5576c) border-box;
-  width: 80px;
-  height: 80px;
-
-  &:hover {
-    transform: scale(1.15);
-    box-shadow: 0 0 30px rgba(250, 112, 154, 0.7);
-  }
+.dayNo {
+  color: @muted;
 }
 
-.skillBadge {
-  display: inline-block;
-  margin: 0.25rem;
-  box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
-  border-radius: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 0.35rem 0.85rem;
-  color: #fff;
-  font-weight: 600;
+.dayDate {
+  color: @copy;
   font-size: 0.85rem;
 }
 
-.techGradient {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 700;
+.dayTitle {
+  margin: 0.9rem 0 0.45rem;
+  color: #fff;
+  font-family: @heading;
+  font-size: 1.08rem;
 }
 
-.glowText {
-  text-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+.daySub {
+  margin: 0 0 1rem;
+  color: @muted;
+  line-height: 1.7;
+}
+
+.dayAgenda,
+.prizeMeta,
+.projectMeta {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+
+  div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.8rem;
+    align-items: start;
+  }
+
+  dt,
+  dd {
+    margin: 0;
+  }
+}
+
+.timePill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  min-height: 30px;
+  padding: 0.4rem 0.75rem;
+  color: @copy;
+  font-family: @heading;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.agendaCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.14rem;
+
+  strong {
+    color: #fff;
+    line-height: 1.4;
+  }
+
+  span {
+    color: @muted;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+}
+
+.awardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.badgeTile {
+  overflow: hidden;
+}
+
+.badgeArtWrap {
+  padding: 1.1rem 1.1rem 0;
+}
+
+.badgeArt {
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.04);
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.badgeTileBody {
+  padding: 1.15rem 1.2rem 1.3rem;
+}
+
+.badgeTierLabel {
+  color: @gold;
+  font-family: @heading;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.badgeTileTitle {
+  font-size: 1.05rem;
+}
+
+.badgeTileCopy {
+  margin: 0.7rem 0 1rem;
+}
+
+.prizeMeta dt,
+.projectMeta dt {
+  color: @muted;
+  font-family: @heading;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.prizeMeta dd,
+.projectMeta dd {
+  color: #fff;
+  line-height: 1.5;
+}
+
+.supportCard {
+  display: grid;
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+  gap: 1.25rem;
+  margin-top: 1.4rem;
+}
+
+.supportTitle {
+  margin-top: 0.35rem;
+  font-size: 1.45rem;
+}
+
+.partnerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.partnerLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  min-height: 104px;
+  padding: 1rem;
+}
+
+.partnerLogo {
+  max-width: 100%;
+  max-height: 58px;
+  object-fit: contain;
+}
+
+.resourceCard,
+.projectCard {
+  height: 100%;
+  padding: 1.25rem;
+}
+
+.resourceHead,
+.projectHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+}
+
+.resourceTitle,
+.projectTitle {
+  font-size: 1.02rem;
+}
+
+.resourceTitle,
+.projectTitle a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.projectTitle a:hover {
+  color: @cyan;
+  text-decoration: none;
+}
+
+.resourceDescription,
+.projectSummary {
+  margin: 0.8rem 0 1rem;
+}
+
+.topicList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 0 0 1rem;
+}
+
+.topicChip,
+.topicChipMuted,
+.skillBadge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.34rem 0.72rem;
+  font-size: 0.76rem;
+}
+
+.topicChip,
+.skillBadge {
+  background: rgba(44, 232, 255, 0.12);
+  color: @cyan;
+}
+
+.topicChipMuted {
+  background: rgba(255, 255, 255, 0.08);
+  color: @copy;
+}
+
+.projectHeader {
+  margin-top: 2.75rem;
+}
+
+.scoreCircle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 24px rgba(44, 232, 255, 0.18);
+  border: 1px solid rgba(44, 232, 255, 0.2);
+  border-radius: 50%;
+  background: rgba(44, 232, 255, 0.1);
+  width: 62px;
+  height: 62px;
+  color: @cyan;
+  font-family: @heading;
+  font-size: 1.05rem;
+  font-weight: 800;
 }
 
 .participantCloud {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.participantCard {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-  padding: 2rem 0;
+  gap: 0.75rem;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1.1rem 0.9rem;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+}
+
+.participantCard:hover {
+  color: @cyan;
+  text-decoration: none;
+}
+
+.avatar {
+  border: 2px solid rgba(44, 232, 255, 0.2);
+  border-radius: 50%;
+  width: 84px;
+  height: 84px;
+  object-fit: cover;
+}
+
+.participantName {
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.darkCard,
+.lightCard {
+  padding: 1.3rem;
+}
+
+.lightCard {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.techGradient {
+  background: linear-gradient(90deg, @cyan, @gold 78%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@media (max-width: 1199px) {
+  .heroInner,
+  .registerWrap,
+  .supportCard {
+    grid-template-columns: 1fr;
+  }
+
+  .heroVisual {
+    min-height: 0;
+  }
+
+  .heroFloatingCardTop {
+    left: 1rem;
+  }
+
+  .heroFloatingCardBottom {
+    right: 1rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .scheduleDays {
+    grid-template-columns: 1fr;
+  }
+
+  .title {
+    font-size: clamp(2.2rem, 9vw, 3.45rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero {
+    padding-top: 4rem;
+  }
+
+  .heroFloatingCard {
+    position: static;
+    max-width: none;
+    margin-top: 1rem;
+  }
+
+  .heroVisual {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .heroImageFrame,
+  .heroImageFallback {
+    min-height: 260px;
+  }
+
+  .heroStats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sectionTitle {
+    font-size: 1.65rem;
+    letter-spacing: 0.08em;
+  }
+
+  .heroBadge,
+  .schedulePill,
+  .regFacts li,
+  .topicChip,
+  .topicChipMuted,
+  .skillBadge {
+    font-size: 0.72rem;
+  }
+
+  .participantCloud {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .scoreCircle {
+    width: 54px;
+    height: 54px;
+    font-size: 0.92rem;
+  }
 }
