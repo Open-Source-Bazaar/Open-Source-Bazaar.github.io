@@ -221,12 +221,10 @@ export default {
   hackathon_project_registration_description:
     '登记项目名称、成员、赛道和一句话介绍，完成队伍锁定。',
   hackathon_submission: '提交',
-  hackathon_product_submission_description:
-    '比赛截止前统一提交最终作品、演示链接和补充说明。',
+  hackathon_product_submission_description: '比赛截止前统一提交最终作品、演示链接和补充说明。',
   hackathon_review: '评审',
   hackathon_evaluation_entry: '评审入口',
-  hackathon_evaluation_entry_description:
-    '评委或导师在评审阶段使用，用于评分、复核与结果整理。',
+  hackathon_evaluation_entry_description: '评委或导师在评审阶段使用，用于评分、复核与结果整理。',
   hackathon_view_all_entries: '查看全部入口',
   hackathon_agenda_preview: '议程预览',
   hackathon_action_hub: '入口中心 · 表单',
@@ -234,6 +232,7 @@ export default {
   hackathon_entry_flow_description:
     '入口根据活动当前配置自动生成。不同活动可以复用同一套页面结构，而不是为每次活动单开专页。',
   hackathon_step: '步骤',
+  hackathon_phase: '阶段',
   participants: '参与者',
   organizations: '组织方',
   prizes: '奖项',

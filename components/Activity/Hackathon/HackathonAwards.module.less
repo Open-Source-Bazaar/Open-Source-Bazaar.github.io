@@ -1,0 +1,154 @@
+@import './theme.less';
+
+.section {
+  .section-shell();
+}
+
+.sectionHeader {
+  .section-header();
+}
+
+.sectionTitle {
+  .section-title();
+}
+
+.sectionSubtitle,
+.supportEyebrow {
+  .section-subtitle();
+}
+
+.accentLine {
+  .accent-line();
+}
+
+.awardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.badgeTile {
+  .panel-card();
+  overflow: hidden;
+}
+
+.badgeArtWrap {
+  padding: 1.1rem 1.1rem 0;
+}
+
+.badgeArt {
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.04);
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.badgeTileBody {
+  padding: 1.15rem 1.2rem 1.3rem;
+}
+
+.badgeTierLabel {
+  color: @gold;
+  font-family: @heading;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.badgeTileTitle,
+.supportTitle {
+  margin: 0;
+  color: #fff;
+  font-family: @heading;
+  font-weight: 800;
+}
+
+.badgeTileTitle {
+  font-size: 1.05rem;
+}
+
+.badgeTileCopy,
+.supportDescription {
+  color: @muted;
+  line-height: 1.75;
+}
+
+.badgeTileCopy {
+  margin: 0.7rem 0 1rem;
+}
+
+.prizeMeta {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+
+  div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.8rem;
+    align-items: start;
+  }
+
+  dt,
+  dd {
+    margin: 0;
+  }
+
+  dt {
+    color: @muted;
+    font-family: @heading;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    color: #fff;
+    line-height: 1.5;
+  }
+}
+
+.supportCard {
+  .panel-card();
+  display: grid;
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+  gap: 1.25rem;
+  margin-top: 1.4rem;
+  padding: 1.55rem;
+}
+
+.supportTitle {
+  margin-top: 0.35rem;
+  font-size: 1.45rem;
+}
+
+.partnerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.partnerLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  min-height: 104px;
+  padding: 1rem;
+}
+
+.partnerLogo {
+  max-width: 100%;
+  max-height: 58px;
+  object-fit: contain;
+}
+
+@media (max-width: 1199px) {
+  .supportCard {
+    grid-template-columns: 1fr;
+  }
+}

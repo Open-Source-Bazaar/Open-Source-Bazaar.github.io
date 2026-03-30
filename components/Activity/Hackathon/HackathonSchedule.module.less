@@ -1,0 +1,183 @@
+@import './theme.less';
+
+.section {
+  .section-shell();
+}
+
+.sectionHeader {
+  .section-header();
+}
+
+.sectionTitle {
+  .section-title();
+}
+
+.sectionSubtitle {
+  .section-subtitle();
+}
+
+.accentLine {
+  .accent-line();
+}
+
+.scheduleIntro {
+  margin-bottom: 1.35rem;
+  text-align: center;
+}
+
+.scheduleKicker {
+  margin: 0 0 0.35rem;
+  color: @cyan;
+  font-family: @heading;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.scheduleLead {
+  margin: 0;
+  color: #fff;
+  font-family: @heading;
+  font-size: clamp(1.45rem, 3vw, 2.05rem);
+  font-weight: 800;
+}
+
+.scheduleOverview {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.schedulePill {
+  .chip();
+  padding: 0.58rem 0.9rem;
+  color: @copy;
+  font-family: @heading;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.scheduleDays {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.dayCard {
+  .panel-card();
+  height: 100%;
+  padding: 1.35rem;
+}
+
+.formation {
+  background: linear-gradient(135deg, rgba(44, 232, 255, 0.1), rgba(14, 43, 80, 0.86));
+}
+
+.enrollment {
+  background: linear-gradient(135deg, rgba(123, 97, 255, 0.12), rgba(28, 20, 67, 0.86));
+}
+
+.competition {
+  background: linear-gradient(135deg, rgba(255, 201, 77, 0.12), rgba(60, 35, 8, 0.88));
+}
+
+.break {
+  background: linear-gradient(135deg, rgba(255, 120, 186, 0.1), rgba(72, 18, 48, 0.88));
+}
+
+.evaluation {
+  background: linear-gradient(135deg, rgba(72, 241, 168, 0.12), rgba(14, 50, 39, 0.88));
+}
+
+.dayCardHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+
+.dayNo {
+  .section-subtitle();
+}
+
+.dayDate {
+  color: @copy;
+  font-size: 0.85rem;
+}
+
+.dayTitle {
+  margin: 0.9rem 0 0.45rem;
+  color: #fff;
+  font-family: @heading;
+  font-size: 1.08rem;
+}
+
+.daySub {
+  margin: 0 0 1rem;
+  color: @muted;
+  line-height: 1.7;
+}
+
+.dayAgenda {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+
+  div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.8rem;
+    align-items: start;
+  }
+
+  dt,
+  dd {
+    margin: 0;
+  }
+}
+
+.timePill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  min-height: 30px;
+  padding: 0.4rem 0.75rem;
+  color: @copy;
+  font-family: @heading;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.agendaCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.14rem;
+
+  strong {
+    color: #fff;
+    line-height: 1.4;
+  }
+
+  span {
+    color: @muted;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+}
+
+@media (max-width: 991px) {
+  .scheduleDays {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .schedulePill {
+    font-size: 0.72rem;
+  }
+}

@@ -238,6 +238,7 @@ export default {
   hackathon_entry_flow_description:
     'Entries are generated from the current activity schema so different events can reuse the same page structure.',
   hackathon_step: 'Step',
+  hackathon_phase: 'Phase',
   participants: 'Participants',
   organizations: 'Organizations',
   prizes: 'Prizes',

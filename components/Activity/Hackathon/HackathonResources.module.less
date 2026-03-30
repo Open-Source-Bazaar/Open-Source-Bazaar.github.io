@@ -1,0 +1,162 @@
+@import './theme.less';
+
+.section {
+  .section-shell();
+}
+
+.sectionHeader {
+  .section-header();
+}
+
+.sectionTitle {
+  .section-title();
+}
+
+.sectionSubtitle {
+  .section-subtitle();
+}
+
+.accentLine {
+  .accent-line();
+}
+
+.projectHeader {
+  margin-top: 2.75rem;
+}
+
+.resourceCard,
+.projectCard {
+  .panel-card();
+  height: 100%;
+  padding: 1.25rem;
+}
+
+.resourceHead,
+.projectHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+}
+
+.resourceTitle,
+.projectTitle {
+  margin: 0;
+  color: #fff;
+  font-family: @heading;
+  font-size: 1.02rem;
+  font-weight: 800;
+}
+
+.projectTitle a {
+  color: #fff;
+  text-decoration: none;
+
+  &:hover {
+    color: @cyan;
+    text-decoration: none;
+  }
+}
+
+.resourceDescription,
+.projectSummary {
+  margin: 0.8rem 0 1rem;
+  color: @muted;
+  line-height: 1.75;
+}
+
+.topicList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 0 0 1rem;
+}
+
+.topicChip,
+.topicChipMuted {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.34rem 0.72rem;
+  font-size: 0.76rem;
+}
+
+.topicChip {
+  background: rgba(44, 232, 255, 0.12);
+  color: @cyan;
+}
+
+.topicChipMuted {
+  background: rgba(255, 255, 255, 0.08);
+  color: @copy;
+}
+
+.resourceLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+.entryLink {
+  .button-ghost();
+}
+
+.scoreCircle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 24px rgba(44, 232, 255, 0.18);
+  border: 1px solid rgba(44, 232, 255, 0.2);
+  border-radius: 50%;
+  background: rgba(44, 232, 255, 0.1);
+  width: 62px;
+  height: 62px;
+  color: @cyan;
+  font-family: @heading;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.projectMeta {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+
+  div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.8rem;
+    align-items: start;
+  }
+
+  dt,
+  dd {
+    margin: 0;
+  }
+
+  dt {
+    color: @muted;
+    font-family: @heading;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    color: #fff;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 767px) {
+  .topicChip,
+  .topicChipMuted {
+    font-size: 0.72rem;
+  }
+
+  .scoreCircle {
+    width: 54px;
+    height: 54px;
+    font-size: 0.92rem;
+  }
+}
