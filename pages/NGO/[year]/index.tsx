@@ -23,7 +23,7 @@ export const getServerSideProps = compose<{ year: string }, OrganizationPageProp
   cache(),
   errorLogger,
   async ({ params }) => {
-    const statistic = await new OrganizationModel().getStatistic({ establishedDate: params!.year });
+    const statistic = await new OrganizationModel().getStatistic({ startYear: params!.year });
 
     return { props: { year: params!.year, statistic } };
   },
@@ -47,7 +47,7 @@ const OrganizationPage: FC<OrganizationPageProps> = observer(({ year, statistic 
         <SearchBar action="/search/NGO" />
       </header>
 
-      <CityStatisticMap data={statistic.coverageArea} />
+      <CityStatisticMap data={statistic.city} />
 
       <OrganizationCharts {...statistic} />
     </Container>

@@ -15,9 +15,7 @@ export const getServerSideProps = compose<{ year: string }, Pick<OrganizationMod
   cache(),
   errorLogger,
   async ({ params }) => {
-    const typeMap = await new OrganizationModel().groupAllByType({
-      establishedDate: params!.year,
-    });
+    const typeMap = await new OrganizationModel().groupAllByType({ startYear: params!.year });
 
     return { props: JSON.parse(JSON.stringify({ typeMap })) };
   },

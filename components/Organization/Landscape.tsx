@@ -1,4 +1,3 @@
-import { Organization } from '@open-source-bazaar/china-ngo-database';
 import { Dialog } from 'idea-react';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -6,7 +5,7 @@ import { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import { splitArray } from 'web-utility';
 
-import { OrganizationModel } from '../../models/Organization';
+import { Organization, OrganizationModel } from '../../models/Organization';
 import systemStore from '../../models/System';
 import { OrganizationCard } from './Card';
 import styles from './LandScape.module.less';
@@ -46,9 +45,9 @@ export class OpenCollaborationLandscape extends Component<OpenCollaborationLands
       onClick={() => this.modal.open({ name: name as string })}
     >
       <div className="text-nowrap" style={{ fontSize: this.itemSize + 'rem' }}>
-        {name.slice(0, 2)}
+        {(name + '').slice(0, 2)}
         <br />
-        {name.slice(2, 4)}
+        {(name + '').slice(2, 4)}
       </div>
     </li>
   );
