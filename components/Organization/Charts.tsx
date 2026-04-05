@@ -6,12 +6,12 @@ import { OrganizationStatistic, sortStatistic } from '../../models/Organization'
 import { I18nContext } from '../../models/Translation';
 
 const OrganizationCharts: FC<OrganizationStatistic> = observer(
-  ({ entityType, serviceCategory, coverageArea }) => {
+  ({ entityType, serviceCategory, city }) => {
     const { t } = useContext(I18nContext);
 
     const typeList = sortStatistic(entityType),
       categoryList = sortStatistic(serviceCategory),
-      areaList = sortStatistic(coverageArea);
+      areaList = sortStatistic(city);
 
     return (
       <div style={{ minHeight: '70vh' }}>
