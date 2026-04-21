@@ -72,6 +72,7 @@ interface HackathonDetailProps {
     projects: Project[];
     templates: Template[];
   };
+  renderedAt: number;
 }
 
 export const getServerSideProps = compose<{ id: string }>(
@@ -99,12 +100,13 @@ export const getServerSideProps = compose<{ id: string }>(
       props: {
         activity,
         hackathon: { people, organizations, agenda, prizes, templates, projects },
+        renderedAt: Date.now(),
       },
     };
   },
 );
 
-const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackathon }) => {
+const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackathon, renderedAt }) => {
   const i18n = useContext(I18nContext);
   const { t } = i18n;
   const {
@@ -182,7 +184,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
       };
     })
     .filter(({ date, label }) => Boolean(date && label));
-  const now = Date.now();
+  const now = renderedAt;
   const nextAgendaItem = agendaItems.find(({ startedAt, endedAt }) => {
     const started = new Date((startedAt as string) || 0).getTime();
     const ended = new Date((endedAt as string) || 0).getTime();
