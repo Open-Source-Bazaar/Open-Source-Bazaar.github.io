@@ -1,8 +1,8 @@
 import { Avatar } from 'idea-react';
-import { BiTableSchema, TableCellUser } from 'mobx-lark';
+import { BiTableSchema, TableCellLocation, TableCellUser, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
-import { FC, useContext, useState } from 'react';
+import { FC, useContext, useMemo, useState } from 'react';
 import {
   Breadcrumb,
   Button,
@@ -12,15 +12,25 @@ import {
   Modal,
   Ratio,
   Row,
-  Tab,
-  Tabs,
 } from 'react-bootstrap';
 
 import { CommentBox } from '../../../../components/Activity/CommentBox';
+import { buildCountdownUnitLabels } from '../../../../components/Activity/Hackathon/constant';
+import { HackathonHero } from '../../../../components/Activity/Hackathon/Hero';
+import {
+  agendaTypeLabelOf,
+  compactDateKeyOf,
+  compactSummaryOf,
+  formatMoment,
+  formatPeriod,
+  isPublicForm,
+} from '../../../../components/Activity/Hackathon/utility';
 import { ProductCard } from '../../../../components/Activity/ProductCard';
 import { PageHead } from '../../../../components/Layout/PageHead';
 import { Activity, ActivityModel } from '../../../../models/Activity';
 import {
+  Agenda,
+  AgendaModel,
   Member,
   MemberModel,
   Product,
@@ -28,8 +38,8 @@ import {
   Project,
   ProjectModel,
 } from '../../../../models/Hackathon';
-import { I18nContext } from '../../../../models/Translation';
-import styles from '../../../../styles/Hackathon.module.less';
+import { i18n, I18nContext } from '../../../../models/Translation';
+import styles from '../../../../styles/HackathonTeam.module.less';
 
 export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
   cache(),
@@ -42,7 +52,8 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
     const project = await new ProjectModel(appId, tableIdMap.Project).getOne(params!.tid);
 
     // Get approved members for this project
-    const [members, products] = await Promise.all([
+    const [agenda, members, products] = await Promise.all([
+      new AgendaModel(appId, tableIdMap.Agenda).getAll(),
       new MemberModel(appId, tableIdMap.Member).getAll({
         project: project.name as string,
         status: 'approved',
@@ -51,155 +62,385 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
         project: project.name as string,
       }),
     ]);
-    return { props: { activity, project, members, products } };
+    return { props: { activity, project, agenda, members, products, renderedAt: Date.now() } };
   },
 );
 
 interface ProjectPageProps {
   activity: Activity;
+  agenda: Agenda[];
   project: Project;
   members: Member[];
   products: Product[];
+  renderedAt: number;
 }
 
-const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members, products }) => {
+const firstText = (value: unknown) =>
+  (Array.isArray(value) ? value.find(Boolean) : value)?.toString().trim() || '';
+
+const textListOf = (value: unknown) =>
+  Array.isArray(value)
+    ? value
+        .map(item => item?.toString().trim())
+        .filter(text => text && text !== '[object Object]')
+    : firstText(value)
+      ? [firstText(value)]
+      : [];
+
+const relationNameOf = (value: unknown) =>
+  Array.isArray(value)
+    ? value
+        .map(item =>
+          typeof item === 'object' && item && 'name' in item
+            ? String((item as { name?: string }).name || '')
+            : item?.toString() || '',
+        )
+        .find(Boolean) || ''
+    : firstText(value);
+
+const ProjectPage: FC<ProjectPageProps> = observer(
+  ({ activity, agenda, project, members, products, renderedAt }) => {
   const { t } = useContext(I18nContext);
   const [showScoreModal, setShowScoreModal] = useState(false);
 
-  const { name: activityName, databaseSchema } = activity;
-  const { formLinkMap } = databaseSchema as unknown as BiTableSchema;
-  const { name: displayName, summary: description, createdBy, score } = project;
+    const {
+      name: activityName,
+      databaseSchema,
+      image,
+      location,
+      startTime,
+      endTime,
+      summary: activitySummary,
+      type: activityType,
+    } = activity;
+    const { forms, formLinkMap } = databaseSchema as unknown as BiTableSchema;
+    const {
+      name: displayName,
+      summary: description,
+      createdBy,
+      score,
+      rank,
+      prize,
+      group,
+    } = project;
+    const creator = createdBy as TableCellUser;
+    const displayTitle = firstText(displayName) || t('projects');
+    const projectSummary =
+      compactSummaryOf(description as string, firstText(activitySummary) || displayTitle, 140);
+    const locationText = (location as TableCellLocation | undefined)?.full_address || '-';
+    const eventRange = formatPeriod(startTime, endTime) || locationText;
+    const groupName = relationNameOf(group);
+    const scoreText = firstText(score);
+    const rankText = firstText(rank);
+    const prizeText = firstText(prize);
+    const agendaItems = [...agenda].sort(
+      ({ startedAt: left }, { startedAt: right }) =>
+        new Date((left as string) || 0).getTime() - new Date((right as string) || 0).getTime(),
+    );
+    const phaseBadges = agendaItems
+      .slice(0, 4)
+      .map(({ type, startedAt, endedAt }) => {
+        const phase = agendaTypeLabelOf(type, t, t('agenda'));
+        const start = compactDateKeyOf(startedAt);
+        const end = compactDateKeyOf(endedAt);
+        const period =
+          start && end && start !== end
+            ? `${start} - ${end}`
+            : start || end || formatMoment(startedAt);
 
-  const currentRoute = [
-    { title: activityName as string, href: ActivityModel.getLink(activity) },
-    { title: displayName as string },
-  ];
+        return [phase, period].filter(Boolean).join(' ');
+      })
+      .filter(Boolean);
+    const publicForms = useMemo(
+      () =>
+        Object.values(forms || {})
+          .flat()
+          .filter(Boolean)
+          .filter(isPublicForm as (value: TableFormView) => boolean),
+      [forms],
+    );
+    const primaryForm =
+      ((forms?.Person || []).filter(isPublicForm as (value: TableFormView) => boolean)[0] ||
+        (forms?.Project || []).filter(isPublicForm as (value: TableFormView) => boolean)[0] ||
+        publicForms[0]);
+    const scoreForm = Object.values(formLinkMap?.Evaluation || {})[0];
+    const currentRoute = [
+      { title: activityName as string, href: ActivityModel.getLink(activity) },
+      { title: displayTitle },
+    ];
+    const navigation = [
+      { href: '#overview', label: t('event_description') },
+      { href: '#members', label: t('team_members') },
+      { href: '#works', label: t('team_works') },
+      { href: '#creator', label: t('created_by') },
+    ];
+    const now = renderedAt;
+    const nextAgendaItem = agendaItems.find(({ startedAt, endedAt }) => {
+      const started = new Date((startedAt as string) || 0).getTime();
+      const ended = new Date((endedAt as string) || 0).getTime();
 
-  return (
-    <>
-      <PageHead title={`${displayName} - ${activityName}`} />
+      return Number.isFinite(started) && Number.isFinite(ended) && now <= ended;
+    });
+    const nextAgendaStarted = nextAgendaItem?.startedAt as string | undefined;
+    const nextAgendaEnded = nextAgendaItem?.endedAt as string | undefined;
+    const countdownTo =
+      (nextAgendaStarted && new Date(nextAgendaStarted).getTime() > now
+        ? nextAgendaStarted
+        : nextAgendaEnded) ||
+      ((startTime as string | undefined) && new Date(startTime as string).getTime() > now
+        ? (startTime as string)
+        : (endTime as string | undefined));
+    const countdownLabel = nextAgendaItem
+      ? agendaTypeLabelOf(nextAgendaItem.type, t, t('agenda'))
+      : t('event_duration');
+    const heroChips = [
+      `${t('participants')} · ${members.length}`,
+      `${t('products')} · ${products.length}`,
+      groupName,
+      rankText ? `#${rankText}` : '',
+      scoreText ? `${t('score')} · ${scoreText}` : '',
+    ].filter(Boolean);
+    const creatorText = [creator?.name, creator?.email].filter(Boolean).join(' · ');
 
-      {/* Hero Section */}
-      <section className={styles.hero}>
-        <Container>
-          <Breadcrumb aria-label="breadcrumb" className="mb-4">
-            {currentRoute.map(({ title, href }, index, { length }) => {
-              const isActive = index === length - 1;
+    return (
+      <>
+        <PageHead title={`${displayTitle} - ${activityName}`} />
 
-              return (
-                <Breadcrumb.Item
-                  key={title}
-                  href={isActive ? undefined : href}
-                  active={isActive}
-                  className="text-white"
-                >
-                  {title}
-                </Breadcrumb.Item>
-              );
-            })}
-          </Breadcrumb>
+        <div className={styles.page}>
+          <HackathonHero
+            badges={phaseBadges}
+            bottomCard={
+              nextAgendaItem
+                ? {
+                    eyebrow: t('event_duration'),
+                    title: eventRange,
+                    description: agendaTypeLabelOf(nextAgendaItem.type, t, t('agenda')),
+                  }
+                : undefined
+            }
+            countdownLabel={countdownLabel}
+            countdownUnitLabels={buildCountdownUnitLabels({ t } as typeof i18n)}
+            countdownTo={countdownTo}
+            description={projectSummary}
+            image={image}
+            imageFallback={(activityType as string) || t('hackathon_detail')}
+            locationText={locationText}
+            name={`${displayTitle} ${t('hackathon_team_showcase')}`}
+            navigation={navigation}
+            primaryAction={
+              primaryForm
+                ? {
+                    label: t('hackathon_register_now'),
+                    href: primaryForm.shared_url,
+                    external: true,
+                  }
+                : { label: t('hackathon_register_now'), href: ActivityModel.getLink(activity) }
+            }
+            secondaryAction={{ label: t('team_works'), href: '#works' }}
+            chips={heroChips}
+            subtitle={activityName as string}
+            topCard={{
+              eyebrow: t('event_description'),
+              title: compactSummaryOf(projectSummary, displayTitle, 40),
+              description: creatorText || locationText,
+            }}
+            visualChip={groupName || ((activityType as string) || t('projects'))}
+            visualCopy={eventRange || locationText}
+            visualKicker={t('main_visual')}
+            visualTitle={compactSummaryOf(projectSummary, displayTitle, 52)}
+          />
 
-          <h1 className={`text-center ${styles.title}`}>{displayName as string}</h1>
-          <p className={`text-center ${styles.description}`}>{description as string}</p>
+          <section id="overview" className={styles.section}>
+            <Container>
+              <header className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>{t('event_description')}</h2>
+                <p className={styles.sectionSubtitle}>{displayTitle}</p>
+                <div className={styles.accentLine} />
+              </header>
 
-          {score != null && (
-            <div className="text-center mt-4">
-              <Button
-                variant="light"
-                size="lg"
-                className="shadow-lg"
-                onClick={() => setShowScoreModal(true)}
-              >
-                {t('score')}: <strong>{score as number}</strong>
-              </Button>
-            </div>
-          )}
-        </Container>
-      </section>
+              <article className={styles.introPanel}>
+                <Breadcrumb aria-label="breadcrumb" className={styles.breadcrumb}>
+                  {currentRoute.map(({ title, href }, index, { length }) => (
+                    <Breadcrumb.Item
+                      key={`${title}-${index}`}
+                      href={index === length - 1 ? undefined : href}
+                      active={index === length - 1}
+                    >
+                      {title}
+                    </Breadcrumb.Item>
+                  ))}
+                </Breadcrumb>
 
-      <Container className="my-5">
-        {/* Team Members Section */}
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>👥 {t('team_members')}</h2>
-          <Row as="ul" className="list-unstyled mt-4 g-4" xs={1} md={2} lg={3} xl={4}>
-            {members.map(({ id, person, githubAccount }) => (
-              <Col as="li" key={id as string}>
-                <Card className={styles.darkCard} body>
-                  <div className="d-flex gap-3 align-items-center">
-                    <Avatar src={(person as TableCellUser).avatar_url} />
-                    <div className="flex-grow-1">
-                      <h3 className="fs-6 m-0 fw-bold text-white">
-                        {(person as TableCellUser).name}
-                      </h3>
+                <h3 className={styles.introTitle}>{displayTitle}</h3>
+                <p className={styles.introText}>{projectSummary}</p>
 
-                      {githubAccount && (
-                        <a
-                          className="text-white-50 small"
-                          target="_blank"
-                          rel="noreferrer"
-                          href={`https://github.com/${githubAccount}`}
-                        >
-                          @{githubAccount as string}
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </section>
+                <ul className={styles.metaList}>
+                  {groupName && <li className={styles.metaItem}>{groupName}</li>}
+                  {prizeText && <li className={styles.metaItem}>{prizeText}</li>}
+                  {rankText && <li className={styles.metaItem}>#{rankText}</li>}
+                  {scoreText && <li className={styles.metaItem}>{`${t('score')} · ${scoreText}`}</li>}
+                  <li className={styles.metaItem}>{locationText}</li>
+                </ul>
+              </article>
 
-        {/* Team Products Section */}
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>💡 {t('team_works')}</h2>
+              <div className={styles.metricGrid}>
+                <article className={styles.metricCard}>
+                  <span className={styles.metricLabel}>{t('participants')}</span>
+                  <strong className={styles.metricValue}>{members.length}</strong>
+                  <span className={styles.metricMeta}>{t('team_members')}</span>
+                </article>
+                <article className={styles.metricCard}>
+                  <span className={styles.metricLabel}>{t('products')}</span>
+                  <strong className={styles.metricValue}>{products.length}</strong>
+                  <span className={styles.metricMeta}>{t('team_works')}</span>
+                </article>
+                <article className={styles.metricCard}>
+                  <span className={styles.metricLabel}>{t('event_location')}</span>
+                  <strong className={styles.metricValue}>
+                    {(location as TableCellLocation | undefined)?.name || '-'}
+                  </strong>
+                  <span className={styles.metricMeta}>{locationText}</span>
+                </article>
+                <article className={styles.metricCard}>
+                  <span className={styles.metricLabel}>{t('score')}</span>
+                  <strong className={styles.metricValue}>{scoreText || '--'}</strong>
+                  <span className={styles.metricMeta}>{eventRange}</span>
+                </article>
+              </div>
+            </Container>
+          </section>
 
-          {products && products.length > 0 ? (
-            <Row as="ul" className="list-unstyled mt-4 g-4" xs={1} md={2} lg={3}>
-              {products.map(product => (
-                <Col as="li" key={product.id as string}>
-                  <ProductCard {...product} />
-                </Col>
-              ))}
-            </Row>
-          ) : (
-            <div className="h1 my-5 text-center text-muted">{t('no_news_yet')}</div>
-          )}
-        </section>
+          <section id="members" className={styles.section}>
+            <Container>
+              <header className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>{t('team_members')}</h2>
+                <p className={styles.sectionSubtitle}>{displayTitle}</p>
+                <div className={styles.accentLine} />
+              </header>
 
-        {/* Creator Information Section */}
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>👤 {t('created_by')}</h2>
-          <Card className={styles.lightCard} body>
-            <div className="fw-bold fs-5">{(createdBy as TableCellUser).name}</div>
-            <a
-              href={`mailto:${(createdBy as TableCellUser).email}`}
-              className="text-dark text-decoration-underline"
-            >
-              {(createdBy as TableCellUser).email}
-            </a>
-          </Card>
-        </section>
+              <Row as="ul" className="list-unstyled g-4" xs={1} md={2} xl={3}>
+                {members.map(({ id, person, githubAccount, summary, skills }) => {
+                  const member = person as TableCellUser;
+                  const githubName = firstText(githubAccount);
+                  const memberSummary = textListOf(summary).join(' · ');
+                  const memberSkills = textListOf(skills).slice(0, 6);
 
-        <CommentBox />
-      </Container>
+                  return (
+                    <Col as="li" key={id as string}>
+                      <Card className={styles.memberCard} body>
+                        <div className={styles.memberTop}>
+                          <Avatar className={styles.avatar} src={member?.avatar_url} />
+                          <div>
+                            <h3 className={styles.memberName}>{member?.name || '-'}</h3>
 
-      <Modal size="lg" centered show={showScoreModal} onHide={() => setShowScoreModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>{t('score')}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Ratio aspectRatio="16x9">
-            <iframe
-              className="w-100 h-100 border-0"
-              title={t('score')}
-              src={Object.values(formLinkMap.Evaluation)[0]}
-            />
-          </Ratio>
-        </Modal.Body>
-      </Modal>
-    </>
-  );
-});
+                            {githubName && (
+                              <a
+                                className={styles.memberLink}
+                                href={`https://github.com/${githubName}`}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                @{githubName}
+                              </a>
+                            )}
+                          </div>
+                        </div>
+
+                        {memberSummary && <p className={styles.memberSummary}>{memberSummary}</p>}
+
+                        {memberSkills[0] && (
+                          <ul className={styles.skillList}>
+                            {memberSkills.map(skill => (
+                              <li key={skill} className={styles.skill}>
+                                {skill}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </Card>
+                    </Col>
+                  );
+                })}
+              </Row>
+            </Container>
+          </section>
+
+          <section id="works" className={styles.section}>
+            <Container>
+              <header className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>{t('team_works')}</h2>
+                <p className={styles.sectionSubtitle}>{displayTitle}</p>
+                <div className={styles.accentLine} />
+              </header>
+
+              {products.length > 0 ? (
+                <Row as="ul" className="list-unstyled g-4" xs={1} md={2}>
+                  {products.map(product => (
+                    <Col as="li" key={product.id as string}>
+                      <ProductCard className={styles.productCardOverride} {...product} />
+                    </Col>
+                  ))}
+                </Row>
+              ) : (
+                <div className={styles.emptyState}>{t('no_news_yet')}</div>
+              )}
+            </Container>
+          </section>
+
+          <section id="creator" className={styles.section}>
+            <Container>
+              <header className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>{t('created_by')}</h2>
+                <p className={styles.sectionSubtitle}>{displayTitle}</p>
+                <div className={styles.accentLine} />
+              </header>
+
+              <div className={styles.creatorGrid}>
+                <article className={styles.summaryCard}>
+                  <span className={styles.creatorLabel}>{t('event_description')}</span>
+                  <h3 className={styles.summaryTitle}>{displayTitle}</h3>
+                  <p className={styles.summaryText}>{projectSummary}</p>
+                </article>
+
+                <article className={styles.creatorCard}>
+                  <span className={styles.creatorLabel}>{t('created_by')}</span>
+                  <h3 className={styles.creatorValue}>{creator?.name || '-'}</h3>
+                  <p className={styles.creatorText}>{creator?.email || locationText}</p>
+
+                  {scoreText && scoreForm && (
+                    <Button className={styles.scoreButton} onClick={() => setShowScoreModal(true)}>
+                      {t('score')}
+                    </Button>
+                  )}
+                </article>
+              </div>
+
+              <div className={styles.commentWrap}>
+                <CommentBox />
+              </div>
+            </Container>
+          </section>
+        </div>
+
+        <Modal
+          size="lg"
+          centered
+          show={showScoreModal}
+          onHide={() => setShowScoreModal(false)}
+          className={styles.scoreModal}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>{t('score')}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Ratio aspectRatio="16x9">
+              <iframe className="w-100 h-100 border-0" title={t('score')} src={scoreForm} />
+            </Ratio>
+          </Modal.Body>
+        </Modal>
+      </>
+    );
+  },
+);
 
 export default ProjectPage;
