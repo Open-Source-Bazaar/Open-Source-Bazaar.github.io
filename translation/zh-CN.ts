@@ -310,6 +310,7 @@ export default {
   score: '评分',
 
   // Team detail page
+  hackathon_team_showcase: '团队展示',
   team_members: '团队成员',
   team_works: '团队作品',
   no_news_yet: '暂无动态',
