@@ -1,4 +1,4 @@
-import { BiTableSchema, TableCellLocation, TableFormView } from 'mobx-lark';
+import { TableCellLocation, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
@@ -60,6 +60,7 @@ import {
   isPublicForm,
   normalizeAgendaType,
   previewText,
+  resolveCountdownState,
 } from '../../components/Activity/Hackathon/utility';
 
 interface HackathonDetailProps {
@@ -81,7 +82,7 @@ export const getServerSideProps = compose<{ id: string }>(
   async ({ params }) => {
     const activity = await new ActivityModel().getOne(params!.id);
 
-    const { appId, tableIdMap } = (activity.databaseSchema || {}) as BiTableSchema;
+    const { appId, tableIdMap } = activity.databaseSchema;
 
     if (!appId || !tableIdMap) return { notFound: true, props: {} };
 
@@ -110,18 +111,18 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
   const i18n = useContext(I18nContext);
   const { t } = i18n;
   const {
-      name,
-      summary,
-      location,
-      startTime,
-      endTime,
-      databaseSchema,
-      host,
-      image,
-      type: activityType,
-    } = activity,
+    name,
+    summary,
+    location,
+    startTime,
+    endTime,
+    databaseSchema,
+    host,
+    image,
+    type: activityType,
+  } = activity,
     { people, organizations, agenda, prizes, templates, projects } = hackathon;
-  const { forms } = (databaseSchema || {}) as BiTableSchema;
+  const { forms } = databaseSchema;
   const formMap = (forms || {}) as Partial<Record<FormGroupKey, TableFormView[]>>;
   const summaryText = (summary as string) || '';
   const agendaItems = [...agenda].sort(
@@ -184,22 +185,12 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
       };
     })
     .filter(({ date, label }) => Boolean(date && label));
-  const now = renderedAt;
-  const nextAgendaItem = agendaItems.find(({ startedAt, endedAt }) => {
-    const started = new Date((startedAt as string) || 0).getTime();
-    const ended = new Date((endedAt as string) || 0).getTime();
-
-    return Number.isFinite(started) && Number.isFinite(ended) && now <= ended;
-  });
-  const nextAgendaStarted = nextAgendaItem?.startedAt as string | undefined;
-  const nextAgendaEnded = nextAgendaItem?.endedAt as string | undefined;
-  const countdownTo =
-    (nextAgendaStarted && new Date(nextAgendaStarted).getTime() > now
-      ? nextAgendaStarted
-      : nextAgendaEnded) ||
-    ((startTime as string | undefined) && new Date(startTime as string).getTime() > now
-      ? (startTime as string)
-      : (endTime as string | undefined));
+  const { nextItem: nextAgendaItem, countdownTo } = resolveCountdownState(
+    agendaItems,
+    renderedAt,
+    startTime,
+    endTime,
+  );
   const countdownLabel = nextAgendaItem
     ? agendaTypeLabelOf(nextAgendaItem.type, t, t('agenda'))
     : t('event_duration');
