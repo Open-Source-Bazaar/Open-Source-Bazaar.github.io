@@ -243,6 +243,13 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(
       formGroups.find(({ key }) => key === 'Person') ||
       formGroups.find(({ key }) => key === 'Project') ||
       formGroups[0];
+    const heroPrimaryAction = primaryForm
+      ? {
+          label: heroPrimaryActionLabel,
+          href: primaryForm.links[0].href,
+          external: true as const,
+        }
+      : { label: t('event_description'), href: '#overview' };
     const secondaryForm =
       formGroups.find(({ key }) => key === 'Project' && key !== primaryForm?.key) ||
       formGroups.find(({ key }) => key !== primaryForm?.key);
@@ -344,15 +351,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(
         locationText={locationText}
         name={name as string}
         navigation={heroNavigation(i18n)}
-        primaryAction={
-          primaryForm
-            ? {
-                label: heroPrimaryActionLabel,
-                href: primaryForm.links[0].href,
-                external: true,
-              }
-            : { label: heroPrimaryActionLabel, href: '#entry-hub' }
-        }
+        primaryAction={heroPrimaryAction}
         secondaryAction={{ label: t('agenda'), href: '#schedule' }}
         chips={heroStatChips}
         subtitle={(activityType as string) || t('hackathon_detail')}
