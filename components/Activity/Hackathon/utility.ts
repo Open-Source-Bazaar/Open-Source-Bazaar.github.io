@@ -79,7 +79,7 @@ export interface CountdownWindow {
 
 export const resolveCountdownState = <T extends CountdownWindow>(
   items: T[],
-  now: number,
+  referenceTime: number,
   startTime?: TableCellValue,
   endTime?: TableCellValue,
 ) => {
@@ -87,14 +87,16 @@ export const resolveCountdownState = <T extends CountdownWindow>(
     const started = timeOf(startedAt);
     const ended = timeOf(endedAt);
 
-    return Number.isFinite(started) && Number.isFinite(ended) && now <= ended;
+    return Number.isFinite(started) && Number.isFinite(ended) && referenceTime <= ended;
   });
   const nextStartedAt = timeOf(nextItem?.startedAt);
   const countdownTo =
-    (Number.isFinite(nextStartedAt) && nextStartedAt > now
+    (Number.isFinite(nextStartedAt) && nextStartedAt > referenceTime
       ? (nextItem?.startedAt as string | undefined)
       : (nextItem?.endedAt as string | undefined)) ||
-    (timeOf(startTime) > now ? (startTime as string | undefined) : (endTime as string | undefined));
+    (timeOf(startTime) > referenceTime
+      ? (startTime as string | undefined)
+      : (endTime as string | undefined));
 
   return { nextItem, countdownTo };
 };
