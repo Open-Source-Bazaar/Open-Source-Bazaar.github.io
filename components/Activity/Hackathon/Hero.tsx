@@ -80,22 +80,22 @@ const useCountdown = (countdownTo?: string) => {
 
     return Number.isFinite(value) ? value : NaN;
   }, [countdownTo]);
-  const [now, setNow] = useState<number | null>(null);
+  const [clientNow, setClientNow] = useState<number | null>(null);
 
   useEffect(() => {
     if (!Number.isFinite(target)) return;
 
-    setNow(Date.now());
+    setClientNow(Date.now());
 
-    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    const timer = window.setInterval(() => setClientNow(Date.now()), 1000);
 
     return () => window.clearInterval(timer);
   }, [target]);
 
   return useMemo(() => {
-    if (!Number.isFinite(target) || now === null) return ['--', '--', '--', '--'];
+    if (!Number.isFinite(target) || clientNow === null) return ['--', '--', '--', '--'];
 
-    const rest = Math.max(0, target - now);
+    const rest = Math.max(0, target - clientNow);
     const totalSeconds = Math.floor(rest / 1000);
     const days = Math.floor(totalSeconds / 86400);
     const hours = Math.floor((totalSeconds % 86400) / 3600);
@@ -103,7 +103,7 @@ const useCountdown = (countdownTo?: string) => {
     const seconds = totalSeconds % 60;
 
     return [days, hours, minutes, seconds].map(value => String(value).padStart(2, '0'));
-  }, [now, target]);
+  }, [clientNow, target]);
 };
 
 const splitHeroTitle = (name: string, subtitle: string) => {
