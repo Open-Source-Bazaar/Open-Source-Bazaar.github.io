@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "prepare": "husky",
-    "install": "pnpx git-utility download https://github.com/Open-Source-Bazaar/key-vault main Open-Source-Bazaar.github.io  ||  true",
+    "sync-env": "pnpx git-utility download https://github.com/Open-Source-Bazaar/key-vault main Open-Source-Bazaar.github.io",
     "postinstall": "next typegen",
     "dev": "next dev --webpack",
     "build": "next build --webpack",
