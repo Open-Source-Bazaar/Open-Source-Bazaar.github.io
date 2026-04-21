@@ -67,7 +67,16 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
         project: project.name as string,
       }),
     ]);
-    return { props: { activity, project, agenda, members, products, renderedAt: Date.now() } };
+    return {
+      props: {
+        activity,
+        project,
+        agenda,
+        members,
+        products,
+        agendaReferenceTime: Date.now(),
+      },
+    };
   },
 );
 
@@ -77,11 +86,11 @@ interface ProjectPageProps {
   project: Project;
   members: Member[];
   products: Product[];
-  renderedAt: number;
+  agendaReferenceTime: number;
 }
 
 const ProjectPage: FC<ProjectPageProps> = observer(
-  ({ activity, agenda, project, members, products, renderedAt }) => {
+  ({ activity, agenda, project, members, products, agendaReferenceTime }) => {
     const { t } = useContext(I18nContext);
     const [showScoreModal, setShowScoreModal] = useState(false);
 
@@ -158,7 +167,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(
     ];
     const { nextItem: nextAgendaItem, countdownTo } = resolveCountdownState(
       agendaItems,
-      renderedAt,
+      agendaReferenceTime,
       startTime,
       endTime,
     );
