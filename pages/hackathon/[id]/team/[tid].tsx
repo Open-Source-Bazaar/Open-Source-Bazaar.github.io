@@ -1,5 +1,5 @@
 import { Avatar } from 'idea-react';
-import { BiTableSchema, TableCellLocation, TableCellUser, TableFormView } from 'mobx-lark';
+import { TableCellLocation, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext, useMemo, useState } from 'react';
@@ -21,9 +21,14 @@ import {
   agendaTypeLabelOf,
   compactDateKeyOf,
   compactSummaryOf,
+  firstTextOf,
   formatMoment,
   formatPeriod,
   isPublicForm,
+  relationNameOf,
+  resolveCountdownState,
+  textListOf,
+  userOf,
 } from '../../../../components/Activity/Hackathon/utility';
 import { ProductCard } from '../../../../components/Activity/ProductCard';
 import { PageHead } from '../../../../components/Layout/PageHead';
@@ -75,33 +80,10 @@ interface ProjectPageProps {
   renderedAt: number;
 }
 
-const firstText = (value: unknown) =>
-  (Array.isArray(value) ? value.find(Boolean) : value)?.toString().trim() || '';
-
-const textListOf = (value: unknown) =>
-  Array.isArray(value)
-    ? value
-        .map(item => item?.toString().trim())
-        .filter(text => text && text !== '[object Object]')
-    : firstText(value)
-      ? [firstText(value)]
-      : [];
-
-const relationNameOf = (value: unknown) =>
-  Array.isArray(value)
-    ? value
-        .map(item =>
-          typeof item === 'object' && item && 'name' in item
-            ? String((item as { name?: string }).name || '')
-            : item?.toString() || '',
-        )
-        .find(Boolean) || ''
-    : firstText(value);
-
 const ProjectPage: FC<ProjectPageProps> = observer(
   ({ activity, agenda, project, members, products, renderedAt }) => {
-  const { t } = useContext(I18nContext);
-  const [showScoreModal, setShowScoreModal] = useState(false);
+    const { t } = useContext(I18nContext);
+    const [showScoreModal, setShowScoreModal] = useState(false);
 
     const {
       name: activityName,
@@ -113,7 +95,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(
       summary: activitySummary,
       type: activityType,
     } = activity;
-    const { forms, formLinkMap } = databaseSchema as unknown as BiTableSchema;
+    const { forms, formLinkMap } = databaseSchema;
     const {
       name: displayName,
       summary: description,
@@ -123,16 +105,16 @@ const ProjectPage: FC<ProjectPageProps> = observer(
       prize,
       group,
     } = project;
-    const creator = createdBy as TableCellUser;
-    const displayTitle = firstText(displayName) || t('projects');
+    const creator = userOf(createdBy);
+    const displayTitle = firstTextOf(displayName) || t('projects');
     const projectSummary =
-      compactSummaryOf(description as string, firstText(activitySummary) || displayTitle, 140);
+      compactSummaryOf(description, firstTextOf(activitySummary) || displayTitle, 140);
     const locationText = (location as TableCellLocation | undefined)?.full_address || '-';
     const eventRange = formatPeriod(startTime, endTime) || locationText;
     const groupName = relationNameOf(group);
-    const scoreText = firstText(score);
-    const rankText = firstText(rank);
-    const prizeText = firstText(prize);
+    const scoreText = firstTextOf(score);
+    const rankText = firstTextOf(rank);
+    const prizeText = firstTextOf(prize);
     const agendaItems = [...agenda].sort(
       ({ startedAt: left }, { startedAt: right }) =>
         new Date((left as string) || 0).getTime() - new Date((right as string) || 0).getTime(),
@@ -155,13 +137,13 @@ const ProjectPage: FC<ProjectPageProps> = observer(
       () =>
         Object.values(forms || {})
           .flat()
-          .filter(Boolean)
-          .filter(isPublicForm as (value: TableFormView) => boolean),
+          .filter((form): form is TableFormView => Boolean(form))
+          .filter(isPublicForm),
       [forms],
     );
     const primaryForm =
-      ((forms?.Person || []).filter(isPublicForm as (value: TableFormView) => boolean)[0] ||
-        (forms?.Project || []).filter(isPublicForm as (value: TableFormView) => boolean)[0] ||
+      ((forms?.Person || []).filter(isPublicForm)[0] ||
+        (forms?.Project || []).filter(isPublicForm)[0] ||
         publicForms[0]);
     const scoreForm = Object.values(formLinkMap?.Evaluation || {})[0];
     const currentRoute = [
@@ -174,22 +156,12 @@ const ProjectPage: FC<ProjectPageProps> = observer(
       { href: '#works', label: t('team_works') },
       { href: '#creator', label: t('created_by') },
     ];
-    const now = renderedAt;
-    const nextAgendaItem = agendaItems.find(({ startedAt, endedAt }) => {
-      const started = new Date((startedAt as string) || 0).getTime();
-      const ended = new Date((endedAt as string) || 0).getTime();
-
-      return Number.isFinite(started) && Number.isFinite(ended) && now <= ended;
-    });
-    const nextAgendaStarted = nextAgendaItem?.startedAt as string | undefined;
-    const nextAgendaEnded = nextAgendaItem?.endedAt as string | undefined;
-    const countdownTo =
-      (nextAgendaStarted && new Date(nextAgendaStarted).getTime() > now
-        ? nextAgendaStarted
-        : nextAgendaEnded) ||
-      ((startTime as string | undefined) && new Date(startTime as string).getTime() > now
-        ? (startTime as string)
-        : (endTime as string | undefined));
+    const { nextItem: nextAgendaItem, countdownTo } = resolveCountdownState(
+      agendaItems,
+      renderedAt,
+      startTime,
+      endTime,
+    );
     const countdownLabel = nextAgendaItem
       ? agendaTypeLabelOf(nextAgendaItem.type, t, t('agenda'))
       : t('event_duration');
@@ -320,8 +292,8 @@ const ProjectPage: FC<ProjectPageProps> = observer(
 
               <Row as="ul" className="list-unstyled g-4" xs={1} md={2} xl={3}>
                 {members.map(({ id, person, githubAccount, summary, skills }) => {
-                  const member = person as TableCellUser;
-                  const githubName = firstText(githubAccount);
+                  const member = userOf(person);
+                  const githubName = firstTextOf(githubAccount);
                   const memberSummary = textListOf(summary).join(' · ');
                   const memberSkills = textListOf(skills).slice(0, 6);
 
