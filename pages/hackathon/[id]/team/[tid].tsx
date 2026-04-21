@@ -182,6 +182,13 @@ const ProjectPage: FC<ProjectPageProps> = observer(
       scoreText ? `${t('score')} · ${scoreText}` : '',
     ].filter(Boolean);
     const creatorText = [creator?.name, creator?.email].filter(Boolean).join(' · ');
+    const heroPrimaryAction = primaryForm
+      ? {
+          label: t('hackathon_register_now'),
+          href: primaryForm.shared_url,
+          external: true as const,
+        }
+      : { label: t('hackathon_detail'), href: ActivityModel.getLink(activity) };
 
     return (
       <>
@@ -208,15 +215,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(
             locationText={locationText}
             name={`${displayTitle} ${t('hackathon_team_showcase')}`}
             navigation={navigation}
-            primaryAction={
-              primaryForm
-                ? {
-                    label: t('hackathon_register_now'),
-                    href: primaryForm.shared_url,
-                    external: true,
-                  }
-                : { label: t('hackathon_register_now'), href: ActivityModel.getLink(activity) }
-            }
+            primaryAction={heroPrimaryAction}
             secondaryAction={{ label: t('team_works'), href: '#works' }}
             chips={heroChips}
             subtitle={activityName as string}
