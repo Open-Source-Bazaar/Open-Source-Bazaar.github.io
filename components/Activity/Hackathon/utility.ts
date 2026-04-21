@@ -1,4 +1,4 @@
-import { TableCellValue, TableFormView } from 'mobx-lark';
+import { TableCellUser, TableCellValue, TableFormView } from 'mobx-lark';
 import { formatDate } from 'web-utility';
 
 import type { HackathonScheduleTone } from './Schedule';
@@ -33,10 +33,71 @@ export const buildAgendaTypeLabelMap = ({
 export const isPublicForm = ({ shared_limit }: TableFormView) =>
   ['anyone_editable'].includes(shared_limit as string);
 
+type NamedLike = { name?: string | null };
+type TextLike = TableCellValue | NamedLike | null | undefined;
+type TextListLike = TextLike | TextLike[];
+
+const textOf = (value: TextLike) => {
+  if (!value) return '';
+
+  if (typeof value === 'object' && !Array.isArray(value))
+    return 'name' in value ? (value.name || '').trim() : '';
+
+  const text = value.toString().trim();
+
+  return text === '[object Object]' ? '' : text;
+};
+
+export const firstTextOf = (value: TextListLike) =>
+  (Array.isArray(value) ? value.map(textOf).find(Boolean) : textOf(value)) || '';
+
+export const textListOf = (value: TextListLike) =>
+  (Array.isArray(value) ? value : [value]).map(textOf).filter(Boolean);
+
+export const relationNameOf = (value: TextListLike) => firstTextOf(value);
+
+export const userOf = (value?: TableCellValue | TableCellUser) =>
+  value && typeof value === 'object' && !Array.isArray(value) && 'name' in value
+    ? (value as TableCellUser)
+    : undefined;
+
 export const formatMoment = (value?: TableCellValue) => (value ? formatDate(value as string) : '');
 
 export const formatPeriod = (startedAt?: TableCellValue, endedAt?: TableCellValue) =>
   [formatMoment(startedAt), formatMoment(endedAt)].filter(Boolean).join(' - ');
+
+export const timeOf = (value?: TableCellValue) => {
+  const time = new Date((value as string) || 0).getTime();
+
+  return Number.isFinite(time) ? time : NaN;
+};
+
+export interface CountdownWindow {
+  startedAt?: TableCellValue;
+  endedAt?: TableCellValue;
+}
+
+export const resolveCountdownState = <T extends CountdownWindow>(
+  items: T[],
+  now: number,
+  startTime?: TableCellValue,
+  endTime?: TableCellValue,
+) => {
+  const nextItem = items.find(({ startedAt, endedAt }) => {
+    const started = timeOf(startedAt);
+    const ended = timeOf(endedAt);
+
+    return Number.isFinite(started) && Number.isFinite(ended) && now <= ended;
+  });
+  const nextStartedAt = timeOf(nextItem?.startedAt);
+  const countdownTo =
+    (Number.isFinite(nextStartedAt) && nextStartedAt > now
+      ? (nextItem?.startedAt as string | undefined)
+      : (nextItem?.endedAt as string | undefined)) ||
+    (timeOf(startTime) > now ? (startTime as string | undefined) : (endTime as string | undefined));
+
+  return { nextItem, countdownTo };
+};
 
 export const previewText = (items: TableCellValue[], fallback: string) =>
   items
@@ -95,8 +156,8 @@ export const dateKeyOf = (value?: TableCellValue) => {
 export const compactDateKeyOf = (value?: TableCellValue) => dateKeyOf(value).replace('-', '.');
 
 export const daysBetween = (startedAt?: TableCellValue, endedAt?: TableCellValue) => {
-  const start = new Date((startedAt as string) || '').getTime();
-  const end = new Date((endedAt as string) || '').getTime();
+  const start = timeOf(startedAt);
+  const end = timeOf(endedAt);
 
   if (!Number.isFinite(start) || !Number.isFinite(end) || end < start) return 0;
 
