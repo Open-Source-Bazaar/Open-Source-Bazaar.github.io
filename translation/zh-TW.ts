@@ -18,6 +18,7 @@ export default {
   // Search
   keywords: '關鍵詞',
   search_results: '搜尋結果',
+  breadcrumb: '麵包屑導覽',
 
   // Scroll List
   load_more: '加載更多……',
