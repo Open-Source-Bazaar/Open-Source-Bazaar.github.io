@@ -349,7 +349,6 @@ export const buildProjectItems = (
           ? {
               label: t('created_by'),
               value: creator.name || '—',
-              valueHref: creator.email ? `mailto:${creator.email}` : undefined,
             }
           : { label: t('created_by'), value: '—' },
         {
