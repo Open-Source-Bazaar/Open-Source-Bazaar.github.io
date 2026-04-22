@@ -1,5 +1,5 @@
 import { TableCellValue } from 'mobx-lark';
-import { useEffect, useEffectEvent, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { CountdownWindow, firstTextOf, resolveCountdownState, timeOf } from './utility';
 
@@ -9,7 +9,7 @@ export const useLiveCountdownState = <T extends CountdownWindow>(
   endTime?: TableCellValue,
 ) => {
   const [referenceTime, setReferenceTime] = useState<number | null>(null);
-  const refreshReferenceTime = useEffectEvent(() => setReferenceTime(Date.now()));
+  const refreshReferenceTime = useCallback(() => setReferenceTime(Date.now()), []);
 
   useEffect(() => refreshReferenceTime(), [refreshReferenceTime]);
 
@@ -31,9 +31,10 @@ export const useLiveCountdownState = <T extends CountdownWindow>(
 
     if (!Number.isFinite(targetTime)) return;
 
+    const delay = Math.min(2_147_483_647, Math.max(1000, targetTime - Date.now() + 1000));
     const timer = window.setTimeout(
       refreshReferenceTime,
-      Math.max(1000, targetTime - Date.now() + 1000),
+      delay,
     );
 
     return () => window.clearTimeout(timer);
