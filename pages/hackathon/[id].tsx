@@ -65,6 +65,8 @@ import {
   textListOf,
   timeOf,
 } from '../../components/Activity/Hackathon/utility';
+import { Table } from 'react-bootstrap';
+import { has } from 'mobx';
 
 interface HackathonDetailProps {
   activity: Activity;
@@ -253,6 +255,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
     formGroups.find(({ key }) => key === 'Person') ||
     formGroups.find(({ key }) => key === 'Project') ||
     formGroups[0];
+
   const heroPrimaryAction = primaryForm
     ? {
         label: heroPrimaryActionLabel,
