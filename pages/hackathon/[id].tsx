@@ -225,20 +225,26 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
     .join('，');
 
   const formGroups = FormButtonBar.flatMap<FormGroupView>(key => {
-    const list = (formMap[key] || []).filter(isPublicForm);
+    const links = (formMap[key] || []).filter(isPublicForm).flatMap(({ name, shared_url }) =>
+      shared_url
+        ? [
+            {
+              label: name as string,
+              href: shared_url,
+              external: true as const,
+            },
+          ]
+        : [],
+    );
 
-    return list[0]
+    return links[0]
       ? [
           {
             key,
             eyebrow: buildFormSectionMeta(i18n)[key].eyebrow,
             title: buildFormSectionMeta(i18n)[key].title,
             description: buildFormSectionMeta(i18n)[key].description,
-            links: list.map(({ name, shared_url }) => ({
-              label: name as string,
-              href: shared_url,
-              external: true as const,
-            })),
+            links,
           },
         ]
       : [];
@@ -250,7 +256,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
   const heroPrimaryAction = primaryForm
     ? {
         label: heroPrimaryActionLabel,
-        href: primaryForm.links[0].href,
+        href: primaryForm.links[0]!.href,
         external: true as const,
       }
     : { label: t('event_description'), href: '#overview' };
@@ -400,7 +406,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
             primaryForm
               ? {
                   label: primaryForm.title,
-                  href: primaryForm.links[0].href,
+                  href: primaryForm.links[0]!.href,
                   external: true,
                 }
               : undefined
@@ -415,7 +421,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
               secondaryForm
                 ? {
                     label: secondaryForm.title,
-                    href: secondaryForm.links[0].href,
+                    href: secondaryForm.links[0]!.href,
                     external: true,
                   }
                 : { label: t('agenda'), href: '#schedule' }
