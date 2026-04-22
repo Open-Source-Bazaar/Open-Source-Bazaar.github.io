@@ -241,7 +241,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(
               </header>
 
               <article className={styles.introPanel}>
-                <Breadcrumb aria-label="breadcrumb" className={styles.breadcrumb}>
+                <Breadcrumb aria-label={t('breadcrumb')} className={styles.breadcrumb}>
                   {currentRoute.map(({ title, href }, index, { length }) => (
                     <Breadcrumb.Item
                       key={`${title}-${index}`}
