@@ -56,11 +56,13 @@ import {
   compactSummaryOf,
   dateKeyOf,
   daysBetween,
+  firstTextOf,
   formatMoment,
   formatPeriod,
   isPublicForm,
   normalizeAgendaType,
   previewText,
+  textListOf,
 } from '../../components/Activity/Hackathon/utility';
 
 interface HackathonDetailProps {
@@ -79,9 +81,10 @@ export const getServerSideProps = compose<{ id: string }>(
   cache(),
   errorLogger,
   async ({ params }) => {
-    const activity = await new ActivityModel().getOne(params!.id);
+    if (!params?.id) return { notFound: true, props: {} };
 
-    const { appId, tableIdMap } = activity.databaseSchema;
+    const activity = await new ActivityModel().getOne(params!.id);
+    const { appId, tableIdMap } = activity.databaseSchema || {};
 
     if (!appId || !tableIdMap) return { notFound: true, props: {} };
 
@@ -122,7 +125,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
     { people, organizations, agenda, prizes, templates, projects } = hackathon;
   const { forms } = databaseSchema;
   const formMap = (forms || {}) as Partial<Record<FormGroupKey, TableFormView[]>>;
-  const summaryText = (summary as string) || '';
+  const summaryText = textListOf(summary).join(' · ') || firstTextOf(summary);
   const agendaItems = [...agenda].sort(
     ({ startedAt: left }, { startedAt: right }) =>
       new Date((left as string) || 0).getTime() - new Date((right as string) || 0).getTime(),
