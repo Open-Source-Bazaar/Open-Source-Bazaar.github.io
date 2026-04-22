@@ -4,6 +4,7 @@ import { FC } from 'react';
 import { CardProps, Card, Button } from 'react-bootstrap';
 import { formatDate } from 'web-utility';
 
+import { timeOf } from './Hackathon/utility';
 import { Product } from '../../models/Hackathon';
 import styles from '../../styles/Hackathon.module.less';
 
@@ -11,20 +12,11 @@ export type ProductCardProps = Product & Omit<CardProps, 'id' | 'title'>;
 
 export const ProductCard: FC<ProductCardProps> = observer(
   ({ className = '', id, createdAt, name, sourceLink, link = sourceLink, summary, ...props }) => {
-    const parsedCreatedAtValue =
-      createdAt === null || createdAt === undefined || createdAt === ''
-        ? NaN
-        : typeof createdAt === 'string'
-          ? Number.isFinite(Number(createdAt))
-            ? Number(createdAt)
-            : Date.parse(createdAt)
-          : Number(createdAt);
-    const createdAtISO = Number.isFinite(parsedCreatedAtValue)
-      ? new Date(parsedCreatedAtValue).toJSON()
+    const createdAtTime = timeOf(createdAt);
+    const createdAtISO = Number.isFinite(createdAtTime)
+      ? new Date(createdAtTime).toJSON()
       : undefined;
-    const createdAtText = Number.isFinite(parsedCreatedAtValue)
-      ? formatDate(parsedCreatedAtValue)
-      : '';
+    const createdAtText = Number.isFinite(createdAtTime) ? formatDate(createdAtTime) : '';
 
     return (
       <Card className={`${styles.projectCard} ${className}`} {...props}>
