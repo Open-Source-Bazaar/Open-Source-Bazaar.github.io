@@ -41,7 +41,7 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
   cache(),
   errorLogger,
   async ({ params }) => {
-    if (!params?.id || !params?.tid) return { notFound: true, props: {} };
+    if (!params?.id || !params?.tid) return { notFound: true };
 
     const activity = await new ActivityModel().getOne(params!.id);
     const { appId, tableIdMap } = activity.databaseSchema || {};
@@ -53,7 +53,7 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
       !tableIdMap?.Member ||
       !tableIdMap?.Product
     )
-      return { notFound: true, props: {} };
+      return { notFound: true };
 
     const project = await new ProjectModel(appId, tableIdMap.Project).getOne(params!.tid);
 
