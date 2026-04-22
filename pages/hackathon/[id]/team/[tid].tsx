@@ -161,11 +161,12 @@ const ProjectPage: FC<ProjectPageProps> = observer(
           .filter(({ shared_url }) => Boolean(shared_url)),
       [forms],
     );
+    const hasShareUrl = ({ shared_url }: TableFormView) => Boolean(shared_url);
     const primaryForm =
-      (forms?.Person || []).filter(isPublicForm)[0] ||
-      (forms?.Project || []).filter(isPublicForm)[0] ||
+      (forms?.Person || []).filter(isPublicForm).find(hasShareUrl) ||
+      (forms?.Project || []).filter(isPublicForm).find(hasShareUrl) ||
       publicForms[0];
-    const scoreForm = (forms?.Evaluation || []).find(isPublicForm);
+    const scoreForm = (forms?.Evaluation || []).filter(isPublicForm).find(hasShareUrl);
     const currentRoute = [
       { title: activityName as string, href: ActivityModel.getLink(activity) },
       { title: displayTitle },
