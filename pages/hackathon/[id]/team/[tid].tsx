@@ -19,6 +19,7 @@ import {
   isPublicForm,
   relationNameOf,
   textListOf,
+  timeOf,
   userOf,
 } from '../../../../components/Activity/Hackathon/utility';
 import { ProductCard } from '../../../../components/Activity/ProductCard';
@@ -127,10 +128,16 @@ const ProjectPage: FC<ProjectPageProps> = observer(
     const scoreText = firstTextOf(score);
     const rankText = firstTextOf(rank);
     const prizeText = firstTextOf(prize);
-    const agendaItems = [...agenda].sort(
-      ({ startedAt: left }, { startedAt: right }) =>
-        new Date((left as string) || 0).getTime() - new Date((right as string) || 0).getTime(),
-    );
+    const agendaItems = [...agenda].sort(({ startedAt: left }, { startedAt: right }) => {
+      const leftTime = timeOf(left);
+      const rightTime = timeOf(right);
+
+      if (!Number.isFinite(leftTime) && !Number.isFinite(rightTime)) return 0;
+      if (!Number.isFinite(leftTime)) return 1;
+      if (!Number.isFinite(rightTime)) return -1;
+
+      return leftTime - rightTime;
+    });
     const phaseBadges = agendaItems
       .slice(0, 4)
       .map(({ type, startedAt, endedAt }) => {
