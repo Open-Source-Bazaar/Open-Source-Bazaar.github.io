@@ -65,8 +65,7 @@ import {
   textListOf,
   timeOf,
 } from '../../components/Activity/Hackathon/utility';
-import { Table } from 'react-bootstrap';
-import { has } from 'mobx';
+
 
 interface HackathonDetailProps {
   activity: Activity;
