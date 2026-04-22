@@ -14,6 +14,7 @@ import { HackathonOverview } from '../../components/Activity/Hackathon/Overview'
 import { HackathonParticipants } from '../../components/Activity/Hackathon/Participants';
 import { HackathonResources } from '../../components/Activity/Hackathon/Resources';
 import { HackathonSchedule } from '../../components/Activity/Hackathon/Schedule';
+import { useLiveCountdownState } from '../../components/Activity/Hackathon/useLiveCountdownState';
 import { PageHead } from '../../components/Layout/PageHead';
 import { Activity, ActivityModel } from '../../models/Activity';
 import {
@@ -60,7 +61,6 @@ import {
   isPublicForm,
   normalizeAgendaType,
   previewText,
-  resolveCountdownState,
 } from '../../components/Activity/Hackathon/utility';
 
 interface HackathonDetailProps {
@@ -73,7 +73,6 @@ interface HackathonDetailProps {
     projects: Project[];
     templates: Template[];
   };
-  agendaReferenceTime: number;
 }
 
 export const getServerSideProps = compose<{ id: string }>(
@@ -101,17 +100,15 @@ export const getServerSideProps = compose<{ id: string }>(
       props: {
         activity,
         hackathon: { people, organizations, agenda, prizes, templates, projects },
-        agendaReferenceTime: Date.now(),
       },
     };
   },
 );
 
-const HackathonDetail: FC<HackathonDetailProps> = observer(
-  ({ activity, hackathon, agendaReferenceTime }) => {
-    const i18n = useContext(I18nContext);
-    const { t } = i18n;
-    const {
+const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackathon }) => {
+  const i18n = useContext(I18nContext);
+  const { t } = i18n;
+  const {
       name,
       summary,
       location,
@@ -123,204 +120,201 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(
       type: activityType,
     } = activity,
     { people, organizations, agenda, prizes, templates, projects } = hackathon;
-    const { forms } = databaseSchema;
-    const formMap = (forms || {}) as Partial<Record<FormGroupKey, TableFormView[]>>;
-    const summaryText = (summary as string) || '';
-    const agendaItems = [...agenda].sort(
-      ({ startedAt: left }, { startedAt: right }) =>
-        new Date((left as string) || 0).getTime() - new Date((right as string) || 0).getTime(),
-    );
-    const hostTags = (host as string[] | undefined)?.slice(0, 2) || [];
-    const eventRange = formatPeriod(startTime, endTime);
-    const locationText = (location as TableCellLocation | undefined)?.full_address || '-';
-    const phaseBadges = agendaItems
-      .slice(0, 4)
-      .map(({ type, startedAt, endedAt }) => {
-        const phase = agendaTypeLabelOf(type, t, t('agenda'));
-        const start = compactDateKeyOf(startedAt);
-        const end = compactDateKeyOf(endedAt);
-        const period =
-          start && end && start !== end
-            ? `${start} - ${end}`
-            : start || end || formatMoment(startedAt);
+  const { forms } = databaseSchema;
+  const formMap = (forms || {}) as Partial<Record<FormGroupKey, TableFormView[]>>;
+  const summaryText = (summary as string) || '';
+  const agendaItems = [...agenda].sort(
+    ({ startedAt: left }, { startedAt: right }) =>
+      new Date((left as string) || 0).getTime() - new Date((right as string) || 0).getTime(),
+  );
+  const hostTags = (host as string[] | undefined)?.slice(0, 2) || [];
+  const eventRange = formatPeriod(startTime, endTime);
+  const locationText = (location as TableCellLocation | undefined)?.full_address || '-';
+  const phaseBadges = agendaItems
+    .slice(0, 4)
+    .map(({ type, startedAt, endedAt }) => {
+      const phase = agendaTypeLabelOf(type, t, t('agenda'));
+      const start = compactDateKeyOf(startedAt);
+      const end = compactDateKeyOf(endedAt);
+      const period =
+        start && end && start !== end
+          ? `${start} - ${end}`
+          : start || end || formatMoment(startedAt);
 
-        return [phase, period].filter(Boolean).join(' ');
-      })
-      .filter(Boolean);
-    const heroBadges =
-      phaseBadges[0] && phaseBadges[1]
-        ? phaseBadges
-        : [
-            (activityType as string) || t('hackathon'),
-            ...hostTags,
-            formatMoment(startTime),
-            formatMoment(endTime),
-          ].filter((value): value is string => Boolean(value));
-    const agendaPreview = agendaItems.slice(0, 3);
-    const scheduleOverviewPills = agendaItems.slice(0, 6).map(({ id, name, type, startedAt }) => {
-      const label = agendaTypeLabelOf(type, t, (name as string) || t('agenda'));
-      const dateText = dateKeyOf(startedAt) || formatMoment(startedAt);
+      return [phase, period].filter(Boolean).join(' ');
+    })
+    .filter(Boolean);
+  const heroBadges =
+    phaseBadges[0] && phaseBadges[1]
+      ? phaseBadges
+      : [
+          (activityType as string) || t('hackathon'),
+          ...hostTags,
+          formatMoment(startTime),
+          formatMoment(endTime),
+        ].filter((value): value is string => Boolean(value));
+  const agendaPreview = agendaItems.slice(0, 3);
+  const scheduleOverviewPills = agendaItems.slice(0, 6).map(({ id, name, type, startedAt }) => {
+    const label = agendaTypeLabelOf(type, t, (name as string) || t('agenda'));
+    const dateText = dateKeyOf(startedAt) || formatMoment(startedAt);
 
-      return [label, dateText].filter(Boolean).join(' · ') || (id as string);
-    });
-    const heroStatChips = [
-      activityType ? `🎯 ${activityType as string}` : `🎯 ${t('hackathon')}`,
-      ...scheduleOverviewPills.slice(0, 4),
-    ].filter(Boolean) as string[];
-    const countdownUnitLabels = buildCountdownUnitLabels(i18n);
-    const heroPrimaryActionLabel = t('hackathon_register_now');
-    const scheduleKeyDates = agendaItems
-      .slice(0, 6)
-      .map(({ id, name, type, startedAt, endedAt }) => {
-        const beginText = dateKeyOf(startedAt);
-        const endText = dateKeyOf(endedAt);
-        const dateLabel =
-          beginText && endText && beginText !== endText
-            ? `${beginText} - ${endText}`
-            : beginText || endText || '-';
+    return [label, dateText].filter(Boolean).join(' · ') || (id as string);
+  });
+  const heroStatChips = [
+    activityType ? `🎯 ${activityType as string}` : `🎯 ${t('hackathon')}`,
+    ...scheduleOverviewPills.slice(0, 4),
+  ].filter(Boolean) as string[];
+  const countdownUnitLabels = buildCountdownUnitLabels(i18n);
+  const heroPrimaryActionLabel = t('hackathon_register_now');
+  const scheduleKeyDates = agendaItems
+    .slice(0, 6)
+    .map(({ id, name, type, startedAt, endedAt }) => {
+      const beginText = dateKeyOf(startedAt);
+      const endText = dateKeyOf(endedAt);
+      const dateLabel =
+        beginText && endText && beginText !== endText
+          ? `${beginText} - ${endText}`
+          : beginText || endText || '-';
 
-        return {
-          id: id as string,
-          date: dateLabel,
-          label: (name as string) || agendaTypeLabelOf(type, t, t('agenda')),
-        };
-      })
-      .filter(({ date, label }) => Boolean(date && label));
-    const { nextItem: nextAgendaItem, countdownTo } = resolveCountdownState(
-      agendaItems,
-      agendaReferenceTime,
-      startTime,
-      endTime,
-    );
-    const countdownLabel = nextAgendaItem
-      ? agendaTypeLabelOf(nextAgendaItem.type, t, t('agenda'))
-      : t('event_duration');
-    const enrollmentPhase = agendaItems.find(
-      ({ type }) => normalizeAgendaType(type) === 'enrollment',
-    );
-    const formationPhase = agendaItems.find(
-      ({ type }) => normalizeAgendaType(type) === 'formation',
-    );
-    const competitionPhase = agendaItems.find(
-      ({ type }) => normalizeAgendaType(type) === 'competition',
-    );
-    const evaluationPhase = agendaItems.find(
-      ({ type }) => normalizeAgendaType(type) === 'evaluation',
-    );
-    const scheduleNarrativeLead = [
-      enrollmentPhase &&
-        `${t('enrollment')} ${daysBetween(enrollmentPhase.startedAt, enrollmentPhase.endedAt)}${t('countdown_days')}`,
-      formationPhase &&
-        `${t('formation')} ${daysBetween(formationPhase.startedAt, formationPhase.endedAt)}${t('countdown_days')}`,
-      competitionPhase &&
-        `${t('competition')} ${daysBetween(competitionPhase.startedAt, competitionPhase.endedAt)}${t('countdown_days')}`,
-      evaluationPhase &&
-        `${t('evaluation')} ${daysBetween(evaluationPhase.startedAt, evaluationPhase.endedAt)}${t('countdown_days')}`,
-    ]
+      return {
+        id: id as string,
+        date: dateLabel,
+        label: (name as string) || agendaTypeLabelOf(type, t, t('agenda')),
+      };
+    })
+    .filter(({ date, label }) => Boolean(date && label));
+  const { nextItem: nextAgendaItem, countdownTo } = useLiveCountdownState(
+    agendaItems,
+    startTime,
+    endTime,
+  );
+  const countdownLabel = nextAgendaItem
+    ? agendaTypeLabelOf(nextAgendaItem.type, t, t('agenda'))
+    : t('event_duration');
+  const enrollmentPhase = agendaItems.find(
+    ({ type }) => normalizeAgendaType(type) === 'enrollment',
+  );
+  const formationPhase = agendaItems.find(({ type }) => normalizeAgendaType(type) === 'formation');
+  const competitionPhase = agendaItems.find(
+    ({ type }) => normalizeAgendaType(type) === 'competition',
+  );
+  const evaluationPhase = agendaItems.find(
+    ({ type }) => normalizeAgendaType(type) === 'evaluation',
+  );
+  const scheduleNarrativeLead = [
+    enrollmentPhase &&
+      `${t('enrollment')} ${daysBetween(enrollmentPhase.startedAt, enrollmentPhase.endedAt)}${t('countdown_days')}`,
+    formationPhase &&
+      `${t('formation')} ${daysBetween(formationPhase.startedAt, formationPhase.endedAt)}${t('countdown_days')}`,
+    competitionPhase &&
+      `${t('competition')} ${daysBetween(competitionPhase.startedAt, competitionPhase.endedAt)}${t('countdown_days')}`,
+    evaluationPhase &&
+      `${t('evaluation')} ${daysBetween(evaluationPhase.startedAt, evaluationPhase.endedAt)}${t('countdown_days')}`,
+  ]
+    .filter(Boolean)
+    .join('，');
+
+  const formGroups = FormButtonBar.flatMap<FormGroupView>(key => {
+    const list = (formMap[key] || []).filter(isPublicForm);
+
+    return list[0]
+      ? [
+          {
+            key,
+            eyebrow: buildFormSectionMeta(i18n)[key].eyebrow,
+            title: buildFormSectionMeta(i18n)[key].title,
+            description: buildFormSectionMeta(i18n)[key].description,
+            links: list.map(({ name, shared_url }) => ({
+              label: name as string,
+              href: shared_url,
+              external: true as const,
+            })),
+          },
+        ]
+      : [];
+  });
+  const primaryForm =
+    formGroups.find(({ key }) => key === 'Person') ||
+    formGroups.find(({ key }) => key === 'Project') ||
+    formGroups[0];
+  const heroPrimaryAction = primaryForm
+    ? {
+        label: heroPrimaryActionLabel,
+        href: primaryForm.links[0].href,
+        external: true as const,
+      }
+    : { label: t('event_description'), href: '#overview' };
+  const secondaryForm =
+    formGroups.find(({ key }) => key === 'Project' && key !== primaryForm?.key) ||
+    formGroups.find(({ key }) => key !== primaryForm?.key);
+  const formPreview =
+    formGroups
+      .map(({ eyebrow }) => eyebrow)
       .filter(Boolean)
-      .join('，');
+      .slice(0, 2)
+      .join(' · ') || t('hackathon_action_hub');
+  const actionHubFacts = [
+    eventRange || t('event_duration'),
+    locationText,
+    ...scheduleOverviewPills.slice(0, 2),
+    formPreview,
+  ]
+    .filter(Boolean)
+    .slice(0, 4);
 
-    const formGroups = FormButtonBar.flatMap<FormGroupView>(key => {
-      const list = (formMap[key] || []).filter(isPublicForm);
+  const highlightCards = buildHighlightCards(i18n, {
+    agendaItems,
+    eventRange,
+    organizations,
+    prizes,
+    templates,
+  });
 
-      return list[0]
-        ? [
-            {
-              key,
-              eyebrow: buildFormSectionMeta(i18n)[key].eyebrow,
-              title: buildFormSectionMeta(i18n)[key].title,
-              description: buildFormSectionMeta(i18n)[key].description,
-              links: list.map(({ name, shared_url }) => ({
-                label: name as string,
-                href: shared_url,
-                external: true as const,
-              })),
-            },
-          ]
-        : [];
-    });
-    const primaryForm =
-      formGroups.find(({ key }) => key === 'Person') ||
-      formGroups.find(({ key }) => key === 'Project') ||
-      formGroups[0];
-    const heroPrimaryAction = primaryForm
-      ? {
-          label: heroPrimaryActionLabel,
-          href: primaryForm.links[0].href,
-          external: true as const,
-        }
-      : { label: t('event_description'), href: '#overview' };
-    const secondaryForm =
-      formGroups.find(({ key }) => key === 'Project' && key !== primaryForm?.key) ||
-      formGroups.find(({ key }) => key !== primaryForm?.key);
-    const formPreview =
-      formGroups
-        .map(({ eyebrow }) => eyebrow)
-        .filter(Boolean)
-        .slice(0, 2)
-        .join(' · ') || t('hackathon_action_hub');
-    const actionHubFacts = [
-      eventRange || t('event_duration'),
-      locationText,
-      ...scheduleOverviewPills.slice(0, 2),
-      formPreview,
-    ]
-      .filter(Boolean)
-      .slice(0, 4);
+  const scheduleItems = buildScheduleItems(i18n, { agendaItems, locationText });
 
-    const highlightCards = buildHighlightCards(i18n, {
-      agendaItems,
-      eventRange,
-      organizations,
-      prizes,
-      templates,
-    });
+  const prizeItems = buildPrizeItems(i18n, prizes);
 
-    const scheduleItems = buildScheduleItems(i18n, { agendaItems, locationText });
+  const organizationItems = buildOrganizationItems(organizations);
+  const judgingCriteria = buildJudgingCriteria(i18n);
+  const supportAction = organizations.find(({ link }) => Boolean(link))?.link
+    ? {
+        label: t('hackathon_support_action'),
+        href: organizations.find(({ link }) => Boolean(link))!.link as string,
+        external: true,
+      }
+    : undefined;
 
-    const prizeItems = buildPrizeItems(i18n, prizes);
+  const templateItems = buildTemplateItems(i18n, templates);
 
-    const organizationItems = buildOrganizationItems(organizations);
-    const judgingCriteria = buildJudgingCriteria(i18n);
-    const supportAction = organizations.find(({ link }) => Boolean(link))?.link
-      ? {
-          label: t('hackathon_support_action'),
-          href: organizations.find(({ link }) => Boolean(link))!.link as string,
-          external: true,
-        }
-      : undefined;
+  const projectItems = buildProjectItems(i18n, { projects, activity });
 
-    const templateItems = buildTemplateItems(i18n, templates);
+  const participantItems = buildParticipantItems(people);
+  const resourceSummary = previewText(
+    [templates[0]?.name, projects[0]?.name, organizations[0]?.name].filter(Boolean),
+    t('hackathon_resource_zone_subtitle'),
+  );
+  const faqItems = buildFAQItems(i18n, {
+    eventRange,
+    locationText,
+    organizationsCount: organizations.length,
+    primaryForm,
+    projectsCount: projects.length,
+    resourceSummary,
+    scheduleOverviewPills,
+    secondaryForm,
+    templatesCount: templates.length,
+  });
 
-    const projectItems = buildProjectItems(i18n, { projects, activity });
-
-    const participantItems = buildParticipantItems(people);
-    const resourceSummary = previewText(
-      [templates[0]?.name, projects[0]?.name, organizations[0]?.name].filter(Boolean),
-      t('hackathon_resource_zone_subtitle'),
-    );
-    const faqItems = buildFAQItems(i18n, {
-      eventRange,
-      locationText,
-      organizationsCount: organizations.length,
-      primaryForm,
-      projectsCount: projects.length,
-      resourceSummary,
-      scheduleOverviewPills,
-      secondaryForm,
-      templatesCount: templates.length,
-    });
-
-    return (
-      <div
-        style={{
-          background:
-            'radial-gradient(circle at top left, rgba(44, 232, 255, 0.18), transparent 32%),' +
-            'radial-gradient(circle at 85% 12%, rgba(255, 120, 186, 0.15), transparent 24%),' +
-            'linear-gradient(180deg, #0b1328 0%, #091022 48%, #050814 100%)',
-        }}
-      >
-        <PageHead title={name as string} />
+  return (
+    <div
+      style={{
+        background:
+          'radial-gradient(circle at top left, rgba(44, 232, 255, 0.18), transparent 32%),' +
+          'radial-gradient(circle at 85% 12%, rgba(255, 120, 186, 0.15), transparent 24%),' +
+          'linear-gradient(180deg, #0b1328 0%, #091022 48%, #050814 100%)',
+      }}
+    >
+      <PageHead title={name as string} />
 
       <HackathonHero
         badges={heroBadges}
