@@ -41,9 +41,19 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
   cache(),
   errorLogger,
   async ({ params }) => {
-    const activity = await new ActivityModel().getOne(params!.id);
+    if (!params?.id || !params?.tid) return { notFound: true, props: {} };
 
-    const { appId, tableIdMap } = activity.databaseSchema;
+    const activity = await new ActivityModel().getOne(params!.id);
+    const { appId, tableIdMap } = activity.databaseSchema || {};
+
+    if (
+      !appId ||
+      !tableIdMap?.Project ||
+      !tableIdMap?.Agenda ||
+      !tableIdMap?.Member ||
+      !tableIdMap?.Product
+    )
+      return { notFound: true, props: {} };
 
     const project = await new ProjectModel(appId, tableIdMap.Project).getOne(params!.tid);
 
@@ -93,7 +103,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(
       summary: activitySummary,
       type: activityType,
     } = activity;
-    const { forms, formLinkMap } = databaseSchema;
+    const { forms } = databaseSchema;
     const {
       name: displayName,
       summary: description,
@@ -105,8 +115,9 @@ const ProjectPage: FC<ProjectPageProps> = observer(
     } = project;
     const creator = userOf(createdBy);
     const displayTitle = firstTextOf(displayName) || t('projects');
+    const projectDescription = textListOf(description).join(' · ');
     const projectSummary = compactSummaryOf(
-      description,
+      projectDescription,
       firstTextOf(activitySummary) || displayTitle,
       140,
     );
@@ -146,7 +157,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(
       (forms?.Person || []).filter(isPublicForm)[0] ||
       (forms?.Project || []).filter(isPublicForm)[0] ||
       publicForms[0];
-    const scoreForm = Object.values(formLinkMap?.Evaluation || {})[0];
+    const scoreForm = (forms?.Evaluation || []).find(isPublicForm);
     const currentRoute = [
       { title: activityName as string, href: ActivityModel.getLink(activity) },
       { title: displayTitle },
@@ -172,7 +183,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(
       rankText ? `#${rankText}` : '',
       scoreText ? `${t('score')} · ${scoreText}` : '',
     ].filter(Boolean);
-    const creatorText = [creator?.name, creator?.email].filter(Boolean).join(' · ');
+    const creatorText = creator?.name || '';
     const heroPrimaryAction = primaryForm
       ? {
           label: t('hackathon_register_now'),
@@ -378,9 +389,9 @@ const ProjectPage: FC<ProjectPageProps> = observer(
                 <article className={styles.creatorCard}>
                   <span className={styles.creatorLabel}>{t('created_by')}</span>
                   <h3 className={styles.creatorValue}>{creator?.name || '-'}</h3>
-                  <p className={styles.creatorText}>{creator?.email || locationText}</p>
+                  <p className={styles.creatorText}>{locationText}</p>
 
-                  {scoreText && scoreForm && (
+                  {scoreForm && (
                     <Button className={styles.scoreButton} onClick={() => setShowScoreModal(true)}>
                       {t('score')}
                     </Button>
@@ -407,7 +418,11 @@ const ProjectPage: FC<ProjectPageProps> = observer(
           </Modal.Header>
           <Modal.Body>
             <Ratio aspectRatio="16x9">
-              <iframe className="w-100 h-100 border-0" title={t('score')} src={scoreForm} />
+              <iframe
+                className="w-100 h-100 border-0"
+                title={t('score')}
+                src={scoreForm?.shared_url}
+              />
             </Ratio>
           </Modal.Body>
         </Modal>
