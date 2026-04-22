@@ -63,6 +63,7 @@ import {
   normalizeAgendaType,
   previewText,
   textListOf,
+  timeOf,
 } from '../../components/Activity/Hackathon/utility';
 
 interface HackathonDetailProps {
@@ -126,10 +127,16 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
   const { forms } = databaseSchema;
   const formMap = (forms || {}) as Partial<Record<FormGroupKey, TableFormView[]>>;
   const summaryText = textListOf(summary).join(' · ') || firstTextOf(summary);
-  const agendaItems = [...agenda].sort(
-    ({ startedAt: left }, { startedAt: right }) =>
-      new Date((left as string) || 0).getTime() - new Date((right as string) || 0).getTime(),
-  );
+  const agendaItems = [...agenda].sort(({ startedAt: left }, { startedAt: right }) => {
+    const leftTime = timeOf(left);
+    const rightTime = timeOf(right);
+
+    if (!Number.isFinite(leftTime) && !Number.isFinite(rightTime)) return 0;
+    if (!Number.isFinite(leftTime)) return 1;
+    if (!Number.isFinite(rightTime)) return -1;
+
+    return leftTime - rightTime;
+  });
   const hostTags = (host as string[] | undefined)?.slice(0, 2) || [];
   const eventRange = formatPeriod(startTime, endTime);
   const locationText = (location as TableCellLocation | undefined)?.full_address || '-';
