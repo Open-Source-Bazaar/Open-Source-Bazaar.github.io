@@ -18,6 +18,7 @@ export default {
   // Search
   keywords: '关键词',
   search_results: '搜索结果',
+  breadcrumb: '面包屑导航',
 
   // Scroll List
   load_more: '加载更多……',
