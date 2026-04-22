@@ -67,15 +67,15 @@ export const formatPeriod = (startedAt?: TableCellValue, endedAt?: TableCellValu
   [formatMoment(startedAt), formatMoment(endedAt)].filter(Boolean).join(' - ');
 
 export const timeOf = (value?: TableCellValue) => {
-  if (
-    value == null ||
-    (typeof value === 'string' && !value.trim()) ||
-    Array.isArray(value) ||
-    (typeof value === 'object' && !(value instanceof Date))
-  )
-    return NaN;
+  if (value instanceof Date) return value.getTime();
 
-  const time = new Date(value as string | number | Date).getTime();
+  if (typeof value === 'number') return Number.isFinite(value) ? value : NaN;
+
+  const text = firstTextOf(value as TextListLike);
+
+  if (!text) return NaN;
+
+  const time = Date.parse(text);
 
   return Number.isFinite(time) ? time : NaN;
 };
