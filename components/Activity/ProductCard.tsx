@@ -12,10 +12,16 @@ export type ProductCardProps = Product & Omit<CardProps, 'id' | 'title'>;
 export const ProductCard: FC<ProductCardProps> = observer(
   ({ className = '', id, createdAt, name, sourceLink, link = sourceLink, summary, ...props }) => {
     const createdAtValue = Number(createdAt);
-    const createdAtISO = Number.isFinite(createdAtValue)
-      ? new Date(createdAtValue).toJSON()
+    const parsedCreatedAtValue =
+      typeof createdAt === 'string' && !Number.isFinite(createdAtValue)
+        ? Date.parse(createdAt)
+        : createdAtValue;
+    const createdAtISO = Number.isFinite(parsedCreatedAtValue)
+      ? new Date(parsedCreatedAtValue).toJSON()
       : undefined;
-    const createdAtText = Number.isFinite(createdAtValue) ? formatDate(createdAtValue) : '';
+    const createdAtText = Number.isFinite(parsedCreatedAtValue)
+      ? formatDate(parsedCreatedAtValue)
+      : '';
 
     return (
       <Card className={`${styles.projectCard} ${className}`} {...props}>
