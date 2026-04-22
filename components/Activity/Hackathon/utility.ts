@@ -40,8 +40,50 @@ type TextListLike = TextLike | TextLike[];
 const textOf = (value: TextLike) => {
   if (!value) return '';
 
-  if (typeof value === 'object' && !Array.isArray(value))
-    return 'name' in value ? (value.name || '').trim() : '';
+  if (typeof value === 'object' && !Array.isArray(value)) {
+    const {
+      name,
+      text,
+      value: primitiveValue,
+      displayName,
+      display_name,
+      title,
+      content,
+      plainText,
+      plain_text,
+      user,
+    } = value as NamedLike & {
+      text?: string | null;
+      value?: string | number | null;
+      displayName?: string | null;
+      display_name?: string | null;
+      title?: string | null;
+      content?: string | null;
+      plainText?: string | null;
+      plain_text?: string | null;
+      user?: {
+        name?: string | null;
+        displayName?: string | null;
+        display_name?: string | null;
+      } | null;
+    };
+    const candidate = [
+      name,
+      text,
+      primitiveValue,
+      displayName,
+      display_name,
+      title,
+      content,
+      plainText,
+      plain_text,
+      user?.displayName,
+      user?.display_name,
+      user?.name,
+    ].find(item => item !== null && item !== undefined && `${item}`.trim());
+
+    return candidate === null || candidate === undefined ? '' : `${candidate}`.trim();
+  }
 
   const text = value.toString().trim();
 
@@ -111,7 +153,7 @@ export const resolveCountdownState = <T extends CountdownWindow>(
 
 export const previewText = (items: TableCellValue[], fallback: string) =>
   items
-    .map(item => item?.toString())
+    .map(item => textOf(item))
     .filter(Boolean)
     .slice(0, 2)
     .join(' · ') || fallback;
@@ -146,10 +188,10 @@ export const compactSummaryOf = (
 ) => {
   const source = Array.isArray(text)
     ? text
-        .map(item => item?.toString())
+        .map(item => textOf(item))
         .filter(Boolean)
         .join(' · ')
-    : text?.toString() || '';
+    : textOf(text);
   const normalized = source.replace(/\s+/g, ' ').trim();
 
   if (!normalized) return fallback;
