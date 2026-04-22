@@ -11,11 +11,14 @@ export type ProductCardProps = Product & Omit<CardProps, 'id' | 'title'>;
 
 export const ProductCard: FC<ProductCardProps> = observer(
   ({ className = '', id, createdAt, name, sourceLink, link = sourceLink, summary, ...props }) => {
-    const createdAtValue = Number(createdAt);
     const parsedCreatedAtValue =
-      typeof createdAt === 'string' && !Number.isFinite(createdAtValue)
-        ? Date.parse(createdAt)
-        : createdAtValue;
+      createdAt === null || createdAt === undefined || createdAt === ''
+        ? NaN
+        : typeof createdAt === 'string'
+          ? Number.isFinite(Number(createdAt))
+            ? Number(createdAt)
+            : Date.parse(createdAt)
+          : Number(createdAt);
     const createdAtISO = Number.isFinite(parsedCreatedAtValue)
       ? new Date(parsedCreatedAtValue).toJSON()
       : undefined;
