@@ -3,20 +3,12 @@ import { TableCellLocation, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext, useMemo, useState } from 'react';
-import {
-  Breadcrumb,
-  Button,
-  Card,
-  Col,
-  Container,
-  Modal,
-  Ratio,
-  Row,
-} from 'react-bootstrap';
+import { Breadcrumb, Button, Card, Col, Container, Modal, Ratio, Row } from 'react-bootstrap';
 
 import { CommentBox } from '../../../../components/Activity/CommentBox';
 import { buildCountdownUnitLabels } from '../../../../components/Activity/Hackathon/constant';
 import { HackathonHero } from '../../../../components/Activity/Hackathon/Hero';
+import { useLiveCountdownState } from '../../../../components/Activity/Hackathon/useLiveCountdownState';
 import {
   agendaTypeLabelOf,
   compactDateKeyOf,
@@ -26,7 +18,6 @@ import {
   formatPeriod,
   isPublicForm,
   relationNameOf,
-  resolveCountdownState,
   textListOf,
   userOf,
 } from '../../../../components/Activity/Hackathon/utility';
@@ -74,7 +65,6 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
         agenda,
         members,
         products,
-        agendaReferenceTime: Date.now(),
       },
     };
   },
@@ -86,11 +76,10 @@ interface ProjectPageProps {
   project: Project;
   members: Member[];
   products: Product[];
-  agendaReferenceTime: number;
 }
 
 const ProjectPage: FC<ProjectPageProps> = observer(
-  ({ activity, agenda, project, members, products, agendaReferenceTime }) => {
+  ({ activity, agenda, project, members, products }) => {
     const { t } = useContext(I18nContext);
     const [showScoreModal, setShowScoreModal] = useState(false);
 
@@ -116,8 +105,11 @@ const ProjectPage: FC<ProjectPageProps> = observer(
     } = project;
     const creator = userOf(createdBy);
     const displayTitle = firstTextOf(displayName) || t('projects');
-    const projectSummary =
-      compactSummaryOf(description, firstTextOf(activitySummary) || displayTitle, 140);
+    const projectSummary = compactSummaryOf(
+      description,
+      firstTextOf(activitySummary) || displayTitle,
+      140,
+    );
     const locationText = (location as TableCellLocation | undefined)?.full_address || '-';
     const eventRange = formatPeriod(startTime, endTime) || locationText;
     const groupName = relationNameOf(group);
@@ -151,9 +143,9 @@ const ProjectPage: FC<ProjectPageProps> = observer(
       [forms],
     );
     const primaryForm =
-      ((forms?.Person || []).filter(isPublicForm)[0] ||
-        (forms?.Project || []).filter(isPublicForm)[0] ||
-        publicForms[0]);
+      (forms?.Person || []).filter(isPublicForm)[0] ||
+      (forms?.Project || []).filter(isPublicForm)[0] ||
+      publicForms[0];
     const scoreForm = Object.values(formLinkMap?.Evaluation || {})[0];
     const currentRoute = [
       { title: activityName as string, href: ActivityModel.getLink(activity) },
@@ -165,9 +157,8 @@ const ProjectPage: FC<ProjectPageProps> = observer(
       { href: '#works', label: t('team_works') },
       { href: '#creator', label: t('created_by') },
     ];
-    const { nextItem: nextAgendaItem, countdownTo } = resolveCountdownState(
+    const { nextItem: nextAgendaItem, countdownTo } = useLiveCountdownState(
       agendaItems,
-      agendaReferenceTime,
       startTime,
       endTime,
     );
@@ -224,7 +215,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(
               title: compactSummaryOf(projectSummary, displayTitle, 40),
               description: creatorText || locationText,
             }}
-            visualChip={groupName || ((activityType as string) || t('projects'))}
+            visualChip={groupName || (activityType as string) || t('projects')}
             visualCopy={eventRange || locationText}
             visualKicker={t('main_visual')}
             visualTitle={compactSummaryOf(projectSummary, displayTitle, 52)}
@@ -258,7 +249,9 @@ const ProjectPage: FC<ProjectPageProps> = observer(
                   {groupName && <li className={styles.metaItem}>{groupName}</li>}
                   {prizeText && <li className={styles.metaItem}>{prizeText}</li>}
                   {rankText && <li className={styles.metaItem}>#{rankText}</li>}
-                  {scoreText && <li className={styles.metaItem}>{`${t('score')} · ${scoreText}`}</li>}
+                  {scoreText && (
+                    <li className={styles.metaItem}>{`${t('score')} · ${scoreText}`}</li>
+                  )}
                   <li className={styles.metaItem}>{locationText}</li>
                 </ul>
               </article>
