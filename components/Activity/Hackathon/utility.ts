@@ -39,6 +39,7 @@ type TextListLike = TextLike | TextLike[];
 
 const textOf = (value: TextLike) => {
   if (value === null || value === undefined) return '';
+  if (typeof value === 'boolean') return '';
 
   if (typeof value === 'object' && !Array.isArray(value)) {
     const {
