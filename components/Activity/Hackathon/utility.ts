@@ -38,7 +38,7 @@ type TextLike = TableCellValue | NamedLike | null | undefined;
 type TextListLike = TextLike | TextLike[];
 
 const textOf = (value: TextLike) => {
-  if (!value) return '';
+  if (value === null || value === undefined) return '';
 
   if (typeof value === 'object' && !Array.isArray(value)) {
     const {
@@ -140,13 +140,15 @@ export const resolveCountdownState = <T extends CountdownWindow>(
     return Number.isFinite(started) && Number.isFinite(ended) && referenceTime <= ended;
   });
   const nextStartedAt = timeOf(nextItem?.startedAt);
+  const nextCountdownTarget =
+    Number.isFinite(nextStartedAt) && nextStartedAt > referenceTime
+      ? nextItem?.startedAt
+      : nextItem?.endedAt;
+  const fallbackCountdownTarget = timeOf(startTime) > referenceTime ? startTime : endTime;
   const countdownTo =
-    (Number.isFinite(nextStartedAt) && nextStartedAt > referenceTime
-      ? (nextItem?.startedAt as string | undefined)
-      : (nextItem?.endedAt as string | undefined)) ||
-    (timeOf(startTime) > referenceTime
-      ? (startTime as string | undefined)
-      : (endTime as string | undefined));
+    firstTextOf(nextCountdownTarget as TextListLike) ||
+    firstTextOf(fallbackCountdownTarget as TextListLike) ||
+    undefined;
 
   return { nextItem, countdownTo };
 };
