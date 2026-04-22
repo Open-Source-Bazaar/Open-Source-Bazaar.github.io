@@ -67,7 +67,15 @@ export const formatPeriod = (startedAt?: TableCellValue, endedAt?: TableCellValu
   [formatMoment(startedAt), formatMoment(endedAt)].filter(Boolean).join(' - ');
 
 export const timeOf = (value?: TableCellValue) => {
-  const time = new Date((value as string) || 0).getTime();
+  if (
+    value == null ||
+    (typeof value === 'string' && !value.trim()) ||
+    Array.isArray(value) ||
+    (typeof value === 'object' && !(value instanceof Date))
+  )
+    return NaN;
+
+  const time = new Date(value as string | number | Date).getTime();
 
   return Number.isFinite(time) ? time : NaN;
 };
