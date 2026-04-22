@@ -157,7 +157,8 @@ const ProjectPage: FC<ProjectPageProps> = observer(
         Object.values(forms || {})
           .flat()
           .filter((form): form is TableFormView => Boolean(form))
-          .filter(isPublicForm),
+          .filter(isPublicForm)
+          .filter(({ shared_url }) => Boolean(shared_url)),
       [forms],
     );
     const primaryForm =
