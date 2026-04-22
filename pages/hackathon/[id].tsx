@@ -81,14 +81,14 @@ export const getServerSideProps = compose<{ id: string }>(
   cache(),
   errorLogger,
   async ({ params }) => {
-    if (!params?.id) return { notFound: true, props: {} };
+    if (!params?.id) return { notFound: true };
 
     const activity = await new ActivityModel().getOne(params!.id);
     const { appId, tableIdMap } = activity.databaseSchema || {};
 
-    if (!appId || !tableIdMap) return { notFound: true, props: {} };
+    if (!appId || !tableIdMap) return { notFound: true };
 
-    for (const key of RequiredTableKeys) if (!tableIdMap[key]) return { notFound: true, props: {} };
+    for (const key of RequiredTableKeys) if (!tableIdMap[key]) return { notFound: true };
 
     const [people, organizations, agenda, prizes, templates, projects] = await Promise.all([
       new PersonModel(appId, tableIdMap.Person).getAll(),
