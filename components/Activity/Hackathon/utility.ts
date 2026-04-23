@@ -128,6 +128,12 @@ export interface CountdownWindow {
   endedAt?: TableCellValue;
 }
 
+const countdownTextOf = (value?: TableCellValue) => {
+  const time = timeOf(value);
+
+  return Number.isFinite(time) ? new Date(time).toISOString() : undefined;
+};
+
 export const resolveCountdownState = <T extends CountdownWindow>(
   items: T[],
   referenceTime: number,
@@ -146,10 +152,7 @@ export const resolveCountdownState = <T extends CountdownWindow>(
       ? nextItem?.startedAt
       : nextItem?.endedAt;
   const fallbackCountdownTarget = timeOf(startTime) > referenceTime ? startTime : endTime;
-  const countdownTo =
-    firstTextOf(nextCountdownTarget as TextListLike) ||
-    firstTextOf(fallbackCountdownTarget as TextListLike) ||
-    undefined;
+  const countdownTo = countdownTextOf(nextCountdownTarget) || countdownTextOf(fallbackCountdownTarget);
 
   return { nextItem, countdownTo };
 };
