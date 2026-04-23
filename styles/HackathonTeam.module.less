@@ -9,28 +9,90 @@
 
 .section-frame();
 
-.section {
-  scroll-margin-top: 5rem;
+.heroSection {
+  padding: clamp(1.5rem, 4vw, 2.5rem) 0 clamp(2rem, 4vw, 3rem);
+  color: @copy;
 }
 
-.introPanel,
-.metricCard,
-.memberCard,
-.summaryCard,
-.creatorCard,
+.heroShell {
+  .panel-card();
+  padding: clamp(1.3rem, 2.6vw, 2rem);
+}
+
+.heroMain {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.heroNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.heroNavLink {
+  .chip();
+  padding: 0.45rem 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.82rem;
+  text-decoration: none;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.heroTagRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.heroEyebrow {
+  .eyebrow();
+  color: @cyan;
+}
+
+.heroTag {
+  .chip();
+  padding: 0.42rem 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem;
+}
+
+.heroActionRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.primaryAction {
+  .button-primary();
+}
+
+.secondaryAction {
+  .button-ghost();
+}
+
 .emptyState {
   .panel-card();
 }
 
-.introPanel,
+.section {
+  scroll-margin-top: 5rem;
+}
+
+.metricCard,
+.memberCard,
+.summaryCard,
+.creatorCard {
+  .panel-card();
+}
+
 .summaryCard,
 .creatorCard {
   padding: 1.5rem;
-}
-
-.introPanel {
-  display: grid;
-  gap: 1rem;
 }
 
 .breadcrumb {
@@ -55,17 +117,19 @@
 .introTitle {
   margin: 0;
   color: #fff;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.02;
   font-family: @heading;
-  font-size: clamp(1.35rem, 2vw, 1.75rem);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .introText {
   margin: 0;
+  max-width: 60ch;
   color: @muted;
   font-size: 1rem;
-  line-height: 1.8;
+  line-height: 1.7;
 }
 
 .metaList {
@@ -84,15 +148,14 @@
   font-size: 0.88rem;
 }
 
-.metricGrid,
+.metricGridCompact,
 .creatorGrid {
   display: grid;
   gap: 1.25rem;
 }
 
-.metricGrid {
+.metricGridCompact {
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-top: 1.5rem;
 }
 
 .creatorGrid {
@@ -100,8 +163,8 @@
 }
 
 .metricCard {
-  padding: 1.2rem;
-  min-height: 152px;
+  padding: 1rem;
+  min-height: 120px;
 }
 
 .metricLabel,
@@ -114,9 +177,9 @@
   display: block;
   margin-top: 0.9rem;
   color: #fff;
-  font-family: @heading;
   font-size: clamp(1.5rem, 2.6vw, 2.1rem);
   line-height: 1.1;
+  font-family: @heading;
 }
 
 .metricMeta {
@@ -128,8 +191,8 @@
 }
 
 .memberCard {
-  height: 100%;
   padding: 1.35rem;
+  height: 100%;
 }
 
 .memberTop {
@@ -140,10 +203,10 @@
 
 .avatar {
   flex-shrink: 0;
+  box-shadow: 0 0 24px rgba(44, 232, 255, 0.14);
+  border: 1px solid rgba(44, 232, 255, 0.26);
   width: 4rem;
   height: 4rem;
-  border: 1px solid rgba(44, 232, 255, 0.26);
-  box-shadow: 0 0 24px rgba(44, 232, 255, 0.14);
 }
 
 .memberName {
@@ -254,8 +317,8 @@
 .emptyState {
   padding: 2rem 1.5rem;
   color: @muted;
-  text-align: center;
   font-size: 1rem;
+  text-align: center;
 }
 
 .commentWrap {
@@ -286,13 +349,21 @@
 }
 
 @media (max-width: 991px) {
-  .metricGrid {
+  .metricGridCompact {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 767px) {
-  .metricGrid {
+  .heroSection {
+    padding-top: 1rem;
+  }
+
+  .introTitle {
+    font-size: clamp(1.7rem, 10vw, 2.4rem);
+  }
+
+  .metricGridCompact {
     grid-template-columns: 1fr;
   }
 }
