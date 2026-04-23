@@ -6,28 +6,18 @@ import { FC, useContext, useMemo, useState } from 'react';
 import { Breadcrumb, Button, Card, Col, Container, Modal, Ratio, Row } from 'react-bootstrap';
 
 import { CommentBox } from '../../../../components/Activity/CommentBox';
-import { buildCountdownUnitLabels } from '../../../../components/Activity/Hackathon/constant';
-import { HackathonHero } from '../../../../components/Activity/Hackathon/Hero';
-import { useLiveCountdownState } from '../../../../components/Activity/Hackathon/useLiveCountdownState';
 import {
-  agendaTypeLabelOf,
-  compactDateKeyOf,
   compactSummaryOf,
   firstTextOf,
-  formatMoment,
-  formatPeriod,
   isPublicForm,
   relationNameOf,
   textListOf,
-  timeOf,
   userOf,
 } from '../../../../components/Activity/Hackathon/utility';
 import { ProductCard } from '../../../../components/Activity/ProductCard';
 import { PageHead } from '../../../../components/Layout/PageHead';
 import { Activity, ActivityModel } from '../../../../models/Activity';
 import {
-  Agenda,
-  AgendaModel,
   Member,
   MemberModel,
   Product,
@@ -35,7 +25,7 @@ import {
   Project,
   ProjectModel,
 } from '../../../../models/Hackathon';
-import { i18n, I18nContext } from '../../../../models/Translation';
+import { I18nContext } from '../../../../models/Translation';
 import styles from '../../../../styles/HackathonTeam.module.less';
 
 export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
@@ -50,7 +40,6 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
     if (
       !appId ||
       !tableIdMap?.Project ||
-      !tableIdMap?.Agenda ||
       !tableIdMap?.Member ||
       !tableIdMap?.Product
     )
@@ -59,8 +48,7 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
     const project = await new ProjectModel(appId, tableIdMap.Project).getOne(params!.tid);
 
     // Get approved members for this project
-    const [agenda, members, products] = await Promise.all([
-      new AgendaModel(appId, tableIdMap.Agenda).getAll(),
+    const [members, products] = await Promise.all([
       new MemberModel(appId, tableIdMap.Member).getAll({
         project: project.name as string,
         status: 'approved',
@@ -73,7 +61,6 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
       props: {
         activity,
         project,
-        agenda,
         members,
         products,
       },
@@ -83,24 +70,20 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
 
 interface ProjectPageProps {
   activity: Activity;
-  agenda: Agenda[];
   project: Project;
   members: Member[];
   products: Product[];
 }
 
 const ProjectPage: FC<ProjectPageProps> = observer(
-  ({ activity, agenda, project, members, products }) => {
+  ({ activity, project, members, products }) => {
     const { t } = useContext(I18nContext);
     const [showScoreModal, setShowScoreModal] = useState(false);
 
     const {
       name: activityName,
       databaseSchema,
-      image,
       location,
-      startTime,
-      endTime,
       summary: activitySummary,
       type: activityType,
     } = activity;
@@ -123,35 +106,10 @@ const ProjectPage: FC<ProjectPageProps> = observer(
       140,
     );
     const locationText = (location as TableCellLocation | undefined)?.full_address || '-';
-    const eventRange = formatPeriod(startTime, endTime) || locationText;
     const groupName = relationNameOf(group);
     const scoreText = firstTextOf(score);
     const rankText = firstTextOf(rank);
     const prizeText = firstTextOf(prize);
-    const agendaItems = [...agenda].sort(({ startedAt: left }, { startedAt: right }) => {
-      const leftTime = timeOf(left);
-      const rightTime = timeOf(right);
-
-      if (!Number.isFinite(leftTime) && !Number.isFinite(rightTime)) return 0;
-      if (!Number.isFinite(leftTime)) return 1;
-      if (!Number.isFinite(rightTime)) return -1;
-
-      return leftTime - rightTime;
-    });
-    const phaseBadges = agendaItems
-      .slice(0, 4)
-      .map(({ type, startedAt, endedAt }) => {
-        const phase = agendaTypeLabelOf(type, t, t('agenda'));
-        const start = compactDateKeyOf(startedAt);
-        const end = compactDateKeyOf(endedAt);
-        const period =
-          start && end && start !== end
-            ? `${start} - ${end}`
-            : start || end || formatMoment(startedAt);
-
-        return [phase, period].filter(Boolean).join(' ');
-      })
-      .filter(Boolean);
     const publicForms = useMemo(
       () =>
         Object.values(forms || {})
@@ -177,14 +135,6 @@ const ProjectPage: FC<ProjectPageProps> = observer(
       { href: '#works', label: t('team_works') },
       { href: '#creator', label: t('created_by') },
     ];
-    const { nextItem: nextAgendaItem, countdownTo } = useLiveCountdownState(
-      agendaItems,
-      startTime,
-      endTime,
-    );
-    const countdownLabel = nextAgendaItem
-      ? agendaTypeLabelOf(nextAgendaItem.type, t, t('agenda'))
-      : t('event_duration');
     const heroChips = [
       `${t('participants')} · ${members.length}`,
       `${t('products')} · ${products.length}`,
@@ -192,7 +142,6 @@ const ProjectPage: FC<ProjectPageProps> = observer(
       rankText ? `#${rankText}` : '',
       scoreText ? `${t('score')} · ${scoreText}` : '',
     ].filter(Boolean);
-    const creatorText = creator?.name || '';
     const heroPrimaryAction = primaryForm
       ? {
           label: t('hackathon_register_now'),
@@ -200,105 +149,104 @@ const ProjectPage: FC<ProjectPageProps> = observer(
           external: true as const,
         }
       : { label: t('hackathon_detail'), href: ActivityModel.getLink(activity) };
+    const quickMetrics = [
+      {
+        label: t('participants'),
+        value: String(members.length),
+        meta: t('team_members'),
+      },
+      {
+        label: t('products'),
+        value: String(products.length),
+        meta: t('team_works'),
+      },
+      {
+        label: t('created_by'),
+        value: creator?.name || '-',
+        meta: groupName || displayTitle,
+      },
+      {
+        label: t('score'),
+        value: scoreText || '--',
+        meta: [prizeText, rankText ? `#${rankText}` : ''].filter(Boolean).join(' · ') || '--',
+      },
+    ];
 
     return (
       <>
         <PageHead title={`${displayTitle} - ${activityName}`} />
 
         <div className={styles.page}>
-          <HackathonHero
-            badges={phaseBadges}
-            bottomCard={
-              nextAgendaItem
-                ? {
-                    eyebrow: t('event_duration'),
-                    title: eventRange,
-                    description: agendaTypeLabelOf(nextAgendaItem.type, t, t('agenda')),
-                  }
-                : undefined
-            }
-            countdownLabel={countdownLabel}
-            countdownUnitLabels={buildCountdownUnitLabels({ t } as typeof i18n)}
-            countdownTo={countdownTo}
-            description={projectSummary}
-            image={image}
-            imageFallback={(activityType as string) || t('hackathon_detail')}
-            locationText={locationText}
-            name={`${displayTitle} ${t('hackathon_team_showcase')}`}
-            navigation={navigation}
-            primaryAction={heroPrimaryAction}
-            secondaryAction={{ label: t('team_works'), href: '#works' }}
-            chips={heroChips}
-            subtitle={activityName as string}
-            topCard={{
-              eyebrow: t('event_description'),
-              title: compactSummaryOf(projectSummary, displayTitle, 40),
-              description: creatorText || locationText,
-            }}
-            visualChip={groupName || (activityType as string) || t('projects')}
-            visualCopy={eventRange || locationText}
-            visualKicker={t('main_visual')}
-            visualTitle={compactSummaryOf(projectSummary, displayTitle, 52)}
-          />
-
-          <section id="overview" className={styles.section}>
+          <section id="overview" className={styles.heroSection}>
             <Container>
-              <header className={styles.sectionHeader}>
-                <h2 className={styles.sectionTitle}>{t('event_description')}</h2>
-                <p className={styles.sectionSubtitle}>{displayTitle}</p>
-                <div className={styles.accentLine} />
-              </header>
+              <div className={styles.heroShell}>
+                <div className={styles.heroMain}>
+                  <Breadcrumb aria-label={t('breadcrumb')} className={styles.breadcrumb}>
+                    {currentRoute.map(({ title, href }, index, { length }) => (
+                      <Breadcrumb.Item
+                        key={`${title}-${index}`}
+                        href={index === length - 1 ? undefined : href}
+                        active={index === length - 1}
+                      >
+                        {title}
+                      </Breadcrumb.Item>
+                    ))}
+                  </Breadcrumb>
 
-              <article className={styles.introPanel}>
-                <Breadcrumb aria-label={t('breadcrumb')} className={styles.breadcrumb}>
-                  {currentRoute.map(({ title, href }, index, { length }) => (
-                    <Breadcrumb.Item
-                      key={`${title}-${index}`}
-                      href={index === length - 1 ? undefined : href}
-                      active={index === length - 1}
+                  <nav className={styles.heroNav} aria-label={displayTitle}>
+                    {navigation.map(({ href, label }) => (
+                      <a key={`${href}-${label}`} className={styles.heroNavLink} href={href}>
+                        {label}
+                      </a>
+                    ))}
+                  </nav>
+
+                  <div className={styles.heroTagRow}>
+                    <span className={styles.heroEyebrow}>
+                      {(activityType as string) || t('hackathon_detail')}
+                    </span>
+                    {groupName && <span className={styles.heroTag}>{groupName}</span>}
+                    {prizeText && <span className={styles.heroTag}>{prizeText}</span>}
+                    {rankText && <span className={styles.heroTag}>#{rankText}</span>}
+                  </div>
+
+                  <h1 className={styles.introTitle}>{displayTitle}</h1>
+                  <p className={styles.introText}>{projectSummary}</p>
+
+                  <div className={styles.heroActionRow}>
+                    <a
+                      className={styles.primaryAction}
+                      href={heroPrimaryAction.href}
+                      {...(heroPrimaryAction.external && {
+                        target: '_blank',
+                        rel: 'noreferrer',
+                      })}
                     >
-                      {title}
-                    </Breadcrumb.Item>
-                  ))}
-                </Breadcrumb>
+                      {heroPrimaryAction.label}
+                    </a>
+                    <a className={styles.secondaryAction} href="#works">
+                      {t('team_works')}
+                    </a>
+                  </div>
 
-                <h3 className={styles.introTitle}>{displayTitle}</h3>
-                <p className={styles.introText}>{projectSummary}</p>
+                  <ul className={styles.metaList}>
+                    {heroChips.map(item => (
+                      <li key={item} className={styles.metaItem}>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
 
-                <ul className={styles.metaList}>
-                  {groupName && <li className={styles.metaItem}>{groupName}</li>}
-                  {prizeText && <li className={styles.metaItem}>{prizeText}</li>}
-                  {rankText && <li className={styles.metaItem}>#{rankText}</li>}
-                  {scoreText && (
-                    <li className={styles.metaItem}>{`${t('score')} · ${scoreText}`}</li>
-                  )}
-                  <li className={styles.metaItem}>{locationText}</li>
-                </ul>
-              </article>
-
-              <div className={styles.metricGrid}>
-                <article className={styles.metricCard}>
-                  <span className={styles.metricLabel}>{t('participants')}</span>
-                  <strong className={styles.metricValue}>{members.length}</strong>
-                  <span className={styles.metricMeta}>{t('team_members')}</span>
-                </article>
-                <article className={styles.metricCard}>
-                  <span className={styles.metricLabel}>{t('products')}</span>
-                  <strong className={styles.metricValue}>{products.length}</strong>
-                  <span className={styles.metricMeta}>{t('team_works')}</span>
-                </article>
-                <article className={styles.metricCard}>
-                  <span className={styles.metricLabel}>{t('event_location')}</span>
-                  <strong className={styles.metricValue}>
-                    {(location as TableCellLocation | undefined)?.name || '-'}
-                  </strong>
-                  <span className={styles.metricMeta}>{locationText}</span>
-                </article>
-                <article className={styles.metricCard}>
-                  <span className={styles.metricLabel}>{t('score')}</span>
-                  <strong className={styles.metricValue}>{scoreText || '--'}</strong>
-                  <span className={styles.metricMeta}>{eventRange}</span>
-                </article>
+                  <div className={styles.metricGridCompact}>
+                    {quickMetrics.map(({ label, value, meta }) => (
+                      <article key={`${label}-${value}`} className={styles.metricCard}>
+                        <span className={styles.metricLabel}>{label}</span>
+                        <strong className={styles.metricValue}>{value}</strong>
+                        <span className={styles.metricMeta}>{meta}</span>
+                      </article>
+                    ))}
+                  </div>
+                </div>
               </div>
             </Container>
           </section>
