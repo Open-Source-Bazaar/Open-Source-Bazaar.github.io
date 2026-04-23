@@ -3,7 +3,7 @@ import { TableCellLocation, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext, useMemo, useState } from 'react';
-import { Breadcrumb, Button, Card, Col, Container, Modal, Ratio, Row } from 'react-bootstrap';
+import { Breadcrumb, Button, Card, Col, Container, Modal, Nav, Ratio, Row } from 'react-bootstrap';
 
 import { CommentBox } from '../../../../components/Activity/CommentBox';
 import {
@@ -46,15 +46,18 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
       return { notFound: true };
 
     const project = await new ProjectModel(appId, tableIdMap.Project).getOne(params!.tid);
+    const projectName = firstTextOf(project.name);
+
+    if (!projectName) return { notFound: true };
 
     // Get approved members for this project
     const [members, products] = await Promise.all([
       new MemberModel(appId, tableIdMap.Member).getAll({
-        project: project.name as string,
+        project: projectName,
         status: 'approved',
       }),
       new ProductModel(appId, tableIdMap.Product).getAll({
-        project: project.name as string,
+        project: projectName,
       }),
     ]);
     return {
@@ -193,13 +196,15 @@ const ProjectPage: FC<ProjectPageProps> = observer(
                     ))}
                   </Breadcrumb>
 
-                  <nav className={styles.heroNav} aria-label={displayTitle}>
+                  <Nav as="ul" className={`${styles.heroNav} list-unstyled`} aria-label={displayTitle}>
                     {navigation.map(({ href, label }) => (
-                      <a key={`${href}-${label}`} className={styles.heroNavLink} href={href}>
-                        {label}
-                      </a>
+                      <Nav.Item as="li" key={`${href}-${label}`}>
+                        <Nav.Link className={styles.heroNavLink} href={href}>
+                          {label}
+                        </Nav.Link>
+                      </Nav.Item>
                     ))}
-                  </nav>
+                  </Nav>
 
                   <div className={styles.heroTagRow}>
                     <span className={styles.heroEyebrow}>
