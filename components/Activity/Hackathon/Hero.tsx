@@ -1,8 +1,11 @@
 import { TableCellValue } from 'mobx-lark';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC } from 'react';
 import { Container } from 'react-bootstrap';
 
+import { Agenda } from '../../../models/Hackathon';
 import { LarkImage } from '../../LarkImage';
+import { AgendaCountdown } from './AgendaCountdown';
+import { TimeUnit } from '../../Base/Countdown';
 import styles from './Hero.module.less';
 
 export type HackathonHeroNavItem = Record<'label' | 'href', string>;
@@ -22,13 +25,14 @@ export interface HackathonHeroProps extends Record<
   | 'imageFallback',
   string
 > {
+  agendaItems: Agenda[];
   badges: string[];
   bottomCard?: HackathonHeroCard;
   chips?: string[];
-  countdownLabel?: string;
-  countdownUnitLabels: string[];
-  countdownTo?: string;
+  countdownUnits: TimeUnit[];
+  endTime?: TableCellValue;
   image?: TableCellValue;
+  startTime?: TableCellValue;
   navigation: HackathonHeroNavItem[];
   primaryAction: HackathonHeroAction;
   secondaryAction: HackathonHeroAction;
@@ -74,38 +78,6 @@ const FloatingCard: FC<{
   </div>
 );
 
-const useCountdown = (countdownTo?: string) => {
-  const target = useMemo(() => {
-    const value = countdownTo ? new Date(countdownTo).getTime() : NaN;
-
-    return Number.isFinite(value) ? value : NaN;
-  }, [countdownTo]);
-  const [now, setNow] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (!Number.isFinite(target)) return;
-
-    setNow(Date.now());
-
-    const timer = window.setInterval(() => setNow(Date.now()), 1000);
-
-    return () => window.clearInterval(timer);
-  }, [target]);
-
-  return useMemo(() => {
-    if (!Number.isFinite(target) || now === null) return ['--', '--', '--', '--'];
-
-    const rest = Math.max(0, target - now);
-    const totalSeconds = Math.floor(rest / 1000);
-    const days = Math.floor(totalSeconds / 86400);
-    const hours = Math.floor((totalSeconds % 86400) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-
-    return [days, hours, minutes, seconds].map(value => String(value).padStart(2, '0'));
-  }, [now, target]);
-};
-
 const splitHeroTitle = (name: string, subtitle: string) => {
   const segments = name.split(/\s+/).filter(Boolean);
 
@@ -122,13 +94,13 @@ const splitHeroTitle = (name: string, subtitle: string) => {
 };
 
 export const HackathonHero: FC<HackathonHeroProps> = ({
+  agendaItems,
   badges,
   bottomCard,
   chips,
-  countdownLabel,
-  countdownUnitLabels,
-  countdownTo,
+  countdownUnits,
   description,
+  endTime,
   image,
   imageFallback,
   locationText,
@@ -136,6 +108,7 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
   navigation,
   primaryAction,
   secondaryAction,
+  startTime,
   subtitle,
   topCard,
   visualChip,
@@ -143,7 +116,6 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
   visualKicker,
   visualTitle,
 }) => {
-  const countdown = useCountdown(countdownTo);
   const title = splitHeroTitle(name, subtitle);
 
   return (
@@ -192,25 +164,12 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
 
             <p className={styles.description}>{description}</p>
 
-            {countdownTo && (
-              <div className={styles.countdownWrap}>
-                {countdownLabel && (
-                  <p className={`${styles.countdownLabel} m-0`}>{countdownLabel}</p>
-                )}
-
-                <ol className={`list-unstyled ${styles.countdownGrid} m-0`}>
-                  {countdown.map((value, index) => (
-                    <li
-                      key={`${index}-${countdownUnitLabels[index]}`}
-                      className={`${styles.countdownCell} d-flex flex-column justify-content-center align-items-center`}
-                    >
-                      <strong>{value}</strong>
-                      <span>{countdownUnitLabels[index]}</span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            )}
+            <AgendaCountdown
+              agendaItems={agendaItems}
+              endTime={endTime}
+              startTime={startTime}
+              units={countdownUnits}
+            />
 
             <nav className="d-flex flex-wrap gap-2 gap-md-3" aria-label={subtitle}>
               <HeroLink action={primaryAction} variant="primary" />
