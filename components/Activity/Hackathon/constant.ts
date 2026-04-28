@@ -91,13 +91,6 @@ export const heroNavigation = ({ t }: typeof i18n) => [
   { href: '#faq', label: t('common_questions') },
 ];
 
-export const buildCountdownUnitLabels = ({ t }: typeof i18n) => [
-  t('countdown_days'),
-  t('countdown_hours'),
-  t('countdown_minutes'),
-  t('countdown_seconds'),
-];
-
 export const buildHighlightCards = (
   { t }: typeof i18n,
   {

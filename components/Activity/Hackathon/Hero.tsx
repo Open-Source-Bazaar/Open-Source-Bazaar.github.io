@@ -2,8 +2,10 @@ import { TableCellValue } from 'mobx-lark';
 import { FC } from 'react';
 import { Container } from 'react-bootstrap';
 
+import { Agenda } from '../../../models/Hackathon';
 import { LarkImage } from '../../LarkImage';
-import { Countdown, TimeUnit } from './Countdown';
+import { AgendaCountdown } from './AgendaCountdown';
+import { TimeUnit } from './Countdown';
 import styles from './Hero.module.less';
 
 export type HackathonHeroNavItem = Record<'label' | 'href', string>;
@@ -23,13 +25,14 @@ export interface HackathonHeroProps extends Record<
   | 'imageFallback',
   string
 > {
+  agendaItems: Agenda[];
   badges: string[];
   bottomCard?: HackathonHeroCard;
   chips?: string[];
-  countdownLabel?: string;
-  countdownUnitLabels: string[];
-  countdownTo?: string;
+  countdownUnits: TimeUnit[];
+  endTime?: TableCellValue;
   image?: TableCellValue;
+  startTime?: TableCellValue;
   navigation: HackathonHeroNavItem[];
   primaryAction: HackathonHeroAction;
   secondaryAction: HackathonHeroAction;
@@ -42,8 +45,6 @@ const BadgeToneClass = [
   styles.heroBadgeGreen,
   styles.heroBadgeRose,
 ];
-
-const DEFAULT_UNIT_SCALES: TimeUnit['scale'][] = [24, 60, 60, 1000];
 
 const HeroLink: FC<{
   action: HackathonHeroAction;
@@ -93,13 +94,13 @@ const splitHeroTitle = (name: string, subtitle: string) => {
 };
 
 export const HackathonHero: FC<HackathonHeroProps> = ({
+  agendaItems,
   badges,
   bottomCard,
   chips,
-  countdownLabel,
-  countdownUnitLabels,
-  countdownTo,
+  countdownUnits,
   description,
+  endTime,
   image,
   imageFallback,
   locationText,
@@ -107,6 +108,7 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
   navigation,
   primaryAction,
   secondaryAction,
+  startTime,
   subtitle,
   topCard,
   visualChip,
@@ -162,21 +164,12 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
 
             <p className={styles.description}>{description}</p>
 
-            {countdownTo && (
-              <div className={styles.countdownWrap}>
-                {countdownLabel && (
-                  <p className={`${styles.countdownLabel} m-0`}>{countdownLabel}</p>
-                )}
-                <Countdown
-                  className={styles.countdownGrid}
-                  endTime={countdownTo}
-                  units={countdownUnitLabels.map((label, i) => ({
-                    scale: DEFAULT_UNIT_SCALES[i] ?? 1,
-                    label,
-                  }))}
-                />
-              </div>
-            )}
+            <AgendaCountdown
+              agendaItems={agendaItems}
+              endTime={endTime}
+              startTime={startTime}
+              units={countdownUnits}
+            />
 
             <nav className="d-flex flex-wrap gap-2 gap-md-3" aria-label={subtitle}>
               <HeroLink action={primaryAction} variant="primary" />

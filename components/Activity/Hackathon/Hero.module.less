@@ -179,54 +179,10 @@
   }
 }
 
-.countdownWrap {
-  display: grid;
-  gap: 0.75rem;
-  max-width: 520px;
-}
-
-.countdownLabel {
-  color: @muted;
-  font-size: 0.72rem;
-  font-family: @heading;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.countdownGrid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.8rem;
-
-  li {
-    gap: 0.7rem;
-    box-shadow:
-      inset 0 0 0 1px rgba(255, 255, 255, 0.03),
-      0 0 26px rgba(44, 232, 255, 0.08);
-    border: 1px solid rgba(44, 232, 255, 0.26);
-    border-radius: 18px;
-    background: linear-gradient(180deg, rgba(44, 232, 255, 0.08), rgba(44, 232, 255, 0.03));
-    min-height: 120px;
-
-    strong {
-      color: #fff;
-      font-size: clamp(2.3rem, 4vw, 3.8rem);
-      line-height: 1;
-      font-family: @heading;
-      letter-spacing: 0.08em;
-    }
-
-    span {
-      color: rgba(255, 255, 255, 0.72);
-      font-size: 0.82rem;
-      font-family: @heading;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-  }
-}
-
 .actionButton {
+  // prettier-ignore
+  .button-primary();
+
   box-shadow: 0 0 28px rgba(44, 232, 255, 0.14);
   border-color: rgba(44, 232, 255, 0.48);
   background: rgba(44, 232, 255, 0.08);
@@ -240,6 +196,9 @@
 }
 
 .actionButtonGhost {
+  // prettier-ignore
+  .button-ghost();
+
   border-color: rgba(255, 255, 255, 0.16);
   background: rgba(255, 255, 255, 0.03);
   color: rgba(255, 255, 255, 0.82);
@@ -441,17 +400,5 @@
 
   .heroBadge {
     font-size: 0.72rem;
-  }
-
-  .countdownGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    li {
-      min-height: 96px;
-
-      strong {
-        font-size: 2rem;
-      }
-    }
   }
 }

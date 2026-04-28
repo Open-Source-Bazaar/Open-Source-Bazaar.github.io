@@ -9,7 +9,6 @@ import {
 } from '../../components/Activity/Hackathon/ActionHub';
 import { HackathonAwards } from '../../components/Activity/Hackathon/Awards';
 import {
-  buildCountdownUnitLabels,
   buildFAQItems,
   buildFormSectionMeta,
   buildHighlightCards,
@@ -26,6 +25,7 @@ import {
   heroNavigation,
   RequiredTableKeys,
 } from '../../components/Activity/Hackathon/constant';
+import { TimeUnit } from '../../components/Activity/Hackathon/Countdown';
 import { HackathonFAQ } from '../../components/Activity/Hackathon/FAQ';
 import { HackathonHero } from '../../components/Activity/Hackathon/Hero';
 import { HackathonOverview } from '../../components/Activity/Hackathon/Overview';
@@ -43,7 +43,6 @@ import {
   isPublicForm,
   normalizeAgendaType,
   previewText,
-  resolveCountdownState,
   timeOf,
 } from '../../components/Activity/Hackathon/utility';
 import { PageHead } from '../../components/Layout/PageHead';
@@ -170,7 +169,12 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
     activityType ? `🎯 ${activityType as string}` : `🎯 ${t('hackathon')}`,
     ...scheduleOverviewPills.slice(0, 4),
   ].filter(Boolean) as string[];
-  const countdownUnitLabels = buildCountdownUnitLabels(i18n);
+  const countdownUnits: TimeUnit[] = [
+    { scale: 24, label: t('countdown_days') },
+    { scale: 60, label: t('countdown_hours') },
+    { scale: 60, label: t('countdown_minutes') },
+    { scale: 1000, label: t('countdown_seconds') },
+  ];
   const heroPrimaryActionLabel = t('hackathon_register_now');
   const scheduleKeyDates = agendaItems
     .slice(0, 6)
@@ -189,15 +193,6 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
       };
     })
     .filter(({ date, label }) => Boolean(date && label));
-  const { nextItem: nextAgendaItem, countdownTo } = resolveCountdownState(
-    agendaItems,
-    Date.now(),
-    startTime,
-    endTime,
-  );
-  const countdownLabel = nextAgendaItem
-    ? agendaTypeLabelOf(nextAgendaItem.type, t, t('agenda'))
-    : t('event_duration');
   const enrollmentPhase = agendaItems.find(
     ({ type }) => normalizeAgendaType(type) === 'enrollment',
   );
@@ -331,6 +326,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
       <PageHead title={name as string} />
 
       <HackathonHero
+        agendaItems={agendaItems}
         badges={heroBadges}
         bottomCard={
           agendaItems[0] || agendaItems[agendaItems.length - 1]
@@ -350,10 +346,9 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
               }
             : undefined
         }
-        countdownLabel={countdownLabel}
-        countdownUnitLabels={countdownUnitLabels}
-        countdownTo={countdownTo}
+        countdownUnits={countdownUnits}
         description={summaryText}
+        endTime={endTime}
         image={image}
         imageFallback={(activityType as string) || t('hackathon')}
         locationText={locationText}
@@ -361,6 +356,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
         navigation={heroNavigation(i18n)}
         primaryAction={heroPrimaryAction}
         secondaryAction={{ label: t('agenda'), href: '#schedule' }}
+        startTime={startTime}
         chips={heroStatChips}
         subtitle={(activityType as string) || t('hackathon_detail')}
         topCard={

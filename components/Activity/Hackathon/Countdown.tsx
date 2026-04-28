@@ -1,6 +1,8 @@
 import { computed, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent, reaction } from 'mobx-react-helper';
+import { HTMLAttributes } from 'react';
+import { Second, TimeData } from 'web-utility';
 
 export interface TimeUnit {
   scale: number;
@@ -12,11 +14,10 @@ interface TimeSection {
   label: string;
 }
 
-export interface CountdownProps {
-  className?: string;
-  endTime?: string | Date | number;
-  onEnd?: () => void;
+export interface CountdownProps extends HTMLAttributes<HTMLOListElement> {
   units: TimeUnit[];
+  endTime: TimeData;
+  onEnd?: (endTime: TimeData) => any;
 }
 
 @observer
@@ -24,21 +25,10 @@ export class Countdown extends ObservedComponent<CountdownProps> {
   @observable
   accessor rest = 0;
 
-  private timer?: number;
+  private timer = 0;
 
-  private get target() {
-    const { endTime } = this.observedProps;
-
-    if (!endTime) return NaN;
-
-    const ms =
-      typeof endTime === 'number'
-        ? endTime
-        : endTime instanceof Date
-          ? endTime.getTime()
-          : new Date(endTime).getTime();
-
-    return Number.isFinite(ms) ? ms : NaN;
+  get endTimestamp() {
+    return +new Date(this.props.endTime || Date.now());
   }
 
   @computed
@@ -46,73 +36,66 @@ export class Countdown extends ObservedComponent<CountdownProps> {
     const { units } = this.observedProps;
     let { rest } = this;
 
-    return units.reduce(
-      (list, { label }, index) => {
-        const scale = units
-          .slice(index)
-          .map(({ scale }) => scale)
-          .reduce((sum, scale) => sum * scale, 1);
+    return units.reduce((list, { label }, index) => {
+      const scale = units
+        .slice(index)
+        .map(({ scale }) => scale)
+        .reduce((sum, scale) => sum * scale, 1);
 
-        const value = ~~(rest / scale);
-        rest -= value * scale;
+      const value = ~~(rest / scale);
+      rest -= value * scale;
 
-        list.push({ value, label });
-        return list;
-      },
-      [] as TimeSection[],
-    );
+      list.push({ value, label });
+      return list;
+    }, [] as TimeSection[]);
   }
 
   tick = () => {
-    const rest = this.target - Date.now();
+    const { onEnd, endTime } = this.props,
+      rest = this.endTimestamp - Date.now();
 
     if (rest > 0) {
       this.rest = rest;
     } else {
       this.rest = 0;
-
-      if (this.timer) {
-        window.clearInterval(this.timer);
-        this.timer = undefined;
-        this.props.onEnd?.();
-      }
+      this.stop();
+      onEnd?.(endTime);
     }
   };
+
+  stop() {
+    if (this.timer) {
+      window.clearInterval(this.timer);
+      this.timer = 0;
+    }
+  }
 
   componentDidMount() {
     super.componentDidMount();
     this.initTimer();
   }
 
-  @reaction((_this: Countdown) => _this.observedProps.endTime)
+  @reaction(_this => _this.observedProps.endTime)
   initTimer() {
-    if (this.timer) {
-      window.clearInterval(this.timer);
-      this.timer = undefined;
-    }
-
+    this.stop();
     this.tick();
-    this.timer = window.setInterval(this.tick, 1000);
+    this.timer = window.setInterval(this.tick, Second);
   }
 
   componentWillUnmount() {
     super.componentWillUnmount();
-
-    if (this.timer) window.clearInterval(this.timer);
+    this.stop();
   }
 
   render() {
-    const { className } = this.props;
+    const { className = '', ...props } = this.props;
     const { timeSections } = this;
 
     return (
-      <ol className={`list-unstyled${className ? ` ${className}` : ''} m-0`}>
-        {timeSections.map(({ value, label }, index) => (
-          <li
-            key={`${index}-${label}`}
-            className="d-flex flex-column justify-content-center align-items-center"
-          >
-            <strong>{String(value).padStart(2, '0')}</strong>
+      <ol className={`list-unstyled m-0 ${className}`} {...props}>
+        {timeSections.map(({ value, label }) => (
+          <li key={label} className="d-flex flex-column justify-content-center align-items-center">
+            <strong>{(value + '').padStart(2, '0')}</strong>
             <span>{label}</span>
           </li>
         ))}
