@@ -1,20 +1,17 @@
-import { Avatar } from 'idea-react';
-import { TableCellLocation, TableFormView } from 'mobx-lark';
+import { TableCellLocation, TableCellUser, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext, useMemo, useState } from 'react';
-import { Breadcrumb, Button, Card, Col, Container, Modal, Nav, Ratio, Row } from 'react-bootstrap';
+import { Breadcrumb, Button, Col, Container, Modal, Nav, Ratio, Row } from 'react-bootstrap';
 
 import { CommentBox } from '../../../../components/Activity/CommentBox';
 import {
   compactSummaryOf,
   firstTextOf,
   isPublicForm,
-  relationNameOf,
-  textListOf,
-  userOf,
 } from '../../../../components/Activity/Hackathon/utility';
 import { ProductCard } from '../../../../components/Activity/ProductCard';
+import { TeamMemberCard } from '../../../../components/Activity/Hackathon/TeamMember';
 import { PageHead } from '../../../../components/Layout/PageHead';
 import { Activity, ActivityModel } from '../../../../models/Activity';
 import {
@@ -32,8 +29,6 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
   cache(),
   errorLogger,
   async ({ params }) => {
-    if (!params?.id || !params?.tid) return { notFound: true };
-
     const activity = await new ActivityModel().getOne(params!.id);
     const { appId, tableIdMap } = activity.databaseSchema || {};
 
@@ -41,28 +36,18 @@ export const getServerSideProps = compose<Record<'id' | 'tid', string>>(
       return { notFound: true };
 
     const project = await new ProjectModel(appId, tableIdMap.Project).getOne(params!.tid);
-    const projectName = firstTextOf(project.name);
-
-    if (!projectName) return { notFound: true };
 
     // Get approved members for this project
     const [members, products] = await Promise.all([
       new MemberModel(appId, tableIdMap.Member).getAll({
-        project: projectName,
+        project: project.name as string,
         status: 'approved',
       }),
       new ProductModel(appId, tableIdMap.Product).getAll({
-        project: projectName,
+        project: project.name as string,
       }),
     ]);
-    return {
-      props: {
-        activity,
-        project,
-        members,
-        products,
-      },
-    };
+    return { props: { activity, project, members, products } };
   },
 );
 
@@ -85,20 +70,15 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
     type: activityType,
   } = activity;
   const { forms } = databaseSchema;
-  const { name: displayName, summary: description, createdBy, score, rank, prize, group } = project;
-  const creator = userOf(createdBy);
-  const displayTitle = firstTextOf(displayName) || t('projects');
-  const projectDescription = textListOf(description).join(' · ');
+  const { name: displayName, summary: description, createdBy, score, rank, prize } = project;
+
+  const displayTitle = (displayName as string) || t('projects');
   const projectSummary = compactSummaryOf(
-    projectDescription,
+    description as string,
     firstTextOf(activitySummary) || displayTitle,
     140,
   );
   const locationText = (location as TableCellLocation | undefined)?.full_address || '-';
-  const groupName = relationNameOf(group);
-  const scoreText = firstTextOf(score);
-  const rankText = firstTextOf(rank);
-  const prizeText = firstTextOf(prize);
   const publicForms = useMemo(
     () =>
       Object.values(forms || {})
@@ -127,9 +107,8 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
   const heroChips = [
     `${t('participants')} · ${members.length}`,
     `${t('products')} · ${products.length}`,
-    groupName,
-    rankText ? `#${rankText}` : '',
-    scoreText ? `${t('score')} · ${scoreText}` : '',
+    rank ? `#${rank}` : '',
+    score ? `${t('score')} · ${score}` : '',
   ].filter(Boolean);
   const heroPrimaryAction = primaryForm
     ? {
@@ -151,13 +130,13 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
     },
     {
       label: t('created_by'),
-      value: creator?.name || '-',
-      meta: groupName || displayTitle,
+      value: (createdBy as TableCellUser)?.name || '-',
+      meta: displayTitle,
     },
     {
       label: t('score'),
-      value: scoreText || '--',
-      meta: [prizeText, rankText ? `#${rankText}` : ''].filter(Boolean).join(' · ') || '--',
+      value: (score as number) || '--',
+      meta: [prize, rank ? `#${rank}` : ''].filter(Boolean).join(' · ') || '--',
     },
   ];
 
@@ -196,15 +175,14 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
                   <span className={styles.heroEyebrow}>
                     {(activityType as string) || t('hackathon_detail')}
                   </span>
-                  {groupName && <span className={styles.heroTag}>{groupName}</span>}
-                  {prizeText && <span className={styles.heroTag}>{prizeText}</span>}
-                  {rankText && <span className={styles.heroTag}>#{rankText}</span>}
+                  {prize && <span className={styles.heroTag}>{prize as string}</span>}
+                  {rank && <span className={styles.heroTag}>#{rank as number}</span>}
                 </div>
 
                 <h1 className={styles.introTitle}>{displayTitle}</h1>
                 <p className={styles.introText}>{projectSummary}</p>
 
-                <div className="d-flex flex-wrap gap-3">
+                <nav className="d-flex flex-wrap gap-3">
                   <a
                     className={styles.primaryAction}
                     href={heroPrimaryAction.href}
@@ -218,7 +196,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
                   <a className={styles.secondaryAction} href="#works">
                     {t('team_works')}
                   </a>
-                </div>
+                </nav>
 
                 <ul className="d-flex flex-wrap gap-2 gap-md-3 m-0 p-0 list-unstyled">
                   {heroChips.map(item => (
@@ -228,9 +206,9 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
                   ))}
                 </ul>
 
-                <Row as="ol" className="list-unstyled g-4 m-0" xs={1} md={2} xl={4}>
+                <Row as="ol" className="list-unstyled g-4" xs={1} md={2} xl={4}>
                   {quickMetrics.map(({ label, value, meta }) => (
-                    <Col as="li" key={`${label}-${value}`} className="p-0">
+                    <Col as="li" key={`${label}-${value}`}>
                       <article className={styles.metricCard}>
                         <span className={styles.metricLabel}>{label}</span>
                         <strong className={styles.metricValue}>{value}</strong>
@@ -253,48 +231,11 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
             </header>
 
             <Row as="ul" className="list-unstyled g-4" xs={1} md={2} xl={3}>
-              {members.map(({ id, person, githubAccount, summary, skills }) => {
-                const member = userOf(person);
-                const githubName = firstTextOf(githubAccount);
-                const memberSummary = textListOf(summary).join(' · ');
-                const memberSkills = textListOf(skills).slice(0, 6);
-
-                return (
-                  <Col as="li" key={id as string}>
-                    <Card className={`${styles.memberCard} h-100`} body>
-                      <div className="d-flex align-items-center gap-3">
-                        <Avatar className={styles.avatar} src={member?.avatar_url} />
-                        <div>
-                          <h3 className={styles.memberName}>{member?.name || '-'}</h3>
-
-                          {githubName && (
-                            <a
-                              className={styles.memberLink}
-                              href={`https://github.com/${githubName}`}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              @{githubName}
-                            </a>
-                          )}
-                        </div>
-                      </div>
-
-                      {memberSummary && <p className={styles.memberSummary}>{memberSummary}</p>}
-
-                      {memberSkills[0] && (
-                        <ul className="d-flex flex-wrap gap-2 mt-3 mb-0 p-0 list-unstyled">
-                          {memberSkills.map(skill => (
-                            <li key={skill} className={styles.skill}>
-                              {skill}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </Card>
-                  </Col>
-                );
-              })}
+              {members.map(member => (
+                <Col as="li" key={member.id as string}>
+                  <TeamMemberCard {...member} />
+                </Col>
+              ))}
             </Row>
           </Container>
         </section>
@@ -341,7 +282,9 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
               <Col xl={5}>
                 <article className={styles.creatorCard}>
                   <span className={styles.creatorLabel}>{t('created_by')}</span>
-                  <h3 className={styles.creatorValue}>{creator?.name || '-'}</h3>
+                  <h3 className={styles.creatorValue}>
+                    {(createdBy as TableCellUser)?.name || '-'}
+                  </h3>
                   <p className={styles.creatorText}>{locationText}</p>
 
                   {scoreForm && (

@@ -56,16 +56,13 @@ import {
   compactSummaryOf,
   dateKeyOf,
   daysBetween,
-  firstTextOf,
   formatMoment,
   formatPeriod,
   isPublicForm,
   normalizeAgendaType,
   previewText,
-  textListOf,
   timeOf,
 } from '../../components/Activity/Hackathon/utility';
-
 
 interface HackathonDetailProps {
   activity: Activity;
@@ -125,7 +122,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
     { people, organizations, agenda, prizes, templates, projects } = hackathon;
   const { forms } = databaseSchema;
   const formMap = (forms || {}) as Partial<Record<FormGroupKey, TableFormView[]>>;
-  const summaryText = textListOf(summary).join(' · ') || firstTextOf(summary);
+  const summaryText = (summary as string) || '';
   const agendaItems = [...agenda].sort(({ startedAt: left }, { startedAt: right }) => {
     const leftTime = timeOf(left);
     const rightTime = timeOf(right);
