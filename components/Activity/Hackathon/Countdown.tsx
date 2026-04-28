@@ -1,6 +1,6 @@
 import { computed, observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { Component } from 'react';
+import { ObservedComponent, reaction } from 'mobx-react-helper';
 
 import styles from './Hero.module.less';
 
@@ -10,14 +10,14 @@ export interface CountdownProps {
 }
 
 @observer
-export class Countdown extends Component<CountdownProps> {
+export class Countdown extends ObservedComponent<CountdownProps> {
   @observable
   accessor rest: number | null = null;
 
   private timer?: number;
 
   private get target() {
-    const { countdownTo } = this.props;
+    const { countdownTo } = this.observedProps;
     const value = countdownTo ? new Date(countdownTo).getTime() : NaN;
 
     return Number.isFinite(value) ? value : NaN;
@@ -42,35 +42,27 @@ export class Countdown extends Component<CountdownProps> {
     this.rest = Math.max(0, this.target - Date.now());
   };
 
+  @reaction((_this: Countdown) => _this.observedProps.countdownTo)
   componentDidMount() {
-    if (Number.isFinite(this.target)) {
-      this.tick();
-      this.timer = window.setInterval(this.tick, 1000);
+    super.componentDidMount();
+
+    if (this.timer) {
+      window.clearInterval(this.timer);
+      this.timer = undefined;
     }
-  }
 
-  componentDidUpdate(prevProps: CountdownProps) {
-    if (prevProps.countdownTo !== this.props.countdownTo) {
-      if (this.timer) {
-        window.clearInterval(this.timer);
-        this.timer = undefined;
-      }
-
-      this.rest = null;
-
-      if (Number.isFinite(this.target)) {
-        this.tick();
-        this.timer = window.setInterval(this.tick, 1000);
-      }
-    }
+    this.tick();
+    this.timer = window.setInterval(this.tick, 1000);
   }
 
   componentWillUnmount() {
+    super.componentWillUnmount();
+
     if (this.timer) window.clearInterval(this.timer);
   }
 
   render() {
-    const { unitLabels } = this.props;
+    const { unitLabels } = this.observedProps;
     const { sections } = this;
 
     return (
