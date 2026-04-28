@@ -1,7 +1,7 @@
 import { TableCellLocation, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useContext } from 'react';
 
 import {
   HackathonActionHub,
@@ -28,7 +28,6 @@ import {
 } from '../../components/Activity/Hackathon/constant';
 import { HackathonFAQ } from '../../components/Activity/Hackathon/FAQ';
 import { HackathonHero } from '../../components/Activity/Hackathon/Hero';
-import { LiveCountdownStore } from '../../components/Activity/Hackathon/LiveCountdownStore';
 import { HackathonOverview } from '../../components/Activity/Hackathon/Overview';
 import { HackathonParticipants } from '../../components/Activity/Hackathon/Participants';
 import { HackathonResources } from '../../components/Activity/Hackathon/Resources';
@@ -44,6 +43,7 @@ import {
   isPublicForm,
   normalizeAgendaType,
   previewText,
+  resolveCountdownState,
   timeOf,
 } from '../../components/Activity/Hackathon/utility';
 import { PageHead } from '../../components/Layout/PageHead';
@@ -189,15 +189,12 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
       };
     })
     .filter(({ date, label }) => Boolean(date && label));
-  const [countdownStore] = useState(() => new LiveCountdownStore(agendaItems, startTime, endTime));
-
-  useEffect(() => {
-    countdownStore.tick();
-
-    return () => countdownStore.dispose();
-  }, [countdownStore]);
-
-  const { nextItem: nextAgendaItem, countdownTo } = countdownStore.countdownState;
+  const { nextItem: nextAgendaItem, countdownTo } = resolveCountdownState(
+    agendaItems,
+    Date.now(),
+    startTime,
+    endTime,
+  );
   const countdownLabel = nextAgendaItem
     ? agendaTypeLabelOf(nextAgendaItem.type, t, t('agenda'))
     : t('event_duration');

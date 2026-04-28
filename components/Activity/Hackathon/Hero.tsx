@@ -1,10 +1,9 @@
-import { computed, observable } from 'mobx';
 import { TableCellValue } from 'mobx-lark';
-import { observer } from 'mobx-react';
-import { Component, FC } from 'react';
+import { FC } from 'react';
 import { Container } from 'react-bootstrap';
 
 import { LarkImage } from '../../LarkImage';
+import { Countdown } from './Countdown';
 import styles from './Hero.module.less';
 
 export type HackathonHeroNavItem = Record<'label' | 'href', string>;
@@ -91,91 +90,29 @@ const splitHeroTitle = (name: string, subtitle: string) => {
   };
 };
 
-@observer
-export class HackathonHero extends Component<HackathonHeroProps> {
-  @observable
-  accessor rest: number | null = null;
-
-  private timer?: number;
-
-  private get target() {
-    const { countdownTo } = this.props;
-    const value = countdownTo ? new Date(countdownTo).getTime() : NaN;
-
-    return Number.isFinite(value) ? value : NaN;
-  }
-
-  @computed
-  get countdown(): string[] {
-    const { rest } = this;
-
-    if (rest === null) return ['--', '--', '--', '--'];
-
-    const totalSeconds = Math.floor(Math.max(0, rest) / 1000);
-    const days = Math.floor(totalSeconds / 86400);
-    const hours = Math.floor((totalSeconds % 86400) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-
-    return [days, hours, minutes, seconds].map(value => String(value).padStart(2, '0'));
-  }
-
-  tick = () => {
-    this.rest = Math.max(0, this.target - Date.now());
-  };
-
-  componentDidMount() {
-    if (Number.isFinite(this.target)) {
-      this.tick();
-      this.timer = window.setInterval(this.tick, 1000);
-    }
-  }
-
-  componentDidUpdate(prevProps: HackathonHeroProps) {
-    if (prevProps.countdownTo !== this.props.countdownTo) {
-      if (this.timer) {
-        window.clearInterval(this.timer);
-        this.timer = undefined;
-      }
-
-      this.rest = null;
-
-      if (Number.isFinite(this.target)) {
-        this.tick();
-        this.timer = window.setInterval(this.tick, 1000);
-      }
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.timer) window.clearInterval(this.timer);
-  }
-
-  render() {
-    const {
-      badges,
-      bottomCard,
-      chips,
-      countdownLabel,
-      countdownUnitLabels,
-      countdownTo,
-      description,
-      image,
-      imageFallback,
-      locationText,
-      name,
-      navigation,
-      primaryAction,
-      secondaryAction,
-      subtitle,
-      topCard,
-      visualChip,
-      visualCopy,
-      visualKicker,
-      visualTitle,
-    } = this.props;
-    const { countdown } = this;
-    const title = splitHeroTitle(name, subtitle);
+export const HackathonHero: FC<HackathonHeroProps> = ({
+  badges,
+  bottomCard,
+  chips,
+  countdownLabel,
+  countdownUnitLabels,
+  countdownTo,
+  description,
+  image,
+  imageFallback,
+  locationText,
+  name,
+  navigation,
+  primaryAction,
+  secondaryAction,
+  subtitle,
+  topCard,
+  visualChip,
+  visualCopy,
+  visualKicker,
+  visualTitle,
+}) => {
+  const title = splitHeroTitle(name, subtitle);
 
   return (
     <section id="top" className={styles.hero}>
@@ -224,23 +161,11 @@ export class HackathonHero extends Component<HackathonHeroProps> {
             <p className={styles.description}>{description}</p>
 
             {countdownTo && (
-              <div className={styles.countdownWrap}>
-                {countdownLabel && (
-                  <p className={`${styles.countdownLabel} m-0`}>{countdownLabel}</p>
-                )}
-
-                <ol className={`list-unstyled ${styles.countdownGrid} m-0`}>
-                  {countdown.map((value, index) => (
-                    <li
-                      key={`${index}-${countdownUnitLabels[index]}`}
-                      className={`${styles.countdownCell} d-flex flex-column justify-content-center align-items-center`}
-                    >
-                      <strong>{value}</strong>
-                      <span>{countdownUnitLabels[index]}</span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
+              <Countdown
+                countdownTo={countdownTo}
+                label={countdownLabel}
+                unitLabels={countdownUnitLabels}
+              />
             )}
 
             <nav className="d-flex flex-wrap gap-2 gap-md-3" aria-label={subtitle}>
@@ -295,6 +220,5 @@ export class HackathonHero extends Component<HackathonHeroProps> {
         </div>
       </Container>
     </section>
-    );
-  }
-}
+  );
+};
