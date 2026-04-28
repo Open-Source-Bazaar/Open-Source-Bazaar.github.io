@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Container } from 'react-bootstrap';
 
 import { LarkImage } from '../../LarkImage';
-import { Countdown } from './Countdown';
+import { Countdown, TimeUnit } from './Countdown';
 import styles from './Hero.module.less';
 
 export type HackathonHeroNavItem = Record<'label' | 'href', string>;
@@ -42,6 +42,8 @@ const BadgeToneClass = [
   styles.heroBadgeGreen,
   styles.heroBadgeRose,
 ];
+
+const DEFAULT_UNIT_SCALES: TimeUnit['scale'][] = [24, 60, 60, 1000];
 
 const HeroLink: FC<{
   action: HackathonHeroAction;
@@ -165,7 +167,14 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
                 {countdownLabel && (
                   <p className={`${styles.countdownLabel} m-0`}>{countdownLabel}</p>
                 )}
-                <Countdown countdownTo={countdownTo} unitLabels={countdownUnitLabels} />
+                <Countdown
+                  className={styles.countdownGrid}
+                  endTime={countdownTo}
+                  units={countdownUnitLabels.map((label, i) => ({
+                    scale: DEFAULT_UNIT_SCALES[i] ?? 1,
+                    label,
+                  }))}
+                />
               </div>
             )}
 

@@ -2,50 +2,90 @@ import { computed, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent, reaction } from 'mobx-react-helper';
 
-import styles from './Hero.module.less';
+export interface TimeUnit {
+  scale: number;
+  label: string;
+}
+
+interface TimeSection {
+  value: number;
+  label: string;
+}
 
 export interface CountdownProps {
-  countdownTo?: string;
-  unitLabels: string[];
+  className?: string;
+  endTime?: string | Date | number;
+  onEnd?: () => void;
+  units: TimeUnit[];
 }
 
 @observer
 export class Countdown extends ObservedComponent<CountdownProps> {
   @observable
-  accessor rest: number | null = null;
+  accessor rest = 0;
 
   private timer?: number;
 
   private get target() {
-    const { countdownTo } = this.observedProps;
-    const value = countdownTo ? new Date(countdownTo).getTime() : NaN;
+    const { endTime } = this.observedProps;
 
-    return Number.isFinite(value) ? value : NaN;
+    if (!endTime) return NaN;
+
+    const ms =
+      typeof endTime === 'number'
+        ? endTime
+        : endTime instanceof Date
+          ? endTime.getTime()
+          : new Date(endTime).getTime();
+
+    return Number.isFinite(ms) ? ms : NaN;
   }
 
   @computed
-  get sections() {
-    const { rest } = this;
+  get timeSections(): TimeSection[] {
+    const { units } = this.observedProps;
+    let { rest } = this;
 
-    if (rest === null) return ['--', '--', '--', '--'];
+    return units.reduce(
+      (list, { label }, index) => {
+        const scale = units
+          .slice(index)
+          .map(({ scale }) => scale)
+          .reduce((sum, scale) => sum * scale, 1);
 
-    const totalSeconds = Math.floor(Math.max(0, rest) / 1000);
-    const days = Math.floor(totalSeconds / 86400);
-    const hours = Math.floor((totalSeconds % 86400) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
+        const value = ~~(rest / scale);
+        rest -= value * scale;
 
-    return [days, hours, minutes, seconds].map(value => String(value).padStart(2, '0'));
+        list.push({ value, label });
+        return list;
+      },
+      [] as TimeSection[],
+    );
   }
 
   tick = () => {
-    this.rest = Math.max(0, this.target - Date.now());
+    const rest = this.target - Date.now();
+
+    if (rest > 0) {
+      this.rest = rest;
+    } else {
+      this.rest = 0;
+
+      if (this.timer) {
+        window.clearInterval(this.timer);
+        this.timer = undefined;
+        this.props.onEnd?.();
+      }
+    }
   };
 
-  @reaction((_this: Countdown) => _this.observedProps.countdownTo)
   componentDidMount() {
     super.componentDidMount();
+    this.initTimer();
+  }
 
+  @reaction((_this: Countdown) => _this.observedProps.endTime)
+  initTimer() {
     if (this.timer) {
       window.clearInterval(this.timer);
       this.timer = undefined;
@@ -62,18 +102,18 @@ export class Countdown extends ObservedComponent<CountdownProps> {
   }
 
   render() {
-    const { unitLabels } = this.observedProps;
-    const { sections } = this;
+    const { className } = this.props;
+    const { timeSections } = this;
 
     return (
-      <ol className={`list-unstyled ${styles.countdownGrid} m-0`}>
-        {sections.map((value, index) => (
+      <ol className={`list-unstyled${className ? ` ${className}` : ''} m-0`}>
+        {timeSections.map(({ value, label }, index) => (
           <li
-            key={`${index}-${unitLabels[index]}`}
-            className={`${styles.countdownCell} d-flex flex-column justify-content-center align-items-center`}
+            key={`${index}-${label}`}
+            className="d-flex flex-column justify-content-center align-items-center"
           >
-            <strong>{value}</strong>
-            <span>{unitLabels[index]}</span>
+            <strong>{String(value).padStart(2, '0')}</strong>
+            <span>{label}</span>
           </li>
         ))}
       </ol>

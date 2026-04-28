@@ -197,32 +197,32 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.8rem;
-}
 
-.countdownCell {
-  gap: 0.7rem;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
-    0 0 26px rgba(44, 232, 255, 0.08);
-  border: 1px solid rgba(44, 232, 255, 0.26);
-  border-radius: 18px;
-  background: linear-gradient(180deg, rgba(44, 232, 255, 0.08), rgba(44, 232, 255, 0.03));
-  min-height: 120px;
+  li {
+    gap: 0.7rem;
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+      0 0 26px rgba(44, 232, 255, 0.08);
+    border: 1px solid rgba(44, 232, 255, 0.26);
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(44, 232, 255, 0.08), rgba(44, 232, 255, 0.03));
+    min-height: 120px;
 
-  strong {
-    color: #fff;
-    font-size: clamp(2.3rem, 4vw, 3.8rem);
-    line-height: 1;
-    font-family: @heading;
-    letter-spacing: 0.08em;
-  }
+    strong {
+      color: #fff;
+      font-size: clamp(2.3rem, 4vw, 3.8rem);
+      line-height: 1;
+      font-family: @heading;
+      letter-spacing: 0.08em;
+    }
 
-  span {
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 0.82rem;
-    font-family: @heading;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
+    span {
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 0.82rem;
+      font-family: @heading;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
   }
 }
 
@@ -445,13 +445,13 @@
 
   .countdownGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 
-  .countdownCell {
-    min-height: 96px;
+    li {
+      min-height: 96px;
 
-    strong {
-      font-size: 2rem;
+      strong {
+        font-size: 2rem;
+      }
     }
   }
 }
