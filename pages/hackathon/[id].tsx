@@ -1,4 +1,4 @@
-import { BiTableSchema, TableCellLocation, TableFormView } from 'mobx-lark';
+import { TableCellLocation, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
@@ -14,6 +14,7 @@ import { HackathonOverview } from '../../components/Activity/Hackathon/Overview'
 import { HackathonParticipants } from '../../components/Activity/Hackathon/Participants';
 import { HackathonResources } from '../../components/Activity/Hackathon/Resources';
 import { HackathonSchedule } from '../../components/Activity/Hackathon/Schedule';
+import { useLiveCountdownState } from '../../components/Activity/Hackathon/useLiveCountdownState';
 import { PageHead } from '../../components/Layout/PageHead';
 import { Activity, ActivityModel } from '../../models/Activity';
 import {
@@ -60,6 +61,7 @@ import {
   isPublicForm,
   normalizeAgendaType,
   previewText,
+  timeOf,
 } from '../../components/Activity/Hackathon/utility';
 
 interface HackathonDetailProps {
@@ -79,12 +81,11 @@ export const getServerSideProps = compose<{ id: string }>(
   errorLogger,
   async ({ params }) => {
     const activity = await new ActivityModel().getOne(params!.id);
+    const { appId, tableIdMap } = activity.databaseSchema || {};
 
-    const { appId, tableIdMap } = (activity.databaseSchema || {}) as BiTableSchema;
+    if (!appId || !tableIdMap) return { notFound: true };
 
-    if (!appId || !tableIdMap) return { notFound: true, props: {} };
-
-    for (const key of RequiredTableKeys) if (!tableIdMap[key]) return { notFound: true, props: {} };
+    for (const key of RequiredTableKeys) if (!tableIdMap[key]) return { notFound: true };
 
     const [people, organizations, agenda, prizes, templates, projects] = await Promise.all([
       new PersonModel(appId, tableIdMap.Person).getAll(),
@@ -119,13 +120,19 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
       type: activityType,
     } = activity,
     { people, organizations, agenda, prizes, templates, projects } = hackathon;
-  const { forms } = (databaseSchema || {}) as BiTableSchema;
+  const { forms } = databaseSchema;
   const formMap = (forms || {}) as Partial<Record<FormGroupKey, TableFormView[]>>;
   const summaryText = (summary as string) || '';
-  const agendaItems = [...agenda].sort(
-    ({ startedAt: left }, { startedAt: right }) =>
-      new Date((left as string) || 0).getTime() - new Date((right as string) || 0).getTime(),
-  );
+  const agendaItems = [...agenda].sort(({ startedAt: left }, { startedAt: right }) => {
+    const leftTime = timeOf(left);
+    const rightTime = timeOf(right);
+
+    if (!Number.isFinite(leftTime) && !Number.isFinite(rightTime)) return 0;
+    if (!Number.isFinite(leftTime)) return 1;
+    if (!Number.isFinite(rightTime)) return -1;
+
+    return leftTime - rightTime;
+  });
   const hostTags = (host as string[] | undefined)?.slice(0, 2) || [];
   const eventRange = formatPeriod(startTime, endTime);
   const locationText = (location as TableCellLocation | undefined)?.full_address || '-';
@@ -182,22 +189,11 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
       };
     })
     .filter(({ date, label }) => Boolean(date && label));
-  const now = Date.now();
-  const nextAgendaItem = agendaItems.find(({ startedAt, endedAt }) => {
-    const started = new Date((startedAt as string) || 0).getTime();
-    const ended = new Date((endedAt as string) || 0).getTime();
-
-    return Number.isFinite(started) && Number.isFinite(ended) && now <= ended;
-  });
-  const nextAgendaStarted = nextAgendaItem?.startedAt as string | undefined;
-  const nextAgendaEnded = nextAgendaItem?.endedAt as string | undefined;
-  const countdownTo =
-    (nextAgendaStarted && new Date(nextAgendaStarted).getTime() > now
-      ? nextAgendaStarted
-      : nextAgendaEnded) ||
-    ((startTime as string | undefined) && new Date(startTime as string).getTime() > now
-      ? (startTime as string)
-      : (endTime as string | undefined));
+  const { nextItem: nextAgendaItem, countdownTo } = useLiveCountdownState(
+    agendaItems,
+    startTime,
+    endTime,
+  );
   const countdownLabel = nextAgendaItem
     ? agendaTypeLabelOf(nextAgendaItem.type, t, t('agenda'))
     : t('event_duration');
@@ -225,20 +221,26 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
     .join('，');
 
   const formGroups = FormButtonBar.flatMap<FormGroupView>(key => {
-    const list = (formMap[key] || []).filter(isPublicForm);
+    const links = (formMap[key] || []).filter(isPublicForm).flatMap(({ name, shared_url }) =>
+      shared_url
+        ? [
+            {
+              label: name as string,
+              href: shared_url,
+              external: true as const,
+            },
+          ]
+        : [],
+    );
 
-    return list[0]
+    return links[0]
       ? [
           {
             key,
             eyebrow: buildFormSectionMeta(i18n)[key].eyebrow,
             title: buildFormSectionMeta(i18n)[key].title,
             description: buildFormSectionMeta(i18n)[key].description,
-            links: list.map(({ name, shared_url }) => ({
-              label: name as string,
-              href: shared_url,
-              external: true as const,
-            })),
+            links,
           },
         ]
       : [];
@@ -247,6 +249,14 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
     formGroups.find(({ key }) => key === 'Person') ||
     formGroups.find(({ key }) => key === 'Project') ||
     formGroups[0];
+
+  const heroPrimaryAction = primaryForm
+    ? {
+        label: heroPrimaryActionLabel,
+        href: primaryForm.links[0]!.href,
+        external: true as const,
+      }
+    : { label: t('event_description'), href: '#overview' };
   const secondaryForm =
     formGroups.find(({ key }) => key === 'Project' && key !== primaryForm?.key) ||
     formGroups.find(({ key }) => key !== primaryForm?.key);
@@ -348,15 +358,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
         locationText={locationText}
         name={name as string}
         navigation={heroNavigation(i18n)}
-        primaryAction={
-          primaryForm
-            ? {
-                label: heroPrimaryActionLabel,
-                href: primaryForm.links[0].href,
-                external: true,
-              }
-            : { label: heroPrimaryActionLabel, href: '#entry-hub' }
-        }
+        primaryAction={heroPrimaryAction}
         secondaryAction={{ label: t('agenda'), href: '#schedule' }}
         chips={heroStatChips}
         subtitle={(activityType as string) || t('hackathon_detail')}
@@ -401,7 +403,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
             primaryForm
               ? {
                   label: primaryForm.title,
-                  href: primaryForm.links[0].href,
+                  href: primaryForm.links[0]!.href,
                   external: true,
                 }
               : undefined
@@ -416,7 +418,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
               secondaryForm
                 ? {
                     label: secondaryForm.title,
-                    href: secondaryForm.links[0].href,
+                    href: secondaryForm.links[0]!.href,
                     external: true,
                   }
                 : { label: t('agenda'), href: '#schedule' }

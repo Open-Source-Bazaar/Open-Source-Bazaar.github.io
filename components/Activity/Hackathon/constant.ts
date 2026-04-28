@@ -1,5 +1,4 @@
 import { TableCellUser } from 'mobx-lark';
-
 import { Activity, ActivityModel } from '../../../models/Activity';
 import { Agenda, Organization, Person, Prize, Project, Template } from '../../../models/Hackathon';
 import { i18n } from '../../../models/Translation';
@@ -336,7 +335,6 @@ export const buildProjectItems = (
   { projects, activity }: { projects: Project[]; activity: Activity },
 ) =>
   projects.map(({ id, name, score, summary, createdBy, members }) => {
-    const creator = createdBy as TableCellUser | undefined;
     const scoreText = score === null || score === undefined || score === '' ? '—' : `${score}`;
 
     return {
@@ -346,11 +344,10 @@ export const buildProjectItems = (
       score: scoreText,
       description: (summary as string) || '',
       meta: [
-        creator
+        createdBy
           ? {
               label: t('created_by'),
-              value: creator.name || '—',
-              valueHref: creator.email ? `mailto:${creator.email}` : undefined,
+              value: (createdBy as TableCellUser)?.name || '—',
             }
           : { label: t('created_by'), value: '—' },
         {

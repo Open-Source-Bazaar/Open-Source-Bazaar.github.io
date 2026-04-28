@@ -18,6 +18,7 @@ export default {
   // Search
   keywords: 'Keywords',
   search_results: 'Search Results',
+  breadcrumb: 'Breadcrumb',
 
   // Scroll List
   load_more: 'Load more...',
@@ -334,6 +335,7 @@ export default {
   score: 'Score',
 
   // Team detail page
+  hackathon_team_showcase: 'Team Showcase',
   team_members: 'Team Members',
   team_works: 'Team Works',
   no_news_yet: 'No news yet',

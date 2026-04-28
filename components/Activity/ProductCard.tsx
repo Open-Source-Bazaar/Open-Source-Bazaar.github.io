@@ -68,7 +68,11 @@ export const ProductCard: FC<ProductCardProps> = observer(
           </div>
         )}
 
-        <time className="text-dark opacity-75 small" dateTime={new Date(createdAt as number).toJSON()}>
+        <time
+          suppressHydrationWarning
+          className="text-dark opacity-75 small"
+          dateTime={new Date(createdAt as number).toJSON()}
+        >
           📅 {formatDate(createdAt as number)}
         </time>
       </Card.Body>
