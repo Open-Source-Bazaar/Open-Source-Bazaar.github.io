@@ -22,12 +22,9 @@
 ## 开始
 
 ```bash
-pnpm run sync-env
 pnpm install
 pnpm dev
 ```
-
-`pnpm run sync-env` 会在你显式执行时，从 `Open-Source-Bazaar/key-vault` 同步当前项目所需的私有环境文件。出于安全考虑，仓库不会在 `pnpm install` 阶段自动下载 `.env.local`。
 
 可访问 http://localhost:3000.
 

@@ -6,7 +6,7 @@
   "scripts": {
     "prepare": "husky",
     "sync-env": "pnpx git-utility download https://github.com/Open-Source-Bazaar/key-vault main Open-Source-Bazaar.github.io",
-    "postinstall": "next typegen",
+    "postinstall": "(pnpm run sync-env || true) && next typegen",
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "start": "next start",
