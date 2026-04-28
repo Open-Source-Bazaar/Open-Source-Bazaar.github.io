@@ -83,8 +83,6 @@ export const getServerSideProps = compose<{ id: string }>(
   cache(),
   errorLogger,
   async ({ params }) => {
-    if (!params?.id) return { notFound: true };
-
     const activity = await new ActivityModel().getOne(params!.id);
     const { appId, tableIdMap } = activity.databaseSchema || {};
 
