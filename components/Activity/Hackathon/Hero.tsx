@@ -1,5 +1,7 @@
+import { computed, observable } from 'mobx';
 import { TableCellValue } from 'mobx-lark';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { observer } from 'mobx-react';
+import { Component, FC } from 'react';
 import { Container } from 'react-bootstrap';
 
 import { LarkImage } from '../../LarkImage';
@@ -74,38 +76,6 @@ const FloatingCard: FC<{
   </div>
 );
 
-const useCountdown = (countdownTo?: string) => {
-  const target = useMemo(() => {
-    const value = countdownTo ? new Date(countdownTo).getTime() : NaN;
-
-    return Number.isFinite(value) ? value : NaN;
-  }, [countdownTo]);
-  const [now, setNow] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (!Number.isFinite(target)) return;
-
-    setNow(Date.now());
-
-    const timer = window.setInterval(() => setNow(Date.now()), 1000);
-
-    return () => window.clearInterval(timer);
-  }, [target]);
-
-  return useMemo(() => {
-    if (!Number.isFinite(target) || now === null) return ['--', '--', '--', '--'];
-
-    const rest = Math.max(0, target - now);
-    const totalSeconds = Math.floor(rest / 1000);
-    const days = Math.floor(totalSeconds / 86400);
-    const hours = Math.floor((totalSeconds % 86400) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-
-    return [days, hours, minutes, seconds].map(value => String(value).padStart(2, '0'));
-  }, [now, target]);
-};
-
 const splitHeroTitle = (name: string, subtitle: string) => {
   const segments = name.split(/\s+/).filter(Boolean);
 
@@ -121,30 +91,91 @@ const splitHeroTitle = (name: string, subtitle: string) => {
   };
 };
 
-export const HackathonHero: FC<HackathonHeroProps> = ({
-  badges,
-  bottomCard,
-  chips,
-  countdownLabel,
-  countdownUnitLabels,
-  countdownTo,
-  description,
-  image,
-  imageFallback,
-  locationText,
-  name,
-  navigation,
-  primaryAction,
-  secondaryAction,
-  subtitle,
-  topCard,
-  visualChip,
-  visualCopy,
-  visualKicker,
-  visualTitle,
-}) => {
-  const countdown = useCountdown(countdownTo);
-  const title = splitHeroTitle(name, subtitle);
+@observer
+export class HackathonHero extends Component<HackathonHeroProps> {
+  @observable
+  accessor rest: number | null = null;
+
+  private timer?: number;
+
+  private get target() {
+    const { countdownTo } = this.props;
+    const value = countdownTo ? new Date(countdownTo).getTime() : NaN;
+
+    return Number.isFinite(value) ? value : NaN;
+  }
+
+  @computed
+  get countdown(): string[] {
+    const { rest } = this;
+
+    if (rest === null) return ['--', '--', '--', '--'];
+
+    const totalSeconds = Math.floor(Math.max(0, rest) / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    return [days, hours, minutes, seconds].map(value => String(value).padStart(2, '0'));
+  }
+
+  tick = () => {
+    this.rest = Math.max(0, this.target - Date.now());
+  };
+
+  componentDidMount() {
+    if (Number.isFinite(this.target)) {
+      this.tick();
+      this.timer = window.setInterval(this.tick, 1000);
+    }
+  }
+
+  componentDidUpdate(prevProps: HackathonHeroProps) {
+    if (prevProps.countdownTo !== this.props.countdownTo) {
+      if (this.timer) {
+        window.clearInterval(this.timer);
+        this.timer = undefined;
+      }
+
+      this.rest = null;
+
+      if (Number.isFinite(this.target)) {
+        this.tick();
+        this.timer = window.setInterval(this.tick, 1000);
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.timer) window.clearInterval(this.timer);
+  }
+
+  render() {
+    const {
+      badges,
+      bottomCard,
+      chips,
+      countdownLabel,
+      countdownUnitLabels,
+      countdownTo,
+      description,
+      image,
+      imageFallback,
+      locationText,
+      name,
+      navigation,
+      primaryAction,
+      secondaryAction,
+      subtitle,
+      topCard,
+      visualChip,
+      visualCopy,
+      visualKicker,
+      visualTitle,
+    } = this.props;
+    const { countdown } = this;
+    const title = splitHeroTitle(name, subtitle);
 
   return (
     <section id="top" className={styles.hero}>
@@ -264,5 +295,6 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
         </div>
       </Container>
     </section>
-  );
-};
+    );
+  }
+}

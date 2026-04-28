@@ -1,20 +1,51 @@
 import { TableCellLocation, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
-import { FC, useContext } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 
 import {
   HackathonActionHub,
   HackathonActionHubLink,
 } from '../../components/Activity/Hackathon/ActionHub';
 import { HackathonAwards } from '../../components/Activity/Hackathon/Awards';
+import {
+  buildCountdownUnitLabels,
+  buildFAQItems,
+  buildFormSectionMeta,
+  buildHighlightCards,
+  buildJudgingCriteria,
+  buildOrganizationItems,
+  buildParticipantItems,
+  buildPrizeItems,
+  buildProjectItems,
+  buildScheduleItems,
+  buildTemplateItems,
+  FormButtonBar,
+  FormGroupKey,
+  FormGroupView,
+  heroNavigation,
+  RequiredTableKeys,
+} from '../../components/Activity/Hackathon/constant';
 import { HackathonFAQ } from '../../components/Activity/Hackathon/FAQ';
 import { HackathonHero } from '../../components/Activity/Hackathon/Hero';
+import { LiveCountdownStore } from '../../components/Activity/Hackathon/LiveCountdownStore';
 import { HackathonOverview } from '../../components/Activity/Hackathon/Overview';
 import { HackathonParticipants } from '../../components/Activity/Hackathon/Participants';
 import { HackathonResources } from '../../components/Activity/Hackathon/Resources';
 import { HackathonSchedule } from '../../components/Activity/Hackathon/Schedule';
-import { useLiveCountdownState } from '../../components/Activity/Hackathon/useLiveCountdownState';
+import {
+  agendaTypeLabelOf,
+  compactDateKeyOf,
+  compactSummaryOf,
+  dateKeyOf,
+  daysBetween,
+  formatMoment,
+  formatPeriod,
+  isPublicForm,
+  normalizeAgendaType,
+  previewText,
+  timeOf,
+} from '../../components/Activity/Hackathon/utility';
 import { PageHead } from '../../components/Layout/PageHead';
 import { Activity, ActivityModel } from '../../models/Activity';
 import {
@@ -32,37 +63,6 @@ import {
   TemplateModel,
 } from '../../models/Hackathon';
 import { I18nContext } from '../../models/Translation';
-import {
-  buildCountdownUnitLabels,
-  buildFAQItems,
-  buildHighlightCards,
-  buildJudgingCriteria,
-  buildOrganizationItems,
-  buildParticipantItems,
-  buildPrizeItems,
-  buildProjectItems,
-  buildScheduleItems,
-  buildTemplateItems,
-  FormButtonBar,
-  FormGroupKey,
-  FormGroupView,
-  buildFormSectionMeta,
-  heroNavigation,
-  RequiredTableKeys,
-} from '../../components/Activity/Hackathon/constant';
-import {
-  agendaTypeLabelOf,
-  compactDateKeyOf,
-  compactSummaryOf,
-  dateKeyOf,
-  daysBetween,
-  formatMoment,
-  formatPeriod,
-  isPublicForm,
-  normalizeAgendaType,
-  previewText,
-  timeOf,
-} from '../../components/Activity/Hackathon/utility';
 
 interface HackathonDetailProps {
   activity: Activity;
@@ -189,11 +189,15 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
       };
     })
     .filter(({ date, label }) => Boolean(date && label));
-  const { nextItem: nextAgendaItem, countdownTo } = useLiveCountdownState(
-    agendaItems,
-    startTime,
-    endTime,
-  );
+  const [countdownStore] = useState(() => new LiveCountdownStore(agendaItems, startTime, endTime));
+
+  useEffect(() => {
+    countdownStore.tick();
+
+    return () => countdownStore.dispose();
+  }, [countdownStore]);
+
+  const { nextItem: nextAgendaItem, countdownTo } = countdownStore.countdownState;
   const countdownLabel = nextAgendaItem
     ? agendaTypeLabelOf(nextAgendaItem.type, t, t('agenda'))
     : t('event_duration');
