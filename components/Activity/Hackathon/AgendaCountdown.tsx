@@ -4,7 +4,7 @@ import { FC, useContext, useState } from 'react';
 
 import { Agenda } from '../../../models/Hackathon';
 import { I18nContext } from '../../../models/Translation';
-import { Countdown, TimeUnit } from './Countdown';
+import { Countdown, TimeUnit } from '../../Base/Countdown';
 import styles from './AgendaCountdown.module.less';
 import { agendaTypeLabelOf, resolveCountdownState } from './utility';
 

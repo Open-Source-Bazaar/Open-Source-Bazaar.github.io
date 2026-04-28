@@ -5,7 +5,7 @@ import { Container } from 'react-bootstrap';
 import { Agenda } from '../../../models/Hackathon';
 import { LarkImage } from '../../LarkImage';
 import { AgendaCountdown } from './AgendaCountdown';
-import { TimeUnit } from './Countdown';
+import { TimeUnit } from '../../Base/Countdown';
 import styles from './Hero.module.less';
 
 export type HackathonHeroNavItem = Record<'label' | 'href', string>;

@@ -25,7 +25,7 @@ import {
   heroNavigation,
   RequiredTableKeys,
 } from '../../components/Activity/Hackathon/constant';
-import { TimeUnit } from '../../components/Activity/Hackathon/Countdown';
+import { TimeUnit } from '../../components/Base/Countdown';
 import { HackathonFAQ } from '../../components/Activity/Hackathon/FAQ';
 import { HackathonHero } from '../../components/Activity/Hackathon/Hero';
 import { HackathonOverview } from '../../components/Activity/Hackathon/Overview';
