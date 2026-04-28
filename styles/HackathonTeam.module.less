@@ -12,22 +12,15 @@
 .heroSection {
   padding: clamp(1.5rem, 4vw, 2.5rem) 0 clamp(2rem, 4vw, 3rem);
   color: @copy;
+
+  @media (max-width: 767px) {
+    padding-top: 1rem;
+  }
 }
 
 .heroShell {
   .panel-card();
   padding: clamp(1.3rem, 2.6vw, 2rem);
-}
-
-.heroMain {
-  display: grid;
-  gap: 1.25rem;
-}
-
-.heroNav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
 }
 
 .heroNavLink {
@@ -42,13 +35,6 @@
   }
 }
 
-.heroTagRow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.7rem;
-}
-
 .heroEyebrow {
   .eyebrow();
   color: @cyan;
@@ -59,12 +45,6 @@
   padding: 0.42rem 0.75rem;
   color: rgba(255, 255, 255, 0.8);
   font-size: 0.8rem;
-}
-
-.heroActionRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
 }
 
 .primaryAction {
@@ -122,6 +102,10 @@
   font-family: @heading;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+
+  @media (max-width: 767px) {
+    font-size: clamp(1.7rem, 10vw, 2.4rem);
+  }
 }
 
 .introText {
@@ -132,34 +116,11 @@
   line-height: 1.7;
 }
 
-.metaList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
 .metaItem {
   .chip();
   padding: 0.55rem 0.9rem;
   color: rgba(255, 255, 255, 0.82);
   font-size: 0.88rem;
-}
-
-.metricGridCompact,
-.creatorGrid {
-  display: grid;
-  gap: 1.25rem;
-}
-
-.metricGridCompact {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.creatorGrid {
-  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
 }
 
 .metricCard {
@@ -192,13 +153,6 @@
 
 .memberCard {
   padding: 1.35rem;
-  height: 100%;
-}
-
-.memberTop {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
 }
 
 .avatar {
@@ -229,15 +183,6 @@
   margin: 1rem 0 0;
   color: @muted;
   line-height: 1.75;
-}
-
-.skillList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem;
-  margin: 1rem 0 0;
-  padding: 0;
-  list-style: none;
 }
 
 .skill {
@@ -274,8 +219,6 @@
 
 .scoreButton {
   .button-primary();
-  margin-top: 1rem;
-  width: 100%;
 }
 
 .productCardOverride {
@@ -318,7 +261,6 @@
   padding: 2rem 1.5rem;
   color: @muted;
   font-size: 1rem;
-  text-align: center;
 }
 
 .commentWrap {
@@ -339,31 +281,5 @@
 
   :global(.btn-close) {
     filter: invert(1) grayscale(1);
-  }
-}
-
-@media (max-width: 1199px) {
-  .creatorGrid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 991px) {
-  .metricGridCompact {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 767px) {
-  .heroSection {
-    padding-top: 1rem;
-  }
-
-  .introTitle {
-    font-size: clamp(1.7rem, 10vw, 2.4rem);
-  }
-
-  .metricGridCompact {
-    grid-template-columns: 1fr;
   }
 }
