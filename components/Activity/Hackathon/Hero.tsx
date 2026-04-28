@@ -161,11 +161,12 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
             <p className={styles.description}>{description}</p>
 
             {countdownTo && (
-              <Countdown
-                countdownTo={countdownTo}
-                label={countdownLabel}
-                unitLabels={countdownUnitLabels}
-              />
+              <div className={styles.countdownWrap}>
+                {countdownLabel && (
+                  <p className={`${styles.countdownLabel} m-0`}>{countdownLabel}</p>
+                )}
+                <Countdown countdownTo={countdownTo} unitLabels={countdownUnitLabels} />
+              </div>
             )}
 
             <nav className="d-flex flex-wrap gap-2 gap-md-3" aria-label={subtitle}>

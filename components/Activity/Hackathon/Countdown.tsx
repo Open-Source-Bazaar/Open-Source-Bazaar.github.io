@@ -6,7 +6,6 @@ import styles from './Hero.module.less';
 
 export interface CountdownProps {
   countdownTo?: string;
-  label?: string;
   unitLabels: string[];
 }
 
@@ -71,25 +70,21 @@ export class Countdown extends Component<CountdownProps> {
   }
 
   render() {
-    const { label, unitLabels } = this.props;
+    const { unitLabels } = this.props;
     const { sections } = this;
 
     return (
-      <div className={styles.countdownWrap}>
-        {label && <p className={`${styles.countdownLabel} m-0`}>{label}</p>}
-
-        <ol className={`list-unstyled ${styles.countdownGrid} m-0`}>
-          {sections.map((value, index) => (
-            <li
-              key={`${index}-${unitLabels[index]}`}
-              className={`${styles.countdownCell} d-flex flex-column justify-content-center align-items-center`}
-            >
-              <strong>{value}</strong>
-              <span>{unitLabels[index]}</span>
-            </li>
-          ))}
-        </ol>
-      </div>
+      <ol className={`list-unstyled ${styles.countdownGrid} m-0`}>
+        {sections.map((value, index) => (
+          <li
+            key={`${index}-${unitLabels[index]}`}
+            className={`${styles.countdownCell} d-flex flex-column justify-content-center align-items-center`}
+          >
+            <strong>{value}</strong>
+            <span>{unitLabels[index]}</span>
+          </li>
+        ))}
+      </ol>
     );
   }
 }
