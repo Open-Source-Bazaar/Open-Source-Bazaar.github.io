@@ -1,5 +1,5 @@
-import { TableCellUser, TableCellValue, TableFormView } from 'mobx-lark';
-import { formatDate } from 'web-utility';
+import { TableCellValue, TableFormView } from 'mobx-lark';
+import { Day, formatDate } from 'web-utility';
 
 import type { HackathonScheduleTone } from './Schedule';
 import { i18n, I18nKey } from '../../../models/Translation';
@@ -94,16 +94,6 @@ const textOf = (value: TextLike) => {
 export const firstTextOf = (value: TextListLike) =>
   (Array.isArray(value) ? value.map(textOf).find(Boolean) : textOf(value)) || '';
 
-export const textListOf = (value: TextListLike) =>
-  (Array.isArray(value) ? value : [value]).map(textOf).filter(Boolean);
-
-export const relationNameOf = (value: TextListLike) => firstTextOf(value);
-
-export const userOf = (value?: TableCellValue | TableCellUser) =>
-  value && typeof value === 'object' && !Array.isArray(value) && 'name' in value
-    ? (value as TableCellUser)
-    : undefined;
-
 export const formatMoment = (value?: TableCellValue) => (value ? formatDate(value as string) : '');
 
 export const formatPeriod = (startedAt?: TableCellValue, endedAt?: TableCellValue) =>
@@ -152,7 +142,8 @@ export const resolveCountdownState = <T extends CountdownWindow>(
       ? nextItem?.startedAt
       : nextItem?.endedAt;
   const fallbackCountdownTarget = timeOf(startTime) > referenceTime ? startTime : endTime;
-  const countdownTo = countdownTextOf(nextCountdownTarget) || countdownTextOf(fallbackCountdownTarget);
+  const countdownTo =
+    countdownTextOf(nextCountdownTarget) || countdownTextOf(fallbackCountdownTarget);
 
   return { nextItem, countdownTo };
 };
@@ -219,7 +210,7 @@ export const daysBetween = (startedAt?: TableCellValue, endedAt?: TableCellValue
 
   if (!Number.isFinite(start) || !Number.isFinite(end) || end < start) return 0;
 
-  return Math.max(1, Math.ceil((end - start) / (24 * 60 * 60 * 1000)));
+  return Math.max(1, Math.ceil((end - start) / Day));
 };
 
 export const normalizeAgendaType = (value?: TableCellValue) =>
