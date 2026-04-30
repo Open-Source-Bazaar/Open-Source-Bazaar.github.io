@@ -31,6 +31,12 @@ export default {
   we_are_organizing_bazaar: '我們正在籌辦 3 月開源市集，歡迎參與！',
   welcome_open_collaboration: '歡迎參與',
   open_collaboration: '開放式協作',
+  home_hackathon_top_bar_aria_label: 'Labor AI Hackathon 2026 活動宣傳',
+  home_hackathon_top_bar_badge: '活動招募中',
+  home_hackathon_top_bar_title: 'Labor AI Hackathon 2026 報名開啟',
+  home_hackathon_top_bar_description: '48 小時，來這裡創造未來',
+  home_hackathon_top_bar_action: '立刻報名',
+  home_hackathon_top_bar_close: '關閉活動宣傳列',
 
   // Volunteer page
   volunteer: '志工',
