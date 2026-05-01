@@ -12,6 +12,7 @@ import {
   formatPeriod,
   normalizeAgendaType,
   previewText,
+  timeOf,
 } from './utility';
 
 export const RequiredTableKeys = [
@@ -194,13 +195,16 @@ export const buildScheduleItems = (
     const description = compactSummaryOf((summary as string) || reasonText, reasonText, 120);
     const windowValue = formatPeriod(startedAt, endedAt) || '-';
     const focusValue = compactSummaryOf((summary as string) || focusText, focusText, 92);
+    const startedAtTime = timeOf(startedAt);
+    const endedAtTime = timeOf(endedAt);
 
     return {
       id: id as string,
       phase: String(index + 1).padStart(2, '0'),
-      dateText: formatPeriod(startedAt, endedAt),
       title: name as string,
       description,
+      startedAt: Number.isFinite(startedAtTime) ? startedAtTime : undefined,
+      endedAt: Number.isFinite(endedAtTime) ? endedAtTime : undefined,
       stageGoal: stageGoalText,
       tone: agendaToneClassOf(type, index),
       facts: [
