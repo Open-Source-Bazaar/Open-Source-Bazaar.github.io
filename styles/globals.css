@@ -21,11 +21,6 @@ a {
   text-decoration: none;
 }
 
-.navbar .navbar-brand,
-.navbar .nav-link {
-  white-space: nowrap;
-}
-
 * {
   box-sizing: border-box;
 }

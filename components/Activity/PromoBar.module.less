@@ -1,0 +1,153 @@
+.promoBar {
+  position: sticky;
+  top: var(--promo-bar-offset, 4.125rem);
+  z-index: 1020;
+  margin-top: var(--promo-bar-gap, 0.625rem);
+  box-shadow: 0 10px 32px rgb(0 0 0 / 35%);
+  background: linear-gradient(
+    135deg,
+    #0c0e2b 0%,
+    #1a0b4e 20%,
+    #312e81 40%,
+    #1e40af 60%,
+    #0891b2 80%,
+    #0d9488 100%
+  );
+}
+
+.promoBarInner {
+  width: min(100%, 1180px);
+}
+
+.promoBarContent {
+  flex: 1 1 auto;
+  gap: 1.25rem;
+  padding: 0.75rem 0;
+  min-width: 0;
+  color: inherit;
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: inherit;
+    text-decoration: none;
+
+    .promoBarAction {
+      box-shadow: 0 0 12px rgb(139 92 246 / 40%);
+      background: linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #22d3ee 100%);
+      color: #ffffff;
+    }
+  }
+}
+
+.promoBarText {
+  flex: 0 0 auto;
+  gap: 0.7rem;
+  min-width: 0;
+  line-height: 1.35;
+
+  strong {
+    flex: 0 0 auto;
+    color: #ffffff;
+    font-size: 1rem;
+    text-shadow: 0 0 8px rgb(139 92 246 / 30%);
+  }
+
+  span {
+    min-width: 0;
+    color: #a5f3fc;
+    font-size: 0.92rem;
+  }
+}
+
+.promoBarEventName {
+  flex: 0 0 auto;
+  background: linear-gradient(90deg, #c4b5fd, #67e8f9);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
+.promoBarAction {
+  flex: 0 0 auto;
+  transition: all 200ms ease;
+  box-shadow: 0 0 10px rgb(139 92 246 / 25%);
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+  padding: 0.42rem 0.85rem;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.88rem;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.promoBarClose {
+  flex: 0 0 2.5rem;
+  opacity: 0.6;
+  margin: 0 0 0 0.5rem;
+  width: 2.5rem;
+
+  &:hover,
+  &:focus {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .promoBar {
+    top: var(--promo-bar-offset, 4.125rem);
+  }
+
+  .promoBarInner {
+    padding: 0 0.75rem;
+  }
+
+  .promoBarContent {
+    flex-wrap: nowrap;
+    gap: 0.55rem 0.75rem;
+    padding: 0.58rem 0;
+  }
+
+  .promoBarText {
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+
+    strong {
+      flex: 1 1 auto;
+      max-width: 100%;
+      overflow: hidden;
+      font-size: 0.9rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    span {
+      display: -webkit-box;
+      overflow: hidden;
+      font-size: 0.82rem;
+      line-height: 1.25;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+    }
+  }
+
+  .promoBarAction {
+    margin-left: 0;
+    padding: 0.38rem 0.55rem;
+    font-size: 0.8rem;
+  }
+
+  .promoBarClose {
+    flex-basis: 2rem;
+    margin-left: 0.1rem;
+    width: 2rem;
+  }
+}

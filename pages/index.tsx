@@ -1,88 +1,22 @@
 import { observer } from 'mobx-react';
-import { CSSProperties, FC, useContext, useEffect, useState } from 'react';
+import { FC, useContext } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { renderToStaticMarkup } from 'react-dom/server';
 import ReactTyped from 'react-typed-component';
 
+import { PromoBar } from '../components/Activity/PromoBar';
 import { PageHead } from '../components/Layout/PageHead';
 import { I18nContext } from '../models/Translation';
 import styles from '../styles/Home.module.less';
 
-// Temporarily disable localStorage persistence so the bar returns after refresh.
-// const HackathonTopBarStorageKey = 'labor-ai-hackathon-2026-top-bar-dismissed';
-const HackathonTopBarLink = '/hackathon/Labor-AI-hackathon-2026';
-
 const HomePage: FC = observer(() => {
   const { t } = useContext(I18nContext);
-  const [isHackathonTopBarVisible, setIsHackathonTopBarVisible] = useState(true);
-  const [hackathonTopBarStyle, setHackathonTopBarStyle] = useState<CSSProperties>();
-
-  // useEffect(() => {
-  //   setIsHackathonTopBarVisible(localStorage.getItem(HackathonTopBarStorageKey) !== 'true');
-  // }, []);
-  useEffect(() => {
-    const navbar = document.querySelector('nav');
-    const syncTopBarOffset = () => {
-      const navbarHeight = navbar?.getBoundingClientRect().height || 56;
-
-      setHackathonTopBarStyle({
-        '--hackathon-top-bar-gap': `${Math.max(navbarHeight - 56, 0)}px`,
-        '--hackathon-top-bar-offset': `${navbarHeight}px`,
-      } as CSSProperties);
-    };
-    const observer =
-      typeof ResizeObserver === 'undefined' || !navbar
-        ? undefined
-        : new ResizeObserver(syncTopBarOffset);
-
-    syncTopBarOffset();
-    if (navbar) observer?.observe(navbar);
-    window.addEventListener('resize', syncTopBarOffset);
-
-    return () => {
-      observer?.disconnect();
-      window.removeEventListener('resize', syncTopBarOffset);
-    };
-  }, []);
-
-  const closeHackathonTopBar = () => {
-    setIsHackathonTopBarVisible(false);
-    // localStorage.setItem(HackathonTopBarStorageKey, 'true');
-  };
 
   return (
     <>
       <PageHead />
 
-      {isHackathonTopBarVisible && (
-        <aside
-          className={styles.hackathonTopBar}
-          aria-label={t('home_hackathon_top_bar_aria_label')}
-          style={hackathonTopBarStyle}
-        >
-          <div className={styles.hackathonTopBarInner}>
-            <a className={styles.hackathonTopBarContent} href={HackathonTopBarLink}>
-              <span className={styles.hackathonTopBarText}>
-                <strong>{t('home_hackathon_top_bar_title')}</strong>
-                <span>{t('home_hackathon_top_bar_description')}</span>
-              </span>
-              <span className={styles.hackathonTopBarEventName}>Labor AI Hackathon 2026</span>
-              <span className={styles.hackathonTopBarAction}>
-                {t('home_hackathon_top_bar_action')}
-              </span>
-            </a>
-            <button
-              className={styles.hackathonTopBarClose}
-              type="button"
-              aria-label={t('home_hackathon_top_bar_close')}
-              title={t('home_hackathon_top_bar_close')}
-              onClick={closeHackathonTopBar}
-            >
-              ×
-            </button>
-          </div>
-        </aside>
-      )}
+      <PromoBar />
 
       <section
         className={`flex-fill d-flex flex-column justify-content-center align-items-center bg-secondary bg-gradient text-dark bg-opacity-10 ${styles.main}`}
