@@ -1,6 +1,6 @@
 import { TableCellValue } from 'mobx-lark';
 import dynamic from 'next/dynamic';
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import { Container } from 'react-bootstrap';
 import { TimeUnit } from 'idea-react';
 
@@ -28,9 +28,9 @@ export interface HackathonHeroProps extends Record<
   string
 > {
   agendaItems: Agenda[];
-  badges: string[];
+  badges: ReactNode[];
   bottomCard?: HackathonHeroCard;
-  chips?: string[];
+  chips?: ReactNode[];
   countdownUnits: TimeUnit[];
   endTime?: TableCellValue;
   image?: TableCellValue;
@@ -150,7 +150,7 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
             <ul className={`list-unstyled ${styles.heroEyebrow} d-flex flex-wrap gap-3 m-0`}>
               {badges.map((badge, index) => (
                 <li
-                  key={`${badge}-${index}`}
+                  key={index}
                   className={`${styles.heroBadge} d-inline-flex align-items-center ${BadgeToneClass[index % BadgeToneClass.length]}`}
                 >
                   {badge}
@@ -182,8 +182,8 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
               <ul
                 className={`list-unstyled ${styles.heroStats} d-flex flex-wrap gap-2 gap-md-3 m-0`}
               >
-                {chips.map(chip => (
-                  <li key={chip} className={`${styles.statChip} d-inline-flex align-items-center`}>
+                {chips.map((chip, index) => (
+                  <li key={index} className={`${styles.statChip} d-inline-flex align-items-center`}>
                     {chip}
                   </li>
                 ))}

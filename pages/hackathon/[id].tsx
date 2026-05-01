@@ -1,8 +1,8 @@
-import { TableCellLocation, TableFormView } from 'mobx-lark';
+import { TableCellLocation, TableCellValue, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
-import { FC, useContext } from 'react';
 import { TimeUnit } from 'idea-react';
+import { FC, ReactNode, useContext } from 'react';
 
 import {
   HackathonActionHub,
@@ -34,11 +34,9 @@ import { HackathonResources } from '../../components/Activity/Hackathon/Resource
 import { HackathonSchedule } from '../../components/Activity/Hackathon/Schedule';
 import {
   agendaTypeLabelOf,
-  compactDateKeyOf,
   compactSummaryOf,
   dateKeyOf,
   daysBetween,
-  formatMoment,
   formatPeriod,
   isPublicForm,
   normalizeAgendaType,
@@ -46,6 +44,7 @@ import {
   timeOf,
 } from '../../components/Activity/Hackathon/utility';
 import { PageHead } from '../../components/Layout/PageHead';
+import { TimeRange, TimeText } from '../../components/TimeRange';
 import { Activity, ActivityModel } from '../../models/Activity';
 import {
   Agenda,
@@ -133,42 +132,66 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
     return leftTime - rightTime;
   });
   const hostTags = (host as string[] | undefined)?.slice(0, 2) || [];
+  const normalizedTimeOf = (value?: TableCellValue) => {
+    const timestamp = timeOf(value);
+
+    return Number.isFinite(timestamp) ? timestamp : undefined;
+  };
+  const activityStartTime = normalizedTimeOf(startTime);
+  const activityEndTime = normalizedTimeOf(endTime);
   const eventRange = formatPeriod(startTime, endTime);
   const locationText = (location as TableCellLocation | undefined)?.full_address || '-';
   const phaseBadges = agendaItems
     .slice(0, 4)
     .map(({ type, startedAt, endedAt }) => {
       const phase = agendaTypeLabelOf(type, t, t('agenda'));
-      const start = compactDateKeyOf(startedAt);
-      const end = compactDateKeyOf(endedAt);
-      const period =
-        start && end && start !== end
-          ? `${start} - ${end}`
-          : start || end || formatMoment(startedAt);
+      const startedAtTime = normalizedTimeOf(startedAt);
+      const endedAtTime = normalizedTimeOf(endedAt);
 
-      return [phase, period].filter(Boolean).join(' ');
+      return (
+        <>
+          {phase}{' '}
+          {(startedAtTime || endedAtTime) && (
+            <TimeRange start={startedAtTime} end={endedAtTime} format="MM.DD" />
+          )}
+        </>
+      );
     })
     .filter(Boolean);
   const heroBadges =
     phaseBadges[0] && phaseBadges[1]
       ? phaseBadges
-      : [
+      : ([
           (activityType as string) || t('hackathon'),
           ...hostTags,
-          formatMoment(startTime),
-          formatMoment(endTime),
-        ].filter((value): value is string => Boolean(value));
+          <TimeText value={activityStartTime} format="YYYY-MM-DD" />,
+          <TimeText value={activityEndTime} format="YYYY-MM-DD" />,
+        ].filter(Boolean) as ReactNode[]);
   const agendaPreview = agendaItems.slice(0, 3);
   const scheduleOverviewPills = agendaItems.slice(0, 6).map(({ id, name, type, startedAt }) => {
     const label = agendaTypeLabelOf(type, t, (name as string) || t('agenda'));
-    const dateText = dateKeyOf(startedAt) || formatMoment(startedAt);
+    const dateText = dateKeyOf(startedAt);
 
     return [label, dateText].filter(Boolean).join(' · ') || (id as string);
   });
+  const scheduleOverviewDisplayPills = agendaItems
+    .slice(0, 6)
+    .map(({ id, name, type, startedAt }) => {
+      const label = agendaTypeLabelOf(type, t, (name as string) || t('agenda'));
+      const dateTime = normalizedTimeOf(startedAt);
+
+      return dateTime ? (
+        <>
+          {label} · <TimeText value={dateTime} format="MM-DD" />
+        </>
+      ) : (
+        label || (id as string)
+      );
+    });
   const heroStatChips = [
     activityType ? `🎯 ${activityType as string}` : `🎯 ${t('hackathon')}`,
-    ...scheduleOverviewPills.slice(0, 4),
-  ].filter(Boolean) as string[];
+    ...scheduleOverviewDisplayPills.slice(0, 4),
+  ].filter(Boolean) as ReactNode[];
   const countdownUnits: TimeUnit[] = [
     { scale: 24, label: t('countdown_days') },
     { scale: 60, label: t('countdown_hours') },
@@ -179,20 +202,17 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
   const scheduleKeyDates = agendaItems
     .slice(0, 6)
     .map(({ id, name, type, startedAt, endedAt }) => {
-      const beginText = dateKeyOf(startedAt);
-      const endText = dateKeyOf(endedAt);
-      const dateLabel =
-        beginText && endText && beginText !== endText
-          ? `${beginText} - ${endText}`
-          : beginText || endText || '-';
+      const startedAtTime = timeOf(startedAt);
+      const endedAtTime = timeOf(endedAt);
 
       return {
         id: id as string,
-        date: dateLabel,
+        startedAt: Number.isFinite(startedAtTime) ? startedAtTime : undefined,
+        endedAt: Number.isFinite(endedAtTime) ? endedAtTime : undefined,
         label: (name as string) || agendaTypeLabelOf(type, t, t('agenda')),
       };
     })
-    .filter(({ date, label }) => Boolean(date && label));
+    .filter(({ startedAt, endedAt, label }) => Boolean((startedAt || endedAt) && label));
   const enrollmentPhase = agendaItems.find(
     ({ type }) => normalizeAgendaType(type) === 'enrollment',
   );
@@ -263,9 +283,14 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
       .slice(0, 2)
       .join(' · ') || t('hackathon_action_hub');
   const actionHubFacts = [
-    eventRange || t('event_duration'),
+    <TimeRange
+      start={activityStartTime}
+      end={activityEndTime}
+      fallback={eventRange || t('event_duration')}
+      format="YYYY/MM/DD"
+    />,
     locationText,
-    ...scheduleOverviewPills.slice(0, 2),
+    ...scheduleOverviewDisplayPills.slice(0, 2),
     formPreview,
   ]
     .filter(Boolean)
@@ -332,14 +357,7 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
           agendaItems[0] || agendaItems[agendaItems.length - 1]
             ? {
                 eyebrow: t('event_duration'),
-                title:
-                  eventRange ||
-                  [
-                    formatMoment(agendaItems[0]?.startedAt),
-                    formatMoment(agendaItems[agendaItems.length - 1]?.endedAt),
-                  ]
-                    .filter(Boolean)
-                    .join(' - '),
+                title: eventRange || t('event_duration'),
                 description:
                   agendaPreview[0]?.name?.toString() ||
                   agendaTypeLabelOf(agendaItems[0]?.type, t, t('agenda')),
@@ -428,10 +446,10 @@ const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackatho
       {scheduleItems[0] && (
         <HackathonSchedule
           items={scheduleItems}
-          keyDates={scheduleKeyDates.map(({ date, label }) => ({ date, label }))}
+          keyDates={scheduleKeyDates}
           kicker={t('hackathon_event_schedule')}
           lead={scheduleNarrativeLead || summaryText || (name as string)}
-          overviewPills={scheduleOverviewPills}
+          overviewPills={scheduleOverviewDisplayPills}
           phaseLabel={t('hackathon_phase')}
           stageGoalLabel={t('hackathon_schedule_goal_label')}
           subtitle={eventRange || t('event_description')}

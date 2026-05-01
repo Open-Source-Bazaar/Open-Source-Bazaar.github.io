@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
 import { HackathonHeroAction } from './Hero';
@@ -14,7 +14,7 @@ export interface HackathonActionHubEntry {
 
 export interface HackathonActionHubProps {
   entries: HackathonActionHubEntry[];
-  facts: string[];
+  facts: ReactNode[];
   primaryAction?: HackathonHeroAction;
   primaryDescription: string;
   primaryTitle: string;
@@ -90,8 +90,8 @@ export const HackathonActionHub: FC<PropsWithChildren<HackathonActionHubProps>> 
             </nav>
 
             <ul className={`list-unstyled ${styles.regFacts} d-flex flex-wrap gap-2 mt-4`}>
-              {facts.map(fact => (
-                <li key={fact}>{fact}</li>
+              {facts.map((fact, index) => (
+                <li key={index}>{fact}</li>
               ))}
             </ul>
           </div>
