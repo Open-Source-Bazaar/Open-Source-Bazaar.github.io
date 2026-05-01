@@ -2,6 +2,7 @@ import { TableCellLocation, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
+import { TimeUnit } from 'idea-react';
 
 import {
   HackathonActionHub,
@@ -25,7 +26,6 @@ import {
   heroNavigation,
   RequiredTableKeys,
 } from '../../components/Activity/Hackathon/constant';
-import { TimeUnit } from '../../components/Base/Countdown';
 import { HackathonFAQ } from '../../components/Activity/Hackathon/FAQ';
 import { HackathonHero } from '../../components/Activity/Hackathon/Hero';
 import { HackathonOverview } from '../../components/Activity/Hackathon/Overview';

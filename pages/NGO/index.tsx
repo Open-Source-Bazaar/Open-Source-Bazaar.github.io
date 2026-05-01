@@ -3,8 +3,8 @@ import { InferGetServerSidePropsType } from 'next';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
 import { Container } from 'react-bootstrap';
+import { ZodiacBar } from 'idea-react';
 
-import { ZodiacBar } from '../../components/Base/ZodiacBar';
 import { PageHead } from '../../components/Layout/PageHead';
 import { OrganizationModel } from '../../models/Organization';
 import { I18nContext } from '../../models/Translation';

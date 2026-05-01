@@ -1,12 +1,14 @@
 import { TableCellValue } from 'mobx-lark';
+import dynamic from 'next/dynamic';
 import { FC } from 'react';
 import { Container } from 'react-bootstrap';
+import { TimeUnit } from 'idea-react';
 
 import { Agenda } from '../../../models/Hackathon';
 import { LarkImage } from '../../LarkImage';
-import { AgendaCountdown } from './AgendaCountdown';
-import { TimeUnit } from '../../Base/Countdown';
 import styles from './Hero.module.less';
+
+const AgendaCountdown = dynamic(() => import('./AgendaCountdown'), { ssr: false });
 
 export type HackathonHeroNavItem = Record<'label' | 'href', string>;
 
