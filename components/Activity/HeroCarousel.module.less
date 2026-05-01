@@ -1,0 +1,170 @@
+.heroCarousel {
+  --hero-carousel-offset: 4.125rem;
+  background: #050816;
+  min-height: calc(100vh - var(--hero-carousel-offset) - 2.5rem);
+}
+
+.carousel,
+.item,
+.slideCard {
+  min-height: inherit;
+}
+
+.carousel {
+  :global(.carousel-inner) {
+    min-height: inherit;
+  }
+
+  :global(.carousel-item) {
+    min-height: inherit;
+  }
+
+  :global(.carousel-indicators) {
+    right: auto;
+    bottom: 2rem;
+    left: 1rem;
+    justify-content: flex-start;
+    margin: 0;
+  }
+
+  :global(.carousel-indicators button) {
+    opacity: 0.9;
+    margin: 0 0.45rem 0 0;
+    border: 0;
+    border-radius: 999px;
+    background-color: rgb(255 255 255 / 65%);
+    width: 2.25rem;
+    height: 0.32rem;
+  }
+
+  :global(.carousel-control-prev),
+  :global(.carousel-control-next) {
+    opacity: 0.95;
+    width: 6rem;
+  }
+
+  :global(.carousel-control-prev-icon),
+  :global(.carousel-control-next-icon) {
+    filter: drop-shadow(0 12px 24px rgb(0 0 0 / 50%));
+  }
+}
+
+.slideCard {
+  background: linear-gradient(
+    90deg,
+    rgb(5 8 22 / 96%) 0%,
+    rgb(5 8 22 / 88%) 28%,
+    rgb(5 8 22 / 46%) 58%,
+    rgb(5 8 22 / 16%) 100%
+  );
+}
+
+.mediaPane {
+  min-height: 19rem;
+}
+
+.mediaPane::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgb(5 8 22 / 18%) 0%, rgb(5 8 22 / 48%) 58%, rgb(5 8 22 / 82%) 100%),
+    linear-gradient(90deg, rgb(5 8 22 / 10%) 0%, rgb(5 8 22 / 24%) 32%, rgb(5 8 22 / 72%) 100%);
+  pointer-events: none;
+  content: '';
+}
+
+.description {
+  display: -webkit-box;
+  max-width: 40rem;
+  overflow: hidden;
+  font-size: clamp(1rem, 1.6vw, 1.28rem);
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+.actionButton {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease;
+  box-shadow: 0 12px 28px rgb(14 165 233 / 18%);
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 0.9rem;
+  background: linear-gradient(135deg, rgb(255 255 255 / 92%) 0%, rgb(224 242 254 / 96%) 100%);
+  color: #0f172a;
+  letter-spacing: 0.02em;
+}
+
+.actionButton:hover,
+.actionButton:focus,
+.actionButton:active {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px rgb(14 165 233 / 22%);
+  border-color: rgb(255 255 255 / 34%);
+  background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
+  color: #0f172a;
+}
+
+@media (max-width: 991.98px) {
+  .heroCarousel {
+    min-height: calc(100vh - var(--hero-carousel-offset) - 2rem);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .heroCarousel {
+    min-height: calc(100svh - var(--hero-carousel-offset) - 1.25rem);
+  }
+
+  .carousel {
+    :global(.carousel-indicators) {
+      right: 1rem;
+      bottom: 1rem;
+      left: 1rem;
+      justify-content: center;
+    }
+
+    :global(.carousel-indicators button) {
+      margin: 0 0.3rem;
+      width: 1.4rem;
+      height: 0.26rem;
+    }
+
+    :global(.carousel-control-prev),
+    :global(.carousel-control-next) {
+      display: none;
+    }
+  }
+
+  .slideCard {
+    background: linear-gradient(
+      180deg,
+      rgb(5 8 22 / 18%) 0%,
+      rgb(5 8 22 / 54%) 44%,
+      rgb(5 8 22 / 92%) 100%
+    );
+  }
+
+  .mediaPane {
+    min-height: 14rem;
+  }
+
+  .mediaPane::after {
+    background:
+      linear-gradient(180deg, rgb(5 8 22 / 16%) 0%, rgb(5 8 22 / 42%) 42%, rgb(5 8 22 / 88%) 100%),
+      linear-gradient(90deg, rgb(5 8 22 / 18%) 0%, rgb(5 8 22 / 16%) 100%);
+  }
+
+  .description {
+    max-width: none;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+  }
+
+  .actionButton {
+    border-radius: 0.8rem;
+  }
+}

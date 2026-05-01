@@ -4,7 +4,7 @@ import { Card, Col, Row } from 'react-bootstrap';
 import { renderToStaticMarkup } from 'react-dom/server';
 import ReactTyped from 'react-typed-component';
 
-import { PromoBar } from '../components/Activity/PromoBar';
+import { HeroCarousel } from '../components/Activity/HeroCarousel';
 import { PageHead } from '../components/Layout/PageHead';
 import { I18nContext } from '../models/Translation';
 import styles from '../styles/Home.module.less';
@@ -16,7 +16,7 @@ const HomePage: FC = observer(() => {
     <>
       <PageHead />
 
-      <PromoBar />
+      <HeroCarousel />
 
       <section
         className={`flex-fill d-flex flex-column justify-content-center align-items-center bg-secondary bg-gradient text-dark bg-opacity-10 ${styles.main}`}
