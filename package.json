@@ -22,7 +22,7 @@
     "core-js": "^3.49.0",
     "echarts-jsx": "^0.6.0",
     "file-type": "^22.0.0",
-    "idea-react": "^2.0.0-rc.13",
+    "idea-react": "^2.2.2",
     "jsonwebtoken": "^9.0.3",
     "koa": "^3.2.0",
     "koa-jwt": "^4.0.4",

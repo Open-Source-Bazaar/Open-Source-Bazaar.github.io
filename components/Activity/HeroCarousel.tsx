@@ -1,4 +1,5 @@
 import { CSSProperties, FC, useContext, useEffect, useState } from 'react';
+import { TextTruncate } from 'idea-react';
 import { TableCellLocation } from 'mobx-lark';
 import { Badge, Button, Card, Carousel, Col, Container, Row, Stack } from 'react-bootstrap';
 
@@ -7,7 +8,6 @@ import { I18nContext } from '../../models/Translation';
 import { LarkImage } from '../LarkImage';
 import styles from './HeroCarousel.module.less';
 
-const FALLBACK_LINK = '/hackathon/Labor-AI-hackathon-2026';
 const MAX_ITEMS = 5;
 
 const timestampOf = (value: unknown) => {
@@ -44,10 +44,11 @@ export const HeroCarousel: FC = () => {
   const { t } = useContext(I18nContext);
   const [heroStyle, setHeroStyle] = useState<CSSProperties>();
   const [activities, setActivities] = useState<Activity[]>([]);
+  const [descriptionRows, setDescriptionRows] = useState(3);
   const infoBodyStyle = { minHeight: 'clamp(0rem, 38vh, 24rem)' } as CSSProperties;
 
   useEffect(() => {
-    const navbar = document.querySelector('nav');
+    const navbar = document.querySelector<HTMLElement>('nav');
     const syncHeroOffset = () => {
       const navbarHeight = navbar?.getBoundingClientRect().height || 56;
 
@@ -55,22 +56,17 @@ export const HeroCarousel: FC = () => {
         '--hero-carousel-offset': `${navbarHeight}px`,
       } as CSSProperties);
     };
-    const observer =
-      typeof ResizeObserver === 'undefined' || !navbar
-        ? undefined
-        : new ResizeObserver(syncHeroOffset);
+    const observer = navbar && new ResizeObserver(syncHeroOffset);
 
     syncHeroOffset();
     if (navbar) observer?.observe(navbar);
-    window.addEventListener('resize', syncHeroOffset);
 
-    return () => {
-      observer?.disconnect();
-      window.removeEventListener('resize', syncHeroOffset);
-    };
+    return () => observer?.disconnect();
   }, []);
 
   useEffect(() => {
+    let mounted = true;
+
     (async () => {
       try {
         const model = new ActivityModel();
@@ -82,25 +78,36 @@ export const HeroCarousel: FC = () => {
           )
           .slice(0, MAX_ITEMS);
 
-        setActivities(latestActivities);
+        if (mounted) setActivities(latestActivities);
       } catch (err) {
         console.error('Failed to load activities:', err);
       }
     })();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
-  const slides = activities.length
-    ? activities
-    : [
-        {
-          id: 'fallback',
-          name: 'Labor AI Hackathon 2026',
-          summary: t('home_hackathon_top_bar_description'),
-        } as Activity,
-      ];
+  useEffect(() => {
+    const syncDescriptionRows = () => {
+      setDescriptionRows(window.innerWidth <= 767.98 ? 4 : 3);
+    };
+
+    syncDescriptionRows();
+    window.addEventListener('resize', syncDescriptionRows);
+
+    return () => {
+      window.removeEventListener('resize', syncDescriptionRows);
+    };
+  }, []);
+
+  if (!activities.length) return null;
 
   return (
-    <section
+    <Container
+      as="section"
+      fluid
       className={`${styles.heroCarousel} position-relative`}
       aria-label={t('home_hackathon_top_bar_aria_label')}
       style={heroStyle}
@@ -110,19 +117,16 @@ export const HeroCarousel: FC = () => {
         touch
         pause="hover"
         interval={6500}
-        indicators={slides.length > 1}
-        controls={slides.length > 1}
+        indicators={activities.length > 1}
+        controls={activities.length > 1}
         className={`${styles.carousel} h-100`}
       >
-        {slides.map(activity => {
-          const href =
-            (activity.id as string) === 'fallback'
-              ? FALLBACK_LINK
-              : ActivityModel.getLink(activity);
+        {activities.map(activity => {
+          const href = (activity.link as string) || ActivityModel.getLink(activity);
           const hosts = ((activity.host as string[]) || []).slice(0, 2);
           const locationText = locationTextOf(activity);
           const dateText = formatDateLabel(activity.startTime);
-          const title = (activity.name as string) || 'Activity';
+          const title = (activity.name as string) || t('activity');
           const description = descriptionOf(activity);
           const image = activity.cardImage || activity.image;
 
@@ -173,9 +177,12 @@ export const HeroCarousel: FC = () => {
                           {title}
                         </Card.Title>
 
-                        <Card.Text className={`${styles.description} text-white-50 mb-4`}>
+                        <TextTruncate
+                          rows={descriptionRows}
+                          className={`${styles.description} text-white-50 mb-4`}
+                        >
                           {description}
-                        </Card.Text>
+                        </TextTruncate>
 
                         <Stack
                           direction="horizontal"
@@ -183,7 +190,7 @@ export const HeroCarousel: FC = () => {
                           className="flex-wrap align-items-start align-items-md-center"
                         >
                           <Card.Text className="mb-0 fs-6 text-info-emphasis fw-semibold">
-                            {locationText || 'Open Source Bazaar'}
+                            {locationText || t('open_source_bazaar')}
                           </Card.Text>
                           <Button
                             href={href}
@@ -206,6 +213,6 @@ export const HeroCarousel: FC = () => {
           );
         })}
       </Carousel>
-    </section>
+    </Container>
   );
 };
