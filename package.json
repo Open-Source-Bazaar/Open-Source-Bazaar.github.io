@@ -21,7 +21,7 @@
     "core-js": "^3.49.0",
     "echarts-jsx": "^0.6.0",
     "file-type": "^22.0.1",
-    "idea-react": "^2.2.0",
+    "idea-react": "^2.2.2",
     "jsonwebtoken": "^9.0.3",
     "koa": "^3.2.0",
     "koa-jwt": "^4.0.4",
@@ -50,7 +50,7 @@
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^5.2.0",
     "web-utility": "^4.6.6",
-    "yaml": "^2.8.3"
+    "yaml": "^2.8.4"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.29.0",
@@ -74,7 +74,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-simple-import-sort": "^13.0.0",
-    "globals": "^17.5.0",
+    "globals": "^17.6.0",
     "husky": "^9.1.7",
     "jiti": "^2.6.1",
     "less": "^4.6.4",

@@ -97,7 +97,7 @@ export const MainNavigator: FC<MainNavigatorProps> = observer(({ menu }) => {
   return (
     <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
       <Container>
-        <Navbar.Brand href="/" className="fw-bolder d-flex align-items-center gap-2">
+        <Navbar.Brand href="/" className="fw-bolder d-flex align-items-center gap-2 text-nowrap">
           <Image width={40} src={DefaultImage} alt={t('open_source_bazaar')} />
           {t('open_source_bazaar')}
         </Navbar.Brand>
@@ -117,7 +117,7 @@ export const MainNavigator: FC<MainNavigatorProps> = observer(({ menu }) => {
                 <Nav.Link
                   key={`${href}-${title}`}
                   href={href}
-                  className={pathname === `${href}` ? 'fw-bolder text-light' : ''}
+                  className={`text-nowrap ${pathname === `${href}` ? 'fw-bolder text-light' : ''}`}
                 >
                   {title}
                 </Nav.Link>
