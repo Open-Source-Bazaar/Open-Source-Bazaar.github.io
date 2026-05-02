@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react';
+import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -6,17 +7,27 @@ import ReactTyped from 'react-typed-component';
 
 import { HeroCarousel } from '../components/Activity/HeroCarousel';
 import { PageHead } from '../components/Layout/PageHead';
+import { Activity, ActivityModel } from '../models/Activity';
 import { I18nContext } from '../models/Translation';
 import styles from '../styles/Home.module.less';
 
-const HomePage: FC = observer(() => {
+interface HomePageProps {
+  activities: Activity[];
+}
+
+export const getServerSideProps = compose<{}, HomePageProps>(cache(), errorLogger, async () => {
+  const activities = await new ActivityModel().getList({}, 1, 3);
+  return { props: JSON.parse(JSON.stringify({ activities })) };
+});
+
+const HomePage: FC<HomePageProps> = observer(({ activities }) => {
   const { t } = useContext(I18nContext);
 
   return (
     <>
       <PageHead />
 
-      <HeroCarousel />
+      <HeroCarousel activities={activities} />
 
       <section
         className={`flex-fill d-flex flex-column justify-content-center align-items-center bg-secondary bg-gradient text-dark bg-opacity-10 ${styles.main}`}

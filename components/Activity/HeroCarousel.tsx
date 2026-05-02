@@ -8,7 +8,7 @@ import { I18nContext } from '../../models/Translation';
 import { LarkImage } from '../LarkImage';
 import styles from './HeroCarousel.module.less';
 
-const MAX_ITEMS = 5;
+export const HERO_CAROUSEL_ITEMS = 3;
 
 const timestampOf = (value: unknown) => {
   if (typeof value === 'number') return value;
@@ -21,12 +21,12 @@ const timestampOf = (value: unknown) => {
   return 0;
 };
 
-const formatDateLabel = (value: unknown) => {
+const formatDateLabel = (value: unknown, locale: string) => {
   const timestamp = timestampOf(value);
 
   if (!timestamp) return '';
 
-  return new Intl.DateTimeFormat('zh-CN', {
+  return new Intl.DateTimeFormat(locale, {
     month: 'short',
     day: 'numeric',
   }).format(timestamp);
@@ -40,10 +40,9 @@ const locationTextOf = ({ city, location }: Activity) =>
 const descriptionOf = (activity: Activity) =>
   (activity.summary as string) || locationTextOf(activity) || (activity.type as string) || '';
 
-export const HeroCarousel: FC = () => {
-  const { t } = useContext(I18nContext);
+export const HeroCarousel: FC<{ activities: Activity[] }> = ({ activities }) => {
+  const { currentLanguage, t } = useContext(I18nContext);
   const [heroStyle, setHeroStyle] = useState<CSSProperties>();
-  const [activities, setActivities] = useState<Activity[]>([]);
   const [descriptionRows, setDescriptionRows] = useState(3);
   const infoBodyStyle = { minHeight: 'clamp(0rem, 38vh, 24rem)' } as CSSProperties;
 
@@ -62,31 +61,6 @@ export const HeroCarousel: FC = () => {
     if (navbar) observer?.observe(navbar);
 
     return () => observer?.disconnect();
-  }, []);
-
-  useEffect(() => {
-    let mounted = true;
-
-    (async () => {
-      try {
-        const model = new ActivityModel();
-        const data = await model.getAll();
-        const latestActivities = data
-          .filter(({ name }) => Boolean(name))
-          .sort(
-            ({ startTime: left }, { startTime: right }) => timestampOf(right) - timestampOf(left),
-          )
-          .slice(0, MAX_ITEMS);
-
-        if (mounted) setActivities(latestActivities);
-      } catch (err) {
-        console.error('Failed to load activities:', err);
-      }
-    })();
-
-    return () => {
-      mounted = false;
-    };
   }, []);
 
   useEffect(() => {
@@ -122,10 +96,10 @@ export const HeroCarousel: FC = () => {
         className={`${styles.carousel} h-100`}
       >
         {activities.map(activity => {
-          const href = (activity.link as string) || ActivityModel.getLink(activity);
+          const href = ActivityModel.getLink(activity);
           const hosts = ((activity.host as string[]) || []).slice(0, 2);
           const locationText = locationTextOf(activity);
-          const dateText = formatDateLabel(activity.startTime);
+          const dateText = formatDateLabel(activity.startTime, currentLanguage);
           const title = (activity.name as string) || t('activity');
           const description = descriptionOf(activity);
           const image = activity.cardImage || activity.image;
