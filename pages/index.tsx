@@ -1,10 +1,9 @@
 import { observer } from 'mobx-react';
-import { GetStaticProps } from 'next';
+import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { renderToStaticMarkup } from 'react-dom/server';
 import ReactTyped from 'react-typed-component';
-import { Day, Second } from 'web-utility';
 
 import { HeroCarousel } from '../components/Activity/HeroCarousel';
 import { PageHead } from '../components/Layout/PageHead';
@@ -16,14 +15,11 @@ interface HomePageProps {
   activities: Activity[];
 }
 
-export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
+export const getServerSideProps = compose(cache(), errorLogger, async () => {
   const activities = await new ActivityModel().getList({}, 1, 3);
 
-  return {
-    props: JSON.parse(JSON.stringify({ activities })),
-    revalidate: Day / Second,
-  };
-};
+  return { props: JSON.parse(JSON.stringify({ activities })) };
+});
 
 const HomePage: FC<HomePageProps> = observer(({ activities }) => {
   const { t } = useContext(I18nContext);
