@@ -1,6 +1,8 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import { Container } from 'react-bootstrap';
+import { TimeData } from 'web-utility';
 
+import { TimeRange } from '../../TimeRange';
 import type { HackathonAwardsMeta } from './Awards';
 import styles from './Schedule.module.less';
 
@@ -16,11 +18,13 @@ export interface HackathonScheduleFact extends HackathonAwardsMeta {
 }
 
 export interface HackathonScheduleItem extends Record<
-  'id' | 'phase' | 'title' | 'dateText' | 'description',
+  'id' | 'phase' | 'title' | 'description',
   string
 > {
   facts: HackathonScheduleFact[];
 
+  endedAt?: TimeData;
+  startedAt?: TimeData;
   stageGoal?: string;
   tone: HackathonScheduleTone;
 }
@@ -30,16 +34,21 @@ export interface HackathonScheduleProps extends Record<
   string
 > {
   items: HackathonScheduleItem[];
-  keyDates?: Record<'date' | 'label', string>[];
-  overviewPills: string[];
+  keyDates?: {
+    label: string;
+    startedAt?: TimeData;
+    endedAt?: TimeData;
+  }[];
+  overviewPills: ReactNode[];
 }
 
 const ScheduleCard: FC<HackathonScheduleItem & Record<'phaseLabel' | 'stageGoalLabel', string>> = ({
-  dateText,
   description,
+  endedAt,
   facts,
   phase,
   phaseLabel,
+  startedAt,
   stageGoal,
   stageGoalLabel,
   title,
@@ -52,7 +61,9 @@ const ScheduleCard: FC<HackathonScheduleItem & Record<'phaseLabel' | 'stageGoalL
       <span className={`${styles.dayNo} d-inline-flex align-items-center`}>
         {phaseLabel} {phase}
       </span>
-      <time className={styles.dayDate}>{dateText}</time>
+      <span className={styles.dayDate}>
+        <TimeRange start={startedAt} end={endedAt} />
+      </span>
     </div>
 
     <h3 className={`${styles.dayTitle} mt-3 mb-2`}>{title}</h3>
@@ -108,8 +119,8 @@ export const HackathonSchedule: FC<HackathonScheduleProps & { phaseLabel: string
       <ul
         className={`list-unstyled ${styles.scheduleOverview} d-flex flex-wrap justify-content-center gap-3 mb-4`}
       >
-        {overviewPills.map(pill => (
-          <li key={pill} className={styles.schedulePill}>
+        {overviewPills.map((pill, index) => (
+          <li key={index} className={styles.schedulePill}>
             {pill}
           </li>
         ))}
@@ -128,12 +139,14 @@ export const HackathonSchedule: FC<HackathonScheduleProps & { phaseLabel: string
 
       {keyDates?.[0] && (
         <ul className={`list-unstyled ${styles.keyDates} mt-4`}>
-          {keyDates.map(({ date, label }, index) => (
+          {keyDates.map(({ startedAt, endedAt, label }, index) => (
             <li
-              key={`${date}-${label}`}
+              key={`${startedAt || ''}-${endedAt || ''}-${label}`}
               className={`${styles.keyDateCard} d-grid gap-1 ${index % 2 ? styles.keyDateCardWarn : ''}`}
             >
-              <strong className={styles.keyDateValue}>{date}</strong>
+              <strong className={styles.keyDateValue}>
+                <TimeRange start={startedAt} end={endedAt} format="MM-DD" />
+              </strong>
               <span className={styles.keyDateLabel}>{label}</span>
             </li>
           ))}

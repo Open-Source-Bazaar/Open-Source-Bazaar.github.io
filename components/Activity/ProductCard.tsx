@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import { FilePreview } from 'mobx-restful-table';
 import { FC } from 'react';
 import { CardProps, Card, Button } from 'react-bootstrap';
-import { formatDate } from 'web-utility';
+import { Time } from 'idea-react';
 
 import { Product } from '../../models/Hackathon';
 import styles from '../../styles/Hackathon.module.less';
@@ -68,9 +68,9 @@ export const ProductCard: FC<ProductCardProps> = observer(
           </div>
         )}
 
-        <time className="text-dark opacity-75 small" dateTime={new Date(createdAt as number).toJSON()}>
-          📅 {formatDate(createdAt as number)}
-        </time>
+        <span className="text-dark opacity-75 small">
+          📅 <Time dateTime={createdAt as number} format="YYYY-MM-DD" />
+        </span>
       </Card.Body>
     </Card>
   ),

@@ -1,5 +1,4 @@
 import { TableCellUser } from 'mobx-lark';
-
 import { Activity, ActivityModel } from '../../../models/Activity';
 import { Agenda, Organization, Person, Prize, Project, Template } from '../../../models/Hackathon';
 import { i18n } from '../../../models/Translation';
@@ -13,6 +12,7 @@ import {
   formatPeriod,
   normalizeAgendaType,
   previewText,
+  timeOf,
 } from './utility';
 
 export const RequiredTableKeys = [
@@ -90,13 +90,6 @@ export const heroNavigation = ({ t }: typeof i18n) => [
   { href: '#schedule', label: t('agenda') },
   { href: '#awards', label: t('prizes') },
   { href: '#faq', label: t('common_questions') },
-];
-
-export const buildCountdownUnitLabels = ({ t }: typeof i18n) => [
-  t('countdown_days'),
-  t('countdown_hours'),
-  t('countdown_minutes'),
-  t('countdown_seconds'),
 ];
 
 export const buildHighlightCards = (
@@ -202,13 +195,16 @@ export const buildScheduleItems = (
     const description = compactSummaryOf((summary as string) || reasonText, reasonText, 120);
     const windowValue = formatPeriod(startedAt, endedAt) || '-';
     const focusValue = compactSummaryOf((summary as string) || focusText, focusText, 92);
+    const startedAtTime = timeOf(startedAt);
+    const endedAtTime = timeOf(endedAt);
 
     return {
       id: id as string,
       phase: String(index + 1).padStart(2, '0'),
-      dateText: formatPeriod(startedAt, endedAt),
       title: name as string,
       description,
+      startedAt: Number.isFinite(startedAtTime) ? startedAtTime : undefined,
+      endedAt: Number.isFinite(endedAtTime) ? endedAtTime : undefined,
       stageGoal: stageGoalText,
       tone: agendaToneClassOf(type, index),
       facts: [
@@ -336,7 +332,6 @@ export const buildProjectItems = (
   { projects, activity }: { projects: Project[]; activity: Activity },
 ) =>
   projects.map(({ id, name, score, summary, createdBy, members }) => {
-    const creator = createdBy as TableCellUser | undefined;
     const scoreText = score === null || score === undefined || score === '' ? '—' : `${score}`;
 
     return {
@@ -346,11 +341,10 @@ export const buildProjectItems = (
       score: scoreText,
       description: (summary as string) || '',
       meta: [
-        creator
+        createdBy
           ? {
               label: t('created_by'),
-              value: creator.name || '—',
-              valueHref: creator.email ? `mailto:${creator.email}` : undefined,
+              value: (createdBy as TableCellUser)?.name || '—',
             }
           : { label: t('created_by'), value: '—' },
         {

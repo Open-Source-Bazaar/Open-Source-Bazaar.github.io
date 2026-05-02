@@ -22,11 +22,8 @@
 ## 开始
 
 ```bash
-npm install
-npm run dev
-# or
-yarn install
-yarn dev
+pnpm install
+pnpm dev
 ```
 
 可访问 http://localhost:3000.

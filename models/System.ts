@@ -6,7 +6,7 @@ import { Constructor } from 'web-utility';
 import { SearchActivityModel } from './Activity';
 import { SearchAwardModel } from './Award';
 import { ownClient } from './Base';
-import { OrganizationModel } from './Organization';
+import { SearchOrganizationModel } from './Organization';
 import { SearchProjectModel } from './Project';
 
 export type SearchableFilter<D extends DataObject> = Filter<D> & {
@@ -26,7 +26,7 @@ export class SystemModel extends BaseModel {
     activity: SearchActivityModel,
     project: SearchProjectModel,
     award: SearchAwardModel,
-    NGO: OrganizationModel,
+    NGO: SearchOrganizationModel,
   } as Record<string, Constructor<SearchModel<DataObject>>>;
 
   @observable

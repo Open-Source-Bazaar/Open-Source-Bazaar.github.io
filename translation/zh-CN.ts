@@ -18,6 +18,7 @@ export default {
   // Search
   keywords: '关键词',
   search_results: '搜索结果',
+  breadcrumb: '面包屑导航',
 
   // Scroll List
   load_more: '加载更多……',
@@ -310,6 +311,7 @@ export default {
   score: '评分',
 
   // Team detail page
+  hackathon_team_showcase: '团队展示',
   team_members: '团队成员',
   team_works: '团队作品',
   no_news_yet: '暂无动态',

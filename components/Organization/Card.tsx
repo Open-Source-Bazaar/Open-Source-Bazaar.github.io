@@ -1,4 +1,3 @@
-import { Organization } from '@open-source-bazaar/china-ngo-database';
 import { Icon } from 'idea-react';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -8,9 +7,11 @@ import { HTMLAttributes } from 'react';
 import { Button, Card, CardProps, Image } from 'react-bootstrap';
 
 import { i18n, I18nContext } from '../../models/Translation';
+import { Organization } from '../../models/Organization';
 
 export interface OrganizationCardProps
-  extends Pick<HTMLAttributes<HTMLDivElement>, 'className' | 'style'>,
+  extends
+    Pick<HTMLAttributes<HTMLDivElement>, 'className' | 'style'>,
     Omit<Organization, 'id'>,
     CardProps {
   onSwitch?: (filter: Partial<Pick<Organization, 'entityType' | 'coverageArea'>>) => any;
@@ -24,7 +25,7 @@ export class OrganizationCard extends ObservedComponent<OrganizationCardProps, t
   accessor showQRC = false;
 
   renderIcon() {
-    const { website, wechatPublic } = this.observedProps.internetContact || {};
+    const { website, wechatPublic } = this.observedProps;
 
     return (
       <div className="d-flex justify-content-around">
@@ -34,7 +35,7 @@ export class OrganizationCard extends ObservedComponent<OrganizationCardProps, t
           </Button>
         )} */}
         {website && (
-          <Button title="WWW" size="sm" target="_blank" href={website}>
+          <Button title="WWW" size="sm" target="_blank" href={website?.toString()}>
             <Icon name="globe2" />
           </Button>
         )}
@@ -53,9 +54,8 @@ export class OrganizationCard extends ObservedComponent<OrganizationCardProps, t
   }
 
   render() {
-    const { name, entityType, services, description, internetContact, onSwitch, ...props } =
+    const { name, entityType, services, description, wechatPublic, onSwitch, ...props } =
       this.props;
-    const { wechatPublic } = internetContact || {};
 
     return (
       <Card
@@ -74,21 +74,21 @@ export class OrganizationCard extends ObservedComponent<OrganizationCardProps, t
         /> */}
         <Card.Body>
           <Card.Title>
-            {name}
-            <BadgeBar className="ms-2" list={[{ text: entityType! }]} />
+            {name + ''}
+            <BadgeBar className="ms-2" list={[{ text: entityType + '' }]} />
           </Card.Title>
 
           {services && (
             <BadgeBar
               className="justify-content-end"
-              list={services.map(({ serviceCategory }) => ({ text: serviceCategory! }))}
+              list={(services as string[]).map(text => ({ text }))}
             />
           )}
           <Card.Text
             className="d-none d-sm-block text-wrap overflow-auto"
             style={{ minHeight: '5rem', maxHeight: '10rem' }}
           >
-            {description}
+            {description?.toString()}
           </Card.Text>
         </Card.Body>
 
@@ -99,7 +99,7 @@ export class OrganizationCard extends ObservedComponent<OrganizationCardProps, t
             <Image
               className="mt-2"
               src={`https://open.weixin.qq.com/qr/code?username=${wechatPublic}`}
-              alt={wechatPublic}
+              alt={wechatPublic?.toString()}
               fluid
             />
           )}

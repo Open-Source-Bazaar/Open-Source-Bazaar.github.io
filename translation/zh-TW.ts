@@ -18,6 +18,7 @@ export default {
   // Search
   keywords: '關鍵詞',
   search_results: '搜尋結果',
+  breadcrumb: '麵包屑導覽',
 
   // Scroll List
   load_more: '加載更多……',
@@ -310,6 +311,7 @@ export default {
   score: '評分',
 
   // Team detail page
+  hackathon_team_showcase: '團隊展示',
   team_members: '團隊成員',
   team_works: '團隊作品',
   no_news_yet: '暫無動態',
