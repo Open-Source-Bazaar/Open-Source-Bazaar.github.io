@@ -31,12 +31,6 @@ export default {
   we_are_organizing_bazaar: '我们正在筹办 3 月开源市集，欢迎参与！',
   welcome_open_collaboration: '欢迎参与',
   open_collaboration: '开放式协作',
-  home_hackathon_top_bar_aria_label: 'Labor AI Hackathon 2026 活动宣传',
-  home_hackathon_top_bar_badge: '活动招募中',
-  home_hackathon_top_bar_title: '打工人の终极反叛',
-  home_hackathon_top_bar_description: '48 小时，来这里创造未来',
-  home_hackathon_top_bar_action: '立刻报名',
-  home_hackathon_top_bar_close: '关闭活动宣传栏',
 
   // Volunteer page
   volunteer: '志愿者',

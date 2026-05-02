@@ -8,8 +8,6 @@ import { I18nContext } from '../../models/Translation';
 import { LarkImage } from '../LarkImage';
 import styles from './HeroCarousel.module.less';
 
-export const HERO_CAROUSEL_ITEMS = 3;
-
 const timestampOf = (value: unknown) => {
   if (typeof value === 'number') return value;
   if (typeof value === 'string') {
@@ -24,12 +22,12 @@ const timestampOf = (value: unknown) => {
 const formatDateLabel = (value: unknown, locale: string) => {
   const timestamp = timestampOf(value);
 
-  if (!timestamp) return '';
-
-  return new Intl.DateTimeFormat(locale, {
-    month: 'short',
-    day: 'numeric',
-  }).format(timestamp);
+  return !timestamp
+    ? ''
+    : new Intl.DateTimeFormat(locale, {
+        month: 'short',
+        day: 'numeric',
+      }).format(timestamp);
 };
 
 const locationTextOf = ({ city, location }: Activity) =>
@@ -64,26 +62,20 @@ export const HeroCarousel: FC<{ activities: Activity[] }> = ({ activities }) => 
   }, []);
 
   useEffect(() => {
-    const syncDescriptionRows = () => {
-      setDescriptionRows(window.innerWidth <= 767.98 ? 4 : 3);
-    };
-
+    const syncDescriptionRows = () => setDescriptionRows(window.innerWidth <= 767.98 ? 4 : 3);
     syncDescriptionRows();
-    window.addEventListener('resize', syncDescriptionRows);
 
-    return () => {
-      window.removeEventListener('resize', syncDescriptionRows);
-    };
+    const observer = new ResizeObserver(syncDescriptionRows);
+    observer.observe(document.body);
+
+    return () => observer.disconnect();
   }, []);
-
-  if (!activities.length) return null;
 
   return (
     <Container
       as="section"
       fluid
       className={`${styles.heroCarousel} position-relative`}
-      aria-label={t('home_hackathon_top_bar_aria_label')}
       style={heroStyle}
     >
       <Carousel
@@ -96,16 +88,18 @@ export const HeroCarousel: FC<{ activities: Activity[] }> = ({ activities }) => 
         className={`${styles.carousel} h-100`}
       >
         {activities.map(activity => {
+          const { id, type, name, host, startTime, cardImage } = activity;
+
           const href = ActivityModel.getLink(activity);
-          const hosts = ((activity.host as string[]) || []).slice(0, 2);
+          const hosts = ((host as string[]) || []).slice(0, 2);
           const locationText = locationTextOf(activity);
-          const dateText = formatDateLabel(activity.startTime, currentLanguage);
-          const title = (activity.name as string) || t('activity');
+          const dateText = formatDateLabel(startTime, currentLanguage);
+          const title = (name as string) || t('activity');
           const description = descriptionOf(activity);
-          const image = activity.cardImage || activity.image;
+          const image = cardImage || activity.image;
 
           return (
-            <Carousel.Item key={activity.id as string} className={`${styles.item} h-100`}>
+            <Carousel.Item key={id as string} className={`${styles.item} h-100`}>
               <Card
                 className={`${styles.slideCard} h-100 rounded-0 border-0 bg-transparent text-white`}
               >
@@ -122,20 +116,19 @@ export const HeroCarousel: FC<{ activities: Activity[] }> = ({ activities }) => 
                         style={infoBodyStyle}
                       >
                         <Stack direction="horizontal" gap={2} className="flex-wrap mb-3 mb-md-4">
-                          {(hosts.length
-                            ? hosts
-                            : [(activity.type as string) || t('hackathon')]
-                          ).map(item => (
-                            <Badge
-                              key={item}
-                              pill
-                              bg="info"
-                              text="dark"
-                              className="px-3 py-2 fw-semibold"
-                            >
-                              {item}
-                            </Badge>
-                          ))}
+                          {(hosts.length ? hosts : [(type as string) || t('hackathon')]).map(
+                            item => (
+                              <Badge
+                                key={item}
+                                pill
+                                bg="info"
+                                text="dark"
+                                className="px-3 py-2 fw-semibold"
+                              >
+                                {item}
+                              </Badge>
+                            ),
+                          )}
                           {(dateText || t('event_duration')) && (
                             <Badge pill bg="light" text="dark" className="px-3 py-2 fw-semibold">
                               {dateText || t('event_duration')}
@@ -171,7 +164,7 @@ export const HeroCarousel: FC<{ activities: Activity[] }> = ({ activities }) => 
                             variant="light"
                             className={`${styles.actionButton} px-4 py-2 fw-semibold text-uppercase`}
                           >
-                            {t('home_hackathon_top_bar_action')}
+                            {t('hackathon_register_now')}
                           </Button>
                         </Stack>
                       </Card.Body>

@@ -32,12 +32,6 @@ export default {
     'We are organizing the March Open Source Bazaar, welcome to participate!',
   welcome_open_collaboration: 'Welcome to participate in',
   open_collaboration: 'Open Collaboration',
-  home_hackathon_top_bar_aria_label: 'Labor AI Hackathon 2026 promotion',
-  home_hackathon_top_bar_badge: 'Registration open',
-  home_hackathon_top_bar_title: 'Labor AI Hackathon 2026 registration is open',
-  home_hackathon_top_bar_description: '48 hours to build the future.',
-  home_hackathon_top_bar_action: 'Register now',
-  home_hackathon_top_bar_close: 'Close event promotion bar',
 
   // Volunteer page
   volunteer: 'Volunteer',

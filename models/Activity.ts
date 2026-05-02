@@ -55,7 +55,7 @@ export class ActivityModel extends BiDataTable<Activity>() {
     link,
     database,
   }: Pick<Activity, 'id' | 'type' | 'alias' | 'link' | 'database'>) =>
-    database ? `/${type?.toString().toLowerCase() || 'activity'}/${alias || id}` : link?.toString();
+    database ? `/${type?.toString().toLowerCase() || 'activity'}/${alias || id}` : link + '';
 
   extractFields({
     id,
