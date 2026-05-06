@@ -1,0 +1,126 @@
+@bg: #050814;
+@panel: rgba(8, 18, 39, 0.76);
+@border: rgba(120, 160, 255, 0.18);
+@copy: #eef5ff;
+@muted: rgba(220, 232, 255, 0.72);
+@cyan: #2ce8ff;
+@shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
+@heading: 'Orbitron', 'Avenir Next', 'Segoe UI', sans-serif;
+@body: 'Outfit', 'Avenir Next', 'Segoe UI', sans-serif;
+
+.hero {
+  position: relative;
+  background:
+    radial-gradient(circle at top left, rgba(44, 232, 255, 0.18), transparent 32%),
+    radial-gradient(circle at 85% 12%, rgba(255, 120, 186, 0.15), transparent 24%),
+    linear-gradient(180deg, @bg 0%, #091022 48%, #050814 100%);
+  padding: clamp(4.5rem, 8vw, 6.75rem) 0 clamp(3.5rem, 6vw, 5rem);
+  overflow: hidden;
+  color: @copy;
+
+  &::before,
+  &::after {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    content: '';
+  }
+
+  &::before {
+    opacity: 0.45;
+    mask-image: radial-gradient(circle at center, black 42%, transparent 100%);
+    background-image:
+      linear-gradient(rgba(44, 232, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(44, 232, 255, 0.08) 1px, transparent 1px);
+    background-size: 54px 54px;
+  }
+
+  &::after {
+    inset: auto 0 0;
+    background: linear-gradient(180deg, transparent, rgba(5, 8, 20, 0.95));
+    height: 140px;
+  }
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0;
+  font-weight: 900;
+  font-size: clamp(2.6rem, 5vw, 4.45rem);
+  line-height: 1;
+  font-family: @heading;
+  letter-spacing: 0.02em;
+}
+
+.description {
+  margin: 0;
+  max-width: 62ch;
+  color: @muted;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  font-family: @body;
+}
+
+.section {
+  position: relative;
+  background: linear-gradient(180deg, rgba(5, 8, 20, 0.98), rgba(7, 12, 26, 0.98));
+  padding: clamp(4rem, 7vw, 6rem) 0;
+  color: @copy;
+}
+
+.sectionTitle {
+  display: inline-block;
+  margin: 0;
+  background: linear-gradient(135deg, #fff 20%, @cyan 80%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: 900;
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  font-family: @heading;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.darkCard,
+.lightCard {
+  backdrop-filter: blur(18px);
+  box-shadow: @shadow;
+  border: 1px solid @border;
+  border-radius: 28px;
+  background: @panel;
+  padding: 1.3rem;
+}
+
+.lightCard {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.projectCard {
+  backdrop-filter: blur(18px);
+  box-shadow: @shadow;
+  border: 1px solid @border;
+  border-radius: 28px;
+  background: @panel;
+  padding: 1.25rem;
+  height: 100%;
+}
+
+@media (max-width: 991px) {
+  .title {
+    font-size: clamp(2.2rem, 9vw, 3.45rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero {
+    padding-top: 4rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.65rem;
+    letter-spacing: 0.08em;
+  }
+}

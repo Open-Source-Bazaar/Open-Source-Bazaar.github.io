@@ -91,7 +91,7 @@ const BookCard: React.FC<BookCardProps> = ({
               as="a"
               className="rounded-pill px-3 fw-medium"
             >
-              {t('view_details')}
+              {t('open_library_view_details')}
             </Button>
           </Link>
         </div>

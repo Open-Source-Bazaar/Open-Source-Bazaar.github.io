@@ -1,10 +1,4 @@
-import Document, {
-  DocumentContext,
-  Head,
-  Html,
-  Main,
-  NextScript,
-} from 'next/document';
+import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 
 import { LanguageCode, parseSSRContext } from '../models/Translation';
 
@@ -34,12 +28,19 @@ export default class CustomDocument extends Document<CustomDocumentProps> {
 
           <link
             rel="stylesheet"
-            href="https://unpkg.com/bootstrap@5.3.6/dist/css/bootstrap.min.css"
+            href="https://unpkg.com/bootstrap@5.3.8/dist/css/bootstrap.min.css"
           />
           <link
             rel="stylesheet"
             href="https://unpkg.com/bootstrap-icons@1.13.1/font/bootstrap-icons.css"
           />
+          <link
+            rel="stylesheet"
+            href="https://unpkg.com/github-markdown-css@5.8.1/github-markdown.css"
+          />
+          <link rel="stylesheet" href="https://unpkg.com/idea-react@2.0.0-rc.13/dist/index.css" />
+          <link rel="stylesheet" href="https://unpkg.com/mobx-restful-table@2.6.3/dist/index.css" />
+          <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
         </Head>
 
         <body>

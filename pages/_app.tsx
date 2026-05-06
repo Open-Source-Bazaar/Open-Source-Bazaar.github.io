@@ -11,12 +11,7 @@ import { Image } from 'react-bootstrap';
 import { MainNavigator } from '../components/Navigator/MainNavigator';
 import { PageContent } from '../components/PageContent';
 import { isServer } from '../models/configuration';
-import {
-  createI18nStore,
-  I18nContext,
-  I18nProps,
-  loadSSRLanguage,
-} from '../models/Translation';
+import { createI18nStore, I18nContext, I18nProps, loadSSRLanguage } from '../models/Translation';
 
 configure({ enforceActions: 'never' });
 
@@ -47,7 +42,10 @@ export default class CustomApp extends App<I18nProps> {
   render() {
     const { Component, pageProps, router } = this.props,
       { t } = this.i18nStore;
-    const thisFullYear = new Date().getFullYear();
+    const thisFullYear = new Date().getFullYear(),
+      { asPath } = router;
+    const isArticlePage = asPath.startsWith('/article/') || asPath.startsWith('/policy/'),
+      isActivityPage = asPath.startsWith('/hackathon');
 
     // 检查是否是 Open Library 路径
     const isOpenLibraryPath = router.route.startsWith('/open-library');
@@ -60,31 +58,29 @@ export default class CustomApp extends App<I18nProps> {
           <title>{t('open_source_bazaar')}</title>
         </Head>
 
-        <MainNavigator />
-
-        {/* 根据路径决定是否使用 PageContent 包装和 margin */}
-        {isOpenLibraryPath ? (
-          // Open Library 路径直接渲染内容，不使用 PageContent 和额外的 margin
+        {isActivityPage || isOpenLibraryPath ? (
           <Component {...pageProps} />
         ) : (
-          <div className="mt-5 pt-2">
-            {router.route.startsWith('/article/') ? (
-              <PageContent>
+          <>
+            <MainNavigator />
+
+            <div className="mt-5 pt-2">
+              {isArticlePage ? (
+                <PageContent>
+                  <Component {...pageProps} />
+                </PageContent>
+              ) : (
                 <Component {...pageProps} />
-              </PageContent>
-            ) : (
-              <Component {...pageProps} />
-            )}
-          </div>
+              )}
+            </div>
+          </>
         )}
 
-        {/* 只在非 Open Library 路径显示主站页脚 */}
-        {!isOpenLibraryPath && (
+        {!isActivityPage && !isOpenLibraryPath && (
           <footer className="mw-100 bg-dark text-white">
             <p className="text-center my-0 py-3">
               <span className="pr-3">
-                2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`}{' '}
-                {t('open_source_bazaar')}
+                © 2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`} {t('open_source_bazaar')}
               </span>
               <a
                 className="flex-fill d-flex justify-content-center align-items-center"
@@ -94,12 +90,7 @@ export default class CustomApp extends App<I18nProps> {
               >
                 Powered by
                 <span className="mx-2">
-                  <Image
-                    src="/vercel.svg"
-                    alt="Vercel Logo"
-                    width={72}
-                    height={16}
-                  />
+                  <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
                 </span>
               </a>
             </p>

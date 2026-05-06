@@ -1,29 +1,85 @@
+import { textJoin } from 'mobx-i18n';
 import { observer } from 'mobx-react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { FC, useContext } from 'react';
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { AnchorHTMLAttributes, FC, useContext } from 'react';
+import { Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
+import { DefaultImage } from '../../models/configuration';
 import { i18n, I18nContext } from '../../models/Translation';
+import { SearchBar } from './SearchBar';
 
 const LanguageMenu = dynamic(() => import('./LanguageMenu'), { ssr: false });
 
-export type MenuItem = Record<'href' | 'name', string>;
+export interface MenuItem extends Pick<AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'title'> {
+  subs?: MenuItem[];
+}
 
 const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
-  { href: '/article/about', name: t('about') },
-  { href: '/article/history', name: t('history') },
-  { href: '/article/code-of-conduct', name: t('code_of_conduct') },
-  { href: '/article/join-us', name: t('join_us') },
   {
-    href: '/article/open-collaborator-award',
-    name: t('open_collaborator_award'),
+    title: t('about'),
+    subs: [
+      { href: '/article/about', title: t('about') },
+      { href: '/article/history', title: t('history') },
+      { href: '/article/code-of-conduct', title: t('code_of_conduct') },
+    ],
   },
-  { href: '/project', name: t('open_source_projects') },
-  { href: '/issue', name: 'GitHub issues' },
   {
-    href: 'https://github.com/Open-Source-Bazaar/Git-Hackathon-scaffold',
-    name: t('hackathon'),
+    title: t('join_us'),
+    subs: [
+      { href: '/article/join-us', title: t('join_us') },
+      {
+        href: '/article/open-collaborator-award',
+        title: t('open_collaborator_award'),
+      },
+      { href: '/volunteer', title: t('volunteer') },
+    ],
+  },
+  {
+    title: t('open_source_projects'),
+    subs: [
+      { href: '/project', title: t('self_developed_projects') },
+      { href: '/search/project', title: t('bazaar_projects') },
+      { href: '/issue', title: 'GitHub issues' },
+      { href: '/license-filter', title: t('license_filter') },
+      { href: '/finance', title: t('finance_page_title') },
+    ],
+  },
+  {
+    title: t('hackathon'),
+    subs: [
+      {
+        href: 'https://github.com/Open-Source-Bazaar/Git-Hackathon-scaffold',
+        title: textJoin('GitHub', t('hackathon')),
+      },
+      {
+        href: '/search/activity?keywords=Hackathon',
+        title: textJoin('Lark', t('hackathon')),
+      },
+      {
+        href: 'https://test.hackathon.fcc-cd.dev/open-source',
+        title: textJoin(t('hackathon'), t('open_source_projects')),
+      },
+    ],
+  },
+  { href: '/bounty', title: t('bounty') },
+  {
+    title: t('NGO'),
+    subs: [
+      {
+        href: 'https://open-source-bazaar.feishu.cn/wiki/VGrMwiweVivWrHkTcvpcJTjjnoY',
+        title: t('Open_Source_NGO_plan'),
+      },
+      { href: '/NGO', title: t('China_NGO_DB') },
+    ],
+  },
+  {
+    title: t('wiki'),
+    subs: [
+      { href: '/wiki', title: t('wiki') },
+      { href: '/policy', title: t('policy') },
+      { href: '/recipe', title: t('recipe') },
+    ],
   },
   {
     href: '/open-library',
@@ -53,24 +109,38 @@ export const MainNavigator: FC<MainNavigatorProps> = observer(({ menu }) => {
   return (
     <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
       <Container>
-        <Navbar.Brand href="/" className="fw-bolder">
+        <Navbar.Brand href="/" className="fw-bolder d-flex align-items-center gap-2 text-nowrap">
+          <Image width={40} src={DefaultImage} alt={t('open_source_bazaar')} />
           {t('open_source_bazaar')}
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-            {menu.map(({ href, name }) => (
-              <Nav.Link
-                key={`${href}-${name}`}
-                href={href}
-                className={pathname === `${href}` ? 'fw-bolder text-light' : ''}
-              >
-                {name}
-              </Nav.Link>
-            ))}
+            {menu.map(({ href, title, subs }) =>
+              subs ? (
+                <NavDropdown key={title} title={title}>
+                  {subs.map(({ href, title }) => (
+                    <NavDropdown.Item key={href} href={href}>
+                      {title}
+                    </NavDropdown.Item>
+                  ))}
+                </NavDropdown>
+              ) : (
+                <Nav.Link
+                  key={`${href}-${title}`}
+                  href={href}
+                  className={`text-nowrap ${pathname === `${href}` ? 'fw-bolder text-light' : ''}`}
+                >
+                  {title}
+                </Nav.Link>
+              ),
+            )}
           </Nav>
 
-          <LanguageMenu />
+          <div className="d-flex justify-content-around gap-3">
+            <SearchBar />
+            <LanguageMenu />
+          </div>
         </Navbar.Collapse>
       </Container>
     </Navbar>

@@ -3,13 +3,15 @@ import { NextConfig } from 'next';
 import setPWA from 'next-pwa';
 // @ts-expect-error no official types
 import withLess from 'next-with-less';
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 
 const { NODE_ENV, CI } = process.env;
 const isDev = NODE_ENV === 'development';
 
 const withMDX = setMDX({
     options: {
-      remarkPlugins: [],
+      remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
       rehypePlugins: [],
       providerImportSource: '@mdx-js/react',
     },
@@ -35,6 +37,10 @@ const rewrites: NextConfig['rewrites'] = async () => ({
     {
       source: '/proxy/geo.datav.aliyun.com/:path*',
       destination: 'https://geo.datav.aliyun.com/:path*',
+    },
+    {
+      source: '/recipe/images/:path*',
+      destination: 'https://raw.githubusercontent.com/Gar-b-age/CookLikeHOC/main/images/:path*',
     },
   ],
   afterFiles: [],

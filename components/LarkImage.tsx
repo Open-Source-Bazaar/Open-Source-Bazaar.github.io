@@ -9,11 +9,7 @@ export interface LarkImageProps extends Omit<ImageProps, 'src'> {
   src?: TableCellValue;
 }
 
-export const LarkImage: FC<LarkImageProps> = ({
-  src = DefaultImage,
-  alt,
-  ...props
-}) => (
+export const LarkImage: FC<LarkImageProps> = ({ src = DefaultImage, alt, ...props }) => (
   <Image
     fluid
     loading="lazy"

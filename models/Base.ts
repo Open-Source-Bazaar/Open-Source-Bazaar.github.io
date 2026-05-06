@@ -12,6 +12,8 @@ import {
   isServer,
   ProxyBaseURL,
   LARK_API_HOST,
+  STRAPI_API_HOST,
+  STRAPI_API_TOKEN,
 } from './configuration';
 
 export const ownClient = new HTTPClient({
@@ -49,6 +51,11 @@ export const makeGithubSearchCondition = (queryMap: DataObject) =>
     .map(([key, value]) => `${key}:${value}`)
     .join(' ');
 
+export type LarkBase = Record<
+  'id' | `created${'At' | 'By'}` | `updated${'At' | 'By'}`,
+  TableCellValue
+>;
+
 export const larkClient = new HTTPClient({
   baseURI: LARK_API_HOST,
   responseType: 'json',
@@ -65,3 +72,15 @@ export function fileURLOf(field: TableCellValue, cache = false) {
 
   return URI;
 }
+
+export const strapiClient = new HTTPClient({
+  baseURI: STRAPI_API_HOST,
+  responseType: 'json',
+}).use(({ request }, next) => {
+  request.headers = {
+    Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+    ...request.headers,
+    'Strapi-Response-Format': 'v4',
+  };
+  return next();
+});

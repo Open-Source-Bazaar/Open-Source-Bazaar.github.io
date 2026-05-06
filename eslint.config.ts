@@ -1,8 +1,8 @@
 import cspellPlugin from '@cspell/eslint-plugin';
 import eslint from '@eslint/js';
-// @ts-expect-error eslint-plugin-next doesn't come with TypeScript definitions
 import nextPlugin from '@next/eslint-plugin-next';
 import stylistic from '@stylistic/eslint-plugin';
+import { defineConfig } from 'eslint/config';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import react from 'eslint-plugin-react';
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
@@ -17,7 +17,7 @@ import { fileURLToPath } from 'url';
 
 const tsconfigRootDir = fileURLToPath(new URL('.', import.meta.url));
 
-export default tsEslint.config(
+export default defineConfig(
   // register all of the plugins up-front
   {
     plugins: {
@@ -31,12 +31,7 @@ export default tsEslint.config(
   },
   {
     // config with just ignores is the replacement for `.eslintignore`
-    ignores: [
-      '**/node_modules/**',
-      '**/public/**',
-      '**/.next/**',
-      '.github/scripts/**',
-    ],
+    ignores: ['**/node_modules/**', '**/public/**', '**/.next/**', '.github/scripts/**'],
   },
 
   // extends ...
@@ -60,15 +55,7 @@ export default tsEslint.config(
         {
           cspell: {
             language: 'en',
-            dictionaries: [
-              'typescript',
-              'node',
-              'html',
-              'css',
-              'bash',
-              'npm',
-              'pnpm',
-            ],
+            dictionaries: ['typescript', 'node', 'html', 'css', 'bash', 'npm', 'pnpm'],
           },
         },
       ],
@@ -91,8 +78,7 @@ export default tsEslint.config(
         'error',
         {
           selector: "TSPropertySignature[key.name='children']",
-          message:
-            'Please use PropsWithChildren<T> instead of defining children manually',
+          message: 'Please use PropsWithChildren<T> instead of defining children manually',
         },
       ],
       'consistent-return': 'warn',
@@ -109,10 +95,7 @@ export default tsEslint.config(
       // React
       'react/no-unescaped-entities': 'off',
       'react/self-closing-comp': ['error', { component: true, html: true }],
-      'react/jsx-curly-brace-presence': [
-        'error',
-        { props: 'never', children: 'never' },
-      ],
+      'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
       'react/jsx-no-target-blank': 'warn',
       'react/jsx-sort-props': [
         'error',

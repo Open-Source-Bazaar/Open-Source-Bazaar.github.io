@@ -1,0 +1,45 @@
+@import './theme.less';
+
+.card {
+  // prettier-ignore
+  .panel-card();
+  padding: 1.35rem;
+}
+
+.avatar {
+  flex-shrink: 0;
+  box-shadow: 0 0 24px rgba(44, 232, 255, 0.14);
+  border: 1px solid rgba(44, 232, 255, 0.26);
+  width: 4rem;
+  height: 4rem;
+}
+
+.name {
+  margin: 0;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.link {
+  color: @cyan;
+  text-decoration: none;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.summary {
+  margin: 1rem 0 0;
+  color: @muted;
+  line-height: 1.75;
+}
+
+.skill {
+  // prettier-ignore
+  .chip();
+  padding: 0.45rem 0.72rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.82rem;
+}

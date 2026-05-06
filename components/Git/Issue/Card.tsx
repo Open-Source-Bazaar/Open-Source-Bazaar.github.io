@@ -1,4 +1,4 @@
-import { Icon, Nameplate, text2color } from 'idea-react';
+import { Icon, Nameplate, Time, text2color } from 'idea-react';
 import { marked } from 'marked';
 import { Issue } from 'mobx-github';
 import { FC } from 'react';
@@ -21,10 +21,7 @@ export const IssueCard: FC<IssueCardProps> = ({
   ...props
 }) => (
   <Card {...{ ...props, bg, text }}>
-    <Card.Header
-      as="h4"
-      className="d-flex justify-content-between align-items-center gap-3"
-    >
+    <Card.Header as="h4" className="d-flex justify-content-between align-items-center gap-3">
       <a
         className="text-decoration-none text-secondary text-truncate"
         title={title}
@@ -56,10 +53,7 @@ export const IssueCard: FC<IssueCardProps> = ({
         )}
       </Stack>
     </Card.Header>
-    <Card.Body
-      as="article"
-      dangerouslySetInnerHTML={{ __html: marked(body || '') }}
-    />
+    <Card.Body as="article" dangerouslySetInnerHTML={{ __html: marked(body || '') as string }} />
     <Card.Footer className="d-flex justify-content-between align-items-center">
       {user && <Nameplate name={user.name || ''} avatar={user.avatar_url} />}
 
@@ -68,7 +62,7 @@ export const IssueCard: FC<IssueCardProps> = ({
         {comments}
       </Stack>
 
-      <time dateTime={created_at}>{new Date(created_at).toLocaleString()}</time>
+      <Time dateTime={created_at} format="YYYY-MM-DD HH:mm:ss" />
     </Card.Footer>
   </Card>
 );

@@ -1,0 +1,17 @@
+name: Self Scan
+
+on:
+  schedule:
+    - cron: '0 3 * * 1' # Every Monday at UTC 3:00 AM
+  workflow_dispatch:
+
+jobs:
+  self-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: OWASP/cve-lite-cli@v1
+        with:
+          verbose: 'true'
+          fail-on: high

@@ -15,16 +15,13 @@ import styles from './SearchBar.module.less';
 export interface SearchBarProps
   extends Omit<FormProps, 'onChange'>,
     Pick<InputGroupProps, 'size'>,
-    Pick<
-      FormControlProps,
-      'name' | 'placeholder' | 'defaultValue' | 'value' | 'onChange'
-    > {
+    Pick<FormControlProps, 'name' | 'placeholder' | 'defaultValue' | 'value' | 'onChange'> {
   expanded?: boolean;
 }
 
 export const SearchBar: FC<SearchBarProps> = observer(
   ({
-    action = '/search',
+    action = '/search/activity',
     size,
     name = 'keywords',
     placeholder,

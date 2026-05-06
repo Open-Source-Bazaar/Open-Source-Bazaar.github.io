@@ -1,12 +1,8 @@
-import {
-  loadLanguageMapFrom,
-  parseCookie,
-  TranslationMap,
-  TranslationModel,
-} from 'mobx-i18n';
+import { loadLanguageMapFrom, TranslationMap, TranslationModel } from 'mobx-i18n';
 import { DataObject } from 'mobx-restful';
 import { NextPageContext } from 'next';
 import { createContext } from 'react';
+import { parseCookie } from 'web-utility';
 
 import zhCN from '../translation/zh-CN';
 
@@ -22,6 +18,8 @@ export interface I18nProps {
   languageMap: typeof zhCN;
 }
 
+export type I18nKey = keyof typeof zhCN;
+
 export const createI18nStore = <N extends LanguageCode, K extends string>(
   language?: N,
   data?: TranslationMap<K>,
@@ -32,6 +30,7 @@ export const createI18nStore = <N extends LanguageCode, K extends string>(
   });
 
   if (language) store.currentLanguage = language;
+  if (data) store.currentMap = data as TranslationMap<keyof (typeof i18nData)['zh-CN']>;
 
   return store;
 };
@@ -53,9 +52,7 @@ export const parseSSRContext = <T extends DataObject = DataObject>(
   const cookie = parseCookie(req?.headers.cookie || '') as T;
 
   for (const key of queryKeys)
-    cookie[key] =
-      (query[key as string]?.toString().split(',')[0] as T[keyof T]) ||
-      cookie[key];
+    cookie[key] = (query[key as string]?.toString().split(',')[0] as T[keyof T]) || cookie[key];
 
   return cookie;
 };
