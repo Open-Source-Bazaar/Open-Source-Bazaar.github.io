@@ -38,7 +38,7 @@
     "mobx-restful": "^2.1.4",
     "mobx-restful-table": "^2.6.3",
     "mobx-strapi": "^0.8.1",
-    "next": "^16.2.4",
+    "next": "^16.2.6",
     "next-pwa": "^5.6.0",
     "next-ssr-middleware": "^1.1.0",
     "nodemailer": "^8.0.7",
