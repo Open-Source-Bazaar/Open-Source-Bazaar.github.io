@@ -10,7 +10,10 @@ export type Award = Record<
   | 'reason'
   | 'nominator'
   | 'createdAt'
-  | 'votes',
+  | 'votes'
+  | 'walletAddress'
+  | 'transactionHash'
+  | 'tokenId',
   TableCellValue
 >;
 
