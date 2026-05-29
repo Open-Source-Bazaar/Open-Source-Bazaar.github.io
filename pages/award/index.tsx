@@ -1,16 +1,441 @@
+import { observer } from 'mobx-react';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
-import { FC } from 'react';
+import { FC, useContext, useState } from 'react';
+import { Alert, Badge, Button, Card, Col, Container, Form, Row, Spinner } from 'react-bootstrap';
 
+import { PageHead } from '../../components/Layout/PageHead';
 import { Award, AwardModel } from '../../models/Award';
+import { I18nContext } from '../../models/Translation';
 
 export const getServerSideProps = compose(cache(), errorLogger, async () => {
   const awards = await new AwardModel().getAll();
 
-  return { props: { awards } };
+  // Sort awards by votes desc (handling undefined or null votes)
+  const sortedAwards = awards.sort((a, b) => {
+    const votesA = typeof a.votes === 'number' ? a.votes : parseInt((a.votes as any) || '0', 10);
+    const votesB = typeof b.votes === 'number' ? b.votes : parseInt((b.votes as any) || '0', 10);
+    return votesB - votesA;
+  });
+
+  return { props: { awards: sortedAwards } };
 });
 
-const AwardPage: FC<{ awards: Award[] }> = ({ awards }) => {
-  return <></>;
-};
+const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards }) => {
+  const { t } = useContext(I18nContext);
+
+  // Form states
+  const [nominator, setNominator] = useState('');
+  const [nomineeName, setNomineeName] = useState('');
+  const [nomineeDesc, setNomineeDesc] = useState('');
+  const [reason, setReason] = useState('');
+  const [videoUrl, setVideoUrl] = useState('');
+
+  // Status states
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [votingId, setVotingId] = useState<string | null>(null);
+
+  // Submit nomination
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!nominator.trim() || !nomineeName.trim() || !reason.trim()) {
+      setError('请填写所有必填字段（提名人、被提名人、提名理由）');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+    setSuccess(false);
+
+    try {
+      await new AwardModel().updateOne({
+        awardName: '开放协作人奖',
+        nomineeName: nomineeName.trim(),
+        nomineeDesc: nomineeDesc.trim(),
+        videoUrl: videoUrl.trim(),
+        reason: reason.trim(),
+        nominator: nominator.trim(),
+        votes: 0,
+        createdAt: Date.now(),
+      } as any);
+
+      setSuccess(true);
+      setNominator('');
+      setNomineeName('');
+      setNomineeDesc('');
+      setReason('');
+      setVideoUrl('');
+
+      // Auto-reload after a brief delay to show the new nomination
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || '提交提名失败，请检查网络或稍后重试');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Upvote candidate
+  const handleVote = async (awardId: string, currentVotes: any) => {
+    if (votingId) return;
+    setVotingId(awardId);
+    try {
+      const parsedVotes = typeof currentVotes === 'number' ? currentVotes : parseInt(currentVotes || '0', 10);
+      await new AwardModel().updateOne({
+        votes: parsedVotes + 1,
+      } as any, awardId);
+
+      // Auto-reload to fetch the latest votes
+      window.location.reload();
+    } catch (err: any) {
+      console.error(err);
+      alert(err.message || '投票失败，请重试');
+    } finally {
+      setVotingId(null);
+    }
+  };
+
+  return (
+    <div
+      style={{
+        background:
+          'radial-gradient(circle at top left, rgba(99, 102, 241, 0.12), transparent 45%),' +
+          'radial-gradient(circle at 85% 20%, rgba(236, 72, 153, 0.1), transparent 35%),' +
+          'linear-gradient(180deg, #f8fafc 0%, #ffffff 100%)',
+        minHeight: '100vh',
+        paddingBottom: '5rem',
+      }}
+    >
+      <PageHead title="开放协作人奖 - 开源市集" />
+
+      {/* Hero Banner Section */}
+      <Container className="pt-5">
+        <Row className="align-items-center mb-5">
+          <Col lg={7} className="text-center text-lg-start mb-4 mb-lg-0">
+            <Badge bg="indigo" className="mb-3 px-3 py-2 text-indigo bg-indigo-100 rounded-pill font-semibold">
+              ✨ 社区荣誉 · 激励同行
+            </Badge>
+            <h1
+              className="display-4 font-black mb-3"
+              style={{
+                fontWeight: 900,
+                background: 'linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              开放协作人奖
+            </h1>
+            <p className="lead text-secondary mb-4 fs-5" style={{ maxWidth: '600px' }}>
+              发掘身边的开源之星，记录每一次不凡付出。开放协作人奖旨在表彰在开源协作、文档、布道及社区生态建设中做出突出贡献的优秀个人。
+            </p>
+            <div className="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3">
+              <Button
+                href="#nominate-form"
+                className="btn btn-indigo px-4 py-2.5 rounded-pill shadow-sm font-bold border-0"
+                style={{
+                  background: 'linear-gradient(135deg, #4f46e5 0%, #6366f1 100%)',
+                  fontWeight: 700,
+                }}
+              >
+                📝 我要提名
+              </Button>
+              <Button
+                href="#nominees-list"
+                variant="outline-secondary"
+                className="px-4 py-2.5 rounded-pill font-bold"
+                style={{ fontWeight: 700 }}
+              >
+                🔍 查看候选人 ({awards.length})
+              </Button>
+            </div>
+          </Col>
+          <Col lg={5}>
+            <Card className="border-0 shadow-lg rounded-4 overflow-hidden bg-white/40 backdrop-blur-md p-2">
+              <div className="ratio ratio-16x9 rounded-3 overflow-hidden border border-slate-100">
+                <iframe
+                  src="//player.bilibili.com/player.html?aid=978564817&bvid=BV1c44y1x7ij&cid=494424932&page=1&high_quality=1&danmaku=0"
+                  title="开放协作人奖提名倡议"
+                  scrolling="no"
+                  allowFullScreen
+                />
+              </div>
+              <Card.Body className="py-3 px-2 text-center">
+                <Card.Text className="text-muted text-xs">
+                  📺 观看视频：听听开源市集联合发起人关于【开放协作人奖】的提名倡议
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* Guidelines / Info Section */}
+        <Row className="g-4 mb-5">
+          <Col md={4}>
+            <Card className="h-100 border-0 shadow-sm rounded-4 p-3 bg-white hover-shadow transition-all">
+              <Card.Body>
+                <div className="fs-2 mb-3">🏆</div>
+                <h3 className="fs-5 font-bold mb-2">什么是开放协作人奖？</h3>
+                <p className="text-secondary text-sm mb-0">
+                  是由开源市集社区发起的重要奖项，面向所有对开源世界怀揣热忱、在技术共享与协同合作中默默奉献的伙伴。你的点滴付出，社区与大家共同见证。
+                </p>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={4}>
+            <Card className="h-100 border-0 shadow-sm rounded-4 p-3 bg-white hover-shadow transition-all">
+              <Card.Body>
+                <div className="fs-2 mb-3">🤝</div>
+                <h3 className="fs-5 font-bold mb-2">谁可以被提名？</h3>
+                <p className="text-secondary text-sm mb-0">
+                  不限角色！可以是贡献核心代码的硬核开发者、细致翻译或补全文档的撰写者、积极组织运营活动的志愿者，亦或是热心解答新人疑问的社群导师。
+                </p>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={4}>
+            <Card className="h-100 border-0 shadow-sm rounded-4 p-3 bg-white hover-shadow transition-all">
+              <Card.Body>
+                <div className="fs-2 mb-3">💡</div>
+                <h3 className="fs-5 font-bold mb-2">规则与奖励</h3>
+                <p className="text-secondary text-sm mb-0">
+                  任何人皆可在线填写右侧提名表单。被提名人公示后接受社区成员的投票支持，最终根据贡献事实由社区委员会核定颁发“开放协作人勋章/证书”及专属权益。
+                </p>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* Main Work Area */}
+        <Row className="g-5">
+          {/* Left Column: Candidates list */}
+          <Col lg={7} id="nominees-list">
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              <h2 className="fs-3 font-black text-indigo-950 m-0 flex items-center gap-2">
+                👥 提名候选人榜单 <Badge bg="secondary" className="fs-6 py-1.5 px-2 bg-slate-200 text-slate-700 rounded-pill">{awards.length}</Badge>
+              </h2>
+            </div>
+
+            {awards.length === 0 ? (
+              <Card className="border-0 shadow-sm rounded-4 p-5 text-center bg-white/50">
+                <div className="fs-1 text-slate-300 mb-3">📭</div>
+                <h4 className="text-slate-600 font-bold">暂无提名人选</h4>
+                <p className="text-slate-400 text-sm">成为第一个发现身边闪光贡献者的人吧，在右侧提交您的提名！</p>
+              </Card>
+            ) : (
+              <div className="d-flex flex-column gap-4">
+                {awards.map((award) => {
+                  const awardId = award.id as string;
+                  const votesCount = typeof award.votes === 'number' ? award.votes : parseInt((award.votes as any) || '0', 10);
+                  const formattedDate = award.createdAt
+                    ? new Date(Number(award.createdAt)).toLocaleDateString('zh-CN', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                      })
+                    : '近期';
+
+                  return (
+                    <Card
+                      key={awardId}
+                      className="border-0 shadow-sm rounded-4 bg-white overflow-hidden hover-shadow transition-all border-l-4"
+                      style={{ borderLeft: '4px solid #6366f1' }}
+                    >
+                      <Card.Body className="p-4">
+                        <Row className="align-items-start">
+                          <Col className="flex-grow-1">
+                            <div className="d-flex align-items-center gap-2 mb-2">
+                              <h3 className="fs-5 font-black text-indigo-950 m-0">
+                                {award.nomineeName as string}
+                              </h3>
+                              {award.nomineeDesc && (
+                                <Badge bg="light" className="text-slate-500 font-normal px-2 py-1 rounded">
+                                  {award.nomineeDesc as string}
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="text-slate-400 text-xs mb-3">
+                              提名人：<span className="text-indigo-600 font-bold">{award.nominator as string}</span> · 提名时间：{formattedDate}
+                            </div>
+                            <div className="text-slate-700 text-sm bg-slate-50 rounded-3 p-3 mb-3 border border-slate-100/50">
+                              <strong className="text-slate-800 d-block mb-1">💡 提名事迹及理由：</strong>
+                              {award.reason as string}
+                            </div>
+                            {award.videoUrl && (
+                              <div className="text-xs mb-2">
+                                🔗 证明材料：
+                                <a
+                                  href={award.videoUrl as string}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-indigo-600 font-semibold hover-underline"
+                                >
+                                  查看视频链接 ↗
+                                </a>
+                              </div>
+                            )}
+                          </Col>
+
+                          {/* Vote Action Box */}
+                          <Col xs="auto" className="text-center ps-3">
+                            <div className="bg-indigo-50 border border-indigo-100 rounded-4 px-3 py-3 text-center min-w-[90px]">
+                              <div className="text-xs text-indigo-600 font-bold mb-1">支持票数</div>
+                              <div className="fs-3 font-black text-indigo-950 mb-2">{votesCount}</div>
+                              <Button
+                                size="sm"
+                                variant={votingId === awardId ? 'light' : 'indigo'}
+                                className="w-100 rounded-pill font-bold shadow-sm flex items-center justify-center gap-1 border-0"
+                                style={{
+                                  background: votingId === awardId ? '#f1f5f9' : 'linear-gradient(135deg, #4f46e5 0%, #6366f1 100%)',
+                                  color: votingId === awardId ? '#64748b' : '#ffffff',
+                                  fontWeight: 700,
+                                  fontSize: '11px',
+                                }}
+                                onClick={() => handleVote(awardId, votesCount)}
+                                disabled={votingId !== null}
+                              >
+                                {votingId === awardId ? (
+                                  <Spinner animation="border" size="sm" />
+                                ) : (
+                                  '👍 投票'
+                                )}
+                              </Button>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Card.Body>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
+          </Col>
+
+          {/* Right Column: Submission Form */}
+          <Col lg={5} id="nominate-form">
+            <Card
+              className="border-0 shadow-lg rounded-4 p-4 sticky-top bg-white/80 backdrop-blur-md border border-white/20"
+              style={{ top: '6rem', zIndex: 10 }}
+            >
+              <Card.Body className="p-2">
+                <h3 className="fs-4 font-black text-indigo-950 mb-2">
+                  提拔英才 · 推荐提名
+                </h3>
+                <p className="text-muted text-xs mb-4">
+                  发现身边热爱开源、无私奉献的伙伴，为他/她赢取社区至高荣誉与奖励。
+                </p>
+
+                {success && (
+                  <Alert variant="success" className="rounded-3 py-2 px-3 mb-3 text-sm">
+                    🎉 提名提交成功！页面即将自动刷新加载...
+                  </Alert>
+                )}
+
+                {error && (
+                  <Alert variant="danger" className="rounded-3 py-2 px-3 mb-3 text-sm">
+                    ⚠️ {error}
+                  </Alert>
+                )}
+
+                <Form onSubmit={handleSubmit} className="d-flex flex-column gap-3.5">
+                  <Form.Group controlId="nominator">
+                    <Form.Label className="text-xs font-bold text-slate-700 mb-1">
+                      您的名字 / 提名人 <span className="text-rose-500">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="请输入您的名字或 GitHub ID"
+                      value={nominator}
+                      onChange={(e) => setNominator(e.target.value)}
+                      required
+                      className="rounded-3 text-sm py-2 px-3 border-slate-200"
+                    />
+                  </Form.Group>
+
+                  <Form.Group controlId="nomineeName">
+                    <Form.Label className="text-xs font-bold text-slate-700 mb-1">
+                      被提名人名字 <span className="text-rose-500">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="请输入被提名者的名字或 GitHub ID"
+                      value={nomineeName}
+                      onChange={(e) => setNomineeName(e.target.value)}
+                      required
+                      className="rounded-3 text-sm py-2 px-3 border-slate-200"
+                    />
+                  </Form.Group>
+
+                  <Form.Group controlId="nomineeDesc">
+                    <Form.Label className="text-xs font-bold text-slate-700 mb-1">
+                      被提名人简介 <span className="text-muted font-normal">(选填)</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="例如：核心开发者、文档布道师、设计志愿者等"
+                      value={nomineeDesc}
+                      onChange={(e) => setNomineeDesc(e.target.value)}
+                      className="rounded-3 text-sm py-2 px-3 border-slate-200"
+                    />
+                  </Form.Group>
+
+                  <Form.Group controlId="reason">
+                    <Form.Label className="text-xs font-bold text-slate-700 mb-1">
+                      提名事迹与理由 <span className="text-rose-500">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={4}
+                      placeholder="请详细描述该被提名人的具体事迹、突出贡献以及您推荐他/她获得该奖项的理由（如：在特定项目或活动中的表现，字数不限）"
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                      required
+                      className="rounded-3 text-sm py-2 px-3 border-slate-200"
+                    />
+                  </Form.Group>
+
+                  <Form.Group controlId="videoUrl">
+                    <Form.Label className="text-xs font-bold text-slate-700 mb-1">
+                      相关视频 / 证明链接 <span className="text-muted font-normal">(选填)</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="url"
+                      placeholder="可提供相关视频介绍、代码PR、或活动回放链接"
+                      value={videoUrl}
+                      onChange={(e) => setVideoUrl(e.target.value)}
+                      className="rounded-3 text-sm py-2 px-3 border-slate-200"
+                    />
+                  </Form.Group>
+
+                  <Button
+                    type="submit"
+                    className="w-100 py-2.5 rounded-pill font-bold shadow border-0 mt-3 flex items-center justify-center gap-2"
+                    style={{
+                      background: 'linear-gradient(135deg, #4f46e5 0%, #6366f1 100%)',
+                      fontWeight: 700,
+                    }}
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <Spinner animation="border" size="sm" /> 正在提交...
+                      </>
+                    ) : (
+                      '✈️ 确认提交提名'
+                    )}
+                  </Button>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </div>
+  );
+});
 
 export default AwardPage;
