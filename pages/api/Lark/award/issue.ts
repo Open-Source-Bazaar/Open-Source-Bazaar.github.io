@@ -19,11 +19,14 @@ router.post('/issue', safeAPI, verifyJWT, async (context: Context) => {
   const tokenId = Math.floor(Math.random() * 10000).toString();
 
   const awardModel = new AwardModel();
-  await awardModel.updateOne({
-    transactionHash,
-    tokenId,
-    walletAddress
-  }, recordId);
+  await awardModel.updateOne(
+    {
+      transactionHash,
+      tokenId,
+      walletAddress,
+    },
+    recordId,
+  );
 
   context.body = { success: true, transactionHash, tokenId };
 });
