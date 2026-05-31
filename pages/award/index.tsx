@@ -7,21 +7,30 @@ import { PageHead } from '../../components/Layout/PageHead';
 import { Award, AwardModel } from '../../models/Award';
 import { I18nContext } from '../../models/Translation';
 
+const parseVotes = (votes: unknown) => Number(votes) || 0;
+
+const formatAwardDate = (createdAt: unknown) =>
+  createdAt
+    ? new Date(Number(createdAt)).toLocaleDateString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      })
+    : '近期';
+
 export const getServerSideProps = compose(cache(), errorLogger, async () => {
   const awards = await new AwardModel().getAll();
 
-  // Sort awards by votes desc (handling undefined or null votes)
-  const sortedAwards = awards.sort((a, b) => {
-    const votesA = typeof a.votes === 'number' ? a.votes : parseInt((a.votes as any) || '0', 10);
-    const votesB = typeof b.votes === 'number' ? b.votes : parseInt((b.votes as any) || '0', 10);
-    return votesB - votesA;
-  });
+  const sortedAwards = [...awards].sort((a, b) => parseVotes(b.votes) - parseVotes(a.votes));
 
   return { props: { awards: sortedAwards } };
 });
 
 const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards }) => {
   const { t } = useContext(I18nContext);
+
+  // Observable list state populated initially from SSR props
+  const [awardList, setAwardList] = useState<(Award & { id: string })[]>(awards);
 
   // Form states
   const [nominator, setNominator] = useState('');
@@ -35,6 +44,19 @@ const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [votingId, setVotingId] = useState<string | null>(null);
+
+  // Refresh award list from Lark Bitable
+  const refreshAwards = async () => {
+    try {
+      const updated = await new AwardModel().getAll();
+      const sorted = [...updated].sort(
+        (a, b) => parseVotes(b.votes) - parseVotes(a.votes),
+      ) as (Award & { id: string })[];
+      setAwardList(sorted);
+    } catch (err: any) {
+      console.error('Failed to refresh awards:', err);
+    }
+  };
 
   // Submit nomination
   const handleSubmit = async (e: React.FormEvent) => {
@@ -67,10 +89,8 @@ const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards
       setReason('');
       setVideoUrl('');
 
-      // Auto-reload after a brief delay to show the new nomination
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
+      // Refresh list to show new nominee
+      await refreshAwards();
     } catch (err: any) {
       console.error(err);
       setError(err.message || '提交提名失败，请检查网络或稍后重试');
@@ -84,16 +104,27 @@ const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards
     if (votingId) return;
     setVotingId(awardId);
     try {
-      const parsedVotes = typeof currentVotes === 'number' ? currentVotes : parseInt(currentVotes || '0', 10);
-      await new AwardModel().updateOne({
-        votes: parsedVotes + 1,
-      } as any, awardId);
+      const parsedVotes = parseVotes(currentVotes);
 
-      // Auto-reload to fetch the latest votes
-      window.location.reload();
+      // Optimistic local update
+      setAwardList(prev =>
+        prev.map(item => (item.id === awardId ? { ...item, votes: parsedVotes + 1 } : item)),
+      );
+
+      await new AwardModel().updateOne(
+        {
+          votes: parsedVotes + 1,
+        } as any,
+        awardId,
+      );
+
+      // Refresh to sync state with database
+      await refreshAwards();
     } catch (err: any) {
       console.error(err);
-      alert(err.message || '投票失败，请重试');
+      setError(err.message || '投票失败，请重试');
+      // Revert on failure
+      await refreshAwards();
     } finally {
       setVotingId(null);
     }
@@ -116,7 +147,10 @@ const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards
       <Container className="pt-5">
         <Row className="align-items-center mb-5">
           <Col lg={7} className="text-center text-lg-start mb-4 mb-lg-0">
-            <Badge bg="indigo" className="mb-3 px-3 py-2 text-indigo bg-indigo-100 rounded-pill font-semibold">
+            <Badge
+              bg="indigo"
+              className="mb-3 px-3 py-2 text-indigo bg-indigo-100 rounded-pill font-semibold"
+            >
               ✨ 社区荣誉 · 激励同行
             </Badge>
             <h1
@@ -150,7 +184,7 @@ const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards
                 className="px-4 py-2.5 rounded-pill font-bold"
                 style={{ fontWeight: 700 }}
               >
-                🔍 查看候选人 ({awards.length})
+                🔍 查看候选人 ({awardList.length})
               </Button>
             </div>
           </Col>
@@ -158,9 +192,10 @@ const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards
             <Card className="border-0 shadow-lg rounded-4 overflow-hidden bg-white/40 backdrop-blur-md p-2">
               <div className="ratio ratio-16x9 rounded-3 overflow-hidden border border-slate-100">
                 <iframe
-                  src="//player.bilibili.com/player.html?aid=978564817&bvid=BV1c44y1x7ij&cid=494424932&page=1&high_quality=1&danmaku=0"
+                  src="https://player.bilibili.com/player.html?aid=978564817&bvid=BV1c44y1x7ij&cid=494424932&page=1&high_quality=1&danmaku=0"
                   title="开放协作人奖提名倡议"
                   scrolling="no"
+                  loading="lazy"
                   allowFullScreen
                 />
               </div>
@@ -216,28 +251,30 @@ const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards
           <Col lg={7} id="nominees-list">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h2 className="fs-3 font-black text-indigo-950 m-0 flex items-center gap-2">
-                👥 提名候选人榜单 <Badge bg="secondary" className="fs-6 py-1.5 px-2 bg-slate-200 text-slate-700 rounded-pill">{awards.length}</Badge>
+                👥 提名候选人榜单{' '}
+                <Badge
+                  bg="secondary"
+                  className="fs-6 py-1.5 px-2 bg-slate-200 text-slate-700 rounded-pill"
+                >
+                  {awardList.length}
+                </Badge>
               </h2>
             </div>
 
-            {awards.length === 0 ? (
+            {awardList.length === 0 ? (
               <Card className="border-0 shadow-sm rounded-4 p-5 text-center bg-white/50">
                 <div className="fs-1 text-slate-300 mb-3">📭</div>
                 <h4 className="text-slate-600 font-bold">暂无提名人选</h4>
-                <p className="text-slate-400 text-sm">成为第一个发现身边闪光贡献者的人吧，在右侧提交您的提名！</p>
+                <p className="text-slate-400 text-sm">
+                  成为第一个发现身边闪光贡献者的人吧，在右侧提交您的提名！
+                </p>
               </Card>
             ) : (
               <div className="d-flex flex-column gap-4">
-                {awards.map((award) => {
-                  const awardId = award.id as string;
-                  const votesCount = typeof award.votes === 'number' ? award.votes : parseInt((award.votes as any) || '0', 10);
-                  const formattedDate = award.createdAt
-                    ? new Date(Number(award.createdAt)).toLocaleDateString('zh-CN', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                      })
-                    : '近期';
+                {awardList.map(award => {
+                  const awardId = award.id;
+                  const votesCount = parseVotes(award.votes);
+                  const formattedDate = formatAwardDate(award.createdAt);
 
                   return (
                     <Card
@@ -253,16 +290,25 @@ const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards
                                 {award.nomineeName as string}
                               </h3>
                               {award.nomineeDesc && (
-                                <Badge bg="light" className="text-slate-500 font-normal px-2 py-1 rounded">
+                                <Badge
+                                  bg="light"
+                                  className="text-slate-500 font-normal px-2 py-1 rounded"
+                                >
                                   {award.nomineeDesc as string}
                                 </Badge>
                               )}
                             </div>
                             <div className="text-slate-400 text-xs mb-3">
-                              提名人：<span className="text-indigo-600 font-bold">{award.nominator as string}</span> · 提名时间：{formattedDate}
+                              提名人：
+                              <span className="text-indigo-600 font-bold">
+                                {award.nominator as string}
+                              </span>{' '}
+                              · 提名时间：{formattedDate}
                             </div>
                             <div className="text-slate-700 text-sm bg-slate-50 rounded-3 p-3 mb-3 border border-slate-100/50">
-                              <strong className="text-slate-800 d-block mb-1">💡 提名事迹及理由：</strong>
+                              <strong className="text-slate-800 d-block mb-1">
+                                💡 提名事迹及理由：
+                              </strong>
                               {award.reason as string}
                             </div>
                             {award.videoUrl && (
@@ -284,13 +330,18 @@ const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards
                           <Col xs="auto" className="text-center ps-3">
                             <div className="bg-indigo-50 border border-indigo-100 rounded-4 px-3 py-3 text-center min-w-[90px]">
                               <div className="text-xs text-indigo-600 font-bold mb-1">支持票数</div>
-                              <div className="fs-3 font-black text-indigo-950 mb-2">{votesCount}</div>
+                              <div className="fs-3 font-black text-indigo-950 mb-2">
+                                {votesCount}
+                              </div>
                               <Button
                                 size="sm"
                                 variant={votingId === awardId ? 'light' : 'indigo'}
                                 className="w-100 rounded-pill font-bold shadow-sm flex items-center justify-center gap-1 border-0"
                                 style={{
-                                  background: votingId === awardId ? '#f1f5f9' : 'linear-gradient(135deg, #4f46e5 0%, #6366f1 100%)',
+                                  background:
+                                    votingId === awardId
+                                      ? '#f1f5f9'
+                                      : 'linear-gradient(135deg, #4f46e5 0%, #6366f1 100%)',
                                   color: votingId === awardId ? '#64748b' : '#ffffff',
                                   fontWeight: 700,
                                   fontSize: '11px',
@@ -322,16 +373,14 @@ const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards
               style={{ top: '6rem', zIndex: 10 }}
             >
               <Card.Body className="p-2">
-                <h3 className="fs-4 font-black text-indigo-950 mb-2">
-                  提拔英才 · 推荐提名
-                </h3>
+                <h3 className="fs-4 font-black text-indigo-950 mb-2">提拔英才 · 推荐提名</h3>
                 <p className="text-muted text-xs mb-4">
                   发现身边热爱开源、无私奉献的伙伴，为他/她赢取社区至高荣誉与奖励。
                 </p>
 
                 {success && (
                   <Alert variant="success" className="rounded-3 py-2 px-3 mb-3 text-sm">
-                    🎉 提名提交成功！页面即将自动刷新加载...
+                    🎉 提名提交成功！候选人榜单已更新。
                   </Alert>
                 )}
 
@@ -350,7 +399,7 @@ const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards
                       type="text"
                       placeholder="请输入您的名字或 GitHub ID"
                       value={nominator}
-                      onChange={(e) => setNominator(e.target.value)}
+                      onChange={e => setNominator(e.target.value)}
                       required
                       className="rounded-3 text-sm py-2 px-3 border-slate-200"
                     />
@@ -364,7 +413,7 @@ const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards
                       type="text"
                       placeholder="请输入被提名者的名字或 GitHub ID"
                       value={nomineeName}
-                      onChange={(e) => setNomineeName(e.target.value)}
+                      onChange={e => setNomineeName(e.target.value)}
                       required
                       className="rounded-3 text-sm py-2 px-3 border-slate-200"
                     />
@@ -378,7 +427,7 @@ const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards
                       type="text"
                       placeholder="例如：核心开发者、文档布道师、设计志愿者等"
                       value={nomineeDesc}
-                      onChange={(e) => setNomineeDesc(e.target.value)}
+                      onChange={e => setNomineeDesc(e.target.value)}
                       className="rounded-3 text-sm py-2 px-3 border-slate-200"
                     />
                   </Form.Group>
@@ -392,7 +441,7 @@ const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards
                       rows={4}
                       placeholder="请详细描述该被提名人的具体事迹、突出贡献以及您推荐他/她获得该奖项的理由（如：在特定项目或活动中的表现，字数不限）"
                       value={reason}
-                      onChange={(e) => setReason(e.target.value)}
+                      onChange={e => setReason(e.target.value)}
                       required
                       className="rounded-3 text-sm py-2 px-3 border-slate-200"
                     />
@@ -406,7 +455,7 @@ const AwardPage: FC<{ awards: (Award & { id: string })[] }> = observer(({ awards
                       type="url"
                       placeholder="可提供相关视频介绍、代码PR、或活动回放链接"
                       value={videoUrl}
-                      onChange={(e) => setVideoUrl(e.target.value)}
+                      onChange={e => setVideoUrl(e.target.value)}
                       className="rounded-3 text-sm py-2 px-3 border-slate-200"
                     />
                   </Form.Group>
