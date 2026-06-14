@@ -3,6 +3,7 @@ import { Middleware } from 'koa';
 import MIME from 'mime';
 import { createKoaRouter, withKoaRouter } from 'next-ssr-middleware';
 import { Readable } from 'stream';
+import { parseJSON } from 'web-utility';
 
 import { CACHE_HOST } from '../../../../../models/configuration';
 import { safeAPI } from '../../../core';
@@ -30,11 +31,7 @@ const downloader: Middleware = async context => {
   if (!ok) {
     context.status = status;
 
-    try {
-      return (context.body = await response.json());
-    } catch {
-      return (context.body = await response.text());
-    }
+    return (context.body = parseJSON(await response.text()));
   }
   const mime = headers.get('Content-Type'),
     [stream1, stream2] = body!.tee();
