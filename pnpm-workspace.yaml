@@ -1,0 +1,13 @@
+packages:
+  - .
+autoInstallPeers: false
+overrides:
+  mobx-react-helper: '$mobx-react-helper'
+  next: '$next'
+allowBuilds:
+  '@parcel/watcher': true
+  core-js: true
+  sharp: true
+  unrs-resolver: true
+minimumReleaseAgeExclude:
+  - nodemailer@9.0.0
