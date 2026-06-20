@@ -1,5 +1,4 @@
 import '../styles/globals.css';
-import '../styles/open-library.css';
 
 import { HTTPError } from 'koajax';
 import { configure } from 'mobx';
@@ -10,6 +9,8 @@ import { Image } from 'react-bootstrap';
 
 import { MainNavigator } from '../components/Navigator/MainNavigator';
 import { PageContent } from '../components/PageContent';
+import FooterComponent from '../components/open-library/Footer';
+import { LibraryNavbar } from '../components/open-library/Navbar';
 import { isServer } from '../models/configuration';
 import { createI18nStore, I18nContext, I18nProps, loadSSRLanguage } from '../models/Translation';
 
@@ -39,6 +40,68 @@ export default class CustomApp extends App<I18nProps> {
     });
   }
 
+  renderFooter(thisFullYear: number, t: (key: 'open_source_bazaar') => string) {
+    return (
+      <footer className="mw-100 bg-dark text-white">
+        <p className="text-center my-0 py-3">
+          <span className="pr-3">
+            © 2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`}{' '}
+            {t('open_source_bazaar')}
+          </span>
+          <a
+            className="flex-fill d-flex justify-content-center align-items-center"
+            href="https://vercel.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Powered by
+            <span className="mx-2">
+              <Image
+                src="/vercel.svg"
+                alt="Vercel Logo"
+                width={72}
+                height={16}
+              />
+            </span>
+          </a>
+        </p>
+      </footer>
+    );
+  }
+
+  renderPageContent(Component: typeof this.props.Component, pageProps: typeof this.props.pageProps) {
+    return <Component {...pageProps} />;
+  }
+
+  renderOpenLibraryFrame(
+    Component: typeof this.props.Component,
+    pageProps: typeof this.props.pageProps,
+  ) {
+    return (
+      <>
+        <LibraryNavbar />
+        <main className="py-5">{this.renderPageContent(Component, pageProps)}</main>
+        <FooterComponent />
+      </>
+    );
+  }
+
+  renderSiteFrame(
+    Component: typeof this.props.Component,
+    pageProps: typeof this.props.pageProps,
+    isArticlePage: boolean,
+  ) {
+    const content = this.renderPageContent(Component, pageProps);
+
+    return (
+      <>
+        <MainNavigator />
+
+        <div className="mt-5 pt-2">{isArticlePage ? <PageContent>{content}</PageContent> : content}</div>
+      </>
+    );
+  }
+
   render() {
     const { Component, pageProps, router } = this.props,
       { t } = this.i18nStore;
@@ -48,7 +111,7 @@ export default class CustomApp extends App<I18nProps> {
       isActivityPage = asPath.startsWith('/hackathon');
 
     // 检查是否是 Open Library 路径
-    const isOpenLibraryPath = router.route.startsWith('/open-library');
+    const isOpenLibraryPath = router.asPath.startsWith('/open-library');
 
     return (
       <I18nContext.Provider value={this.i18nStore}>
@@ -58,44 +121,13 @@ export default class CustomApp extends App<I18nProps> {
           <title>{t('open_source_bazaar')}</title>
         </Head>
 
-        {isActivityPage || isOpenLibraryPath ? (
-          <Component {...pageProps} />
-        ) : (
-          <>
-            <MainNavigator />
+        {isActivityPage
+          ? this.renderPageContent(Component, pageProps)
+          : isOpenLibraryPath
+            ? this.renderOpenLibraryFrame(Component, pageProps)
+            : this.renderSiteFrame(Component, pageProps, isArticlePage)}
 
-            <div className="mt-5 pt-2">
-              {isArticlePage ? (
-                <PageContent>
-                  <Component {...pageProps} />
-                </PageContent>
-              ) : (
-                <Component {...pageProps} />
-              )}
-            </div>
-          </>
-        )}
-
-        {!isActivityPage && !isOpenLibraryPath && (
-          <footer className="mw-100 bg-dark text-white">
-            <p className="text-center my-0 py-3">
-              <span className="pr-3">
-                © 2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`} {t('open_source_bazaar')}
-              </span>
-              <a
-                className="flex-fill d-flex justify-content-center align-items-center"
-                href="https://vercel.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Powered by
-                <span className="mx-2">
-                  <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-                </span>
-              </a>
-            </p>
-          </footer>
-        )}
+        {!isActivityPage && !isOpenLibraryPath && this.renderFooter(thisFullYear, t)}
       </I18nContext.Provider>
     );
   }

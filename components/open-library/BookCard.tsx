@@ -1,65 +1,52 @@
 import Link from 'next/link';
-import React, { useContext } from 'react';
-import { Button, Card, Image } from 'react-bootstrap';
+import { observer } from 'mobx-react';
+import { FC, useContext } from 'react';
+import { Badge, Button, Card, CardProps } from 'react-bootstrap';
 
+export type { Book } from '../../models/Book';
+import type { Book } from '../../models/Book';
 import { I18nContext } from '../../models/Translation';
 
-export interface Book {
-  id: number;
-  title: string;
-  author: string;
-  cover?: string;
-  status?: 'available' | 'borrowed';
-  category?: string;
-  description?: string;
-}
-
-interface BookCardProps {
+export interface BookCardProps extends CardProps {
   book: Book;
   showStatus?: boolean;
   variant?: 'featured' | 'catalog';
 }
 
-const BookCard: React.FC<BookCardProps> = ({
+export const BookCard: FC<BookCardProps> = observer(({
+  className = '',
   book,
   showStatus = false,
   variant = 'featured',
+  ...cardProps
 }) => {
-  const cardClass =
-    variant === 'featured'
-      ? 'h-100 shadow-sm border-0'
-      : 'h-100 shadow border-0';
+  const isFeatured = variant === 'featured';
 
   const { t } = useContext(I18nContext);
 
   return (
-    <Card className={cardClass}>
+    <Card className={`border-0 shadow${isFeatured ? '-sm' : ''} ${className}`} {...cardProps}>
       <div className="text-center p-3 position-relative">
         {showStatus && (
           <div className="position-absolute top-0 end-0 m-2">
-            <span
-              className={`badge ${
-                book.status === 'available'
-                  ? 'bg-success'
-                  : 'bg-warning text-dark'
-              }`}
+            <Badge
+              bg={book.status === 'available' ? 'success' : 'warning'}
+              text={book.status === 'available' ? undefined : 'dark'}
             >
-              {book.status === 'available' ? '可借阅' : '已借出'}
-            </span>
+              {book.status === 'available' ? t('available') : t('borrowed')}
+            </Badge>
           </div>
         )}
-        <div
-          className="d-flex align-items-center justify-content-center overflow-hidden rounded bg-light"
-          style={{ height: '180px' }}
-        >
-          <Image
+        <div className="p-3">
+          <Card.Img
+            variant="top"
             src={book.cover || '/images/placeholder-book.svg'}
-            alt={`${book.title} 封面`}
-            className="img-fluid"
+            alt={`${book.title} ${t('book_cover')}`}
+            className="rounded bg-light"
             style={{
-              maxHeight: '160px',
-              maxWidth: '120px',
+              height: '180px',
               objectFit: 'contain',
+              padding: '10px',
             }}
           />
         </div>
@@ -79,8 +66,7 @@ const BookCard: React.FC<BookCardProps> = ({
         </Card.Text>
         {book.category && (
           <Card.Text className="text-muted small mb-3">
-            <i className="bi bi-tag me-1" />
-            {book.category}
+            🏷️ {book.category}
           </Card.Text>
         )}
         <div className="mt-auto">
@@ -98,6 +84,6 @@ const BookCard: React.FC<BookCardProps> = ({
       </Card.Body>
     </Card>
   );
-};
+});
 
 export default BookCard;

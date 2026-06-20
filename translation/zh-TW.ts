@@ -336,11 +336,11 @@ export default {
   donate_books: '捐贈書籍',
   how_it_works: '如何運作',
   how_it_works_description: '九步驟加入社群圖書館',
-  step_1_find_book: '1. 找書',
+  step_1_find_book: '找書',
   step_1_description: '瀏覽我們的書籍目錄，找到您想要的書籍。您可以按類別、作者或標題搜索。',
-  step_2_apply: '2. 申請借書',
+  step_2_apply: '申請借書',
   step_2_description: '填寫借書申請表格，我們會與您聯絡安排借書事宜。',
-  step_3_receive: '3. 收書',
+  step_3_receive: '收書',
   step_3_description: '書籍將會寄送到您指定的地址，請注意查收。',
   learn_more_about_borrowing: '了解更多借書資訊',
   community_voices: '社群聲音',
@@ -362,7 +362,8 @@ export default {
   available: '可借',
   borrowed: '已借出',
   reset_filters: '重設篩選',
-  showing_books: '顯示 {0} 本書，共 {1} 本',
+  showing_books: ({ shownCount, totalCount }: { shownCount: number; totalCount: number }) =>
+    `顯示 ${shownCount} 本書，共 ${totalCount} 本`,
   no_books_found: '沒有找到書籍',
   try_adjusting_filters: '試著調整篩選條件',
   reset_all_filters: '重設所有篩選',
@@ -423,6 +424,38 @@ export default {
   fill_borrow_request: '填寫借書申請',
   fill_book_passing_form: '填寫書籍傳遞表單',
   browse_book_catalog: '瀏覽書籍目錄',
+  ready_to_borrow: '準備好借書嗎？',
+
+  // BookCard
+  book_cover: '封面',
+
+  // HowItWorks
+  learn_more_details: '了解詳細流程',
+
+  // Books Page
+  book_catalog_description: '瀏覽我們的社區共享圖書館，發現有趣的書籍',
+
+  // Homepage About & Support sections
+  open_library_community_intro: 'freeCodeCamp 成都社區「Open Library」開放共享圖書館',
+  our_mission_text:
+    '促進知識交流，推動社區成員之間的學習和成長，增強社區成員之間的互動與信任。我們採用獨特的「無儲存」借閱模式，讓書籍在會員之間自由流轉。',
+  core_concepts: '核心理念',
+  knowledge_flow: '知識流動',
+  knowledge_flow_desc: '書籍自由流轉，促進知識傳播',
+  community_driven: '社區驅動',
+  community_driven_desc: '所有書籍來自成員捐贈',
+  open_sharing: '開放共享',
+  open_sharing_desc: '促進交流和互動',
+  support_us: '支持我們',
+  support_us_description:
+    'Open Library 完全由社區成員的熱情和貢獻支撐。如果這個項目對你有幫助，歡迎通過以下方式支持我們的發展。',
+  share_your_book: '分享你的圖書',
+
+  // Book Detail Page
+  book_publisher: '出版社',
+  book_published_year: '出版年份',
+  book_page_count: '頁數',
+  not_available: 'N/A',
 
   // Open Library Review Page
   book_reviews: '書籍書評',
@@ -456,8 +489,11 @@ export default {
   about_us_footer: '關於我們',
   donate_footer: '捐贈',
   contact: '聯絡我們',
-  contact_email: '聯絡郵件：info@openlibrary.community',
-  contact_address: '地址：123 圖書館路，社群圖書館，香港',
+  community_name: 'freeCodeCamp 成都社群',
+  community_location: '中國四川成都',
+  contact_email: 'team@fcc-cd.dev',
+  contact_address: '中國四川成都',
+  contact_wechat: 'freeCodeCamp 成都社群',
   follow_us: '關注我們',
   all_rights_reserved: '版權所有',
 };

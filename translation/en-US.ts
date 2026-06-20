@@ -360,13 +360,13 @@ export default {
   donate_books: 'Donate Books',
   how_it_works: 'How It Works',
   how_it_works_description: 'Three simple steps to borrow books from our community',
-  step_1_find_book: '1. Find a Book',
+  step_1_find_book: 'Find a Book',
   step_1_description:
     'Browse our collection and find the book that interests you. Filter by category, author, or popularity.',
-  step_2_apply: '2. Apply to Borrow',
+  step_2_apply: 'Apply to Borrow',
   step_2_description:
     "Submit a simple request form. We'll connect you with the book owner and arrange the handover.",
-  step_3_receive: '3. Receive and Pass It On',
+  step_3_receive: 'Receive and Pass It On',
   step_3_description:
     "Enjoy your book and return it when you're done. Consider donating your own books to keep knowledge flowing.",
   learn_more_about_borrowing: 'Learn More About Borrowing',
@@ -389,7 +389,8 @@ export default {
   available: 'Available',
   borrowed: 'Borrowed',
   reset_filters: 'Reset Filters',
-  showing_books: 'Showing {0} of {1} books',
+  showing_books: ({ shownCount, totalCount }: { shownCount: number; totalCount: number }) =>
+    `Showing ${shownCount} of ${totalCount} books`,
   no_books_found: 'No books found',
   try_adjusting_filters: 'Try adjusting your search or filters',
   reset_all_filters: 'Reset All Filters',
@@ -450,6 +451,38 @@ export default {
   fill_borrow_request: 'Fill Borrow Request',
   fill_book_passing_form: 'Fill Book Passing Form',
   browse_book_catalog: 'Browse Book Catalog',
+  ready_to_borrow: 'Ready to Borrow?',
+
+  // BookCard
+  book_cover: 'Cover',
+
+  // HowItWorks
+  learn_more_details: 'Learn More',
+
+  // Books Page
+  book_catalog_description: 'Browse our community shared library and discover interesting books',
+
+  // Homepage About & Support sections
+  open_library_community_intro: 'freeCodeCamp Chengdu Community Open Library',
+  our_mission_text:
+    'Promote knowledge exchange, drive learning and growth among community members, and strengthen interaction and trust. We use a unique "no-storage" lending model to let books circulate freely among members.',
+  core_concepts: 'Core Concepts',
+  knowledge_flow: 'Knowledge Flow',
+  knowledge_flow_desc: 'Books circulate freely to promote knowledge sharing',
+  community_driven: 'Community Driven',
+  community_driven_desc: 'All books are donated by members',
+  open_sharing: 'Open Sharing',
+  open_sharing_desc: 'Promoting exchange and interaction',
+  support_us: 'Support Us',
+  support_us_description:
+    'Open Library is completely supported by the passion and contributions of community members. If this project has been helpful to you, please support our development.',
+  share_your_book: 'Share Your Book',
+
+  // Book Detail Page
+  book_publisher: 'Publisher',
+  book_published_year: 'Published',
+  book_page_count: 'Pages',
+  not_available: 'N/A',
 
   // Open Library Review Page
   book_reviews: 'Book Reviews',
@@ -483,8 +516,11 @@ export default {
   about_us_footer: 'About Us',
   donate_footer: 'Donate',
   contact: 'Contact',
-  contact_email: 'Email: info@openlibrary.community',
-  contact_address: 'Address: 123 Library Lane, Knowledge City, World',
+  community_name: 'freeCodeCamp Chengdu Community',
+  community_location: 'Chengdu, Sichuan, China',
+  contact_email: 'team@fcc-cd.dev',
+  contact_address: 'Chengdu, Sichuan, China',
+  contact_wechat: 'freeCodeCamp 成都社区',
   follow_us: 'Follow Us',
   all_rights_reserved: 'All Rights Reserved',
 };

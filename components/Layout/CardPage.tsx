@@ -1,10 +1,11 @@
-import { ComponentClass, FC } from 'react';
+import { ComponentType, FC } from 'react';
 import { Col, Pagination, Row } from 'react-bootstrap';
 
 import { SearchPageMeta } from '../../models/System';
 
 export interface CardPageProps extends SearchPageMeta {
-  Card: ComponentClass<Record<string, unknown>> | FC<Record<string, unknown>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Card: ComponentType<any>;
   cardLinkOf?: (id: string) => string;
   pageLinkOf: (page: number) => string;
 }

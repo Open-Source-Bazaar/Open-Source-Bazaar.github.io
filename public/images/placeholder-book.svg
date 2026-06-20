@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320" role="img" aria-labelledby="title desc">
+  <title id="title">Book Placeholder</title>
+  <desc id="desc">A simple placeholder cover for Open Library books.</desc>
+  <rect width="240" height="320" rx="24" fill="#f8f9fa"/>
+  <rect x="26" y="20" width="24" height="280" rx="12" fill="#198754"/>
+  <rect x="62" y="48" width="146" height="16" rx="8" fill="#ced4da"/>
+  <rect x="62" y="82" width="112" height="12" rx="6" fill="#dee2e6"/>
+  <rect x="62" y="108" width="124" height="12" rx="6" fill="#dee2e6"/>
+  <rect x="62" y="134" width="94" height="12" rx="6" fill="#dee2e6"/>
+  <rect x="62" y="190" width="120" height="68" rx="16" fill="#e9ecef"/>
+  <path d="M122 206c-14.359 0-26 11.641-26 26s11.641 26 26 26 26-11.641 26-26-11.641-26-26-26Zm-4 14h8v10h10v8h-10v10h-8v-10h-10v-8h10Z" fill="#198754"/>
+</svg>

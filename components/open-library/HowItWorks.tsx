@@ -1,8 +1,11 @@
 import Link from 'next/link';
-import React from 'react';
+import { observer } from 'mobx-react';
+import { CSSProperties, FC, useContext } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 
+import { I18nContext } from '../../models/Translation';
 import { ContentContainer } from './Layout';
+import styles from './HowItWorks.module.less';
 
 interface Step {
   id: number;
@@ -20,114 +23,53 @@ interface HowItWorksProps {
   learnMoreLink?: string;
 }
 
-const defaultSteps: Step[] = [
-  {
-    id: 1,
-    title: '浏览图书',
-    description: '在图书目录中找到你感兴趣的书籍，查看详细信息和当前状态',
-    icon: 'bi-search',
-    color: '#6f42c1',
-  },
-  {
-    id: 2,
-    title: '申请借阅',
-    description: '填写借阅申请表单，系统会自动联系当前持书人',
-    icon: 'bi-file-earmark-text',
-    color: '#0d6efd',
-  },
-  {
-    id: 3,
-    title: '线下传递',
-    description: '与持书人约定传递方式，通常通过快递或面对面交接',
-    icon: 'bi-arrow-left-right',
-    color: '#fd7e14',
-  },
-  {
-    id: 4,
-    title: '享受阅读',
-    description: '阅读完成后，可以写下书评并准备传递给下一位读者',
-    icon: 'bi-book-half',
-    color: '#198754',
-  },
-];
+const HowItWorks: FC<HowItWorksProps> = observer(({ title, subtitle, steps, showLearnMore = true, learnMoreLink = '/open-library/how-to-borrow' }) => {
+  const { t } = useContext(I18nContext);
+  const resolvedTitle = title ?? t('how_it_works');
+  const resolvedSubtitle = subtitle ?? t('how_it_works_description');
+  const resolvedSteps: Step[] = steps ?? [
+    { id: 1, title: t('step_1_find_book'), description: t('step_1_description'), icon: '�', color: '#6f42c1' },
+    { id: 2, title: t('step_2_apply'), description: t('step_2_description'), icon: '📄', color: '#0d6efd' },
+    { id: 3, title: t('step_3_receive'), description: t('step_3_description'), icon: '↔️', color: '#fd7e14' },
+  ];
 
-const HowItWorks: React.FC<HowItWorksProps> = ({
-  title = '如何使用 Open Library',
-  subtitle = '简单四步，让知识在社区中自由流动',
-  steps = defaultSteps,
-  showLearnMore = true,
-  learnMoreLink = '/open-library/how-to-borrow',
-}) => (
+  return (
   <section className="py-5 bg-white">
     <ContentContainer>
       <div className="text-center mb-5">
         <h2 className="display-5 fw-bold text-dark mb-3 position-relative">
-          {title}
+          {resolvedTitle}
           <div className="position-absolute start-50 translate-middle-x mt-2">
-            <div
-              className="bg-primary rounded-pill"
-              style={{ width: '60px', height: '3px' }}
-            />
+            <div className={`bg-primary rounded-pill ${styles.sectionTitleMarker}`} />
           </div>
         </h2>
-        <p className="lead text-muted mx-auto" style={{ maxWidth: '600px' }}>
-          {subtitle}
-        </p>
+        <p className={`lead text-muted mx-auto ${styles.subtitle}`}>{resolvedSubtitle}</p>
       </div>
 
       <Row className="g-4">
-        {steps.map((step, index) => (
+        {resolvedSteps.map((step, index) => (
           <Col key={step.id} md={6} lg={3}>
             <div className="text-center p-3">
               <div
-                className="position-relative mb-3 d-flex justify-content-center"
-                style={{ height: '80px' }}
+                className={`position-relative mb-3 d-flex justify-content-center ${styles.stepIconWrap}`}
               >
                 <div
-                  className="rounded-circle d-flex align-items-center justify-content-center text-white fs-4 shadow position-relative"
-                  style={{
-                    backgroundColor: step.color,
-                    width: '60px',
-                    height: '60px',
-                  }}
+                  className={`rounded-circle d-flex align-items-center justify-content-center text-white fs-4 shadow position-relative ${styles.stepIcon}`}
+                  style={{ '--step-color': step.color } as CSSProperties}
                 >
-                  <i className={`bi ${step.icon}`} />
+                  {step.icon}
                 </div>
                 <span
-                  className="position-absolute bg-danger text-white rounded-circle d-flex align-items-center justify-content-center fw-bold small"
-                  style={{
-                    width: '24px',
-                    height: '24px',
-                    top: '-10px',
-                    right: 'calc(50% - 42px)',
-                    fontSize: '0.75rem',
-                  }}
+                  className={`position-absolute bg-danger text-white rounded-circle d-flex align-items-center justify-content-center fw-bold small ${styles.stepNumber}`}
                 >
                   {step.id}
                 </span>
                 {/* 连接线仅在大屏幕显示且不是最后一个 */}
-                {index < steps.length - 1 && (
+                {index < resolvedSteps.length - 1 && (
                   <div
-                    className="position-absolute bg-secondary d-none d-lg-block"
-                    style={{
-                      top: '30px',
-                      left: 'calc(100% - 30px)',
-                      width: '60px',
-                      height: '2px',
-                    }}
+                    className={`position-absolute bg-secondary d-none d-lg-block ${styles.connector}`}
                   >
-                    <div
-                      className="position-absolute"
-                      style={{
-                        right: '-6px',
-                        top: '-4px',
-                        width: '0',
-                        height: '0',
-                        borderLeft: '6px solid #6c757d',
-                        borderTop: '5px solid transparent',
-                        borderBottom: '5px solid transparent',
-                      }}
-                    />
+                    <div className={`position-absolute ${styles.connectorArrow}`} />
                   </div>
                 )}
               </div>
@@ -147,15 +89,14 @@ const HowItWorks: React.FC<HowItWorksProps> = ({
               as="a"
               className="rounded-pill px-4 fw-semibold"
             >
-              <i className="bi bi-info-circle me-2" />
-              了解详细流程
-              <i className="bi bi-arrow-right ms-2" />
+              ℹ️ {t('learn_more_details')} →
             </Button>
           </Link>
         </div>
       )}
     </ContentContainer>
   </section>
-);
+  );
+});
 
 export default HowItWorks;
