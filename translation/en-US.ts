@@ -12,6 +12,7 @@ export default {
   self_developed_projects: 'Self-developed projects',
   bazaar_projects: 'Bazaar projects',
   open_source_bazaar: 'Open Source Bazaar',
+  open_library: 'Open Library',
   home_page: 'Home Page',
   wiki: 'Wiki',
 
@@ -209,6 +210,75 @@ export default {
   finance_edu_next_2:
     'Find corresponding ETFs or index funds, paying attention to fees and fund size.',
   finance_edu_next_3: 'Set up a recurring investment plan and track valuation and drawdown.',
+
+  // Open Library
+  library_page_title: 'Open Library',
+  library_page_description:
+    'Browse the Open Source Bazaar library catalog, borrowing status, and borrowing guide.',
+  library_badge: 'Open Library',
+  library_hero_title: 'Open Library',
+  library_hero_intro:
+    'A curated shelf for open-source governance, community collaboration, legal compliance, and project operations so contributors can find the right reading material faster.',
+  library_hero_cta_catalog: 'View catalog',
+  library_hero_cta_guide: 'Borrowing guide',
+  library_stat_total: 'Books',
+  library_stat_available: 'Available',
+  library_stat_process: 'Steps',
+  library_browse_title: 'Browse books',
+  library_browse_intro:
+    'Explore the collection by topic, check status first, then decide whether to borrow.',
+  library_filter_keyword: 'Search by title, author, or ID',
+  library_filter_category: 'Filter by category',
+  library_filter_status: 'Filter by status',
+  library_filter_all_categories: 'All categories',
+  library_filter_all_statuses: 'All statuses',
+  library_category_open_source: 'Open-source culture',
+  library_category_community: 'Community collaboration',
+  library_category_governance: 'Project governance',
+  library_category_legal: 'Legal compliance',
+  library_view_detail: 'View details',
+  library_empty_result: 'No matching books found. Try another keyword or filter.',
+  library_catalog_title: 'Catalog and status',
+  library_catalog_intro:
+    'The catalog lists book ID, title, current status, location, and expected return date.',
+  library_table_code: 'ID',
+  library_table_book: 'Book',
+  library_table_status: 'Status',
+  library_table_location: 'Location',
+  library_table_due: 'Due',
+  library_status_available: 'Available',
+  library_status_borrowed: 'Borrowed',
+  library_location_shelf_a: 'Shelf A · Open-source culture',
+  library_location_shelf_b: 'Shelf B · Community governance',
+  library_location_shelf_c: 'Shelf C · Legal compliance',
+  library_location_checked_out: 'Checked out',
+  library_due_not_applicable: 'N/A',
+  library_guide_title: 'Borrowing guide',
+  library_guide_step_1_title: 'Check availability',
+  library_guide_step_1_desc:
+    'Use the catalog to confirm whether the book is available and note its book ID.',
+  library_guide_step_2_title: 'Submit borrowing info',
+  library_guide_step_2_desc:
+    'Submit your name, contact, book ID, and expected borrowing period through the community channel.',
+  library_guide_step_3_title: 'Return on time',
+  library_guide_step_3_desc:
+    'Return the book after reading and optionally leave a short note for the next reader.',
+  library_detail_title: 'Book details',
+  library_detail_location_prefix: 'Current location: ',
+  library_detail_due_prefix: 'Expected return: ',
+  library_borrow_info_title: 'Borrowing info',
+  library_borrow_info_desc:
+    'This version shows borrowing status and workflow first. It can later connect to a form or community channel.',
+  library_borrow_available_action: 'Currently available',
+  library_borrow_wait_action: 'Currently borrowed',
+  library_book_working_public_desc:
+    'A good entry point for understanding open-source maintainers, contributors, and community sustainability.',
+  library_book_cathedral_desc:
+    'A classic open-source culture text for understanding the early thinking behind open collaboration.',
+  library_book_producing_desc:
+    'Focuses on open-source project management, contribution workflow, release cadence, and governance.',
+  library_book_business_desc:
+    'Explains open-source licensing, compliance, and adoption strategy from business and legal angles.',
 
   // Hackathon
   hackathon_detail: 'Hackathon Details',
