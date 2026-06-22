@@ -191,7 +191,9 @@ const LibraryPage: FC = observer(() => {
                   <Badge bg="light" text="dark">
                     {t(categoryKey)}
                   </Badge>
-                  <Badge className={statusClass(status)}>{statusText(status)}</Badge>
+                  <Badge bg="transparent" className={statusClass(status)}>
+                    {statusText(status)}
+                  </Badge>
                 </div>
                 <Card.Title as="h3" className="h5">
                   {title}
@@ -239,7 +241,9 @@ const LibraryPage: FC = observer(() => {
                   <small className="text-muted d-block">{author}</small>
                 </td>
                 <td data-label={t('library_table_status')}>
-                  <Badge className={statusClass(status)}>{statusText(status)}</Badge>
+                  <Badge bg="transparent" className={statusClass(status)}>
+                    {statusText(status)}
+                  </Badge>
                 </td>
                 <td data-label={t('library_table_location')}>{t(locationKey)}</td>
                 <td data-label={t('library_table_due')}>
@@ -273,7 +277,7 @@ const LibraryPage: FC = observer(() => {
                 <article id="book-detail" className={styles.detailPanel}>
                   <div className="d-flex justify-content-between gap-3 mb-3">
                     <strong>{activeBook.code}</strong>
-                    <Badge className={statusClass(activeBook.status)}>
+                    <Badge bg="transparent" className={statusClass(activeBook.status)}>
                       {statusText(activeBook.status)}
                     </Badge>
                   </div>

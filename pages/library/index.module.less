@@ -68,13 +68,13 @@
 }
 
 .statusAvailable {
-  background: rgba(25, 135, 84, 0.1) !important;
-  color: #198754 !important;
+  background: rgba(25, 135, 84, 0.1);
+  color: #198754;
 }
 
 .statusBorrowed {
-  background: rgba(220, 53, 69, 0.1) !important;
-  color: #dc3545 !important;
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
 }
 
 .catalogTable {
@@ -116,7 +116,8 @@
       text-align: right;
 
       &::before {
-        flex: 0 0 5rem;
+        flex: 0 0 auto;
+        min-width: 5rem;
         content: attr(data-label);
         color: #6c757d;
         font-weight: 600;
