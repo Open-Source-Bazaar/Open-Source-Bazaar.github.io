@@ -1,11 +1,10 @@
 import Link from 'next/link';
 import { observer } from 'mobx-react';
 import { FC, useContext } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 
 import { I18nContext } from '../../models/Translation';
 import BookCard, { Book } from './BookCard';
-import { ContentContainer } from './Layout';
 
 interface FeaturedBooksProps {
   books: Book[];
@@ -17,7 +16,14 @@ interface FeaturedBooksProps {
 }
 
 const FeaturedBooks: FC<FeaturedBooksProps> = observer(
-  ({ books, title, subtitle, showViewAll = true, viewAllLink = '/open-library/books', viewAllText }) => {
+  ({
+    books,
+    title,
+    subtitle,
+    showViewAll = true,
+    viewAllLink = '/open-library/books',
+    viewAllText,
+  }) => {
     const { t } = useContext(I18nContext);
     const resolvedTitle = title ?? t('featured_books');
     const resolvedSubtitle = subtitle ?? t('featured_books_subtitle');
@@ -25,7 +31,7 @@ const FeaturedBooks: FC<FeaturedBooksProps> = observer(
 
     return (
       <section className="py-5 bg-light">
-        <ContentContainer>
+        <Container fluid="xl" className="px-3">
           <hgroup className="text-center mb-5">
             <h2 className="display-5 fw-bold text-dark mb-3 position-relative">
               {resolvedTitle}
@@ -63,7 +69,7 @@ const FeaturedBooks: FC<FeaturedBooksProps> = observer(
               </Link>
             </div>
           )}
-        </ContentContainer>
+        </Container>
       </section>
     );
   },

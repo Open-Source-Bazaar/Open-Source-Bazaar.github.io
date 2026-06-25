@@ -1,11 +1,12 @@
-import { ComponentType, FC } from 'react';
+import { ComponentClass, FC } from 'react';
 import { Col, Pagination, Row } from 'react-bootstrap';
 
 import { SearchPageMeta } from '../../models/System';
 
 export interface CardPageProps extends SearchPageMeta {
+  // Card receives each search result plus layout props injected below.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Card: ComponentType<any>;
+  Card: ComponentClass<any> | FC<any>;
   cardLinkOf?: (id: string) => string;
   pageLinkOf: (page: number) => string;
 }
@@ -28,14 +29,8 @@ export const CardPage: FC<CardPageProps> = ({
     </Row>
 
     <Pagination className="justify-content-center" size="lg">
-      <Pagination.Prev
-        href={pageLinkOf(pageIndex - 1)}
-        disabled={pageIndex === 1}
-      />
-      <Pagination.Next
-        href={pageLinkOf(pageIndex + 1)}
-        disabled={pageIndex === pageCount}
-      />
+      <Pagination.Prev href={pageLinkOf(pageIndex - 1)} disabled={pageIndex === 1} />
+      <Pagination.Next href={pageLinkOf(pageIndex + 1)} disabled={pageIndex === pageCount} />
     </Pagination>
   </>
 );

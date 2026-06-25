@@ -395,14 +395,14 @@ export default {
   try_adjusting_filters: 'Try adjusting your search or filters',
   reset_all_filters: 'Reset All Filters',
   open_library_view_details: 'View Details',
-  currently_with: 'Currently with: {0}',
+  currently_with: ({ holder }: { holder: string }) => `Currently with: ${holder}`,
 
   // Open Library Book Detail Page
   loading: 'Loading...',
   book_not_found: 'Book Not Found',
   return_to_catalog: 'Return to Catalog',
   back: 'Back',
-  by_author: 'by {0}',
+  by_author: ({ author }: { author: string }) => `by ${author}`,
   currently_borrowed: 'Currently Borrowed',
   currently_unavailable: 'Currently Unavailable',
   request_to_borrow: 'Request to Borrow',
@@ -442,6 +442,7 @@ export default {
   apply_for_membership: 'Apply for Membership',
 
   // Open Library How to Borrow Page
+  how_to_borrow_page_title: 'How to Borrow - Open Library',
   how_to_borrow_page: 'How to Borrow',
   borrowing_and_passing: 'Borrowing and Passing Model',
   borrowing_process: 'Borrowing Process',
@@ -452,6 +453,64 @@ export default {
   fill_book_passing_form: 'Fill Book Passing Form',
   browse_book_catalog: 'Browse Book Catalog',
   ready_to_borrow: 'Ready to Borrow?',
+  open_library_quick_links_label: 'Open Library quick links',
+  borrow_model_intro:
+    'In Open Library, all books are donated by community members and directly **passed** from one reader to the next.',
+  borrow_model_description:
+    'We use a no-storage lending model: books circulate freely among members instead of being stored centrally. This saves physical space and creates direct community interaction.',
+  borrow_step_catalog_title: 'Browse books',
+  borrow_step_catalog_description: ({
+    catalogURL,
+    booksURL,
+  }: {
+    catalogURL: string;
+    booksURL: string;
+  }) =>
+    `Members can search [fCC Chengdu Community Library](${catalogURL}) or browse our [book catalog](${booksURL}).`,
+  borrow_step_apply_title: 'Apply to borrow',
+  borrow_step_apply_description: ({ borrowFormURL }: { borrowFormURL: string }) =>
+    `After finding a book, submit the [book borrowing form](${borrowFormURL}) to contact the current holder.`,
+  borrow_step_handoff_title: 'Offline handoff',
+  borrow_step_handoff_description: ({ handoffFormURL }: { handoffFormURL: string }) =>
+    `Both sides agree on a time and delivery method. The sender should fill in the [book handoff form](${handoffFormURL}) before passing the book on.`,
+  borrow_step_share_title: 'Read and share',
+  borrow_step_share_description:
+    'After reading, borrowers can share their thoughts and recommend the book to the next interested member. We encourage short reviews before returning or passing books on.',
+  borrow_step_continue_title: 'Keep it moving',
+  borrow_step_continue_description:
+    'When a new borrowing request arrives, the current holder passes the book to the next reader so knowledge keeps flowing.',
+  borrow_rule_period_title: 'Loan period',
+  borrow_rule_period_detail:
+    'The standard loan period is 30 days. Contact the library maintainer if you need an extension.',
+  borrow_rule_quantity_title: 'Borrowing limit',
+  borrow_rule_quantity_detail: 'Each member may borrow up to 3 books at the same time.',
+  borrow_rule_condition_title: 'Book condition',
+  borrow_rule_condition_detail:
+    'Borrowers are responsible for keeping books in good condition and avoiding damage, marks, or loss.',
+  borrow_rule_handoff_title: 'Handoff responsibility',
+  borrow_rule_handoff_detail:
+    'The current holder is responsible for safely passing the book to the next borrower and covering related delivery costs.',
+  borrow_rule_damage_title: 'Loss or damage',
+  borrow_rule_damage_detail:
+    'If a book is lost or seriously damaged while borrowed, contact the library maintainer and consider donating an identical or similar replacement.',
+  borrow_faq_available_question: 'How do I know whether a book is available?',
+  borrow_faq_available_answer:
+    'Check the current status in the Feishu base or on the book catalog page. If it is marked available, you can request to borrow it.',
+  borrow_faq_fee_question: 'Do I need to pay a borrowing fee?',
+  borrow_faq_fee_answer:
+    'Open Library does not charge borrowing fees, but borrowers cover delivery costs such as shipping.',
+  borrow_faq_return_question: 'Do I need to return a book if nobody else requests it?',
+  borrow_faq_return_answer:
+    'The standard loan period is 30 days. If no new request arrives after that, you may keep the book temporarily, but stay ready to pass it on.',
+  borrow_faq_contact_question: 'How do I contact the current holder?',
+  borrow_faq_contact_answer:
+    'After you submit a borrowing request, we provide the current holder contact information so you can coordinate the handoff.',
+  borrow_faq_keep_question: 'What if I want to keep a book long term?',
+  borrow_faq_keep_answer:
+    'Open Library exists to keep knowledge flowing. If you especially like a book, consider buying your own copy or donating the same book to the library.',
+  borrow_faq_ebook_question: 'Can I borrow ebooks?',
+  borrow_faq_ebook_answer:
+    'Open Library currently focuses on physical books. We may add ebook resources in the future.',
 
   // BookCard
   book_cover: 'Cover',
@@ -499,6 +558,7 @@ export default {
   hero_title: 'Free knowledge flows here',
   hero_subtitle:
     "Share and borrow books in our open-source community. Join freeCodeCamp Chengdu's initiative to make learning accessible to everyone.",
+  hero_image_alt: 'People sharing books',
 
   // Featured Books Section
   featured_books_subtitle: 'Discover what our community is reading right now',
@@ -518,9 +578,6 @@ export default {
   contact: 'Contact',
   community_name: 'freeCodeCamp Chengdu Community',
   community_location: 'Chengdu, Sichuan, China',
-  contact_email: 'team@fcc-cd.dev',
-  contact_address: 'Chengdu, Sichuan, China',
-  contact_wechat: 'freeCodeCamp 成都社区',
   follow_us: 'Follow Us',
   all_rights_reserved: 'All Rights Reserved',
 };

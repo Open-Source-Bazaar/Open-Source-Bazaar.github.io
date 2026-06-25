@@ -1,7 +1,5 @@
 import React from 'react';
-import { Button, Col, Image, Row } from 'react-bootstrap';
-
-import { ContentContainer } from './Layout';
+import { Button, Col, Container, Image, Row } from 'react-bootstrap';
 
 interface HeroSectionProps {
   title: string;
@@ -34,7 +32,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       paddingBottom: '7.5rem',
     }}
   >
-    <ContentContainer>
+    <Container fluid="xl" className="px-3">
       <Row className="align-items-center py-5">
         <Col lg={6} className="order-2 order-lg-1">
           <div className="position-relative">
@@ -68,7 +66,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         </Col>
       </Row>
-    </ContentContainer>
+    </Container>
   </section>
 );
 

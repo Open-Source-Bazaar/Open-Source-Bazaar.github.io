@@ -40,13 +40,14 @@ export default class CustomApp extends App<I18nProps> {
     });
   }
 
-  renderFooter(thisFullYear: number, t: (key: 'open_source_bazaar') => string) {
+  renderFooter(thisFullYear: number) {
+    const { t } = this.i18nStore;
+
     return (
       <footer className="mw-100 bg-dark text-white">
         <p className="text-center my-0 py-3">
           <span className="pr-3">
-            © 2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`}{' '}
-            {t('open_source_bazaar')}
+            © 2021{thisFullYear === 2021 ? '' : `-${thisFullYear}`} {t('open_source_bazaar')}
           </span>
           <a
             className="flex-fill d-flex justify-content-center align-items-center"
@@ -56,12 +57,7 @@ export default class CustomApp extends App<I18nProps> {
           >
             Powered by
             <span className="mx-2">
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                width={72}
-                height={16}
-              />
+              <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
             </span>
           </a>
         </p>
@@ -69,35 +65,31 @@ export default class CustomApp extends App<I18nProps> {
     );
   }
 
-  renderPageContent(Component: typeof this.props.Component, pageProps: typeof this.props.pageProps) {
-    return <Component {...pageProps} />;
-  }
+  renderOpenLibraryFrame() {
+    const { Component, pageProps } = this.props;
 
-  renderOpenLibraryFrame(
-    Component: typeof this.props.Component,
-    pageProps: typeof this.props.pageProps,
-  ) {
     return (
       <>
         <LibraryNavbar />
-        <main className="py-5">{this.renderPageContent(Component, pageProps)}</main>
+        <main className="py-5">
+          <Component {...pageProps} />
+        </main>
         <FooterComponent />
       </>
     );
   }
 
-  renderSiteFrame(
-    Component: typeof this.props.Component,
-    pageProps: typeof this.props.pageProps,
-    isArticlePage: boolean,
-  ) {
-    const content = this.renderPageContent(Component, pageProps);
+  renderSiteFrame(isArticlePage: boolean) {
+    const { Component, pageProps } = this.props;
+    const content = <Component {...pageProps} />;
 
     return (
       <>
         <MainNavigator />
 
-        <div className="mt-5 pt-2">{isArticlePage ? <PageContent>{content}</PageContent> : content}</div>
+        <div className="mt-5 pt-2">
+          {isArticlePage ? <PageContent>{content}</PageContent> : content}
+        </div>
       </>
     );
   }
@@ -110,8 +102,7 @@ export default class CustomApp extends App<I18nProps> {
     const isArticlePage = asPath.startsWith('/article/') || asPath.startsWith('/policy/'),
       isActivityPage = asPath.startsWith('/hackathon');
 
-    // 检查是否是 Open Library 路径
-    const isOpenLibraryPath = router.asPath.startsWith('/open-library');
+    const isOpenLibraryPath = asPath.startsWith('/open-library');
 
     return (
       <I18nContext.Provider value={this.i18nStore}>
@@ -121,13 +112,15 @@ export default class CustomApp extends App<I18nProps> {
           <title>{t('open_source_bazaar')}</title>
         </Head>
 
-        {isActivityPage
-          ? this.renderPageContent(Component, pageProps)
-          : isOpenLibraryPath
-            ? this.renderOpenLibraryFrame(Component, pageProps)
-            : this.renderSiteFrame(Component, pageProps, isArticlePage)}
+        {isActivityPage ? (
+          <Component {...pageProps} />
+        ) : isOpenLibraryPath ? (
+          this.renderOpenLibraryFrame()
+        ) : (
+          this.renderSiteFrame(isArticlePage)
+        )}
 
-        {!isActivityPage && !isOpenLibraryPath && this.renderFooter(thisFullYear, t)}
+        {!isActivityPage && !isOpenLibraryPath && this.renderFooter(thisFullYear)}
       </I18nContext.Provider>
     );
   }

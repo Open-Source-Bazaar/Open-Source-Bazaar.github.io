@@ -4,6 +4,8 @@ import { Col, Container, Nav, Row } from 'react-bootstrap';
 
 import { I18nContext } from '../../models/Translation';
 
+const contactEmail = 'team@fcc-cd.dev';
+
 const FooterComponent = observer(() => {
   const { t } = useContext(I18nContext);
 
@@ -53,16 +55,12 @@ const FooterComponent = observer(() => {
           <Col md={5}>
             <h5 className="fw-bold mb-3">{t('contact')}</h5>
             <ul className="list-unstyled d-flex flex-column gap-2 text-light opacity-75 mb-0">
-              <li>
-                📍 {t('community_name')}
-              </li>
-              <li>
-                📌 {t('community_location')}
-              </li>
+              <li>📍 {t('community_name')}</li>
+              <li>📌 {t('community_location')}</li>
               <li>
                 ✉️{' '}
-                <a className="text-light" href={`mailto:${t('contact_email')}`}>
-                  {t('contact_email')}
+                <a className="text-light" href={`mailto:${contactEmail}`}>
+                  {contactEmail}
                 </a>
               </li>
               <li>
@@ -73,7 +71,7 @@ const FooterComponent = observer(() => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {t('contact_wechat')}
+                  {t('community_name')}
                 </a>
               </li>
             </ul>

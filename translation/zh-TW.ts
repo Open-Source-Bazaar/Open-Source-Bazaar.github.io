@@ -368,14 +368,14 @@ export default {
   try_adjusting_filters: '試著調整篩選條件',
   reset_all_filters: '重設所有篩選',
   open_library_view_details: '查看詳情',
-  currently_with: '目前由 {0} 借出',
+  currently_with: ({ holder }: { holder: string }) => `目前持有者：${holder}`,
 
   // Open Library Book Detail Page
   loading: '載入中...',
   book_not_found: '沒有找到書籍',
   return_to_catalog: '返回目錄',
   back: '返回',
-  by_author: '作者：{0}',
+  by_author: ({ author }: { author: string }) => `作者：${author}`,
   currently_borrowed: '目前已借出',
   currently_unavailable: '目前不可借',
   request_to_borrow: '申請借書',
@@ -415,6 +415,7 @@ export default {
   apply_for_membership: '申請會員',
 
   // Open Library How to Borrow Page
+  how_to_borrow_page_title: '如何借書 - 開源圖書館',
   how_to_borrow_page: '如何借書',
   borrowing_and_passing: '借閱與傳遞模式',
   borrowing_process: '借書流程',
@@ -425,6 +426,61 @@ export default {
   fill_book_passing_form: '填寫書籍傳遞表單',
   browse_book_catalog: '瀏覽書籍目錄',
   ready_to_borrow: '準備好借書嗎？',
+  open_library_quick_links_label: '開源圖書館快速連結',
+  borrow_model_intro:
+    '在 Open Library，所有書籍均來自社群成員的捐贈，並由借閱者直接**傳遞**給下一位借書人。',
+  borrow_model_description:
+    '我們採用獨特的「無儲存」借閱模式，讓書籍在會員之間自由流轉，而非集中存放。這種模式不只節省實體空間，也促進社群成員之間的直接交流與互動。',
+  borrow_step_catalog_title: '查閱書籍',
+  borrow_step_catalog_description: ({
+    catalogURL,
+    booksURL,
+  }: {
+    catalogURL: string;
+    booksURL: string;
+  }) =>
+    `社群成員可以在 [fCC 成都社群圖書館](${catalogURL}) 中查找自己感興趣的書籍，或在我們的 [書籍目錄](${booksURL}) 中瀏覽。`,
+  borrow_step_apply_title: '申請借閱',
+  borrow_step_apply_description: ({ borrowFormURL }: { borrowFormURL: string }) =>
+    `找到想借的書後，填寫 [fCC 成都社群圖書館-書籍借入](${borrowFormURL}) 申請，與目前持書者取得聯繫。`,
+  borrow_step_handoff_title: '線下傳遞',
+  borrow_step_handoff_description: ({ handoffFormURL }: { handoffFormURL: string }) =>
+    `雙方約定時間和傳遞方式，通常可用快遞傳遞書籍。請傳遞者填寫 [fCC 成都社群圖書館-書籍傳遞](${handoffFormURL})，再將書籍傳遞出去。`,
+  borrow_step_share_title: '閱讀與分享',
+  borrow_step_share_description:
+    '借閱者在閱讀完畢後，可以分享自己的閱讀感想，並在社群推薦給下一位感興趣的成員。我們鼓勵借閱者在歸還前寫下簡短書評。',
+  borrow_step_continue_title: '繼續傳遞',
+  borrow_step_continue_description:
+    '當有新的借閱者申請時，目前持書人將書籍傳遞給下一位讀者，確保知識持續流動。',
+  borrow_rule_period_title: '借閱期限',
+  borrow_rule_period_detail: '每本書的標準借閱期為 30 天，如需延長可與圖書館管理員聯繫。',
+  borrow_rule_quantity_title: '借閱數量',
+  borrow_rule_quantity_detail: '每位會員同時最多可借閱 3 本書。',
+  borrow_rule_condition_title: '書籍狀態',
+  borrow_rule_condition_detail: '借閱者有責任保持書籍良好狀態，避免損壞、標記或遺失。',
+  borrow_rule_handoff_title: '傳遞責任',
+  borrow_rule_handoff_detail: '目前持書人負責將書籍安全傳遞給下一位借閱者，並承擔相關傳遞費用。',
+  borrow_rule_damage_title: '遺失或損壞',
+  borrow_rule_damage_detail:
+    '如果書籍在您借閱期間遺失或嚴重損壞，請聯繫圖書館管理員，並考慮捐贈一本相同或類似的書籍作為替代。',
+  borrow_faq_available_question: '如何知道一本書是否可借？',
+  borrow_faq_available_answer:
+    '您可以在飛書多維表格或網站書籍目錄中查看書籍目前狀態。如果標記為「可借」，就可以申請借閱。',
+  borrow_faq_fee_question: '我需要支付借閱費用嗎？',
+  borrow_faq_fee_answer:
+    'Open Library 不收取借閱費用，但借閱者需要承擔書籍傳遞的相關費用（例如快遞費）。',
+  borrow_faq_return_question: '如果目前沒有人申請借我手中的書，我需要歸還嗎？',
+  borrow_faq_return_answer:
+    '標準借閱期為 30 天。如果期滿後沒有新的借閱申請，您可以暫時保留該書，但請隨時準備傳遞給下一位申請者。',
+  borrow_faq_contact_question: '如何聯繫目前持書人？',
+  borrow_faq_contact_answer:
+    '當您提交借閱申請後，我們會提供目前持書人的聯絡方式，以便雙方協調傳遞事宜。',
+  borrow_faq_keep_question: '如果我想長期保留一本書怎麼辦？',
+  borrow_faq_keep_answer:
+    'Open Library 的宗旨是促進知識流動，我們鼓勵書籍在會員之間傳遞。如果您特別喜歡某本書，建議購買一本自己的副本，或考慮捐贈一本相同的書給圖書館。',
+  borrow_faq_ebook_question: '我可以借閱電子書嗎？',
+  borrow_faq_ebook_answer:
+    '目前 Open Library 主要提供實體書借閱服務。我們正在考慮未來增加電子書資源，敬請期待。',
 
   // BookCard
   book_cover: '封面',
@@ -472,6 +528,7 @@ export default {
   hero_title: '在我們的開源圖書館中探索',
   hero_subtitle:
     '在我們的社群圖書館中探索免費的書籍和資源。加入 freeCodeCamp 成為社群圖書館的一部分，學習和分享知識。',
+  hero_image_alt: '社群成員分享圖書',
 
   // Featured Books Section
   featured_books_subtitle: '我們社群圖書館中最受歡迎的書籍',
@@ -491,9 +548,6 @@ export default {
   contact: '聯絡我們',
   community_name: 'freeCodeCamp 成都社群',
   community_location: '中國四川成都',
-  contact_email: 'team@fcc-cd.dev',
-  contact_address: '中國四川成都',
-  contact_wechat: 'freeCodeCamp 成都社群',
   follow_us: '關注我們',
   all_rights_reserved: '版權所有',
 };

@@ -1,5 +1,14 @@
+packages:
+  - .
+autoInstallPeers: false
+overrides:
+  next: $next
 allowBuilds:
-  '@parcel/watcher': set this to true or false
-  core-js: set this to true or false
-  sharp: set this to true or false
-  unrs-resolver: set this to true or false
+  '@sentry/cli': true
+  core-js: true
+  less: true
+  sharp: true
+  unrs-resolver: true
+publicHoistPattern:
+  - '*import-in-the-middle*'
+  - '*require-in-the-middle*'
