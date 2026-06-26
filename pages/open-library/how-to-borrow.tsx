@@ -1,7 +1,6 @@
-import { marked } from 'marked';
-import Link from 'next/link';
 import { observer } from 'mobx-react';
-import { useContext } from 'react';
+import Link from 'next/link';
+import { ReactNode, useContext } from 'react';
 import { Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
 
 import { PageHead } from '../../components/Layout/PageHead';
@@ -18,9 +17,59 @@ const membershipFormURL =
 
 const booksURL = '/open-library/books';
 
-const inlineMarkupOf = (text: string) => ({
-  __html: marked.parseInline(text) as string,
-});
+const safeHrefOf = (href: string) => {
+  if (href.startsWith('/')) return href;
+
+  try {
+    const { protocol } = new URL(href);
+
+    return ['http:', 'https:'].includes(protocol) ? href : '';
+  } catch {
+    return '';
+  }
+};
+
+const inlineNodesOf = (text: string) => {
+  const nodes: ReactNode[] = [];
+  const pattern = /(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g;
+  let cursor = 0;
+
+  for (const match of text.matchAll(pattern)) {
+    const [token] = match;
+    const index = match.index ?? 0;
+
+    if (index > cursor) nodes.push(text.slice(cursor, index));
+
+    const linkMatch = /^\[([^\]]+)\]\(([^)]+)\)$/.exec(token);
+
+    if (linkMatch) {
+      const [, label, href] = linkMatch;
+      const safeHref = safeHrefOf(href);
+
+      nodes.push(
+        safeHref ? (
+          <a
+            key={`${index}-${href}`}
+            href={safeHref}
+            target={safeHref.startsWith('http') ? '_blank' : undefined}
+            rel={safeHref.startsWith('http') ? 'noopener noreferrer' : undefined}
+          >
+            {label}
+          </a>
+        ) : (
+          label
+        ),
+      );
+    } else {
+      nodes.push(<strong key={index}>{token.slice(2, -2)}</strong>);
+    }
+    cursor = index + token.length;
+  }
+
+  if (cursor < text.length) nodes.push(text.slice(cursor));
+
+  return nodes;
+};
 
 const HowToBorrowPage = observer(() => {
   const { t } = useContext(I18nContext);
@@ -71,8 +120,8 @@ const HowToBorrowPage = observer(() => {
 
         <Card className="border-0 shadow-sm mb-5 p-4" body>
           <h2 className="mb-4">{t('borrowing_and_passing')}</h2>
-          <p className="lead" dangerouslySetInnerHTML={inlineMarkupOf(t('borrow_model_intro'))} />
-          <p dangerouslySetInnerHTML={inlineMarkupOf(t('borrow_model_description'))} />
+          <p className="lead">{inlineNodesOf(t('borrow_model_intro'))}</p>
+          <p>{inlineNodesOf(t('borrow_model_description'))}</p>
         </Card>
 
         <Row className="mb-5">
@@ -91,7 +140,7 @@ const HowToBorrowPage = observer(() => {
                     </span>
                     <div>
                       <h4 className="h5">{title}</h4>
-                      <p className="mb-0" dangerouslySetInnerHTML={inlineMarkupOf(description)} />
+                      <p className="mb-0">{inlineNodesOf(description)}</p>
                     </div>
                   </li>
                 ))}
@@ -114,34 +163,49 @@ const HowToBorrowPage = observer(() => {
 
             <Card className="border-0 shadow-sm p-4" body>
               <h3 className="mb-3">{t('quick_links')}</h3>
-              <nav className="d-grid gap-2" aria-label={t('open_library_quick_links_label')}>
-                <Button
-                  href={catalogURL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="outline-primary"
-                >
-                  {t('view_full_catalog')}
-                </Button>
-                <Button
-                  href={borrowFormURL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="outline-primary"
-                >
-                  {t('fill_borrow_request')}
-                </Button>
-                <Button
-                  href={handoffFormURL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="outline-primary"
-                >
-                  {t('fill_book_passing_form')}
-                </Button>
-                <Link href={booksURL} passHref legacyBehavior>
-                  <Button as="a">{t('browse_book_catalog')}</Button>
-                </Link>
+              <nav aria-label={t('open_library_quick_links_label')}>
+                <ListGroup as="ul" className="list-unstyled d-grid gap-2 mb-0" variant="flush">
+                  <ListGroup.Item as="li" className="border-0 p-0">
+                    <Button
+                      className="w-100"
+                      href={catalogURL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      variant="outline-primary"
+                    >
+                      {t('view_full_catalog')}
+                    </Button>
+                  </ListGroup.Item>
+                  <ListGroup.Item as="li" className="border-0 p-0">
+                    <Button
+                      className="w-100"
+                      href={borrowFormURL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      variant="outline-primary"
+                    >
+                      {t('fill_borrow_request')}
+                    </Button>
+                  </ListGroup.Item>
+                  <ListGroup.Item as="li" className="border-0 p-0">
+                    <Button
+                      className="w-100"
+                      href={handoffFormURL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      variant="outline-primary"
+                    >
+                      {t('fill_book_passing_form')}
+                    </Button>
+                  </ListGroup.Item>
+                  <ListGroup.Item as="li" className="border-0 p-0">
+                    <Link href={booksURL} passHref legacyBehavior>
+                      <Button className="w-100" as="a">
+                        {t('browse_book_catalog')}
+                      </Button>
+                    </Link>
+                  </ListGroup.Item>
+                </ListGroup>
               </nav>
             </Card>
           </Col>

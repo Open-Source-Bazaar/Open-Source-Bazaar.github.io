@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { observer } from 'mobx-react';
+import Link from 'next/link';
 import { CSSProperties, FC, useContext } from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 
@@ -70,9 +70,9 @@ const HowItWorks: FC<HowItWorksProps> = observer(
             <p className={`lead text-muted mx-auto ${styles.subtitle}`}>{resolvedSubtitle}</p>
           </div>
 
-          <Row className="g-4">
+          <Row as="ol" className="g-4 list-unstyled mb-0">
             {resolvedSteps.map((step, index) => (
-              <Col key={step.id} md={6} lg={3}>
+              <Col key={step.id} as="li" md={6} lg={3}>
                 <div className="text-center p-3">
                   <div
                     className={`position-relative mb-3 d-flex justify-content-center ${styles.stepIconWrap}`}
