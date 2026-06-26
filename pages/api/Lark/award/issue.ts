@@ -9,6 +9,30 @@ const router = createKoaRouter(import.meta.url);
 
 const EthereumAddressPattern = /^0x[a-fA-F0-9]{40}$/;
 
+const getUserIds = (field: any): string[] => {
+  if (!field) return [];
+  if (Array.isArray(field)) {
+    return field.map(u => (typeof u === 'object' && u ? u.id : String(u))).filter(Boolean);
+  }
+  if (typeof field === 'object' && field) {
+    return [field.id].filter(Boolean);
+  }
+  return [String(field)];
+};
+
+const getUserNames = (field: any): string[] => {
+  if (!field) return [];
+  if (Array.isArray(field)) {
+    return field
+      .map(u => (typeof u === 'object' && u ? u.name || u.id : String(u)))
+      .filter(Boolean);
+  }
+  if (typeof field === 'object' && field) {
+    return [field.name || field.id].filter(Boolean);
+  }
+  return [String(field)];
+};
+
 router.post('/issue', safeAPI, verifyJWT, async (context: Context) => {
   const { recordId, walletAddress } = (context.request as any).body;
 
@@ -33,16 +57,32 @@ router.post('/issue', safeAPI, verifyJWT, async (context: Context) => {
     context.throw(401, 'Unauthorized');
   }
 
+  const nominators = getUserIds(award.nominator);
+  const nomineeNames = getUserIds(award.nomineeName);
+  const nominatorNames = getUserNames(award.nominator);
+  const nomineeUserNames = getUserNames(award.nomineeName);
+  const currentUserIdStr = String(currentUser.id);
+
   if (
-    currentUser.name !== 'Robot' &&
-    currentUser.name !== award.nominator &&
-    currentUser.name !== award.nomineeName
+    currentUser.id !== 0 && // Robot bypass by stable ID 0
+    !nominators.includes(currentUserIdStr) &&
+    !nomineeNames.includes(currentUserIdStr) &&
+    !nominatorNames.includes(currentUser.name) &&
+    !nomineeUserNames.includes(currentUser.name)
   ) {
     context.throw(403, 'You do not have permission to issue this award');
   }
 
-  // 2. Idempotency Check
+  // 2. Concurrency Lock check
+  if (award.transactionHash === 'ISSUING') {
+    context.throw(409, 'An NFT issuance request is already in progress for this award');
+  }
+
+  // 3. Idempotency and Wallet binding check
   if (award.transactionHash && award.tokenId) {
+    if (award.walletAddress && award.walletAddress !== walletAddress) {
+      context.throw(409, 'This award has already been issued to a different wallet address');
+    }
     context.body = {
       success: true,
       transactionHash: award.transactionHash as string,
@@ -50,6 +90,15 @@ router.post('/issue', safeAPI, verifyJWT, async (context: Context) => {
     };
     return;
   }
+
+  // 4. Acquire lock
+  await awardModel.updateOne(
+    {
+      transactionHash: 'ISSUING',
+      walletAddress,
+    },
+    recordId,
+  );
 
   let transactionHash: string;
   let tokenId: string;
@@ -79,6 +128,16 @@ router.post('/issue', safeAPI, verifyJWT, async (context: Context) => {
       throw new Error('Invalid response from minting service');
     }
   } catch (error) {
+    // Revert the concurrency lock on failure
+    await awardModel
+      .updateOne(
+        {
+          transactionHash: '',
+        },
+        recordId,
+      )
+      .catch(e => console.error('Failed to revert transaction lock:', e));
+
     const msg =
       (error as Error).name === 'AbortError'
         ? 'NFT issuance request timed out'
@@ -86,6 +145,7 @@ router.post('/issue', safeAPI, verifyJWT, async (context: Context) => {
     return context.throw(502, msg);
   }
 
+  // 5. Finalize the record with actual transaction details
   await awardModel.updateOne(
     {
       transactionHash,
