@@ -18,16 +18,21 @@ const membershipFormURL =
 const booksURL = '/open-library/books';
 
 const safeHrefOf = (href: string) => {
-  if (href.startsWith('/')) return href;
+  const value = href.trim();
+
+  if (value.startsWith('//')) return '';
+  if (value.startsWith('/')) return value;
 
   try {
-    const { protocol } = new URL(href);
+    const { protocol } = new URL(value);
 
-    return ['http:', 'https:'].includes(protocol) ? href : '';
+    return ['http:', 'https:'].includes(protocol) ? value : '';
   } catch {
     return '';
   }
 };
+
+const isExternalHref = (href: string) => /^https?:\/\//i.test(href);
 
 const inlineNodesOf = (text: string) => {
   const nodes: ReactNode[] = [];
@@ -51,8 +56,8 @@ const inlineNodesOf = (text: string) => {
           <a
             key={`${index}-${href}`}
             href={safeHref}
-            target={safeHref.startsWith('http') ? '_blank' : undefined}
-            rel={safeHref.startsWith('http') ? 'noopener noreferrer' : undefined}
+            target={isExternalHref(safeHref) ? '_blank' : undefined}
+            rel={isExternalHref(safeHref) ? 'noopener noreferrer' : undefined}
           >
             {label}
           </a>
