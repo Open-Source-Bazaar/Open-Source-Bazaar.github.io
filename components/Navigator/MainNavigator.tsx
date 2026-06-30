@@ -62,7 +62,8 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
       },
     ],
   },
-  { href: '/bounty', title: t('bounty') },
+  { href: '/bounty', title: t('bounty') }
+  { href: '/library', title: t('open_library') },
   {
     title: t('NGO'),
     subs: [
