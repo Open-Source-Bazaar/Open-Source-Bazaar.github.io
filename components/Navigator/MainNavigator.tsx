@@ -1,4 +1,4 @@
-import { textJoin } from 'mobx-i18n';
+﻿import { textJoin } from 'mobx-i18n';
 import { observer } from 'mobx-react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -29,7 +29,7 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
     subs: [
       { href: '/article/join-us', title: t('join_us') },
       {
-        href: '/article/open-collaborator-award',
+        href: '/award',
         title: t('open_collaborator_award'),
       },
       { href: '/volunteer', title: t('volunteer') },
@@ -63,6 +63,7 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
     ],
   },
   { href: '/bounty', title: t('bounty') },
+  { href: '/library', title: t('open_library') },
   {
     title: t('NGO'),
     subs: [
