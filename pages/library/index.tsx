@@ -1,7 +1,8 @@
-import { observer } from 'mobx-react';
+﻿import { observer } from 'mobx-react';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext, useMemo, useState } from 'react';
-import { Badge, Card, Col, Container, Form, Row } from 'react-bootstrap';
+import { Badge, Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
+import Link from 'next/link';
 
 import { PageHead } from '../../components/Layout/PageHead';
 import { SectionTitle } from '../../components/Layout/SectionTitle';
@@ -99,9 +100,9 @@ const LibraryPage: FC = observer(() => {
                   ))}
                 </div>
                 <div className="mt-auto">
-                  <a href={`/library/${book.id}`} className="btn btn-outline-primary btn-sm w-100 stretched-link">
+                  <Link href={`/library/${book.id}`} className="btn btn-outline-primary btn-sm w-100 stretched-link" passHref legacyBehavior><Button variant="outline-primary" size="sm" className="w-100">
                     {t('view_details')}
-                  </a>
+            </Button></Link>
                 </div>
               </Card.Body>
             </Card>
