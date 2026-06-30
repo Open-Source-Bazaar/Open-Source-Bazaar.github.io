@@ -3,6 +3,19 @@ import { observer } from 'mobx-react';
 import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap';
+const ALLOWED_EMBED_HOSTS = new Set([
+  'player.bilibili.com',
+  'www.youtube.com',
+  'www.youtube-nocookie.com',
+]);
+
+const getSafeEmbedUrl = (value: unknown): string | null => {
+  if (typeof value !== 'string' || !value) return null;
+  try {
+    const url = new URL(value);
+    return ALLOWED_EMBED_HOSTS.has(url.hostname) ? url.toString() : null;
+  } catch { return null; }
+};
 
 import { PageHead } from '../../components/Layout/PageHead';
 import { SectionTitle } from '../../components/Layout/SectionTitle';
@@ -19,7 +32,7 @@ const NominationCard: FC<{ award: Award; index: number }> = observer(({ award, i
   const name = (award.nomineeName ?? award.awardName ?? '') as string;
   const desc = (award.nomineeDesc ?? award.reason ?? '') as string;
   const nominator = (award.nominator ?? '') as string;
-  const videoUrl = (award.videoUrl ?? '') as string;
+  const videoUrl = getSafeEmbedUrl(award.videoUrl) ?? '';
   const votes = (award.votes ?? 0) as number;
 
   return (
@@ -27,7 +40,7 @@ const NominationCard: FC<{ award: Award; index: number }> = observer(({ award, i
       {videoUrl && (
         <div className="ratio ratio-16x9">
           <iframe
-            src={videoUrl}
+            src=loading="lazy" {videoUrl}
             title={name}
             allowFullScreen
             className="rounded-top"
@@ -89,7 +102,7 @@ const AwardPage: FC<{ awards: Award[] }> = observer(({ awards }) => {
         <SectionTitle>{t('award_intro_video')}</SectionTitle>
         <div className="ratio ratio-16x9 border rounded overflow-hidden shadow-sm">
           <iframe
-            src="//player.bilibili.com/player.html?aid=978564817&bvid=BV1c44y1x7ij&cid=494424932&page=1&high_quality=1&danmaku=0"
+            src=loading="lazy" "//player.bilibili.com/player.html?aid=978564817&bvid=BV1c44y1x7ij&cid=494424932&page=1&high_quality=1&danmaku=0"
             title={t('open_collaborator_award') as string}
             scrolling="no"
             frameBorder="0"
