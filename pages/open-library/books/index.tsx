@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
 import { PageHead } from '../../../components/Layout/PageHead';
-import BookCard from '../../../components/open-library/BookCard';
+import { BookCard } from '../../../components/open-library/BookCard';
 import { I18nContext } from '../../../models/Translation';
 import { openLibraryBooks } from '../../api/open-library/books';
 

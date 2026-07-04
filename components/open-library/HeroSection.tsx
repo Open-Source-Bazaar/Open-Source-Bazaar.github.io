@@ -1,7 +1,7 @@
-import React from 'react';
+import { FC } from 'react';
 import { Button, Col, Container, Image, Row } from 'react-bootstrap';
 
-interface HeroSectionProps {
+export interface HeroSectionProps {
   title: string;
   subtitle: string;
   ctaText: string;
@@ -12,7 +12,7 @@ interface HeroSectionProps {
   heroImageAlt: string;
 }
 
-const HeroSection: React.FC<HeroSectionProps> = ({
+export const HeroSection: FC<HeroSectionProps> = ({
   title,
   subtitle,
   ctaText,
@@ -69,5 +69,3 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     </Container>
   </section>
 );
-
-export default HeroSection;

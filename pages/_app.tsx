@@ -9,7 +9,7 @@ import { Image } from 'react-bootstrap';
 
 import { MainNavigator } from '../components/Navigator/MainNavigator';
 import { PageContent } from '../components/PageContent';
-import FooterComponent from '../components/open-library/Footer';
+import { FooterComponent } from '../components/open-library/Footer';
 import { LibraryNavbar } from '../components/open-library/Navbar';
 import { isServer } from '../models/configuration';
 import { createI18nStore, I18nContext, I18nProps, loadSSRLanguage } from '../models/Translation';
@@ -79,7 +79,7 @@ export default class CustomApp extends App<I18nProps> {
     );
   }
 
-  renderSiteFrame(isArticlePage: boolean) {
+  renderSiteFrame(isArticlePage: boolean, thisFullYear: number) {
     const { Component, pageProps } = this.props;
     const content = <Component {...pageProps} />;
 
@@ -90,6 +90,8 @@ export default class CustomApp extends App<I18nProps> {
         <div className="mt-5 pt-2">
           {isArticlePage ? <PageContent>{content}</PageContent> : content}
         </div>
+
+        {this.renderFooter(thisFullYear)}
       </>
     );
   }
@@ -100,9 +102,8 @@ export default class CustomApp extends App<I18nProps> {
     const thisFullYear = new Date().getFullYear(),
       { asPath } = router;
     const isArticlePage = asPath.startsWith('/article/') || asPath.startsWith('/policy/'),
-      isActivityPage = asPath.startsWith('/hackathon');
-
-    const isOpenLibraryPath = asPath.startsWith('/open-library');
+      isActivityPage = asPath.startsWith('/hackathon'),
+      isOpenLibraryPath = asPath.startsWith('/open-library');
 
     return (
       <I18nContext.Provider value={this.i18nStore}>
@@ -117,10 +118,8 @@ export default class CustomApp extends App<I18nProps> {
         ) : isOpenLibraryPath ? (
           this.renderOpenLibraryFrame()
         ) : (
-          this.renderSiteFrame(isArticlePage)
+          this.renderSiteFrame(isArticlePage, thisFullYear)
         )}
-
-        {!isActivityPage && !isOpenLibraryPath && this.renderFooter(thisFullYear)}
       </I18nContext.Provider>
     );
   }

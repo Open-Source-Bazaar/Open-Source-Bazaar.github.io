@@ -362,20 +362,20 @@ export default {
   available: '可借阅',
   borrowed: '已借出',
   reset_filters: '重置筛选',
-  showing_books: ({ shownCount, totalCount }: { shownCount: number; totalCount: number }) =>
+  showing_books: ({ shownCount, totalCount }: Record<'shownCount' | 'totalCount', number>) =>
     `显示 ${shownCount} 本书，共 ${totalCount} 本`,
   no_books_found: '未找到书籍',
   try_adjusting_filters: '尝试调整筛选条件',
   reset_all_filters: '重置所有筛选',
   open_library_view_details: '查看详情',
-  currently_with: ({ holder }: { holder: string }) => `当前持有者：${holder}`,
+  currently_with: ({ holder }: Record<'holder', string>) => `当前持有者：${holder}`,
 
   // Open Library Book Detail Page
   loading: '加载中...',
   book_not_found: '未找到书籍',
   return_to_catalog: '返回目录',
   back: '返回',
-  by_author: ({ author }: { author: string }) => `作者：${author}`,
+  by_author: ({ author }: Record<'author', string>) => `作者：${author}`,
   currently_borrowed: '当前已借出',
   currently_unavailable: '当前不可用',
   request_to_borrow: '申请借阅',
@@ -435,16 +435,13 @@ export default {
   borrow_step_catalog_description: ({
     catalogURL,
     booksURL,
-  }: {
-    catalogURL: string;
-    booksURL: string;
-  }) =>
+  }: Record<'catalogURL' | 'booksURL', string>) =>
     `社区成员可以在 [fCC 成都社区图书馆](${catalogURL}) 中查找自己感兴趣的书籍，或者在我们的 [书籍目录](${booksURL}) 中浏览。`,
   borrow_step_apply_title: '申请借阅',
-  borrow_step_apply_description: ({ borrowFormURL }: { borrowFormURL: string }) =>
+  borrow_step_apply_description: ({ borrowFormURL }: Record<'borrowFormURL', string>) =>
     `找到心仪的书籍后，填写 [fCC 成都社区图书馆-书籍借入](${borrowFormURL}) 申请，与当前持书者取得联系。`,
   borrow_step_handoff_title: '线下传递',
-  borrow_step_handoff_description: ({ handoffFormURL }: { handoffFormURL: string }) =>
+  borrow_step_handoff_description: ({ handoffFormURL }: Record<'handoffFormURL', string>) =>
     `双方约定时间和传递方式，通常可用快递传递书籍。请传递者填写 [fCC 成都社区图书馆-书籍传递](${handoffFormURL})，再将书籍传递出去。`,
   borrow_step_share_title: '阅读与分享',
   borrow_step_share_description:

@@ -4,9 +4,9 @@ import { FC, useContext } from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 
 import { I18nContext } from '../../models/Translation';
-import BookCard, { Book } from './BookCard';
+import { BookCard, type Book } from './BookCard';
 
-interface FeaturedBooksProps {
+export interface FeaturedBooksProps {
   books: Book[];
   title?: string;
   subtitle?: string;
@@ -15,7 +15,7 @@ interface FeaturedBooksProps {
   viewAllText?: string;
 }
 
-const FeaturedBooks: FC<FeaturedBooksProps> = observer(
+export const FeaturedBooks: FC<FeaturedBooksProps> = observer(
   ({
     books,
     title,
@@ -74,5 +74,3 @@ const FeaturedBooks: FC<FeaturedBooksProps> = observer(
     );
   },
 );
-
-export default FeaturedBooks;

@@ -6,7 +6,7 @@ import { I18nContext } from '../../models/Translation';
 
 const contactEmail = 'team@fcc-cd.dev';
 
-const FooterComponent = observer(() => {
+export const FooterComponent = observer(() => {
   const { t } = useContext(I18nContext);
 
   return (
@@ -87,5 +87,3 @@ const FooterComponent = observer(() => {
     </footer>
   );
 });
-
-export default FooterComponent;

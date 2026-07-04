@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
+import { marked } from 'marked';
 import Link from 'next/link';
-import { ReactNode, useContext } from 'react';
+import { useContext } from 'react';
 import { Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
 
 import { PageHead } from '../../components/Layout/PageHead';
@@ -17,64 +18,7 @@ const membershipFormURL =
 
 const booksURL = '/open-library/books';
 
-const safeHrefOf = (href: string) => {
-  const value = href.trim();
-
-  if (value.startsWith('//')) return '';
-  if (value.startsWith('/')) return value;
-
-  try {
-    const { protocol } = new URL(value);
-
-    return ['http:', 'https:'].includes(protocol) ? value : '';
-  } catch {
-    return '';
-  }
-};
-
-const isExternalHref = (href: string) => /^https?:\/\//i.test(href);
-
-const inlineNodesOf = (text: string) => {
-  const nodes: ReactNode[] = [];
-  const pattern = /(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g;
-  let cursor = 0;
-
-  for (const match of text.matchAll(pattern)) {
-    const [token] = match;
-    const index = match.index ?? 0;
-
-    if (index > cursor) nodes.push(text.slice(cursor, index));
-
-    const linkMatch = /^\[([^\]]+)\]\(([^)]+)\)$/.exec(token);
-
-    if (linkMatch) {
-      const [, label, href] = linkMatch;
-      const safeHref = safeHrefOf(href);
-
-      nodes.push(
-        safeHref ? (
-          <a
-            key={`${index}-${href}`}
-            href={safeHref}
-            target={isExternalHref(safeHref) ? '_blank' : undefined}
-            rel={isExternalHref(safeHref) ? 'noopener noreferrer' : undefined}
-          >
-            {label}
-          </a>
-        ) : (
-          label
-        ),
-      );
-    } else {
-      nodes.push(<strong key={index}>{token.slice(2, -2)}</strong>);
-    }
-    cursor = index + token.length;
-  }
-
-  if (cursor < text.length) nodes.push(text.slice(cursor));
-
-  return nodes;
-};
+const trustedInlineMarkupOf = (text: string) => ({ __html: marked.parseInline(text) as string });
 
 const HowToBorrowPage = observer(() => {
   const { t } = useContext(I18nContext);
@@ -125,8 +69,11 @@ const HowToBorrowPage = observer(() => {
 
         <Card className="border-0 shadow-sm mb-5 p-4" body>
           <h2 className="mb-4">{t('borrowing_and_passing')}</h2>
-          <p className="lead">{inlineNodesOf(t('borrow_model_intro'))}</p>
-          <p>{inlineNodesOf(t('borrow_model_description'))}</p>
+          <p
+            className="lead"
+            dangerouslySetInnerHTML={trustedInlineMarkupOf(t('borrow_model_intro'))}
+          />
+          <p dangerouslySetInnerHTML={trustedInlineMarkupOf(t('borrow_model_description'))} />
         </Card>
 
         <Row className="mb-5">
@@ -145,7 +92,10 @@ const HowToBorrowPage = observer(() => {
                     </span>
                     <div>
                       <h4 className="h5">{title}</h4>
-                      <p className="mb-0">{inlineNodesOf(description)}</p>
+                      <p
+                        className="mb-0"
+                        dangerouslySetInnerHTML={trustedInlineMarkupOf(description)}
+                      />
                     </div>
                   </li>
                 ))}
@@ -168,50 +118,42 @@ const HowToBorrowPage = observer(() => {
 
             <Card className="border-0 shadow-sm p-4" body>
               <h3 className="mb-3">{t('quick_links')}</h3>
-              <nav aria-label={t('open_library_quick_links_label')}>
-                <ListGroup as="ul" className="list-unstyled d-grid gap-2 mb-0" variant="flush">
-                  <ListGroup.Item as="li" className="border-0 p-0">
-                    <Button
-                      className="w-100"
-                      href={catalogURL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      variant="outline-primary"
-                    >
-                      {t('view_full_catalog')}
-                    </Button>
-                  </ListGroup.Item>
-                  <ListGroup.Item as="li" className="border-0 p-0">
-                    <Button
-                      className="w-100"
-                      href={borrowFormURL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      variant="outline-primary"
-                    >
-                      {t('fill_borrow_request')}
-                    </Button>
-                  </ListGroup.Item>
-                  <ListGroup.Item as="li" className="border-0 p-0">
-                    <Button
-                      className="w-100"
-                      href={handoffFormURL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      variant="outline-primary"
-                    >
-                      {t('fill_book_passing_form')}
-                    </Button>
-                  </ListGroup.Item>
-                  <ListGroup.Item as="li" className="border-0 p-0">
-                    <Link href={booksURL} passHref legacyBehavior>
-                      <Button className="w-100" as="a">
-                        {t('browse_book_catalog')}
-                      </Button>
-                    </Link>
-                  </ListGroup.Item>
-                </ListGroup>
-              </nav>
+              <ListGroup
+                className="list-unstyled d-grid gap-2 mb-0"
+                variant="flush"
+                aria-label={t('open_library_quick_links_label')}
+              >
+                <ListGroup.Item
+                  action
+                  href={catalogURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-center"
+                >
+                  {t('view_full_catalog')}
+                </ListGroup.Item>
+                <ListGroup.Item
+                  action
+                  href={borrowFormURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-center"
+                >
+                  {t('fill_borrow_request')}
+                </ListGroup.Item>
+                <ListGroup.Item
+                  action
+                  href={handoffFormURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-center"
+                >
+                  {t('fill_book_passing_form')}
+                </ListGroup.Item>
+                <ListGroup.Item action href={booksURL} className="text-center">
+                  {t('browse_book_catalog')}
+                </ListGroup.Item>
+              </ListGroup>
             </Card>
           </Col>
         </Row>

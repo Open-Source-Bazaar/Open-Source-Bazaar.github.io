@@ -4,9 +4,9 @@ import { useContext } from 'react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 
 import { PageHead } from '../../components/Layout/PageHead';
-import FeaturedBooks from '../../components/open-library/FeaturedBooks';
-import HeroSection from '../../components/open-library/HeroSection';
-import HowItWorks from '../../components/open-library/HowItWorks';
+import { FeaturedBooks } from '../../components/open-library/FeaturedBooks';
+import { HeroSection } from '../../components/open-library/HeroSection';
+import { HowItWorks } from '../../components/open-library/HowItWorks';
 import { I18nContext } from '../../models/Translation';
 import { openLibraryBooks } from '../api/open-library/books';
 

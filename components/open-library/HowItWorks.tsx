@@ -6,7 +6,7 @@ import { Button, Col, Container, Row } from 'react-bootstrap';
 import { I18nContext } from '../../models/Translation';
 import styles from './HowItWorks.module.less';
 
-interface Step {
+export interface Step {
   id: number;
   title: string;
   description: string;
@@ -14,7 +14,7 @@ interface Step {
   color: string;
 }
 
-interface HowItWorksProps {
+export interface HowItWorksProps {
   title?: string;
   subtitle?: string;
   steps?: Step[];
@@ -22,7 +22,7 @@ interface HowItWorksProps {
   learnMoreLink?: string;
 }
 
-const HowItWorks: FC<HowItWorksProps> = observer(
+export const HowItWorks: FC<HowItWorksProps> = observer(
   ({
     title,
     subtitle,
@@ -71,22 +71,22 @@ const HowItWorks: FC<HowItWorksProps> = observer(
           </div>
 
           <Row as="ol" className="g-4 list-unstyled mb-0">
-            {resolvedSteps.map((step, index) => (
-              <Col key={step.id} as="li" md={6} lg={3}>
+            {resolvedSteps.map(({ id, title, description, icon, color }, index) => (
+              <Col key={id} as="li" md={6} lg={3}>
                 <div className="text-center p-3">
                   <div
                     className={`position-relative mb-3 d-flex justify-content-center ${styles.stepIconWrap}`}
                   >
                     <div
                       className={`rounded-circle d-flex align-items-center justify-content-center text-white fs-4 shadow position-relative ${styles.stepIcon}`}
-                      style={{ '--step-color': step.color } as CSSProperties}
+                      style={{ '--step-color': color } as CSSProperties}
                     >
-                      {step.icon}
+                      {icon}
                     </div>
                     <span
                       className={`position-absolute bg-danger text-white rounded-circle d-flex align-items-center justify-content-center fw-bold small ${styles.stepNumber}`}
                     >
-                      {step.id}
+                      {id}
                     </span>
                     {index < resolvedSteps.length - 1 && (
                       <div
@@ -96,8 +96,8 @@ const HowItWorks: FC<HowItWorksProps> = observer(
                       </div>
                     )}
                   </div>
-                  <h3 className="h5 fw-semibold text-dark mb-3">{step.title}</h3>
-                  <p className="text-muted lh-base">{step.description}</p>
+                  <h3 className="h5 fw-semibold text-dark mb-3">{title}</h3>
+                  <p className="text-muted lh-base">{description}</p>
                 </div>
               </Col>
             ))}
@@ -122,5 +122,3 @@ const HowItWorks: FC<HowItWorksProps> = observer(
     );
   },
 );
-
-export default HowItWorks;

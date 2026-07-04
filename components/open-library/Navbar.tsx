@@ -28,5 +28,3 @@ export const LibraryNavbar = observer(() => {
     </Navbar>
   );
 });
-
-export default LibraryNavbar;

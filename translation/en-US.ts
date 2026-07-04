@@ -389,20 +389,20 @@ export default {
   available: 'Available',
   borrowed: 'Borrowed',
   reset_filters: 'Reset Filters',
-  showing_books: ({ shownCount, totalCount }: { shownCount: number; totalCount: number }) =>
+  showing_books: ({ shownCount, totalCount }: Record<'shownCount' | 'totalCount', number>) =>
     `Showing ${shownCount} of ${totalCount} books`,
   no_books_found: 'No books found',
   try_adjusting_filters: 'Try adjusting your search or filters',
   reset_all_filters: 'Reset All Filters',
   open_library_view_details: 'View Details',
-  currently_with: ({ holder }: { holder: string }) => `Currently with: ${holder}`,
+  currently_with: ({ holder }: Record<'holder', string>) => `Currently with: ${holder}`,
 
   // Open Library Book Detail Page
   loading: 'Loading...',
   book_not_found: 'Book Not Found',
   return_to_catalog: 'Return to Catalog',
   back: 'Back',
-  by_author: ({ author }: { author: string }) => `by ${author}`,
+  by_author: ({ author }: Record<'author', string>) => `by ${author}`,
   currently_borrowed: 'Currently Borrowed',
   currently_unavailable: 'Currently Unavailable',
   request_to_borrow: 'Request to Borrow',
@@ -462,16 +462,13 @@ export default {
   borrow_step_catalog_description: ({
     catalogURL,
     booksURL,
-  }: {
-    catalogURL: string;
-    booksURL: string;
-  }) =>
+  }: Record<'catalogURL' | 'booksURL', string>) =>
     `Members can search [fCC Chengdu Community Library](${catalogURL}) or browse our [book catalog](${booksURL}).`,
   borrow_step_apply_title: 'Apply to borrow',
-  borrow_step_apply_description: ({ borrowFormURL }: { borrowFormURL: string }) =>
+  borrow_step_apply_description: ({ borrowFormURL }: Record<'borrowFormURL', string>) =>
     `After finding a book, submit the [book borrowing form](${borrowFormURL}) to contact the current holder.`,
   borrow_step_handoff_title: 'Offline handoff',
-  borrow_step_handoff_description: ({ handoffFormURL }: { handoffFormURL: string }) =>
+  borrow_step_handoff_description: ({ handoffFormURL }: Record<'handoffFormURL', string>) =>
     `Both sides agree on a time and delivery method. The sender should fill in the [book handoff form](${handoffFormURL}) before passing the book on.`,
   borrow_step_share_title: 'Read and share',
   borrow_step_share_description:
