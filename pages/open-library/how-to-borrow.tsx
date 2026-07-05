@@ -5,16 +5,13 @@ import { useContext } from 'react';
 import { Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
 
 import { PageHead } from '../../components/Layout/PageHead';
+import {
+  OpenLibraryBorrowFormURL,
+  OpenLibraryCatalogURL,
+  OpenLibraryHandoffFormURL,
+  OpenLibraryMembershipFormURL,
+} from '../../models/configuration';
 import { I18nContext } from '../../models/Translation';
-
-const catalogURL =
-  'https://open-source-bazaar.feishu.cn/share/base/view/shrcnvT0Lyk8LKS8KtPbO9HPPHb';
-const borrowFormURL =
-  'https://open-source-bazaar.feishu.cn/share/base/form/shrcnNiKwb9ApzFFGI3YkCXDdwe?prefill_%E6%93%8D%E4%BD%9C=%E5%80%9F%E5%85%A5';
-const handoffFormURL =
-  'https://open-source-bazaar.feishu.cn/share/base/form/shrcnuDb3oOuhMjSaXNIHEPA4Ef?prefill_%E6%93%8D%E4%BD%9C=%E5%80%9F%E5%87%BA';
-const membershipFormURL =
-  'https://open-source-bazaar.feishu.cn/share/base/form/shrcngQgMrhjTh6ycO1zcaEWZld';
 
 const booksURL = '/open-library/books';
 
@@ -25,15 +22,20 @@ const HowToBorrowPage = observer(() => {
   const borrowSteps = [
     {
       title: t('borrow_step_catalog_title'),
-      description: t('borrow_step_catalog_description', { catalogURL, booksURL }),
+      description: t('borrow_step_catalog_description', {
+        catalogURL: OpenLibraryCatalogURL,
+        booksURL,
+      }),
     },
     {
       title: t('borrow_step_apply_title'),
-      description: t('borrow_step_apply_description', { borrowFormURL }),
+      description: t('borrow_step_apply_description', { borrowFormURL: OpenLibraryBorrowFormURL }),
     },
     {
       title: t('borrow_step_handoff_title'),
-      description: t('borrow_step_handoff_description', { handoffFormURL }),
+      description: t('borrow_step_handoff_description', {
+        handoffFormURL: OpenLibraryHandoffFormURL,
+      }),
     },
     {
       title: t('borrow_step_share_title'),
@@ -125,7 +127,7 @@ const HowToBorrowPage = observer(() => {
               >
                 <ListGroup.Item
                   action
-                  href={catalogURL}
+                  href={OpenLibraryCatalogURL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-center"
@@ -134,7 +136,7 @@ const HowToBorrowPage = observer(() => {
                 </ListGroup.Item>
                 <ListGroup.Item
                   action
-                  href={borrowFormURL}
+                  href={OpenLibraryBorrowFormURL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-center"
@@ -143,7 +145,7 @@ const HowToBorrowPage = observer(() => {
                 </ListGroup.Item>
                 <ListGroup.Item
                   action
-                  href={handoffFormURL}
+                  href={OpenLibraryHandoffFormURL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-center"
@@ -179,7 +181,7 @@ const HowToBorrowPage = observer(() => {
               </Button>
             </Link>
             <Button
-              href={membershipFormURL}
+              href={OpenLibraryMembershipFormURL}
               target="_blank"
               rel="noopener noreferrer"
               variant="warning"

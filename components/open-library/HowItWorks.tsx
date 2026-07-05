@@ -6,20 +6,15 @@ import { Button, Col, Container, Row } from 'react-bootstrap';
 import { I18nContext } from '../../models/Translation';
 import styles from './HowItWorks.module.less';
 
-export interface Step {
+export interface Step extends Record<'title' | 'description' | 'icon' | 'color', string> {
   id: number;
-  title: string;
-  description: string;
-  icon: string;
-  color: string;
 }
 
-export interface HowItWorksProps {
-  title?: string;
-  subtitle?: string;
+export interface HowItWorksProps extends Partial<
+  Record<'title' | 'subtitle' | 'learnMoreLink', string>
+> {
   steps?: Step[];
   showLearnMore?: boolean;
-  learnMoreLink?: string;
 }
 
 export const HowItWorks: FC<HowItWorksProps> = observer(

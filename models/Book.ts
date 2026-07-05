@@ -1,28 +1,16 @@
-export interface BorrowHistory {
-  borrower: string;
-  borrowDate: string;
-  returnDate?: string;
-}
+export interface BorrowHistory
+  extends Record<'borrower' | 'borrowDate', string>, Partial<Record<'returnDate', string>> {}
 
-export interface BookReview {
-  reviewer: string;
+export interface BookReview extends Record<'reviewer' | 'comment' | 'date', string> {
   rating: number;
-  comment: string;
-  date: string;
 }
 
-export interface Book {
+export interface Book
+  extends
+    Record<'title' | 'author' | 'status' | 'category' | 'language', string>,
+    Partial<Record<'cover' | 'currentHolder' | 'description' | 'isbn' | 'publisher', string>> {
   id: number;
-  title: string;
-  author: string;
-  cover?: string;
   status: 'available' | 'borrowed';
-  category: string;
-  language: string;
-  currentHolder?: string;
-  description?: string;
-  isbn?: string;
-  publisher?: string;
   publishYear?: number;
   pageCount?: number;
   borrowHistory?: BorrowHistory[];

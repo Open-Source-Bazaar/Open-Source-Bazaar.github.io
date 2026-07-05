@@ -1,16 +1,13 @@
 import { FC } from 'react';
 import { Button, Col, Container, Image, Row } from 'react-bootstrap';
 
-export interface HeroSectionProps {
-  title: string;
-  subtitle: string;
-  ctaText: string;
-  ctaLink: string;
-  browseText: string;
-  browseLink?: string;
-  heroImage: string;
-  heroImageAlt: string;
-}
+export interface HeroSectionProps
+  extends
+    Record<
+      'title' | 'subtitle' | 'ctaText' | 'ctaLink' | 'browseText' | 'heroImage' | 'heroImageAlt',
+      string
+    >,
+    Partial<Record<'browseLink', string>> {}
 
 export const HeroSection: FC<HeroSectionProps> = ({
   title,

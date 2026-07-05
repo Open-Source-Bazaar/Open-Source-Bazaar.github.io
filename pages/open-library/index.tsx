@@ -7,6 +7,7 @@ import { PageHead } from '../../components/Layout/PageHead';
 import { FeaturedBooks } from '../../components/open-library/FeaturedBooks';
 import { HeroSection } from '../../components/open-library/HeroSection';
 import { HowItWorks } from '../../components/open-library/HowItWorks';
+import { OpenLibraryMembershipFormURL } from '../../models/configuration';
 import { I18nContext } from '../../models/Translation';
 import { openLibraryBooks } from '../api/open-library/books';
 
@@ -52,7 +53,7 @@ const OpenLibraryHomepage = observer(() => {
         title={t('hero_title')}
         subtitle={t('hero_subtitle')}
         ctaText={t('become_member')}
-        ctaLink="https://open-source-bazaar.feishu.cn/share/base/form/shrcngQgMrhjTh6ycO1zcaEWZld"
+        ctaLink={OpenLibraryMembershipFormURL}
         browseText={t('browse_catalog')}
         heroImage="/images/placeholder-hero.svg"
         heroImageAlt={t('hero_image_alt')}

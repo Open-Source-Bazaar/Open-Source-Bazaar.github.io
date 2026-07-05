@@ -30,6 +30,23 @@ export const LARK_API_HOST = `${API_Host}/api/Lark/`;
 
 export const ProxyBaseURL = 'https://bazaar.fcc-cd.dev/proxy';
 
+export const OpenLibraryContactEmail = 'team@fcc-cd.dev';
+
+export const OpenLibraryGitHubURL =
+  'https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io';
+export const OpenLibraryWeChatURL = 'https://open.weixin.qq.com/qr/code?username=gh_b8b06d05cfa6';
+
+export const OpenLibraryCatalogURL =
+  'https://open-source-bazaar.feishu.cn/share/base/view/shrcnvT0Lyk8LKS8KtPbO9HPPHb';
+export const OpenLibraryBorrowFormURL =
+  'https://open-source-bazaar.feishu.cn/share/base/form/shrcnNiKwb9ApzFFGI3YkCXDdwe?prefill_%E6%93%8D%E4%BD%9C=%E5%80%9F%E5%85%A5';
+export const OpenLibraryHandoffFormURL =
+  'https://open-source-bazaar.feishu.cn/share/base/form/shrcnuDb3oOuhMjSaXNIHEPA4Ef?prefill_%E6%93%8D%E4%BD%9C=%E5%80%9F%E5%87%BA';
+export const OpenLibraryMembershipFormURL =
+  'https://open-source-bazaar.feishu.cn/share/base/form/shrcngQgMrhjTh6ycO1zcaEWZld';
+export const OpenLibraryReviewFormURL =
+  'https://open-source-bazaar.feishu.cn/share/base/form/shrcnFAX8q7mnywCQOsVnIS5Dwb';
+
 export const GithubToken = (globalThis.document && parseCookie().token) || process.env.GH_PAT;
 
 export const LarkAppMeta = {

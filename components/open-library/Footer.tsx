@@ -2,9 +2,12 @@ import { observer } from 'mobx-react';
 import { useContext } from 'react';
 import { Col, Container, Nav, Row } from 'react-bootstrap';
 
+import {
+  OpenLibraryContactEmail,
+  OpenLibraryGitHubURL,
+  OpenLibraryWeChatURL,
+} from '../../models/configuration';
 import { I18nContext } from '../../models/Translation';
-
-const contactEmail = 'team@fcc-cd.dev';
 
 export const FooterComponent = observer(() => {
   const { t } = useContext(I18nContext);
@@ -18,7 +21,7 @@ export const FooterComponent = observer(() => {
             <p className="text-light opacity-75 lh-base">{t('footer_description')}</p>
             <div className="mt-3">
               <a
-                href="https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io"
+                href={OpenLibraryGitHubURL}
                 className="text-light text-decoration-none me-3 hover-opacity"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -26,7 +29,7 @@ export const FooterComponent = observer(() => {
                 🐱 GitHub
               </a>
               <a
-                href="https://open.weixin.qq.com/qr/code?username=gh_b8b06d05cfa6"
+                href={OpenLibraryWeChatURL}
                 className="text-light text-decoration-none me-3 hover-opacity"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -59,15 +62,15 @@ export const FooterComponent = observer(() => {
               <li>📌 {t('community_location')}</li>
               <li>
                 ✉️{' '}
-                <a className="text-light" href={`mailto:${contactEmail}`}>
-                  {contactEmail}
+                <a className="text-light" href={`mailto:${OpenLibraryContactEmail}`}>
+                  {OpenLibraryContactEmail}
                 </a>
               </li>
               <li>
                 💬{' '}
                 <a
                   className="text-light"
-                  href="https://open.weixin.qq.com/qr/code?username=gh_b8b06d05cfa6"
+                  href={OpenLibraryWeChatURL}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

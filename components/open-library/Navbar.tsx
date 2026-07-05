@@ -17,7 +17,6 @@ export const LibraryNavbar = observer(() => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            {/* <Nav.Link href="/open-library">{t('home')}</Nav.Link> */}
             <Nav.Link href="/open-library/books">{t('catalog')}</Nav.Link>
             <Nav.Link href="/open-library/how-to-borrow">{t('how_to_borrow')}</Nav.Link>
           </Nav>

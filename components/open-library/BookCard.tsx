@@ -16,6 +16,7 @@ export interface BookCardProps extends CardProps {
 export const BookCard: FC<BookCardProps> = observer(
   ({ className = '', book, showStatus = false, variant = 'featured', ...cardProps }) => {
     const isFeatured = variant === 'featured';
+    const isAvailable = book.status === 'available';
 
     const { t } = useContext(I18nContext);
 
@@ -25,10 +26,10 @@ export const BookCard: FC<BookCardProps> = observer(
           {showStatus && (
             <div className="position-absolute top-0 end-0 m-2">
               <Badge
-                bg={book.status === 'available' ? 'success' : 'warning'}
-                text={book.status === 'available' ? undefined : 'dark'}
+                bg={isAvailable ? 'success' : 'warning'}
+                text={isAvailable ? undefined : 'dark'}
               >
-                {book.status === 'available' ? t('available') : t('borrowed')}
+                {isAvailable ? t('available') : t('borrowed')}
               </Badge>
             </div>
           )}
@@ -37,10 +38,9 @@ export const BookCard: FC<BookCardProps> = observer(
               variant="top"
               src={book.cover || '/images/placeholder-book.svg'}
               alt={`${book.title} ${t('book_cover')}`}
-              className="rounded bg-light"
+              className="rounded bg-light object-fit-contain"
               style={{
                 height: '180px',
-                objectFit: 'contain',
                 padding: '10px',
               }}
             />

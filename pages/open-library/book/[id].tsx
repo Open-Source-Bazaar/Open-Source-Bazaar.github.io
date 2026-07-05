@@ -7,14 +7,10 @@ import { Badge, Button, Card, Col, Container, Row, Tab, Table, Tabs } from 'reac
 import { formatDate } from 'web-utility';
 
 import { PageHead } from '../../../components/Layout/PageHead';
+import { OpenLibraryBorrowFormURL, OpenLibraryReviewFormURL } from '../../../models/configuration';
 import type { Book, BookReview, BorrowHistory } from '../../../models/Book';
 import { I18nContext } from '../../../models/Translation';
 import { openLibraryBooks } from '../../api/open-library/books';
-
-const borrowFormURL =
-  'https://open-source-bazaar.feishu.cn/share/base/form/shrcnNiKwb9ApzFFGI3YkCXDdwe?prefill_%E6%93%8D%E4%BD%9C=%E5%80%9F%E5%85%A5';
-const reviewFormURL =
-  'https://open-source-bazaar.feishu.cn/share/base/form/shrcnFAX8q7mnywCQOsVnIS5Dwb';
 
 export const getServerSideProps: GetServerSideProps<Book> = async ({ params }) => {
   const bookId = +(params!.id + '');
@@ -47,31 +43,17 @@ const ReviewCard: FC<BookReview> = ({ reviewer, rating, comment, date }) => (
 const ReviewTabContent: FC<{ reviews?: BookReview[] }> = ({ reviews }) => {
   const { t } = useContext(I18nContext);
 
-  if (!reviews?.[0])
-    return (
-      <div className="text-center py-5">
-        <p className="mb-4">{t('be_first_to_review')}</p>
-        <Button variant="primary" href={reviewFormURL} target="_blank" rel="noopener noreferrer">
-          {t('write_review')}
-        </Button>
-      </div>
-    );
-
-  return (
+  return reviews?.[0] ? (
     <>
-      {reviews.map(({ reviewer, rating, comment, date }) => (
-        <ReviewCard
-          key={`${reviewer}-${date}`}
-          reviewer={reviewer}
-          rating={rating}
-          comment={comment}
-          date={date}
-        />
-      ))}
+      {reviews.map(({ reviewer, rating, comment, date }) => {
+        const review = { reviewer, rating, comment, date };
+
+        return <ReviewCard key={`${reviewer}-${date}`} {...review} />;
+      })}
       <div className="text-center mt-4">
         <Button
           variant="outline-primary"
-          href={reviewFormURL}
+          href={OpenLibraryReviewFormURL}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -79,6 +61,18 @@ const ReviewTabContent: FC<{ reviews?: BookReview[] }> = ({ reviews }) => {
         </Button>
       </div>
     </>
+  ) : (
+    <div className="text-center py-5">
+      <p className="mb-4">{t('be_first_to_review')}</p>
+      <Button
+        variant="primary"
+        href={OpenLibraryReviewFormURL}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {t('write_review')}
+      </Button>
+    </div>
   );
 };
 
@@ -106,14 +100,7 @@ const BorrowHistoryRow: FC<BorrowHistory> = ({ borrower, borrowDate, returnDate 
 const BorrowHistoryTabContent: FC<{ history?: BorrowHistory[] }> = ({ history }) => {
   const { t } = useContext(I18nContext);
 
-  if (!history?.[0])
-    return (
-      <div className="text-center py-5">
-        <p>{t('not_borrowed_yet')}</p>
-      </div>
-    );
-
-  return (
+  return history?.[0] ? (
     <Table hover responsive>
       <thead>
         <tr>
@@ -124,16 +111,17 @@ const BorrowHistoryTabContent: FC<{ history?: BorrowHistory[] }> = ({ history })
         </tr>
       </thead>
       <tbody>
-        {history.map(({ borrower, borrowDate, returnDate }) => (
-          <BorrowHistoryRow
-            key={`${borrower}-${borrowDate}`}
-            borrower={borrower}
-            borrowDate={borrowDate}
-            returnDate={returnDate}
-          />
-        ))}
+        {history.map(({ borrower, borrowDate, returnDate }) => {
+          const borrowHistory = { borrower, borrowDate, returnDate };
+
+          return <BorrowHistoryRow key={`${borrower}-${borrowDate}`} {...borrowHistory} />;
+        })}
       </tbody>
     </Table>
+  ) : (
+    <div className="text-center py-5">
+      <p>{t('not_borrowed_yet')}</p>
+    </div>
   );
 };
 
@@ -156,6 +144,7 @@ const BookDetail: FC<Book> = observer(
   }) => {
     const router = useRouter();
     const { t } = useContext(I18nContext);
+    const isAvailable = status === 'available';
 
     return (
       <Container fluid="xl" className="px-3">
@@ -175,14 +164,15 @@ const BookDetail: FC<Book> = observer(
                   className="img-fluid"
                   style={{ maxHeight: '300px' }}
                   width={200}
+                  height={300}
                 />
                 <div className="mt-3">
                   <Badge
-                    bg={status === 'available' ? 'success' : 'warning'}
-                    text={status === 'available' ? 'white' : 'dark'}
+                    bg={isAvailable ? 'success' : 'warning'}
+                    text={isAvailable ? 'white' : 'dark'}
                     className="px-3 py-2"
                   >
-                    {status === 'available' ? t('available') : t('currently_borrowed')}
+                    {isAvailable ? t('available') : t('currently_borrowed')}
                   </Badge>
                 </div>
                 {status === 'borrowed' && currentHolder && (
@@ -228,11 +218,11 @@ const BookDetail: FC<Book> = observer(
                 </Row>
 
                 <div className="mt-4">
-                  {status === 'available' ? (
+                  {isAvailable ? (
                     <Button
                       variant="primary"
                       size="lg"
-                      href={borrowFormURL}
+                      href={OpenLibraryBorrowFormURL}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

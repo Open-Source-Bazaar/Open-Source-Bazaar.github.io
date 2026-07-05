@@ -6,13 +6,11 @@ import { Button, Col, Container, Row } from 'react-bootstrap';
 import { I18nContext } from '../../models/Translation';
 import { BookCard, type Book } from './BookCard';
 
-export interface FeaturedBooksProps {
+export interface FeaturedBooksProps extends Partial<
+  Record<'title' | 'subtitle' | 'viewAllLink' | 'viewAllText', string>
+> {
   books: Book[];
-  title?: string;
-  subtitle?: string;
   showViewAll?: boolean;
-  viewAllLink?: string;
-  viewAllText?: string;
 }
 
 export const FeaturedBooks: FC<FeaturedBooksProps> = observer(
