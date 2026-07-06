@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开源图书馆 - Open Library</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>📚 开源图书馆</h1>
+        <p>探索知识，共享智慧</p>
+        <nav>
+            <a href="#catalog">图书目录</a>
+            <a href="#guide">借阅指南</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="catalog">
+            <h2>图书目录</h2>
+            <div class="filters">
+                <label for="status-filter">筛选状态：</label>
+                <select id="status-filter">
+                    <option value="all">全部</option>
+                    <option value="available">可借</option>
+                    <option value="borrowed">已借出</option>
+                </select>
+            </div>
+            <div class="book-grid" id="book-grid">
+                <!-- Books will be rendered here -->
+            </div>
+        </section>
+
+        <section id="guide">
+            <h2>借阅指南</h2>
+            <div class="guide-content">
+                <h3>如何借阅</h3>
+                <ol>
+                    <li>浏览图书目录，找到您感兴趣的书籍。</li>
+                    <li>点击书籍卡片查看详细信息，确认状态为“可借”。</li>
+                    <li>联系图书馆管理员（通过页面底部联系方式）办理借阅手续。</li>
+                    <li>借阅期限为30天，可续借一次（15天）。</li>
+                    <li>请爱护图书，按时归还。</li>
+                </ol>
+                <h3>联系我们</h3>
+                <p>邮箱：library@example.com</p>
+                <p>地址：开源市共创街1号</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Book Detail Modal -->
+    <div id="book-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="modal-body">
+                <!-- Detail content dynamically loaded -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 开源集市 开源图书馆</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
