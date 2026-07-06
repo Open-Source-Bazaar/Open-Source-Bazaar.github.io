@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Library - Open Source Bazaar</title>
+  <link rel="stylesheet" href="library.css">
+</head>
+<body>
+  <header>
+    <h1>Open Source Bazaar</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#" class="active">Open Library</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Community</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="open-library">
+      <h2>Open Library</h2>
+      <div class="library-controls">
+        <input type="text" id="search-input" placeholder="Search books...">
+        <select id="status-filter">
+          <option value="all">All</option>
+          <option value="available">Available</option>
+          <option value="borrowed">Borrowed</option>
+        </select>
+      </div>
+      <div id="book-list" class="book-grid">
+        <!-- Books rendered by JS -->
+      </div>
+      <div id="borrowing-guide">
+        <h3>Borrowing Guide</h3>
+        <p>To borrow a book, please contact the librarian or submit a request through our community forum. Books can be kept for up to 2 weeks.</p>
+        <p><strong>Status:</strong> <span class="available">Available</span> - Ready to borrow, <span class="borrowed">Borrowed</span> - Currently checked out.</p>
+      </div>
+    </section>
+
+    <!-- Book Detail Modal -->
+    <div id="book-modal" class="modal" style="display:none;">
+      <div class="modal-content">
+        <span class="close-btn" id="modal-close">&times;</span>
+        <div id="modal-body">
+          <!-- Dynamic content -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Open Source Bazaar. All rights reserved.</p>
+  </footer>
+
+  <script src="library.js"></script>
+</body>
+</html>
