@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Library - Open-Source Bazaar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Open-Source Bazaar</h1>
+        <nav>
+            <a href="#library" class="active">Open Library</a>
+            <a href="#">Projects</a>
+            <a href="#">Community</a>
+        </nav>
+    </header>
+    <main>
+        <section id="library">
+            <div class="container">
+                <h2>Open Library</h2>
+                <p class="subtitle">Browse, borrow, and explore open-source books.</p>
+                
+                <div class="guide">
+                    <h3>📚 Borrowing Guide</h3>
+                    <ul>
+                        <li>All books are digital and free to borrow.</li>
+                        <li>Click "Borrow" to get a temporary copy (24h).</li>
+                        <li>Returned automatically; no late fees.</li>
+                        <li>Status: <span class="available">Available</span> or <span class="borrowed">Borrowed</span>.</li>
+                    </ul>
+                </div>
+
+                <div class="catalog-controls">
+                    <input type="text" id="search" placeholder="Search by title or author...">
+                    <select id="filter-status">
+                        <option value="all">All</option>
+                        <option value="available">Available</option>
+                        <option value="borrowed">Borrowed</option>
+                    </select>
+                </div>
+
+                <div id="book-list" class="book-grid"></div>
+            </div>
+        </section>
+
+        <!-- Book Detail Modal -->
+        <div id="book-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <div id="modal-body"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Open-Source Bazaar. Open Library module.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
