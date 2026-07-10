@@ -2,14 +2,10 @@ import { observer } from 'mobx-react';
 import { useContext } from 'react';
 import { Col, Container, Nav, Row } from 'react-bootstrap';
 
-import {
-  OpenLibraryContactEmail,
-  OpenLibraryGitHubURL,
-  OpenLibraryWeChatURL,
-} from '../../models/configuration';
-import { I18nContext } from '../../models/Translation';
+import { ContactEmail, GitHubURL, WeChatURL } from '../models/configuration';
+import { I18nContext } from '../models/Translation';
 
-export const FooterComponent = observer(() => {
+export const Footer = observer(() => {
   const { t } = useContext(I18nContext);
 
   return (
@@ -17,11 +13,11 @@ export const FooterComponent = observer(() => {
       <Container fluid="xl" className="px-3">
         <Row>
           <Col md={4} className="mb-3 mb-md-0">
-            <h5 className="fw-bold mb-3">{t('open_library')}</h5>
+            <h5 className="fw-bold mb-3">{t('open_source_bazaar')}</h5>
             <p className="text-light opacity-75 lh-base">{t('footer_description')}</p>
             <div className="mt-3">
               <a
-                href={OpenLibraryGitHubURL}
+                href={GitHubURL}
                 className="text-light text-decoration-none me-3 hover-opacity"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -29,7 +25,7 @@ export const FooterComponent = observer(() => {
                 🐱 GitHub
               </a>
               <a
-                href={OpenLibraryWeChatURL}
+                href={WeChatURL}
                 className="text-light text-decoration-none me-3 hover-opacity"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -62,15 +58,15 @@ export const FooterComponent = observer(() => {
               <li>📌 {t('community_location')}</li>
               <li>
                 ✉️{' '}
-                <a className="text-light" href={`mailto:${OpenLibraryContactEmail}`}>
-                  {OpenLibraryContactEmail}
+                <a className="text-light" href={`mailto:${ContactEmail}`}>
+                  {ContactEmail}
                 </a>
               </li>
               <li>
                 💬{' '}
                 <a
                   className="text-light"
-                  href={OpenLibraryWeChatURL}
+                  href={WeChatURL}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -84,7 +80,7 @@ export const FooterComponent = observer(() => {
         <hr className="mt-4 mb-3 border-secondary opacity-25" />
 
         <div className="text-center text-light opacity-75 py-2">
-          &copy; {new Date().getFullYear()} {t('open_library')}. {t('all_rights_reserved')}
+          &copy; {new Date().getFullYear()} {t('open_source_bazaar')}. {t('all_rights_reserved')}
         </div>
       </Container>
     </footer>

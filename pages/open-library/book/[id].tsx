@@ -1,14 +1,14 @@
-import Image from 'next/image';
-import { GetServerSideProps } from 'next';
 import { observer } from 'mobx-react';
-import { FC, useContext } from 'react';
+import { GetServerSideProps } from 'next';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { FC, useContext } from 'react';
 import { Badge, Button, Card, Col, Container, Row, Tab, Table, Tabs } from 'react-bootstrap';
 import { formatDate } from 'web-utility';
 
 import { PageHead } from '../../../components/Layout/PageHead';
-import { OpenLibraryBorrowFormURL, OpenLibraryReviewFormURL } from '../../../models/configuration';
 import type { Book, BookReview, BorrowHistory } from '../../../models/Book';
+import { OpenLibraryBorrowFormURL, OpenLibraryReviewFormURL } from '../../../models/configuration';
 import { I18nContext } from '../../../models/Translation';
 import { openLibraryBooks } from '../../api/open-library/books';
 
@@ -45,11 +45,9 @@ const ReviewTabContent: FC<{ reviews?: BookReview[] }> = ({ reviews }) => {
 
   return reviews?.[0] ? (
     <>
-      {reviews.map(({ reviewer, rating, comment, date }) => {
-        const review = { reviewer, rating, comment, date };
-
-        return <ReviewCard key={`${reviewer}-${date}`} {...review} />;
-      })}
+      {reviews.map(({ reviewer, rating, comment, date }) => (
+        <ReviewCard key={`${reviewer}-${date}`} {...{ reviewer, rating, comment, date }} />
+      ))}
       <div className="text-center mt-4">
         <Button
           variant="outline-primary"
@@ -111,11 +109,12 @@ const BorrowHistoryTabContent: FC<{ history?: BorrowHistory[] }> = ({ history })
         </tr>
       </thead>
       <tbody>
-        {history.map(({ borrower, borrowDate, returnDate }) => {
-          const borrowHistory = { borrower, borrowDate, returnDate };
-
-          return <BorrowHistoryRow key={`${borrower}-${borrowDate}`} {...borrowHistory} />;
-        })}
+        {history.map(({ borrower, borrowDate, returnDate }) => (
+          <BorrowHistoryRow
+            key={`${borrower}-${borrowDate}`}
+            {...{ borrower, borrowDate, returnDate }}
+          />
+        ))}
       </tbody>
     </Table>
   ) : (

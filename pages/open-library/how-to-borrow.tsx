@@ -1,5 +1,5 @@
-import { observer } from 'mobx-react';
 import { marked } from 'marked';
+import { observer } from 'mobx-react';
 import Link from 'next/link';
 import { useContext } from 'react';
 import { Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
@@ -14,8 +14,6 @@ import {
 import { I18nContext } from '../../models/Translation';
 
 const booksURL = '/open-library/books';
-
-const trustedInlineMarkupOf = (text: string) => ({ __html: marked.parseInline(text) as string });
 
 const HowToBorrowPage = observer(() => {
   const { t } = useContext(I18nContext);
@@ -72,10 +70,12 @@ const HowToBorrowPage = observer(() => {
         <Card className="border-0 shadow-sm mb-5 p-4" body>
           <h2 className="mb-4">{t('borrowing_and_passing')}</h2>
           <p
+            dangerouslySetInnerHTML={{ __html: marked.parseInline(t('borrow_model_intro')) }}
             className="lead"
-            dangerouslySetInnerHTML={trustedInlineMarkupOf(t('borrow_model_intro'))}
           />
-          <p dangerouslySetInnerHTML={trustedInlineMarkupOf(t('borrow_model_description'))} />
+          <p
+            dangerouslySetInnerHTML={{ __html: marked.parseInline(t('borrow_model_description')) }}
+          />
         </Card>
 
         <Row className="mb-5">
@@ -95,8 +95,8 @@ const HowToBorrowPage = observer(() => {
                     <div>
                       <h4 className="h5">{title}</h4>
                       <p
+                        dangerouslySetInnerHTML={{ __html: marked.parseInline(description) }}
                         className="mb-0"
-                        dangerouslySetInnerHTML={trustedInlineMarkupOf(description)}
                       />
                     </div>
                   </li>

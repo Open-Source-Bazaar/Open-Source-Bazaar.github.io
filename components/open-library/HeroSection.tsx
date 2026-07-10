@@ -3,11 +3,10 @@ import { Button, Col, Container, Image, Row } from 'react-bootstrap';
 
 export interface HeroSectionProps
   extends
-    Record<
-      'title' | 'subtitle' | 'ctaText' | 'ctaLink' | 'browseText' | 'heroImage' | 'heroImageAlt',
-      string
-    >,
-    Partial<Record<'browseLink', string>> {}
+    Record<'title' | 'subtitle' | 'ctaText' | 'ctaLink' | 'browseText' | 'heroImage', string>,
+    Partial<Record<'browseLink', string>> {
+  heroImageAlt: string;
+}
 
 export const HeroSection: FC<HeroSectionProps> = ({
   title,
