@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react';
+import Link from 'next/link';
 import { FC, useContext } from 'react';
 import { Badge, Button, Card, Col, Container, ListGroup, Row, Stack } from 'react-bootstrap';
 
@@ -99,6 +100,8 @@ const statusLabelKey: Record<LibraryStatus, I18nKey> = {
 
 const LibraryPage: FC = observer(() => {
   const { t } = useContext(I18nContext);
+  const availableCount = libraryBooks.filter(({ status }) => status === 'available').length;
+  const borrowedCount = libraryBooks.length - availableCount;
 
   return (
     <Container className="py-5">
@@ -142,7 +145,7 @@ const LibraryPage: FC = observer(() => {
               {t('library_stat_available_label')}
             </Card.Subtitle>
             <Card.Title as="p" className="display-6 fw-bold mb-0 text-success">
-              {libraryBooks.filter(({ status }) => status === 'available').length}
+              {availableCount}
             </Card.Title>
             <Card.Text className="text-muted mt-2">{t('library_stat_available_desc')}</Card.Text>
           </Card>
@@ -153,7 +156,7 @@ const LibraryPage: FC = observer(() => {
               {t('library_stat_borrowed_label')}
             </Card.Subtitle>
             <Card.Title as="p" className="display-6 fw-bold mb-0 text-secondary">
-              {libraryBooks.filter(({ status }) => status === 'borrowed').length}
+              {borrowedCount}
             </Card.Title>
             <Card.Text className="text-muted mt-2">{t('library_stat_borrowed_desc')}</Card.Text>
           </Card>
@@ -229,9 +232,11 @@ const LibraryPage: FC = observer(() => {
                 </ListGroup>
               </Card.Body>
               <Card.Footer className="bg-white">
-                <Button className="w-100" href="/bounty" variant="outline-primary">
-                  {t('library_submit_books')}
-                </Button>
+                <Link href="/bounty" passHref legacyBehavior>
+                  <Button className="w-100" variant="outline-primary">
+                    {t('library_submit_books')}
+                  </Button>
+                </Link>
               </Card.Footer>
             </Card>
           </section>
