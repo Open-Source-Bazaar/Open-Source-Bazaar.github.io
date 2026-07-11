@@ -1,3 +1,5 @@
+import 'core-js/stable/typed-array/from-base64';
+
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import { BadgeBar } from 'mobx-restful-table';
