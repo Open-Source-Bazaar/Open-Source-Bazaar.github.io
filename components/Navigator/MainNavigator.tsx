@@ -81,6 +81,10 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
       { href: '/recipe', title: t('recipe') },
     ],
   },
+  {
+    href: '/open-library',
+    title: t('open_library'),
+  },
 ];
 
 export interface MainNavigatorProps {

@@ -17,10 +17,8 @@ export interface HackathonScheduleFact extends HackathonAwardsMeta {
   meta: string;
 }
 
-export interface HackathonScheduleItem extends Record<
-  'id' | 'phase' | 'title' | 'description',
-  string
-> {
+export interface HackathonScheduleItem
+  extends Record<'id' | 'phase' | 'title' | 'description', string> {
   facts: HackathonScheduleFact[];
 
   endedAt?: TimeData;
@@ -29,10 +27,8 @@ export interface HackathonScheduleItem extends Record<
   tone: HackathonScheduleTone;
 }
 
-export interface HackathonScheduleProps extends Record<
-  'title' | 'subtitle' | 'lead' | 'kicker' | 'stageGoalLabel',
-  string
-> {
+export interface HackathonScheduleProps
+  extends Record<'title' | 'subtitle' | 'lead' | 'kicker' | 'stageGoalLabel', string> {
   items: HackathonScheduleItem[];
   keyDates?: {
     label: string;

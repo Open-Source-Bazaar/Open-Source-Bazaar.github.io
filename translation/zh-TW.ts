@@ -315,4 +315,236 @@ export default {
   team_members: '團隊成員',
   team_works: '團隊作品',
   no_news_yet: '暫無動態',
+
+  // Open Library
+  open_library: '開源圖書館',
+
+  // Open Library Navigation
+  home: '首頁',
+  catalog: '目錄',
+  donate: '捐贈',
+  how_to_borrow: '如何借書',
+  review: '書評',
+
+  // Open Library Home Page
+  featured_books: '特色書籍',
+  view_all_books: '查看所有書籍',
+  browse_catalog: '瀏覽目錄',
+  testimonials: '證言',
+  join_community: '加入社群',
+  become_member: '成為會員',
+  donate_books: '捐贈書籍',
+  how_it_works: '如何運作',
+  how_it_works_description: '九步驟加入社群圖書館',
+  step_1_find_book: '找書',
+  step_1_description: '瀏覽我們的書籍目錄，找到您想要的書籍。您可以按類別、作者或標題搜索。',
+  step_2_apply: '申請借書',
+  step_2_description: '填寫借書申請表格，我們會與您聯絡安排借書事宜。',
+  step_3_receive: '收書',
+  step_3_description: '書籍將會寄送到您指定的地址，請注意查收。',
+  learn_more_about_borrowing: '了解更多借書資訊',
+  community_voices: '社群聲音',
+  community_voices_description: '聽聽我們的社群成員怎麼說',
+  read_more_reviews: '閱讀更多書評',
+  share_your_knowledge: '分享您的知識',
+  donate_a_book: '捐贈一本書',
+  stay_updated: '保持更新',
+  newsletter_description: '訂閱我們的電子報，保持與社群圖書館的聯絡。',
+  email_placeholder: '您的電子郵件地址',
+  subscribe: '訂閱',
+
+  // Open Library Books Page
+  book_catalog: '書籍目錄',
+  search_books: '搜尋書籍',
+  all_categories: '所有類別',
+  all_languages: '所有語言',
+  all_status: '所有狀態',
+  available: '可借',
+  borrowed: '已借出',
+  reset_filters: '重設篩選',
+  showing_books: ({ shownCount, totalCount }: Record<'shownCount' | 'totalCount', number>) =>
+    `顯示 ${shownCount} 本書，共 ${totalCount} 本`,
+  no_books_found: '沒有找到書籍',
+  try_adjusting_filters: '試著調整篩選條件',
+  reset_all_filters: '重設所有篩選',
+  open_library_view_details: '查看詳情',
+  currently_with: ({ holder }: Record<'holder', string>) => `目前持有者：${holder}`,
+
+  // Open Library Book Detail Page
+  loading: '載入中...',
+  book_not_found: '沒有找到書籍',
+  return_to_catalog: '返回目錄',
+  back: '返回',
+  by_author: ({ author }: Record<'author', string>) => `作者：${author}`,
+  currently_borrowed: '目前已借出',
+  currently_unavailable: '目前不可借',
+  request_to_borrow: '申請借書',
+  reviews: '書評',
+  borrow_history: '借書歷史',
+  no_reviews_yet: '尚無書評',
+  be_first_to_review: '成為第一個書評的人！',
+  write_review: '寫書評',
+  add_your_review: '新增您的書評',
+  borrower: '借書人',
+  borrow_date: '借書日期',
+  return_date: '歸還日期',
+  status: '狀態',
+  returned: '已歸還',
+  active: '借書中',
+  not_borrowed_yet: '尚未借出',
+
+  // Open Library About Page
+  about_open_library: '關於開源圖書館',
+  our_mission: '我們的使命',
+  our_values: '我們的價值',
+  our_features: '我們的特色',
+  our_team: '我們的團隊',
+  join_us_open_library: '加入我們',
+
+  // Open Library Donate Page
+  book_donation: '書籍捐贈',
+  why_donate: '為什麼捐贈？',
+  donation_process: '捐贈流程',
+  book_registration: '書籍登錄',
+  what_books_we_accept: '我們接受什麼書籍？',
+  we_welcome: '我們歡迎',
+  not_suitable: '不適合',
+  faq: '常見問題',
+  ready_to_donate: '準備捐贈書籍？',
+  fill_donation_form: '填寫捐贈表單',
+  apply_for_membership: '申請會員',
+
+  // Open Library How to Borrow Page
+  how_to_borrow_page_title: '如何借書 - 開源圖書館',
+  how_to_borrow_page: '如何借書',
+  borrowing_and_passing: '借閱與傳遞模式',
+  borrowing_process: '借書流程',
+  borrowing_rules: '借書規則',
+  quick_links: '快速連結',
+  view_full_catalog: '查看完整目錄',
+  fill_borrow_request: '填寫借書申請',
+  fill_book_passing_form: '填寫書籍傳遞表單',
+  browse_book_catalog: '瀏覽書籍目錄',
+  ready_to_borrow: '準備好借書嗎？',
+  open_library_quick_links_label: '開源圖書館快速連結',
+  borrow_model_intro:
+    '在 Open Library，所有書籍均來自社群成員的捐贈，並由借閱者直接**傳遞**給下一位借書人。',
+  borrow_model_description:
+    '我們採用獨特的「無儲存」借閱模式，讓書籍在會員之間自由流轉，而非集中存放。這種模式不只節省實體空間，也促進社群成員之間的直接交流與互動。',
+  borrow_step_catalog_title: '查閱書籍',
+  borrow_step_catalog_description: ({
+    catalogURL,
+    booksURL,
+  }: Record<'catalogURL' | 'booksURL', string>) =>
+    `社群成員可以在 [fCC 成都社群圖書館](${catalogURL}) 中查找自己感興趣的書籍，或在我們的 [書籍目錄](${booksURL}) 中瀏覽。`,
+  borrow_step_apply_title: '申請借閱',
+  borrow_step_apply_description: ({ borrowFormURL }: Record<'borrowFormURL', string>) =>
+    `找到想借的書後，填寫 [fCC 成都社群圖書館-書籍借入](${borrowFormURL}) 申請，與目前持書者取得聯繫。`,
+  borrow_step_handoff_title: '線下傳遞',
+  borrow_step_handoff_description: ({ handoffFormURL }: Record<'handoffFormURL', string>) =>
+    `雙方約定時間和傳遞方式，通常可用快遞傳遞書籍。請傳遞者填寫 [fCC 成都社群圖書館-書籍傳遞](${handoffFormURL})，再將書籍傳遞出去。`,
+  borrow_step_share_title: '閱讀與分享',
+  borrow_step_share_description:
+    '借閱者在閱讀完畢後，可以分享自己的閱讀感想，並在社群推薦給下一位感興趣的成員。我們鼓勵借閱者在歸還前寫下簡短書評。',
+  borrow_step_continue_title: '繼續傳遞',
+  borrow_step_continue_description:
+    '當有新的借閱者申請時，目前持書人將書籍傳遞給下一位讀者，確保知識持續流動。',
+  borrow_rule_period_title: '借閱期限',
+  borrow_rule_period_detail: '每本書的標準借閱期為 30 天，如需延長可與圖書館管理員聯繫。',
+  borrow_rule_quantity_title: '借閱數量',
+  borrow_rule_quantity_detail: '每位會員同時最多可借閱 3 本書。',
+  borrow_rule_condition_title: '書籍狀態',
+  borrow_rule_condition_detail: '借閱者有責任保持書籍良好狀態，避免損壞、標記或遺失。',
+  borrow_rule_handoff_title: '傳遞責任',
+  borrow_rule_handoff_detail: '目前持書人負責將書籍安全傳遞給下一位借閱者，並承擔相關傳遞費用。',
+  borrow_rule_damage_title: '遺失或損壞',
+  borrow_rule_damage_detail:
+    '如果書籍在您借閱期間遺失或嚴重損壞，請聯繫圖書館管理員，並考慮捐贈一本相同或類似的書籍作為替代。',
+  borrow_faq_available_question: '如何知道一本書是否可借？',
+  borrow_faq_available_answer:
+    '您可以在飛書多維表格或網站書籍目錄中查看書籍目前狀態。如果標記為「可借」，就可以申請借閱。',
+  borrow_faq_fee_question: '我需要支付借閱費用嗎？',
+  borrow_faq_fee_answer:
+    'Open Library 不收取借閱費用，但借閱者需要承擔書籍傳遞的相關費用（例如快遞費）。',
+  borrow_faq_return_question: '如果目前沒有人申請借我手中的書，我需要歸還嗎？',
+  borrow_faq_return_answer:
+    '標準借閱期為 30 天。如果期滿後沒有新的借閱申請，您可以暫時保留該書，但請隨時準備傳遞給下一位申請者。',
+  borrow_faq_contact_question: '如何聯繫目前持書人？',
+  borrow_faq_contact_answer:
+    '當您提交借閱申請後，我們會提供目前持書人的聯絡方式，以便雙方協調傳遞事宜。',
+  borrow_faq_keep_question: '如果我想長期保留一本書怎麼辦？',
+  borrow_faq_keep_answer:
+    'Open Library 的宗旨是促進知識流動，我們鼓勵書籍在會員之間傳遞。如果您特別喜歡某本書，建議購買一本自己的副本，或考慮捐贈一本相同的書給圖書館。',
+  borrow_faq_ebook_question: '我可以借閱電子書嗎？',
+  borrow_faq_ebook_answer:
+    '目前 Open Library 主要提供實體書借閱服務。我們正在考慮未來增加電子書資源，敬請期待。',
+
+  // BookCard
+  book_cover: '封面',
+
+  // HowItWorks
+  learn_more_details: '了解詳細流程',
+
+  // Books Page
+  book_catalog_description: '瀏覽我們的社區共享圖書館，發現有趣的書籍',
+
+  // Homepage About & Support sections
+  open_library_community_intro: 'freeCodeCamp 成都社區「Open Library」開放共享圖書館',
+  our_mission_text:
+    '促進知識交流，推動社區成員之間的學習和成長，增強社區成員之間的互動與信任。我們採用獨特的「無儲存」借閱模式，讓書籍在會員之間自由流轉。',
+  core_concepts: '核心理念',
+  knowledge_flow: '知識流動',
+  knowledge_flow_desc: '書籍自由流轉，促進知識傳播',
+  community_driven: '社區驅動',
+  community_driven_desc: '所有書籍來自成員捐贈',
+  open_sharing: '開放共享',
+  open_sharing_desc: '促進交流和互動',
+  support_us: '支持我們',
+  support_us_description:
+    'Open Library 完全由社區成員的熱情和貢獻支撐。如果這個項目對你有幫助，歡迎通過以下方式支持我們的發展。',
+  share_your_book: '分享你的圖書',
+
+  // Book Detail Page
+  book_publisher: '出版社',
+  book_published_year: '出版年份',
+  book_page_count: '頁數',
+  not_available: 'N/A',
+
+  // Open Library Review Page
+  book_reviews: '書籍書評',
+  community_reviews: '社群書評',
+  all_reviews: '所有書評',
+  recent_reviews: '最新書評',
+  top_reviews: '最佳書評',
+  write_your_review: '寫您的書評',
+  review_guidelines: '書評指南',
+  how_to_write_helpful_review: '如何寫有用的書評',
+  rating_reference: '評分參考',
+
+  // Homepage Hero Section
+  hero_title: '在我們的開源圖書館中探索',
+  hero_subtitle:
+    '在我們的社群圖書館中探索免費的書籍和資源。加入 freeCodeCamp 成為社群圖書館的一部分，學習和分享知識。',
+  hero_image_alt: '社群成員分享圖書',
+
+  // Featured Books Section
+  featured_books_subtitle: '我們社群圖書館中最受歡迎的書籍',
+
+  // Donation Callout Section
+  donation_callout_subtitle:
+    '您的捐贈將有助於我們的社群圖書館的發展。您的支持將有助於我們提供更多免費的書籍和資源給社群成員。',
+
+  // Footer
+  footer_description:
+    '一個開源的社群圖書館，提供免費的書籍和資源給社群成員。開源。免費。無限可能。',
+  quick_links_footer: '快速連結',
+  home_footer: '首頁',
+  catalog_footer: '目錄',
+  about_us_footer: '關於我們',
+  donate_footer: '捐贈',
+  contact: '聯絡我們',
+  community_name: 'freeCodeCamp 成都社群',
+  community_location: '中國四川成都',
+  follow_us: '關注我們',
+  all_rights_reserved: '版權所有',
 };

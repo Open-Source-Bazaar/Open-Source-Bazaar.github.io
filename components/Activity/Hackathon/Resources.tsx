@@ -29,10 +29,8 @@ export interface HackathonProjectItem {
   title: string;
 }
 
-export interface HackathonResourcesProps extends Record<
-  `project${'Subtitle' | 'Title'}` | `template${'Subtitle' | 'Title'}`,
-  string
-> {
+export interface HackathonResourcesProps
+  extends Record<`project${'Subtitle' | 'Title'}` | `template${'Subtitle' | 'Title'}`, string> {
   projectInitialVisible?: number;
   projectItems: HackathonProjectItem[];
   showLessLabel?: string;

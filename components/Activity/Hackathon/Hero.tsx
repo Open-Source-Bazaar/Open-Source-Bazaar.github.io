@@ -18,15 +18,16 @@ export interface HackathonHeroAction extends HackathonHeroNavItem {
 
 export type HackathonHeroCard = Record<'title' | 'description' | 'eyebrow', string>;
 
-export interface HackathonHeroProps extends Record<
-  | `visual${'Kicker' | 'Title' | 'Copy' | 'Chip'}`
-  | 'name'
-  | 'subtitle'
-  | 'description'
-  | 'locationText'
-  | 'imageFallback',
-  string
-> {
+export interface HackathonHeroProps
+  extends Record<
+    | `visual${'Kicker' | 'Title' | 'Copy' | 'Chip'}`
+    | 'name'
+    | 'subtitle'
+    | 'description'
+    | 'locationText'
+    | 'imageFallback',
+    string
+  > {
   agendaItems: Agenda[];
   badges: ReactNode[];
   bottomCard?: HackathonHeroCard;

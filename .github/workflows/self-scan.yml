@@ -13,5 +13,5 @@ jobs:
 
       - uses: OWASP/cve-lite-cli@v1
         with:
-          verbose: "true"
+          verbose: 'true'
           fail-on: high

@@ -339,4 +339,242 @@ export default {
   team_members: 'Team Members',
   team_works: 'Team Works',
   no_news_yet: 'No news yet',
+
+  // Open Library
+  open_library: 'Open Library',
+
+  // Open Library Navigation
+  home: 'Home',
+  catalog: 'Catalog',
+  donate: 'Donate',
+  how_to_borrow: 'How to Borrow',
+  review: 'Review',
+
+  // Open Library Home Page
+  featured_books: 'Featured Books',
+  view_all_books: 'Browse All Books',
+  browse_catalog: 'Browse Catalog',
+  testimonials: 'Testimonials',
+  join_community: 'Join Our Community',
+  become_member: 'Become a Member',
+  donate_books: 'Donate Books',
+  how_it_works: 'How It Works',
+  how_it_works_description: 'Three simple steps to borrow books from our community',
+  step_1_find_book: 'Find a Book',
+  step_1_description:
+    'Browse our collection and find the book that interests you. Filter by category, author, or popularity.',
+  step_2_apply: 'Apply to Borrow',
+  step_2_description:
+    "Submit a simple request form. We'll connect you with the book owner and arrange the handover.",
+  step_3_receive: 'Receive and Pass It On',
+  step_3_description:
+    "Enjoy your book and return it when you're done. Consider donating your own books to keep knowledge flowing.",
+  learn_more_about_borrowing: 'Learn More About Borrowing',
+  community_voices: 'Community Voices',
+  community_voices_description: 'What our members say about Open Library',
+  read_more_reviews: 'Read More Reviews',
+  share_your_knowledge: 'Share Your Knowledge',
+  donate_a_book: 'Donate a Book',
+  stay_updated: 'Stay Updated',
+  newsletter_description: 'Subscribe to our newsletter for new book arrivals and community events.',
+  email_placeholder: 'Your email address',
+  subscribe: 'Subscribe',
+
+  // Open Library Books Page
+  book_catalog: 'Book Catalog',
+  search_books: 'Search Books',
+  all_categories: 'All Categories',
+  all_languages: 'All Languages',
+  all_status: 'All Status',
+  available: 'Available',
+  borrowed: 'Borrowed',
+  reset_filters: 'Reset Filters',
+  showing_books: ({ shownCount, totalCount }: Record<'shownCount' | 'totalCount', number>) =>
+    `Showing ${shownCount} of ${totalCount} books`,
+  no_books_found: 'No books found',
+  try_adjusting_filters: 'Try adjusting your search or filters',
+  reset_all_filters: 'Reset All Filters',
+  open_library_view_details: 'View Details',
+  currently_with: ({ holder }: Record<'holder', string>) => `Currently with: ${holder}`,
+
+  // Open Library Book Detail Page
+  loading: 'Loading...',
+  book_not_found: 'Book Not Found',
+  return_to_catalog: 'Return to Catalog',
+  back: 'Back',
+  by_author: ({ author }: Record<'author', string>) => `by ${author}`,
+  currently_borrowed: 'Currently Borrowed',
+  currently_unavailable: 'Currently Unavailable',
+  request_to_borrow: 'Request to Borrow',
+  reviews: 'Reviews',
+  borrow_history: 'Borrow History',
+  no_reviews_yet: 'No reviews yet',
+  be_first_to_review: 'Be the first to review this book!',
+  write_review: 'Write a Review',
+  add_your_review: 'Add Your Review',
+  borrower: 'Borrower',
+  borrow_date: 'Borrow Date',
+  return_date: 'Return Date',
+  status: 'Status',
+  returned: 'Returned',
+  active: 'Active',
+  not_borrowed_yet: 'This book has not been borrowed yet',
+
+  // Open Library About Page
+  about_open_library: 'About Open Library',
+  our_mission: 'Our Mission',
+  our_values: 'Our Values',
+  our_features: 'Our Features',
+  our_team: 'Our Team',
+  join_us_open_library: 'Join Us',
+
+  // Open Library Donate Page
+  book_donation: 'Book Donation',
+  why_donate: 'Why Donate Books?',
+  donation_process: 'Donation Process',
+  book_registration: 'Book Registration',
+  what_books_we_accept: 'What Books Do We Accept?',
+  we_welcome: 'We Welcome',
+  not_suitable: 'Not Suitable for Donation',
+  faq: 'Frequently Asked Questions',
+  ready_to_donate: 'Ready to Donate Books?',
+  fill_donation_form: 'Fill Donation Form',
+  apply_for_membership: 'Apply for Membership',
+
+  // Open Library How to Borrow Page
+  how_to_borrow_page_title: 'How to Borrow - Open Library',
+  how_to_borrow_page: 'How to Borrow',
+  borrowing_and_passing: 'Borrowing and Passing Model',
+  borrowing_process: 'Borrowing Process',
+  borrowing_rules: 'Borrowing Rules',
+  quick_links: 'Quick Links',
+  view_full_catalog: 'View Full Catalog',
+  fill_borrow_request: 'Fill Borrow Request',
+  fill_book_passing_form: 'Fill Book Passing Form',
+  browse_book_catalog: 'Browse Book Catalog',
+  ready_to_borrow: 'Ready to Borrow?',
+  open_library_quick_links_label: 'Open Library quick links',
+  borrow_model_intro:
+    'In Open Library, all books are donated by community members and directly **passed** from one reader to the next.',
+  borrow_model_description:
+    'We use a no-storage lending model: books circulate freely among members instead of being stored centrally. This saves physical space and creates direct community interaction.',
+  borrow_step_catalog_title: 'Browse books',
+  borrow_step_catalog_description: ({
+    catalogURL,
+    booksURL,
+  }: Record<'catalogURL' | 'booksURL', string>) =>
+    `Members can search [fCC Chengdu Community Library](${catalogURL}) or browse our [book catalog](${booksURL}).`,
+  borrow_step_apply_title: 'Apply to borrow',
+  borrow_step_apply_description: ({ borrowFormURL }: Record<'borrowFormURL', string>) =>
+    `After finding a book, submit the [book borrowing form](${borrowFormURL}) to contact the current holder.`,
+  borrow_step_handoff_title: 'Offline handoff',
+  borrow_step_handoff_description: ({ handoffFormURL }: Record<'handoffFormURL', string>) =>
+    `Both sides agree on a time and delivery method. The sender should fill in the [book handoff form](${handoffFormURL}) before passing the book on.`,
+  borrow_step_share_title: 'Read and share',
+  borrow_step_share_description:
+    'After reading, borrowers can share their thoughts and recommend the book to the next interested member. We encourage short reviews before returning or passing books on.',
+  borrow_step_continue_title: 'Keep it moving',
+  borrow_step_continue_description:
+    'When a new borrowing request arrives, the current holder passes the book to the next reader so knowledge keeps flowing.',
+  borrow_rule_period_title: 'Loan period',
+  borrow_rule_period_detail:
+    'The standard loan period is 30 days. Contact the library maintainer if you need an extension.',
+  borrow_rule_quantity_title: 'Borrowing limit',
+  borrow_rule_quantity_detail: 'Each member may borrow up to 3 books at the same time.',
+  borrow_rule_condition_title: 'Book condition',
+  borrow_rule_condition_detail:
+    'Borrowers are responsible for keeping books in good condition and avoiding damage, marks, or loss.',
+  borrow_rule_handoff_title: 'Handoff responsibility',
+  borrow_rule_handoff_detail:
+    'The current holder is responsible for safely passing the book to the next borrower and covering related delivery costs.',
+  borrow_rule_damage_title: 'Loss or damage',
+  borrow_rule_damage_detail:
+    'If a book is lost or seriously damaged while borrowed, contact the library maintainer and consider donating an identical or similar replacement.',
+  borrow_faq_available_question: 'How do I know whether a book is available?',
+  borrow_faq_available_answer:
+    'Check the current status in the Feishu base or on the book catalog page. If it is marked available, you can request to borrow it.',
+  borrow_faq_fee_question: 'Do I need to pay a borrowing fee?',
+  borrow_faq_fee_answer:
+    'Open Library does not charge borrowing fees, but borrowers cover delivery costs such as shipping.',
+  borrow_faq_return_question: 'Do I need to return a book if nobody else requests it?',
+  borrow_faq_return_answer:
+    'The standard loan period is 30 days. If no new request arrives after that, you may keep the book temporarily, but stay ready to pass it on.',
+  borrow_faq_contact_question: 'How do I contact the current holder?',
+  borrow_faq_contact_answer:
+    'After you submit a borrowing request, we provide the current holder contact information so you can coordinate the handoff.',
+  borrow_faq_keep_question: 'What if I want to keep a book long term?',
+  borrow_faq_keep_answer:
+    'Open Library exists to keep knowledge flowing. If you especially like a book, consider buying your own copy or donating the same book to the library.',
+  borrow_faq_ebook_question: 'Can I borrow ebooks?',
+  borrow_faq_ebook_answer:
+    'Open Library currently focuses on physical books. We may add ebook resources in the future.',
+
+  // BookCard
+  book_cover: 'Cover',
+
+  // HowItWorks
+  learn_more_details: 'Learn More',
+
+  // Books Page
+  book_catalog_description: 'Browse our community shared library and discover interesting books',
+
+  // Homepage About & Support sections
+  open_library_community_intro: 'freeCodeCamp Chengdu Community Open Library',
+  our_mission_text:
+    'Promote knowledge exchange, drive learning and growth among community members, and strengthen interaction and trust. We use a unique "no-storage" lending model to let books circulate freely among members.',
+  core_concepts: 'Core Concepts',
+  knowledge_flow: 'Knowledge Flow',
+  knowledge_flow_desc: 'Books circulate freely to promote knowledge sharing',
+  community_driven: 'Community Driven',
+  community_driven_desc: 'All books are donated by members',
+  open_sharing: 'Open Sharing',
+  open_sharing_desc: 'Promoting exchange and interaction',
+  support_us: 'Support Us',
+  support_us_description:
+    'Open Library is completely supported by the passion and contributions of community members. If this project has been helpful to you, please support our development.',
+  share_your_book: 'Share Your Book',
+
+  // Book Detail Page
+  book_publisher: 'Publisher',
+  book_published_year: 'Published',
+  book_page_count: 'Pages',
+  not_available: 'N/A',
+
+  // Open Library Review Page
+  book_reviews: 'Book Reviews',
+  community_reviews: 'Community Reviews',
+  all_reviews: 'All Reviews',
+  recent_reviews: 'Recent Reviews',
+  top_reviews: 'Top Reviews',
+  write_your_review: 'Write Your Review',
+  review_guidelines: 'Review Guidelines',
+  how_to_write_helpful_review: 'How to Write a Helpful Review',
+  rating_reference: 'Rating Reference',
+
+  // Homepage Hero Section
+  hero_title: 'Free knowledge flows here',
+  hero_subtitle:
+    "Share and borrow books in our open-source community. Join freeCodeCamp Chengdu's initiative to make learning accessible to everyone.",
+  hero_image_alt: 'People sharing books',
+
+  // Featured Books Section
+  featured_books_subtitle: 'Discover what our community is reading right now',
+
+  // Donation Callout Section
+  donation_callout_subtitle:
+    'Have books collecting dust on your shelf? Donate them to our community and help others learn and grow. Your contribution makes a difference!',
+
+  // Footer
+  footer_description:
+    'A community-driven library for sharing knowledge and stories. Built with open source. Powered by generosity.',
+  quick_links_footer: 'Quick Links',
+  home_footer: 'Home',
+  catalog_footer: 'Catalog',
+  about_us_footer: 'About Us',
+  donate_footer: 'Donate',
+  contact: 'Contact',
+  community_name: 'freeCodeCamp Chengdu Community',
+  community_location: 'Chengdu, Sichuan, China',
+  follow_us: 'Follow Us',
+  all_rights_reserved: 'All Rights Reserved',
 };

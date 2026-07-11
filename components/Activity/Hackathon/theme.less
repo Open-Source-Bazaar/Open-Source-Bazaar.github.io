@@ -14,21 +14,17 @@
 @body: 'Outfit', 'Avenir Next', 'Segoe UI', sans-serif;
 
 .panel-card() {
+  backdrop-filter: blur(18px);
   box-shadow: @shadow;
   border: 1px solid @border;
   border-radius: 28px;
   background: @panel;
-  backdrop-filter: blur(18px);
 }
 
 .section-shell() {
   position: relative;
+  background: linear-gradient(180deg, rgba(5, 8, 20, 0.98), rgba(7, 12, 26, 0.98));
   padding: clamp(4rem, 7vw, 6rem) 0;
-  background: linear-gradient(
-    180deg,
-    rgba(5, 8, 20, 0.98),
-    rgba(7, 12, 26, 0.98)
-  );
   color: @copy;
 }
 
@@ -55,8 +51,8 @@
 }
 
 .section-header() {
-  text-align: center;
   margin-bottom: clamp(2.3rem, 4vw, 3rem);
+  text-align: center;
 }
 
 .section-title() {
@@ -66,35 +62,35 @@
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  font-family: @heading;
-  font-size: clamp(1.9rem, 4vw, 2.6rem);
   font-weight: 900;
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  font-family: @heading;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .section-subtitle() {
   color: @muted;
-  font-family: @heading;
-  font-size: 0.75rem;
   font-weight: 700;
+  font-size: 0.75rem;
+  font-family: @heading;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .accent-line() {
-  width: 72px;
-  height: 2px;
   margin: 1rem auto 0;
+  box-shadow: 0 0 14px rgba(44, 232, 255, 0.32);
   border-radius: 999px;
   background: linear-gradient(90deg, @cyan, @purple);
-  box-shadow: 0 0 14px rgba(44, 232, 255, 0.32);
+  width: 72px;
+  height: 2px;
 }
 
 .button-base() {
   display: inline-flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   gap: 0.5rem;
   transition:
     transform 0.22s ease,
@@ -105,9 +101,9 @@
   border: 1px solid transparent;
   border-radius: 10px;
   padding: 0.9rem 1.35rem;
-  font-family: @heading;
-  font-size: 0.82rem;
   font-weight: 700;
+  font-size: 0.82rem;
+  font-family: @heading;
   letter-spacing: 0.08em;
   text-align: center;
   text-decoration: none;
@@ -148,9 +144,9 @@
 
 .eyebrow() {
   color: @muted;
-  font-family: @heading;
-  font-size: 0.75rem;
   font-weight: 700;
+  font-size: 0.75rem;
+  font-family: @heading;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }

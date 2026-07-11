@@ -10,8 +10,7 @@ import { i18n, I18nContext } from '../../models/Translation';
 import { Organization } from '../../models/Organization';
 
 export interface OrganizationCardProps
-  extends
-    Pick<HTMLAttributes<HTMLDivElement>, 'className' | 'style'>,
+  extends Pick<HTMLAttributes<HTMLDivElement>, 'className' | 'style'>,
     Omit<Organization, 'id'>,
     CardProps {
   onSwitch?: (filter: Partial<Pick<Organization, 'entityType' | 'coverageArea'>>) => any;
