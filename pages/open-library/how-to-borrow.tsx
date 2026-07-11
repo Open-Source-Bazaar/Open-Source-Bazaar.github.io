@@ -70,11 +70,11 @@ const HowToBorrowPage = observer(() => {
         <Card className="border-0 shadow-sm mb-5 p-4" body>
           <h2 className="mb-4">{t('borrowing_and_passing')}</h2>
           <p
-            dangerouslySetInnerHTML={{ __html: marked.parseInline(t('borrow_model_intro')) }}
+            dangerouslySetInnerHTML={{ __html: marked(t('borrow_model_intro')) as string }}
             className="lead"
           />
           <p
-            dangerouslySetInnerHTML={{ __html: marked.parseInline(t('borrow_model_description')) }}
+            dangerouslySetInnerHTML={{ __html: marked(t('borrow_model_description')) as string }}
           />
         </Card>
 
@@ -95,7 +95,7 @@ const HowToBorrowPage = observer(() => {
                     <div>
                       <h4 className="h5">{title}</h4>
                       <p
-                        dangerouslySetInnerHTML={{ __html: marked.parseInline(description) }}
+                        dangerouslySetInnerHTML={{ __html: marked(description) as string }}
                         className="mb-0"
                       />
                     </div>
@@ -111,7 +111,7 @@ const HowToBorrowPage = observer(() => {
               <ListGroup variant="flush">
                 {borrowRules.map(([term, detail]) => (
                   <ListGroup.Item key={term} className="px-0">
-                    <strong>{term}：</strong>
+                    <strong className="me-1">{term}</strong>
                     {detail}
                   </ListGroup.Item>
                 ))}

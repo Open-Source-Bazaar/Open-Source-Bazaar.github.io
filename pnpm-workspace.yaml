@@ -2,13 +2,12 @@ packages:
   - .
 autoInstallPeers: false
 overrides:
-  next: $next
+  mobx-react-helper: '$mobx-react-helper'
+  next: '$next'
 allowBuilds:
-  '@sentry/cli': true
+  '@parcel/watcher': true
   core-js: true
-  less: true
   sharp: true
   unrs-resolver: true
-publicHoistPattern:
-  - '*import-in-the-middle*'
-  - '*require-in-the-middle*'
+minimumReleaseAgeExclude:
+  - nodemailer@9.0.0

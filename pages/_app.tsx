@@ -48,7 +48,6 @@ export default class CustomApp extends App<I18nProps> {
         <main className="py-5">
           <Component {...pageProps} />
         </main>
-        <Footer />
       </>
     );
   }
@@ -64,8 +63,6 @@ export default class CustomApp extends App<I18nProps> {
         <div className="mt-5 pt-2">
           {isArticlePage ? <PageContent>{content}</PageContent> : content}
         </div>
-
-        <Footer />
       </>
     );
   }
@@ -93,6 +90,7 @@ export default class CustomApp extends App<I18nProps> {
         ) : (
           this.renderSiteFrame(isArticlePage)
         )}
+        <Footer />
       </I18nContext.Provider>
     );
   }

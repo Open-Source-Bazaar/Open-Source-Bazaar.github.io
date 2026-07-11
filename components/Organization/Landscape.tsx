@@ -62,7 +62,7 @@ export class OpenCollaborationLandscape extends Component<OpenCollaborationLands
           <ul className={`list-unstyled d-flex flex-${screenNarrow ? 'column' : 'row'} gap-2`}>
             {row.map(([name, list]) => (
               <li key={name} className="flex-fill">
-                <h2 className={`h5 p-2 text-white ${styles.groupTitle}`}>{name}</h2>
+                <h2 className={`h5 p-2 text-nowrap text-white ${styles.groupTitle}`}>{name}</h2>
 
                 <ol className="list-unstyled d-flex flex-wrap gap-2">
                   {list.map(this.renderLogo)}

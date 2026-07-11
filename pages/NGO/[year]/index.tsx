@@ -1,14 +1,20 @@
 import { observer } from 'mobx-react';
 import dynamic from 'next/dynamic';
-import { cache, compose, errorLogger } from 'next-ssr-middleware';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { FC, useContext } from 'react';
 import { Button, Container } from 'react-bootstrap';
+import { Minute, Second } from 'web-utility';
 
 import { PageHead } from '../../../components/Layout/PageHead';
 import { CityStatisticMap } from '../../../components/Map/CityStatisticMap';
 import { SearchBar } from '../../../components/Navigator/SearchBar';
-import { OrganizationModel, OrganizationStatistic } from '../../../models/Organization';
+import {
+  OrganizationModel,
+  OrganizationStatistic,
+  OrganizationYearStatisticModel,
+} from '../../../models/Organization';
 import { I18nContext } from '../../../models/Translation';
+import { lark } from '../../api/Lark/core';
 
 const OrganizationCharts = dynamic(() => import('../../../components/Organization/Charts'), {
   ssr: false,
@@ -19,15 +25,42 @@ interface OrganizationPageProps {
   statistic: OrganizationStatistic;
 }
 
-export const getServerSideProps = compose<{ year: string }, OrganizationPageProps>(
-  cache(),
-  errorLogger,
-  async ({ params }) => {
-    const statistic = await new OrganizationModel().getStatistic({ startYear: params!.year });
+export const getStaticPaths: GetStaticPaths<{ year: string }> = async () => {
+  await lark.getAccessToken();
 
-    return { props: { year: params!.year, statistic } };
-  },
-);
+  const yearStore = new OrganizationYearStatisticModel();
+  yearStore.client = lark.client;
+
+  const years = await yearStore.getAll();
+
+  return {
+    paths: years.map(({ name }) => name && { params: { year: name! } }).filter(Boolean) as {
+      params: { year: string };
+    }[],
+    fallback: 'blocking',
+  };
+};
+
+export const getStaticProps: GetStaticProps<OrganizationPageProps, { year: string }> = async ({
+  params,
+}) => {
+  const { year } = params!;
+
+  try {
+    await lark.getAccessToken();
+
+    const organizationStore = new OrganizationModel();
+    organizationStore.client = lark.client;
+
+    const statistic = await organizationStore.getStatistic({ startYear: year });
+
+    return { props: { year, statistic } };
+  } catch (error) {
+    console.error(error);
+
+    return { notFound: true, revalidate: Minute / Second };
+  }
+};
 
 const OrganizationPage: FC<OrganizationPageProps> = observer(({ year, statistic }) => {
   const { t } = useContext(I18nContext);

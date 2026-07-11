@@ -1,25 +1,55 @@
 import { observer } from 'mobx-react';
-import { cache, compose, errorLogger } from 'next-ssr-middleware';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { FC, useContext } from 'react';
 import { Container } from 'react-bootstrap';
+import { Minute, Second } from 'web-utility';
 
 import { PageHead } from '../../../components/Layout/PageHead';
 import {
   OpenCollaborationLandscape,
   OpenCollaborationLandscapeProps,
 } from '../../../components/Organization/Landscape';
-import { OrganizationModel } from '../../../models/Organization';
+import { OrganizationModel, OrganizationYearStatisticModel } from '../../../models/Organization';
 import { I18nContext } from '../../../models/Translation';
+import { lark } from '../../api/Lark/core';
 
-export const getServerSideProps = compose<{ year: string }, Pick<OrganizationModel, 'typeMap'>>(
-  cache(),
-  errorLogger,
-  async ({ params }) => {
-    const typeMap = await new OrganizationModel().groupAllByType({ startYear: params!.year });
+export const getStaticPaths: GetStaticPaths<{ year: string }> = async () => {
+  await lark.getAccessToken();
+
+  const yearStore = new OrganizationYearStatisticModel();
+  yearStore.client = lark.client;
+
+  const years = await yearStore.getAll();
+
+  return {
+    paths: years.map(({ name }) => name && { params: { year: name! } }).filter(Boolean) as {
+      params: { year: string };
+    }[],
+    fallback: 'blocking',
+  };
+};
+
+export const getStaticProps: GetStaticProps<
+  Pick<OrganizationModel, 'typeMap'>,
+  { year: string }
+> = async ({ params }) => {
+  const { year } = params!;
+
+  try {
+    await lark.getAccessToken();
+
+    const organizationStore = new OrganizationModel();
+    organizationStore.client = lark.client;
+
+    const typeMap = await organizationStore.groupAllByType({ startYear: year });
 
     return { props: JSON.parse(JSON.stringify({ typeMap })) };
-  },
-);
+  } catch (error) {
+    console.error(error);
+
+    return { notFound: true, revalidate: Minute / Second };
+  }
+};
 
 const LandscapePage: FC<OpenCollaborationLandscapeProps> = observer(props => {
   const { t } = useContext(I18nContext);
