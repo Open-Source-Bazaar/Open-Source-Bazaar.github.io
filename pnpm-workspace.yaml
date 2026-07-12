@@ -4,6 +4,8 @@ autoInstallPeers: false
 overrides:
   mobx-react-helper: '$mobx-react-helper'
   next: '$next'
+patchedDependencies:
+  next@16.2.10: patches/next@16.2.10.patch
 allowBuilds:
   '@parcel/watcher': true
   core-js: true

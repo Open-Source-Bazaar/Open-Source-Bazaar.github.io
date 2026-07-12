@@ -88,11 +88,6 @@
     "mobx-react-helper": "$mobx-react-helper",
     "next": "$next"
   },
-  "pnpm": {
-    "patchedDependencies": {
-      "next@16.2.10": "patches/next@16.2.10.patch"
-    }
-  },
   "prettier": {
     "singleQuote": true,
     "trailingComma": "all",
