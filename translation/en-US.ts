@@ -50,6 +50,58 @@ export default {
   bounty_hero_rank: 'Hero Rank',
   bounty_debt_rank: 'Debt Rank',
 
+  // Award page
+  award_page_title: 'Open Collaborator Award - Open Source Bazaar',
+  award_badge: '✨ Community honor · Recognize peers',
+  award_intro:
+    'Discover open-source contributors around you and record every meaningful contribution. The Open Collaborator Award recognizes people who have made outstanding contributions to open collaboration, documentation, advocacy, and community building.',
+  award_nominate_button: '📝 Nominate',
+  award_view_nominees_button: '🔍 View nominees',
+  award_video_title: 'Open Collaborator Award nomination initiative',
+  award_video_caption:
+    '📺 Watch the video: Open Source Bazaar co-founders introduce the Open Collaborator Award nomination initiative',
+  award_what_title: 'What is the Open Collaborator Award?',
+  award_what_desc:
+    'It is an important award initiated by the Open Source Bazaar community for people who care about open source and quietly contribute through technical sharing and collaboration. The community sees and values every contribution.',
+  award_who_title: 'Who can be nominated?',
+  award_who_desc:
+    'Anyone can be nominated: core developers, documentation writers, translators, event organizers, volunteers, or community mentors who help newcomers.',
+  award_rules_title: 'Rules and rewards',
+  award_rules_desc:
+    'Anyone may submit a nomination using the form. Nominees are displayed publicly and can receive community votes. Final recognition is decided by the community committee based on contribution evidence, with an Open Collaborator badge/certificate and related benefits.',
+  award_nominee_list_title: '👥 Nominee board',
+  award_empty_title: 'No nominees yet',
+  award_empty_desc:
+    'Be the first to spotlight a contributor by submitting a nomination on the right.',
+  award_nominator_meta: 'Nominator: ',
+  award_time_meta: 'Nominated: ',
+  award_recent: 'Recently',
+  award_reason_meta: '💡 Contribution and reason:',
+  award_evidence_meta: '🔗 Evidence: ',
+  award_evidence_link: 'View video link ↗',
+  award_votes_label: 'Votes',
+  award_vote_button: '👍 Vote',
+  award_form_title: 'Recommend a contributor',
+  award_form_desc: 'Nominate someone who loves open source and contributes generously.',
+  award_submit_success: '🎉 Nomination submitted. The nominee board has been updated.',
+  award_required_error: 'Please fill in all required fields: nominator, nominee, and reason.',
+  award_submit_error: 'Failed to submit the nomination. Check your connection and try again.',
+  award_vote_error: 'Vote failed. Please try again.',
+  award_nominator_field: 'Your name / Nominator',
+  award_nominator_placeholder: 'Enter your name or GitHub ID',
+  award_nominee_name_field: 'Nominee name',
+  award_nominee_name_placeholder: 'Enter the nominee name or GitHub ID',
+  award_nominee_desc_field: 'Nominee bio',
+  award_optional: '(optional)',
+  award_nominee_desc_placeholder: 'For example: core developer, documentation advocate, designer',
+  award_reason_field: 'Contribution and reason',
+  award_reason_placeholder:
+    'Describe the nominee’s concrete contribution and why you recommend them for this award, such as project or event impact.',
+  award_video_field: 'Video / evidence link',
+  award_video_placeholder: 'Add a video, code PR, or event replay link',
+  award_submit_loading: 'Submitting...',
+  award_submit_button: '✈️ Submit nomination',
+
   //License-tool Page
   license_filter: 'Open Source License Selector',
   feature_attitude_undefined: "I don't care",
