@@ -1,18 +1,25 @@
-import { BiDataQueryOptions, BiDataTable, BiSearch, TableCellValue } from 'mobx-lark';
+﻿import { BiDataQueryOptions, BiDataTable, BiSearch, TableCellValue, TableRecord, normalizeTextArray } from 'mobx-lark';
 
-import { larkClient } from './Base';
+import { LarkBase, larkClient } from './Base';
 import { AwardTableId, LarkBitableId } from './configuration';
 
-export type Award = Record<
-  | 'awardName'
-  | `nominee${'Name' | 'Desc'}`
-  | 'videoUrl'
-  | 'reason'
-  | 'nominator'
-  | 'createdAt'
-  | 'votes',
-  TableCellValue
->;
+export type AwardStatus = 'nominated' | 'reviewing' | 'voting' | 'awarded' | 'declined';
+
+export type Award = LarkBase &
+  Record<
+    | 'awardName'
+    | `nominee${'Name' | 'Desc' | 'Email' | 'GitHub'}`
+    | 'videoUrl'
+    | 'reason'
+    | 'nominator'
+    | 'nominatorEmail'
+    | 'status'
+    | 'votes'
+    | 'tokenId'
+    | 'tokenTxHash'
+    | 'awardedAt',
+    TableCellValue
+  >;
 
 export class AwardModel extends BiDataTable<Award>() {
   client = larkClient;
@@ -25,5 +32,12 @@ export class AwardModel extends BiDataTable<Award>() {
 }
 
 export class SearchAwardModel extends BiSearch<Award>(AwardModel) {
-  searchKeys = ['awardName', 'nomineeName', 'nomineeDesc', 'reason', 'nominator'];
+  searchKeys = [
+    'awardName',
+    'nomineeName',
+    'nomineeDesc',
+    'nomineeGitHub',
+    'reason',
+    'nominator',
+  ];
 }
