@@ -1,0 +1,54 @@
+name: Contributor Trust Gate
+
+on:
+  pull_request_target:
+    types: [opened, edited, reopened, synchronize, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull request number to recheck
+        required: true
+        type: number
+
+concurrency:
+  group: contributor-trust-${{ github.event.pull_request.number || inputs.pr_number }}
+  cancel-in-progress: true
+
+jobs:
+  contributor-trust:
+    name: Verify contributor evidence
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
+    steps:
+      - name: Resolve pull request number
+        id: pr
+        env:
+          EVENT_PR_NUMBER: ${{ github.event.pull_request.number }}
+          INPUT_PR_NUMBER: ${{ inputs.pr_number }}
+        run: |
+          pr_number="${EVENT_PR_NUMBER:-$INPUT_PR_NUMBER}"
+          test -n "$pr_number"
+          echo "number=$pr_number" >> "$GITHUB_OUTPUT"
+
+      - name: Check out trusted base branch
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.base.sha || github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.3.0
+        with:
+          node-version: 24
+
+      - name: Test trust rules
+        run: node --test .github/scripts/contributor-trust/rules.test.mjs
+
+      - name: Evaluate pull request
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TRUST_PR_NUMBER: ${{ steps.pr.outputs.number }}
+        run: node .github/scripts/contributor-trust/run.mjs
