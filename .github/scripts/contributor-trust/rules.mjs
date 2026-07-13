@@ -33,6 +33,7 @@ export function evaluatePullRequest({
   authorType = 'User',
   changedFiles = 0,
   additions = 0,
+  rewardAuthorization,
 }) {
   if (draft) {
     return { passed: true, skipped: true, missing: [], reviewReasons: [] };
@@ -53,6 +54,11 @@ export function evaluatePullRequest({
     }
     if (!/(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s+#\d+/iu.test(body)) {
       missing.push('使用 Closes/Fixes/Resolves #编号 关联任务');
+    }
+    if (rewardAuthorization?.required && !rewardAuthorization.authorized) {
+      missing.push(
+        `奖励任务 #${rewardAuthorization.issueNumbers.join(', #')} 需要维护者先指派给提交者或添加 implementation-approved 标签`,
+      );
     }
     if (!hasChecked(body, '我已阅读并理解本次改动，能够回答维护者的问题')) {
       missing.push('勾选“已阅读并理解本次改动”责任声明');
@@ -79,4 +85,14 @@ export function evaluatePullRequest({
     missing,
     reviewReasons,
   };
+}
+
+export function linkedIssueNumbers(body = '') {
+  return [
+    ...new Set(
+      [...body.matchAll(/(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s+#(\d+)/giu)].map(match =>
+        Number(match[1]),
+      ),
+    ),
+  ];
 }

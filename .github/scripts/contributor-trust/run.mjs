@@ -1,6 +1,6 @@
 import { appendFile } from 'node:fs/promises';
 
-import { evaluatePullRequest } from './rules.mjs';
+import { evaluatePullRequest, linkedIssueNumbers } from './rules.mjs';
 
 const [owner, repo] = (process.env.GITHUB_REPOSITORY ?? '').split('/');
 const pullNumber = Number(process.env.TRUST_PR_NUMBER);
@@ -71,6 +71,25 @@ async function syncComment(body, createWhenMissing) {
 }
 
 const pull = await api(`/repos/${owner}/${repo}/pulls/${pullNumber}`);
+const linkedIssues = await Promise.all(
+  linkedIssueNumbers(pull.body ?? '').map(number =>
+    api(`/repos/${owner}/${repo}/issues/${number}`, {}, true),
+  ),
+);
+const rewardIssues = linkedIssues.filter(issue =>
+  issue?.labels?.some(label => label.name === 'reward'),
+);
+const rewardAuthorization = rewardIssues.length
+  ? {
+      required: true,
+      issueNumbers: rewardIssues.map(issue => issue.number),
+      authorized: rewardIssues.every(
+        issue =>
+          issue.assignees?.some(assignee => assignee.login === pull.user?.login) ||
+          issue.labels?.some(label => label.name === 'implementation-approved'),
+      ),
+    }
+  : undefined;
 const result = evaluatePullRequest({
   body: pull.body ?? '',
   draft: pull.draft,
@@ -78,11 +97,13 @@ const result = evaluatePullRequest({
   authorType: pull.user?.type,
   changedFiles: pull.changed_files,
   additions: pull.additions,
+  rewardAuthorization,
 });
 
 await ensureLabel('contributor-check:passed', '1f883d', '贡献信息门禁已通过');
 await ensureLabel('needs-contributor-info', 'd1242f', '需要补充可验证的贡献信息');
 await ensureLabel('needs-maintainer-review', 'bf8700', '需要维护者人工复核');
+await ensureLabel('implementation-approved', '8250df', '维护者已批准贡献者实现该奖励任务');
 
 await setLabel('contributor-check:passed', result.passed && !result.skipped);
 await setLabel('needs-contributor-info', !result.passed);

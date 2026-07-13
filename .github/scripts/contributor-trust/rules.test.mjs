@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { evaluatePullRequest } from './rules.mjs';
+import { evaluatePullRequest, linkedIssueNumbers } from './rules.mjs';
 
 const completeBody = `## 变更说明
 
@@ -55,4 +55,33 @@ test('flags bots and unusually large changes for manual review', () => {
   });
   assert.equal(result.passed, true);
   assert.equal(result.reviewReasons.length, 3);
+});
+
+test('requires maintainer authorization for reward work', () => {
+  const result = evaluatePullRequest({
+    body: completeBody,
+    rewardAuthorization: {
+      required: true,
+      authorized: false,
+      issueNumbers: [89],
+    },
+  });
+  assert.equal(result.passed, false);
+  assert.match(result.missing.join('\n'), /implementation-approved/);
+});
+
+test('accepts reward work assigned or approved by a maintainer', () => {
+  const result = evaluatePullRequest({
+    body: completeBody,
+    rewardAuthorization: {
+      required: true,
+      authorized: true,
+      issueNumbers: [89],
+    },
+  });
+  assert.equal(result.passed, true);
+});
+
+test('extracts unique closing issue references', () => {
+  assert.deepEqual(linkedIssueNumbers('Closes #89, fixes #90 and resolves #89'), [89, 90]);
 });
