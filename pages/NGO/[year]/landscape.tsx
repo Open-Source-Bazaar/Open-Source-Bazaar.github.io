@@ -10,14 +10,10 @@ import {
 } from '../../../components/Organization/Landscape';
 import { OrganizationModel, OrganizationYearStatisticModel } from '../../../models/Organization';
 import { I18nContext } from '../../../models/Translation';
-import { lark } from '../../api/Lark/core';
 import { skipBuilding } from '../../api/SSG';
 
 export const getStaticPaths: GetStaticPaths<{ year: string }> = async () => {
-  await lark.getAccessToken();
-
   const yearStore = new OrganizationYearStatisticModel();
-  yearStore.client = lark.client;
 
   const years = await yearStore.getAll();
 
@@ -33,10 +29,7 @@ export const getStaticProps = skipBuilding<Pick<OrganizationModel, 'typeMap'>, {
   async ({ params }) => {
     const { year } = params!;
 
-    await lark.getAccessToken();
-
     const organizationStore = new OrganizationModel();
-    organizationStore.client = lark.client;
 
     const typeMap = await organizationStore.groupAllByType({ startYear: year });
 

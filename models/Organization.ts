@@ -14,7 +14,7 @@ import {
 import { toggle } from 'mobx-restful';
 import { countBy, groupBy } from 'web-utility';
 
-import { STRAPI_API_HOST } from './configuration';
+import { NGO_API_HOST } from './configuration';
 import { SearchableFilter } from './System';
 import { observable } from 'mobx';
 
@@ -54,7 +54,7 @@ export const sortStatistic = (data: Record<string, number>, sortValue = true) =>
     .sort(([kX, vX], [kY, vY]) => (sortValue ? vY - vX : kY.localeCompare(kX)));
 
 export const ngoLarkClient = new HTTPClient({
-  baseURI: STRAPI_API_HOST,
+  baseURI: NGO_API_HOST,
   responseType: 'json',
 });
 
@@ -93,7 +93,7 @@ export class OrganizationModel extends BiDataTable<Organization>() {
     return {
       ...meta,
       ...fields,
-      city: normalizeTextArray(city as TableCellText[]),
+      city: (city as TableCellRelation[])?.map(normalizeText),
       entityType: (entityType as TableCellRelation[])?.map(normalizeText),
       tags: (tags as TableCellRelation[])?.map(normalizeText).toString().split(','),
       website: (website as TableCellLink)?.link,

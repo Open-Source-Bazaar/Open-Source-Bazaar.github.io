@@ -7,13 +7,9 @@ import { ZodiacBar } from 'idea-react';
 import { PageHead } from '../../components/Layout/PageHead';
 import { OrganizationModel } from '../../models/Organization';
 import { I18nContext } from '../../models/Translation';
-import { lark } from '../api/Lark/core';
 
 export const getStaticProps = async () => {
-  await lark.getAccessToken();
-
   const organizationStore = new OrganizationModel();
-  organizationStore.client = lark.client;
 
   const [startYear, endYear] = await organizationStore.getYearRange();
 

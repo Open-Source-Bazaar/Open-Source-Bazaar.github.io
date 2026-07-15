@@ -14,7 +14,6 @@ export const {
   SMTP_PASSWORD,
   VERCEL,
   VERCEL_URL,
-  STRAPI_API_TOKEN,
 } = process.env;
 
 export const API_Host = isServer()
@@ -25,7 +24,7 @@ export const API_Host = isServer()
 
 export const CACHE_HOST = process.env.NEXT_PUBLIC_CACHE_HOST!;
 
-export const STRAPI_API_HOST = process.env.NEXT_PUBLIC_STRAPI_API_HOST!;
+export const NGO_API_HOST = process.env.NEXT_PUBLIC_NGO_API_HOST!;
 
 export const LARK_API_HOST = `${API_Host}/api/Lark/`;
 

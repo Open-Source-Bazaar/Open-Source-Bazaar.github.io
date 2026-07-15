@@ -13,7 +13,6 @@ import {
   OrganizationYearStatisticModel,
 } from '../../../models/Organization';
 import { I18nContext } from '../../../models/Translation';
-import { lark } from '../../api/Lark/core';
 import { skipBuilding } from '../../api/SSG';
 
 const OrganizationCharts = dynamic(() => import('../../../components/Organization/Charts'), {
@@ -26,10 +25,7 @@ interface OrganizationPageProps {
 }
 
 export const getStaticPaths: GetStaticPaths<{ year: string }> = async () => {
-  await lark.getAccessToken();
-
   const yearStore = new OrganizationYearStatisticModel();
-  yearStore.client = lark.client;
 
   const years = await yearStore.getAll();
 
@@ -45,10 +41,7 @@ export const getStaticProps = skipBuilding<OrganizationPageProps, { year: string
   async ({ params }) => {
     const { year } = params!;
 
-    await lark.getAccessToken();
-
     const organizationStore = new OrganizationModel();
-    organizationStore.client = lark.client;
 
     const statistic = await organizationStore.getStatistic({ startYear: year });
 
