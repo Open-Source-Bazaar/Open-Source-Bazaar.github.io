@@ -38,13 +38,23 @@ const rewrites: NextConfig['rewrites'] = async () => ({
       source: '/proxy/geo.datav.aliyun.com/:path*',
       destination: 'https://geo.datav.aliyun.com/:path*',
     },
-    {
-      source: '/recipe/images/:path*',
-      destination: 'https://raw.githubusercontent.com/Gar-b-age/CookLikeHOC/main/images/:path*',
-    },
   ],
   afterFiles: [],
 });
+
+const redirects: NextConfig['redirects'] = async () =>
+  ['/wiki', '/recipe', '/policy'].flatMap(route => [
+    {
+      source: route,
+      destination: `https://wiki.fcc-cd.dev${route}`,
+      permanent: true,
+    },
+    {
+      source: `${route}/:path*`,
+      destination: `https://wiki.fcc-cd.dev${route}/:path*`,
+      permanent: true,
+    },
+  ]);
 
 export default withPWA(
   withLess(
@@ -52,6 +62,7 @@ export default withPWA(
       pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
       output: CI ? 'standalone' : undefined,
       rewrites,
+      redirects,
     }),
   ),
 );
