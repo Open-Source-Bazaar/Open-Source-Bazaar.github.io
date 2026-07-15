@@ -8,7 +8,7 @@
     "install": "pnpx git-utility download https://github.com/Open-Source-Bazaar/key-vault main Open-Source-Bazaar.github.io  ||  true",
     "postinstall": "next typegen",
     "dev": "next dev --webpack",
-    "build": "next build --webpack",
+    "build": "cross-env CI=true  next build --webpack",
     "start": "next start",
     "test": "lint-staged  &&  git add .  &&  tsc --noEmit"
   },
@@ -27,10 +27,10 @@
     "koa-jwt": "^4.0.4",
     "koajax": "^3.3.0",
     "license-filter": "^0.2.5",
-    "marked": "^18.0.6",
+    "marked": "^15.0.12",
     "mime": "^4.1.0",
     "mobx": "^6.16.1",
-    "mobx-github": "^0.6.2",
+    "mobx-github": "^0.7.0",
     "mobx-i18n": "^0.7.5",
     "mobx-lark": "^2.10.0",
     "mobx-react": "^9.2.2",
@@ -66,6 +66,7 @@
     "@types/nodemailer": "^8.0.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "cross-env": "^10.1.0",
     "eslint": "^10.7.0",
     "eslint-config-next": "16.2.10",
     "eslint-config-prettier": "^10.1.8",
@@ -82,16 +83,10 @@
     "prettier-plugin-css-order": "^2.2.0",
     "sass": "^1.101.0",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.63.0"
+    "typescript-eslint": "^8.64.0"
   },
   "resolutions": {
-    "mobx-react-helper": "$mobx-react-helper",
     "next": "$next"
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "next@16.2.10": "patches/next@16.2.10.patch"
-    }
   },
   "prettier": {
     "singleQuote": true,
@@ -104,6 +99,6 @@
     ]
   },
   "lint-staged": {
-    "*.{html,md,less,scss,json,yml,js,mjs,ts,tsx}": "prettier --write"
+    "*.{html,md,less,json,yml,js,mjs,ts,tsx}": "prettier --write"
   }
 }

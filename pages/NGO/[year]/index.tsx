@@ -1,9 +1,8 @@
 import { observer } from 'mobx-react';
 import dynamic from 'next/dynamic';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetStaticPaths } from 'next';
 import { FC, useContext } from 'react';
 import { Button, Container } from 'react-bootstrap';
-import { Minute, Second } from 'web-utility';
 
 import { PageHead } from '../../../components/Layout/PageHead';
 import { CityStatisticMap } from '../../../components/Map/CityStatisticMap';
@@ -15,6 +14,7 @@ import {
 } from '../../../models/Organization';
 import { I18nContext } from '../../../models/Translation';
 import { lark } from '../../api/Lark/core';
+import { skipBuilding } from '../../api/SSG';
 
 const OrganizationCharts = dynamic(() => import('../../../components/Organization/Charts'), {
   ssr: false,
@@ -41,12 +41,10 @@ export const getStaticPaths: GetStaticPaths<{ year: string }> = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps<OrganizationPageProps, { year: string }> = async ({
-  params,
-}) => {
-  const { year } = params!;
+export const getStaticProps = skipBuilding<OrganizationPageProps, { year: string }>(
+  async ({ params }) => {
+    const { year } = params!;
 
-  try {
     await lark.getAccessToken();
 
     const organizationStore = new OrganizationModel();
@@ -55,12 +53,8 @@ export const getStaticProps: GetStaticProps<OrganizationPageProps, { year: strin
     const statistic = await organizationStore.getStatistic({ startYear: year });
 
     return { props: { year, statistic } };
-  } catch (error) {
-    console.error(error);
-
-    return { notFound: true, revalidate: Minute / Second };
-  }
-};
+  },
+);
 
 const OrganizationPage: FC<OrganizationPageProps> = observer(({ year, statistic }) => {
   const { t } = useContext(I18nContext);

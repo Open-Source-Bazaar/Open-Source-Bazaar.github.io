@@ -7,6 +7,7 @@ export const Name = process.env.NEXT_PUBLIC_SITE_NAME,
   DefaultImage = process.env.NEXT_PUBLIC_LOGO!;
 
 export const {
+  CI,
   SMTP_HOST,
   SMTP_PORT = 465,
   SMTP_USER,
