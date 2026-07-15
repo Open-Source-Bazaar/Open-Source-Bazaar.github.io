@@ -13,8 +13,8 @@ import {
   OrganizationYearStatisticModel,
 } from '../../../models/Organization';
 import { I18nContext } from '../../../models/Translation';
-import { lark } from '../../api/Lark/core';
-import { skipBuilding } from '../../api/SSG';
+import { lark } from '../../../lib/lark';
+import { skipBuilding } from '../../../lib/ssg';
 
 const OrganizationCharts = dynamic(() => import('../../../components/Organization/Charts'), {
   ssr: false,

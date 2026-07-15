@@ -10,7 +10,7 @@ import { PageHead } from '../../../components/Layout/PageHead';
 import type { Book, BookReview, BorrowHistory } from '../../../models/Book';
 import { OpenLibraryBorrowFormURL, OpenLibraryReviewFormURL } from '../../../models/configuration';
 import { I18nContext } from '../../../models/Translation';
-import { openLibraryBooks } from '../../api/open-library/books';
+import { openLibraryBooks } from '../../../models/open-library-books';
 
 export const getServerSideProps: GetServerSideProps<Book> = async ({ params }) => {
   const bookId = +(params!.id + '');
