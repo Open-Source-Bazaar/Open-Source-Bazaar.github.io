@@ -30,9 +30,8 @@ export const createI18nStore = <N extends LanguageCode, K extends string>(
   language?: N,
   serializedData?: string,
 ) => {
-  const data = serializedData
-    ? (JSON.parse(serializedData, decodeFunctions) as TranslationMap<K>)
-    : undefined;
+  const data = serializedData && (JSON.parse(serializedData, decodeFunctions) as TranslationMap<K>);
+
   const store = new TranslationModel({
     ...i18nData,
     ...(language && { [language]: data }),
@@ -73,13 +72,11 @@ export const loadSSRLanguage = async (context: NextPageContext) => {
     ...headers,
     ...(language ? { cookie: `language=${language}` } : {}),
   };
-
   const result = await loadLanguageMapFrom(i18nData, header);
 
-  if (!result) return result;
-
-  return {
-    ...result,
-    languageMap: JSON.stringify(result.languageMap, encodeFunctions),
-  };
+  if (result)
+    return {
+      ...result,
+      languageMap: JSON.stringify(result.languageMap, encodeFunctions),
+    };
 };

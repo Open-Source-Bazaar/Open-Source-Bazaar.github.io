@@ -7,14 +7,21 @@ import { Badge, Button, Card, Col, Container, Row, Tab, Table, Tabs } from 'reac
 import { formatDate } from 'web-utility';
 
 import { PageHead } from '../../../components/Layout/PageHead';
+import { larkClient } from '../../../models/Base';
 import type { Book, BookReview, BorrowHistory } from '../../../models/Book';
-import { OpenLibraryBorrowFormURL, OpenLibraryReviewFormURL } from '../../../models/configuration';
+import {
+  API_Host,
+  OpenLibraryBorrowFormURL,
+  OpenLibraryReviewFormURL,
+} from '../../../models/configuration';
 import { I18nContext } from '../../../models/Translation';
-import { openLibraryBooks } from '../../api/open-library/books';
 
 export const getServerSideProps: GetServerSideProps<Book> = async ({ params }) => {
   const bookId = +(params!.id + '');
-  const book = openLibraryBooks.find(({ id }) => id === bookId);
+
+  const { body } = await larkClient.get<Book[]>(`${API_Host}/api/open-library/books`);
+
+  const book = body!.find(({ id }) => id === bookId);
 
   return book ? { props: book } : { notFound: true };
 };
