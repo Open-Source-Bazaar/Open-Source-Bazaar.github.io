@@ -2,7 +2,7 @@ import { Context, Middleware } from 'koa';
 import { marked } from 'marked';
 import { LarkApp, LarkData, normalizeTextArray, TableCellText } from 'mobx-lark';
 
-import { LarkAppMeta } from '../../../models/configuration';
+import { LarkAppMeta } from '../models/configuration';
 
 export const lark = new LarkApp(LarkAppMeta);
 

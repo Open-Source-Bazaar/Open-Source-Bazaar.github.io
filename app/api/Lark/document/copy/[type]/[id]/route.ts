@@ -1,18 +1,18 @@
-import { LarkDocumentPathType } from 'mobx-lark';
+import { DriveFileType, LarkDocumentPathType } from 'mobx-lark';
 import { NextRequest } from 'next/server';
 
 import { safeRoute, verifyJWT } from '../../../../../../../lib/api/route-helper';
-import { lark } from '../../../../../../../pages/api/Lark/core';
+import { lark } from '../../../../../../../lib/lark';
 
 export const POST = safeRoute(
-  async (request: NextRequest, { params }: { params: { type: string; id: string } }) => {
+  async (request: NextRequest, { params }: { params: Promise<{ type: string; id: string }> }) => {
     verifyJWT(request);
 
-    const { type, id } = params;
+    const { type, id } = await params;
     const { name, parentToken, ownerType, ownerId } = (await request.json()) as {
       name: string;
       parentToken?: string;
-      ownerType?: string;
+      ownerType?: 'email' | 'userid' | 'openid';
       ownerId?: string;
     };
 
@@ -25,7 +25,7 @@ export const POST = safeRoute(
 
     if (ownerType && ownerId)
       try {
-        await lark.driveFileStore.transferOwner(type, newId, {
+        await lark.driveFileStore.transferOwner(type as DriveFileType, newId, {
           member_type: ownerType,
           member_id: ownerId,
         });

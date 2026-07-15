@@ -2,7 +2,7 @@ import { Content, ContentModel } from 'mobx-github';
 import { DocumentModel, WikiNodeModel } from 'mobx-lark';
 import { DataObject } from 'mobx-restful';
 
-import { lark } from '../pages/api/Lark/core';
+import { lark } from '../lib/lark';
 import './Base';
 import { LarkWikiDomain, LarkWikiId } from './configuration';
 

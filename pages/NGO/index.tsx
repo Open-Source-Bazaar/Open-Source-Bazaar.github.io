@@ -7,7 +7,7 @@ import { ZodiacBar } from 'idea-react';
 import { PageHead } from '../../components/Layout/PageHead';
 import { OrganizationModel } from '../../models/Organization';
 import { I18nContext } from '../../models/Translation';
-import { lark } from '../api/Lark/core';
+import { lark } from '../../lib/lark';
 
 export const getStaticProps = async () => {
   await lark.getAccessToken();

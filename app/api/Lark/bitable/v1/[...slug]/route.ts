@@ -5,25 +5,28 @@ import {
   requestBodyOf,
   safeRoute,
 } from '../../../../../../lib/api/route-helper';
-import { lark } from '../../../../../../pages/api/Lark/core';
+import { lark } from '../../../../../../lib/lark';
 
-const handler = safeRoute(async (request: NextRequest, { params }: { params: { slug: string[] } }) => {
-  const { slug } = params;
+const handler = safeRoute(
+  async (request: NextRequest, { params }: { params: Promise<{ slug: string[] }> }) => {
+    const { slug } = await params;
 
-  await lark.getAccessToken();
+    await lark.getAccessToken();
 
-  const { status, body } = await lark.client.request({
-    method: request.method,
-    path: `bitable/v1/${slug.join('/')}${request.nextUrl.search}`,
-    headers: forwardedHeadersOf(request),
-    body: await requestBodyOf(request),
-  });
+    const method = request.method as 'GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+    const { status, body } = await lark.client.request({
+      method,
+      path: `bitable/v1/${slug.join('/')}${request.nextUrl.search}`,
+      headers: forwardedHeadersOf(request),
+      body: await requestBodyOf(request),
+    });
 
-  if (request.method === 'HEAD') return new Response(null, { status });
-  if (body instanceof ArrayBuffer) return new Response(body, { status });
+    if (request.method === 'HEAD') return new Response(null, { status });
+    if (body instanceof ArrayBuffer) return new Response(body, { status });
 
-  return Response.json(body ?? {}, { status });
-});
+    return Response.json(body ?? {}, { status });
+  },
+);
 
 export const GET = handler;
 export const POST = handler;

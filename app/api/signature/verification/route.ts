@@ -8,8 +8,8 @@ export const POST = safeRoute(async request => {
     signature: string;
   };
 
-  const rawAlgorithm = JSON.parse(Buffer.from(algorithm, 'base64').toString('utf8')),
-    rawPublicKey = JSON.parse(Buffer.from(publicKey, 'base64').toString('utf8')),
+  const rawAlgorithm = JSON.parse(atob(algorithm)),
+    rawPublicKey = JSON.parse(atob(publicKey)),
     rawSignature = Buffer.from(signature, 'hex'),
     encodedValue = new TextEncoder().encode(value);
 

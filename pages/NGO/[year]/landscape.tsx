@@ -10,8 +10,8 @@ import {
 } from '../../../components/Organization/Landscape';
 import { OrganizationModel, OrganizationYearStatisticModel } from '../../../models/Organization';
 import { I18nContext } from '../../../models/Translation';
-import { lark } from '../../api/Lark/core';
-import { skipBuilding } from '../../api/SSG';
+import { lark } from '../../../lib/lark';
+import { skipBuilding } from '../../../lib/ssg';
 
 export const getStaticPaths: GetStaticPaths<{ year: string }> = async () => {
   await lark.getAccessToken();

@@ -1,13 +1,13 @@
 import { NextRequest } from 'next/server';
 
 import { safeRoute, verifyJWT } from '../../../../../../lib/api/route-helper';
-import { lark } from '../../../../../../pages/api/Lark/core';
+import { lark } from '../../../../../../lib/lark';
 
 export const GET = safeRoute(
-  async (request: NextRequest, { params }: { params: { id: string } }) => {
+  async (request: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
     verifyJWT(request);
 
-    const { id } = params;
+    const { id } = await params;
     const type = request.nextUrl.searchParams.get('type');
 
     await lark.getAccessToken();

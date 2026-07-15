@@ -3,7 +3,7 @@ import { GetStaticProps, GetStaticPropsResult } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { Minute, Second } from 'web-utility';
 
-import { CI } from '../../models/configuration';
+import { CI } from '../models/configuration';
 
 export const skipBuilding =
   <Props extends DataObject, Params extends ParsedUrlQuery = ParsedUrlQuery>(

@@ -5,11 +5,11 @@ import { parseJSON } from 'web-utility';
 
 import { CACHE_HOST } from '../../../../../../models/configuration';
 import { safeRoute } from '../../../../../../lib/api/route-helper';
-import { lark } from '../../../../../../pages/api/Lark/core';
+import { lark } from '../../../../../../lib/lark';
 
 const handler = safeRoute(
-  async (request: NextRequest, { params }: { params: { id: string; name: string } }) => {
-    const { id, name } = params;
+  async (request: NextRequest, { params }: { params: Promise<{ id: string; name: string }> }) => {
+    const { id, name } = await params;
 
     if (request.nextUrl.searchParams.get('cache'))
       return Response.redirect(new URL(request.nextUrl.pathname, CACHE_HOST));
