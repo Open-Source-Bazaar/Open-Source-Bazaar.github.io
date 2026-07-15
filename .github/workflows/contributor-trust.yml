@@ -33,6 +33,6 @@ jobs:
       - name: Record result
         env:
           AUTHOR: ${{ steps.trust.outputs.author }}
-          RISK_LEVEL: ${{ steps.trust.outputs.risk-level }}
-          RISK_SCORE: ${{ steps.trust.outputs.risk-score }}
+          RISK_LEVEL: ${{ steps.trust.outputs['risk-level'] }}
+          RISK_SCORE: ${{ steps.trust.outputs['risk-score'] }}
         run: echo "@${AUTHOR} => ${RISK_LEVEL} (${RISK_SCORE}/100)"
