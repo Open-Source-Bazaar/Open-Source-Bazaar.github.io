@@ -1,25 +1,11 @@
-## 变更说明
+Checklist（清单）:
 
-<!-- 请说明改了什么、为什么这样改，以及主要影响范围。不要只粘贴 Issue 标题。 -->
+<!-- Please follow this checklist and put an x in each of the boxes, like this: [x].（请遵循此清单，并在每个 [ ] 中输入 x，如下所示：[x]。） -->
 
-## 关联任务
+- [ ] Labels
+- [ ] Assignees
+- [ ] Reviewers
 
-<!-- 使用 Closes #123、Fixes #123 或 Resolves #123 关联任务。 -->
+<!--If your pull request closes a GitHub issue, replace the XXXXX below with the issue number.（如果 pull request 关闭一个 GitHub issue，请用 GitHub issue 编号替换下面的 XXXXX）-->
 
 Closes #XXXXX
-
-## 验证方式
-
-<!-- 请填写实际运行的命令、测试场景和结果。未运行测试时请解释原因。 -->
-
-```text
-命令：
-结果：
-```
-
-## 贡献声明
-
-- [ ] 我已阅读并理解本次改动，能够回答维护者的问题
-- [ ] 我已实际运行上方验证步骤，并如实记录结果
-
-AI 使用情况：<!-- 填写“未使用”，或说明使用了什么工具以及人工复核内容 -->

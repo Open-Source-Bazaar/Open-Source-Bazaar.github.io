@@ -6,20 +6,7 @@ labels:
 body:
   - type: markdown
     attributes:
-      value: |
-        This form is created from https://github.com/idea2app/GitHub-reward
-
-        Please discuss the task in GitHub Discussions first. A maintainer should
-        confirm the scope before a reward issue is opened and assigned.
-
-  - type: input
-    id: discussion
-    attributes:
-      label: Approved discussion
-      description: URL of the GitHub Discussion where a maintainer confirmed the task
-      placeholder: https://github.com/orgs/Open-Source-Bazaar/discussions/123
-    validations:
-      required: true
+      value: This form is created from https://github.com/idea2app/GitHub-reward
 
   - type: textarea
     id: description

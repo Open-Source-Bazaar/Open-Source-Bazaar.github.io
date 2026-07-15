@@ -1,54 +1,38 @@
-name: Contributor Trust Gate
+name: Contributor Trust Report
 
 on:
   pull_request_target:
-    types: [opened, edited, reopened, synchronize, ready_for_review]
-  workflow_dispatch:
-    inputs:
-      pr_number:
-        description: Pull request number to recheck
-        required: true
-        type: number
+    types: [opened, reopened, synchronize, ready_for_review]
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  models: read
 
 concurrency:
-  group: contributor-trust-${{ github.event.pull_request.number || inputs.pr_number }}
+  group: contributor-trust-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.actor }}
   cancel-in-progress: true
 
 jobs:
-  contributor-trust:
-    name: Verify contributor evidence
+  report:
+    name: Inspect public contributor signals
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      issues: write
-      pull-requests: read
     steps:
-      - name: Resolve pull request number
-        id: pr
-        env:
-          EVENT_PR_NUMBER: ${{ github.event.pull_request.number }}
-          INPUT_PR_NUMBER: ${{ inputs.pr_number }}
-        run: |
-          pr_number="${EVENT_PR_NUMBER:-$INPUT_PR_NUMBER}"
-          test -n "$pr_number"
-          echo "number=$pr_number" >> "$GITHUB_OUTPUT"
-
-      - name: Check out trusted base branch
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.2
+      - name: Build contributor trust report
+        id: trust
+        uses: Neroxsh/contributor-trust-action@v1
         with:
-          ref: ${{ github.event.pull_request.base.sha || github.event.repository.default_branch }}
-          persist-credentials: false
+          github-token: ${{ github.token }}
 
-      - name: Set up Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.3.0
-        with:
-          node-version: 24
-
-      - name: Test trust rules
-        run: node --test .github/scripts/contributor-trust/rules.test.mjs
-
-      - name: Evaluate pull request
+      - name: Record result
         env:
-          GITHUB_TOKEN: ${{ github.token }}
-          TRUST_PR_NUMBER: ${{ steps.pr.outputs.number }}
-        run: node .github/scripts/contributor-trust/run.mjs
+          AUTHOR: ${{ steps.trust.outputs.author }}
+          RISK_LEVEL: ${{ steps.trust.outputs.risk-level }}
+          RISK_SCORE: ${{ steps.trust.outputs.risk-score }}
+        run: echo "@${AUTHOR} => ${RISK_LEVEL} (${RISK_SCORE}/100)"
