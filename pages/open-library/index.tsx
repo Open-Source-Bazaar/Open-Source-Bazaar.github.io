@@ -9,7 +9,7 @@ import { HeroSection } from '../../components/open-library/HeroSection';
 import { HowItWorks } from '../../components/open-library/HowItWorks';
 import { OpenLibraryMembershipFormURL } from '../../models/configuration';
 import { I18nContext } from '../../models/Translation';
-import { openLibraryBooks } from '../api/open-library/books';
+import { openLibraryBooks } from '../../models/open-library-books';
 
 const OpenLibraryHomepage = observer(() => {
   const { t } = useContext(I18nContext);
