@@ -1,0 +1,38 @@
+# Contributor Trust Policy — opensource-bazaar
+#
+# Tunables for .github/workflows/pr-contributor-trust.yml.
+# Keep this file flat YAML so maintainers can tweak thresholds without
+# touching the workflow source.
+
+version: 1
+
+# Minimum acceptable GitHub account age for human PRs.
+# Anything below this triggers the `trust/medium` label.
+min_account_age_days: 7
+
+# Maximum diff size (additions + deletions) before flagging as `trust/medium`.
+# Set generously: 开源市集 accepts sizable refactors, only true drive-by
+# mega-PRs should be flagged here.
+max_diff_lines: 500
+
+# Minimum PR description length (characters, after trim).
+# Less than this is treated as a "low effort" signal.
+min_description_chars: 20
+
+# Risk levels → label mapping. Colors follow GitHub's standard palette:
+#   - low:    0e8a16 (green)   → no label applied (skip)
+#   - medium: fbca04 (yellow)  → trust/medium
+#   - high:   d93f0b (red)     → trust/high
+risk_labels:
+  medium: trust/medium
+  high: trust/high
+
+# PRs authored by accounts whose `type === "Bot"` OR whose login ends
+# with `[bot]` are unconditionally skipped (the `preflight` job early-exits).
+# Add additional bot-patterns below if needed.
+bot_patterns:
+  - "[bot]"        # GitHub Apps convention
+  - "-bot"         # some self-hosted bots
+  - "dependabot"
+  - "renovate"
+  - "github-actions"
