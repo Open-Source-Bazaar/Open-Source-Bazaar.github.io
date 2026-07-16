@@ -39,6 +39,7 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
     title: t('open_source_projects'),
     subs: [
       { href: '/project', title: t('self_developed_projects') },
+      { href: '/library', title: t('open_library') },
       { href: '/search/project', title: t('bazaar_projects') },
       { href: '/issue', title: 'GitHub issues' },
       { href: '/license-filter', title: t('license_filter') },

@@ -210,6 +210,71 @@ export default {
     'Find corresponding ETFs or index funds, paying attention to fees and fund size.',
   finance_edu_next_3: 'Set up a recurring investment plan and track valuation and drawdown.',
 
+  // Open Library
+  open_library: 'Open Library',
+  library_page_title: 'Open Library',
+  library_page_description:
+    'Browse books about open collaboration, open-source governance, and engineering practice with clear borrowing status and instructions.',
+  library_badge: 'Open Library',
+  library_browse_catalog: 'Browse catalog',
+  library_borrow_guide: 'Borrowing guide',
+  library_stat_total_label: 'Books in catalog',
+  library_stat_total_desc:
+    'Covering open-source culture, community operations, engineering collaboration, and licensing practice.',
+  library_stat_available_label: 'Available now',
+  library_stat_available_desc: 'Contact an administrator to register a borrowing request.',
+  library_stat_borrowed_label: 'Borrowed',
+  library_stat_borrowed_desc: 'Check borrowing details and reserve the next slot after return.',
+  library_catalog_title: 'Book catalog',
+  library_catalog_description:
+    'Review topics, shelf codes, availability, and borrowing notes for each book.',
+  library_status_legend: 'Status: available / borrowed',
+  library_status_available: 'Available',
+  library_status_borrowed: 'Borrowed',
+  library_category_open_source: 'Open-source culture',
+  library_category_community: 'Community operations',
+  library_category_engineering: 'Engineering collaboration',
+  library_category_governance: 'Governance practice',
+  library_category_license: 'Licensing',
+  library_book_cathedral_title: 'The Cathedral and the Bazaar',
+  library_book_cathedral_author: 'Eric S. Raymond',
+  library_book_cathedral_description:
+    'A classic open-source culture essay about open collaboration, fast iteration, and community-driven software development.',
+  library_book_producing_oss_title: 'Producing Open Source Software',
+  library_book_producing_oss_author: 'Karl Fogel',
+  library_book_producing_oss_description:
+    'A practical guide to launching open-source projects, communication, contribution workflows, and maintainer responsibilities.',
+  library_book_pro_git_title: 'Pro Git',
+  library_book_pro_git_author: 'Scott Chacon and Ben Straub',
+  library_book_pro_git_description:
+    'A systematic guide to daily Git collaboration, branching models, and distributed version control workflows.',
+  library_book_community_playbook_title: 'Open Source Community Playbook',
+  library_book_community_playbook_author: 'Open Source Bazaar',
+  library_book_community_playbook_description:
+    'Templates and practices for community organizers covering events, volunteer collaboration, contributor growth, and retrospectives.',
+  library_book_governance_title: 'Open Source Governance Guide',
+  library_book_governance_author: 'Open Source Initiative',
+  library_book_governance_description:
+    'Guidance on governance models, decision-making, codes of conduct, and long-term project sustainability.',
+  library_book_license_title: 'Open Source License Handbook',
+  library_book_license_author: 'Open Source Bazaar',
+  library_book_license_description:
+    'Helps contributors understand common licenses, reuse boundaries, and project compliance checklists.',
+  library_book_available_note:
+    'Available to borrow after registration and administrator confirmation.',
+  library_book_borrowed_note:
+    'Currently borrowed. Contact an administrator to reserve the next slot after return.',
+  library_shelf_code: 'Shelf code',
+  library_borrow_status: 'Borrowing info',
+  library_borrow_guide_description:
+    'Register in three steps; after confirmation, pick up the book offline or agree on a handoff method.',
+  library_guide_step_1: 'Find the book in the catalog and record its title and shelf code.',
+  library_guide_step_2:
+    'Contact an administrator through the bounty or activity page with your name, contact information, and expected return date.',
+  library_guide_step_3:
+    'After confirmation, complete the registration and receive return reminders or reservation queue updates.',
+  library_submit_books: 'Submit a book or request borrowing',
+
   // Hackathon
   hackathon_detail: 'Hackathon Details',
   hackathon_highlights: 'Tracks',
