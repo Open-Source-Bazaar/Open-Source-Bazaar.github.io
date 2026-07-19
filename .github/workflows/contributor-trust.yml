@@ -1,4 +1,4 @@
-name: Contributor Trust Report
+name: Contributor Detection
 
 on:
   issues:
@@ -15,24 +15,26 @@ permissions:
   models: read
 
 concurrency:
-  group: contributor-trust-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.actor }}
+  group: contributor-detection-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.actor }}
   cancel-in-progress: true
 
 jobs:
   detection:
-    name: Inspect public contributor signals
+    name: Detect automated contributors
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
-      - name: Build contributor trust report
-        id: trust
-        uses: Neroxsh/contributor-trust-action@v1
+      - name: Detect contributor automation
+        id: detection
+        uses: Open-Source-Bazaar/contributor-trust-action@main
         with:
           github-token: ${{ github.token }}
+          organization-token: ${{ secrets.PAT }}
+          block-high-confidence-automation: 'true'
 
-      - name: Record result
+      - name: Record detection result
         env:
-          AUTHOR: ${{ steps.trust.outputs.author }}
-          RISK_LEVEL: ${{ steps.trust.outputs['risk-level'] }}
-          RISK_SCORE: ${{ steps.trust.outputs['risk-score'] }}
+          AUTHOR: ${{ steps.detection.outputs.author }}
+          RISK_LEVEL: ${{ steps.detection.outputs['risk-level'] }}
+          RISK_SCORE: ${{ steps.detection.outputs['risk-score'] }}
         run: echo "@${AUTHOR} => ${RISK_LEVEL} (${RISK_SCORE}/100)"
