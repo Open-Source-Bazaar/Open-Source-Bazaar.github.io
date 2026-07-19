@@ -1,12 +1,12 @@
 name: Contributor Trust Report
 
 on:
-  pull_request_target:
-    types: [opened, reopened, synchronize, ready_for_review]
   issues:
     types: [opened]
   issue_comment:
     types: [created]
+  pull_request_target:
+    types: [opened]
 
 permissions:
   contents: read
@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  report:
+  detection:
     name: Inspect public contributor signals
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
