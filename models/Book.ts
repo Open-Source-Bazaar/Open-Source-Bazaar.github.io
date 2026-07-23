@@ -43,7 +43,8 @@ export class SearchBookModel extends ListModel<Book, SearchBookFilter> {
     const { body } = await this.client.get<SearchBookPage>(
       `${this.baseURI}?${buildURLData({ keywords, page, pageSize })}`,
     );
+    if (!body) throw new Error('Failed to load Open Library book search results');
 
-    return { pageData: body?.data || [], totalCount: body?.totalCount || 0 };
+    return { pageData: body.data, totalCount: body.totalCount };
   }
 }

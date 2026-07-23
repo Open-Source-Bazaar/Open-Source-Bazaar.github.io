@@ -214,26 +214,26 @@ export const openLibraryBooks: Book[] = [
   },
 ];
 
-const includesKeyword = (field: string | undefined, keywords: string) =>
-  field?.toLowerCase().includes(keywords);
+const includesKeyword = (field: string | undefined, searchTerm: string) =>
+  field?.toLowerCase().includes(searchTerm);
 
 const getFirstQueryParam = (value: string | string[] | undefined, defaultValue = '') =>
   Array.isArray(value) ? value[0] || defaultValue : value || defaultValue;
 
-const filterBooks = (books: Book[], keywords = '') => {
-  const searchTerm = keywords.trim().toLowerCase();
+const filterBooks = (books: Book[], searchTerm = '') => {
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
 
-  if (!searchTerm) return books;
+  if (!normalizedSearchTerm) return books;
 
   return books.filter(({ title, author, category, language, description, isbn, tags = [] }) => {
-    if (includesKeyword(title, searchTerm)) return true;
-    if (includesKeyword(author, searchTerm)) return true;
-    if (includesKeyword(category, searchTerm)) return true;
-    if (includesKeyword(language, searchTerm)) return true;
-    if (includesKeyword(description, searchTerm)) return true;
-    if (includesKeyword(isbn, searchTerm)) return true;
+    if (includesKeyword(title, normalizedSearchTerm)) return true;
+    if (includesKeyword(author, normalizedSearchTerm)) return true;
+    if (includesKeyword(category, normalizedSearchTerm)) return true;
+    if (includesKeyword(language, normalizedSearchTerm)) return true;
+    if (includesKeyword(description, normalizedSearchTerm)) return true;
+    if (includesKeyword(isbn, normalizedSearchTerm)) return true;
 
-    return tags.some(tag => includesKeyword(tag, searchTerm));
+    return tags.some(tag => includesKeyword(tag, normalizedSearchTerm));
   });
 };
 
@@ -241,17 +241,17 @@ export default function handler(
   { query }: NextApiRequest,
   response: NextApiResponse<Book[] | SearchBookPage>,
 ) {
-  const keywords = getFirstQueryParam(query.keywords);
+  const searchTerm = getFirstQueryParam(query.keywords);
   const page = getFirstQueryParam(query.page);
   const pageSize = getFirstQueryParam(query.pageSize);
 
-  if (!keywords && !pageSize) return response.status(200).json(openLibraryBooks);
+  if (!searchTerm && !page && !pageSize) return response.status(200).json(openLibraryBooks);
 
   const pageIndex = Number(page) || 1;
   const limit = Number(pageSize) || openLibraryBooks.length;
   const safePageIndex = Math.max(1, pageIndex);
   const safeLimit = Math.max(1, limit);
-  const filteredBooks = filterBooks(openLibraryBooks, keywords);
+  const filteredBooks = filterBooks(openLibraryBooks, searchTerm);
   const data = filteredBooks.slice((safePageIndex - 1) * safeLimit, safePageIndex * safeLimit);
 
   response.status(200).json({ data, totalCount: filteredBooks.length });
