@@ -50,8 +50,8 @@ export const BookCard: FC<BookCardProps> = observer(
           <Card.Title className="fw-bold h6 mb-2 text-truncate" title={book.title}>
             {book.title}
           </Card.Title>
-          <Card.Text className="text-muted small mb-2 text-truncate" title={book.author}>
-            {book.author}
+          <Card.Text className="text-muted small mb-2 text-truncate" title={book.authors}>
+            {book.authors}
           </Card.Text>
           {book.category && (
             <Card.Text className="text-muted small mb-3">🏷️ {book.category}</Card.Text>

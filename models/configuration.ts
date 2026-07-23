@@ -49,7 +49,8 @@ export const LarkWikiId = pathname.split('/').pop()!;
 export const LarkBitableId = process.env.NEXT_PUBLIC_LARK_BITABLE_ID!,
   ActivityTableId = process.env.NEXT_PUBLIC_ACTIVITY_TABLE_ID!,
   ProjectTableId = process.env.NEXT_PUBLIC_PROJECT_TABLE_ID!,
-  AwardTableId = process.env.NEXT_PUBLIC_AWARD_TABLE_ID!;
+  AwardTableId = process.env.NEXT_PUBLIC_AWARD_TABLE_ID!,
+  BookTableId = process.env.NEXT_PUBLIC_BOOK_TABLE_ID!;
 
 export const OpenLibraryCatalogURL =
   'https://open-source-bazaar.feishu.cn/share/base/view/shrcnvT0Lyk8LKS8KtPbO9HPPHb';

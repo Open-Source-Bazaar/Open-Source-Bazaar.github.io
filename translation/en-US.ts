@@ -402,7 +402,7 @@ export default {
   book_not_found: 'Book Not Found',
   return_to_catalog: 'Return to Catalog',
   back: 'Back',
-  by_author: ({ author }: Record<'author', string>) => `by ${author}`,
+  by_author: ({ authors }: Record<'authors', string>) => `by ${authors}`,
   currently_borrowed: 'Currently Borrowed',
   currently_unavailable: 'Currently Unavailable',
   request_to_borrow: 'Request to Borrow',
