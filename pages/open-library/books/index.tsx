@@ -1,13 +1,24 @@
 import { observer } from 'mobx-react';
-import { useContext } from 'react';
+import { GetServerSideProps } from 'next';
+import { FC, useContext } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
 import { PageHead } from '../../../components/Layout/PageHead';
 import { BookCard } from '../../../components/open-library/BookCard';
+import { Book, BookModel } from '../../../models/Book';
 import { I18nContext } from '../../../models/Translation';
-import { openLibraryBooks } from '../../api/open-library/books';
 
-const BookCatalog = observer(() => {
+interface BookCatalogProps {
+  books: Book[];
+}
+
+export const getServerSideProps: GetServerSideProps<BookCatalogProps> = async () => ({
+  props: {
+    books: await new BookModel().getAll(),
+  },
+});
+
+const BookCatalog: FC<BookCatalogProps> = observer(({ books }) => {
   const { t } = useContext(I18nContext);
 
   return (
@@ -21,7 +32,7 @@ const BookCatalog = observer(() => {
         </div>
 
         <Row xs={1} md={2} lg={3} className="g-4">
-          {openLibraryBooks.map(book => (
+          {books.map(book => (
             <Col key={book.id}>
               <BookCard book={book} showStatus variant="catalog" className="h-100" />
             </Col>

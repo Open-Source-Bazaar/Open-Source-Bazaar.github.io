@@ -1,19 +1,31 @@
 import Link from 'next/link';
 import { observer } from 'mobx-react';
-import { useContext } from 'react';
+import { GetServerSideProps } from 'next';
+import { FC, useContext } from 'react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 
 import { PageHead } from '../../components/Layout/PageHead';
 import { FeaturedBooks } from '../../components/open-library/FeaturedBooks';
 import { HeroSection } from '../../components/open-library/HeroSection';
 import { HowItWorks } from '../../components/open-library/HowItWorks';
+import { Book, BookModel } from '../../models/Book';
 import { OpenLibraryMembershipFormURL } from '../../models/configuration';
 import { I18nContext } from '../../models/Translation';
-import { openLibraryBooks } from '../api/open-library/books';
 
-const OpenLibraryHomepage = observer(() => {
+interface OpenLibraryHomepageProps {
+  featuredBooks: Book[];
+}
+
+export const getServerSideProps: GetServerSideProps<OpenLibraryHomepageProps> = async () => {
+  const store = new BookModel();
+
+  await store.getList({}, 1, 4);
+
+  return { props: { featuredBooks: store.currentPage } };
+};
+
+const OpenLibraryHomepage: FC<OpenLibraryHomepageProps> = observer(({ featuredBooks }) => {
   const { t } = useContext(I18nContext);
-  const featuredBooks = openLibraryBooks.slice(0, 4);
   const workflowSteps = [
     {
       id: 1,

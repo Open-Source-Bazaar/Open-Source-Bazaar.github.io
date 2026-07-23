@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react';
+import { HTTPError } from 'koajax';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -7,23 +8,17 @@ import { Badge, Button, Card, Col, Container, Row, Tab, Table, Tabs } from 'reac
 import { formatDate } from 'web-utility';
 
 import { PageHead } from '../../../components/Layout/PageHead';
-import { larkClient } from '../../../models/Base';
-import type { Book, BookReview, BorrowHistory } from '../../../models/Book';
-import {
-  API_Host,
-  OpenLibraryBorrowFormURL,
-  OpenLibraryReviewFormURL,
-} from '../../../models/configuration';
+import { BookModel, type Book, type BookReview, type BorrowHistory } from '../../../models/Book';
+import { OpenLibraryBorrowFormURL, OpenLibraryReviewFormURL } from '../../../models/configuration';
 import { I18nContext } from '../../../models/Translation';
 
 export const getServerSideProps: GetServerSideProps<Book> = async ({ params }) => {
-  const bookId = +(params!.id + '');
-
-  const { body } = await larkClient.get<Book[]>(`${API_Host}/api/open-library/books`);
-
-  const book = body!.find(({ id }) => id === bookId);
-
-  return book ? { props: book } : { notFound: true };
+  try {
+    return { props: await new BookModel().getOne(params!.id + '') };
+  } catch (error) {
+    if (error instanceof HTTPError && error.response?.status === 404) return { notFound: true };
+    throw error;
+  }
 };
 
 const RatingStars: FC<Pick<BookReview, 'rating'>> = ({ rating }) => (
@@ -134,19 +129,19 @@ const BorrowHistoryTabContent: FC<{ history?: BorrowHistory[] }> = ({ history })
 const BookDetail: FC<Book> = observer(
   ({
     title,
-    author,
+    authors,
     cover,
     status,
     category,
     language,
     currentHolder,
-    description,
     isbn,
     publisher,
     publishYear,
     pageCount,
     borrowHistory,
     reviews,
+    summary,
   }) => {
     const router = useRouter();
     const { t } = useContext(I18nContext);
@@ -190,19 +185,23 @@ const BookDetail: FC<Book> = observer(
               <Col md={9}>
                 <h1>{title}</h1>
                 <p className="text-muted mb-3">
-                  <cite>{t('by_author', { author })}</cite>
+                  <cite>{t('by_author', { authors })}</cite>
                 </p>
 
                 <div className="mb-3">
-                  <Badge bg="secondary" className="me-2">
-                    {category}
-                  </Badge>
-                  <Badge bg="info" text="dark">
-                    {language}
-                  </Badge>
+                  {category && (
+                    <Badge bg="secondary" className="me-2">
+                      {category}
+                    </Badge>
+                  )}
+                  {language && (
+                    <Badge bg="info" text="dark">
+                      {language}
+                    </Badge>
+                  )}
                 </div>
 
-                <p className="lead">{description}</p>
+                <p className="lead">{summary}</p>
 
                 <Row as="ul" className="list-unstyled mt-4 g-3" sm={2} md={4}>
                   <Col as="li">

@@ -375,7 +375,7 @@ export default {
   book_not_found: '沒有找到書籍',
   return_to_catalog: '返回目錄',
   back: '返回',
-  by_author: ({ author }: Record<'author', string>) => `作者：${author}`,
+  by_author: ({ authors }: Record<'authors', string>) => `作者：${authors}`,
   currently_borrowed: '目前已借出',
   currently_unavailable: '目前不可借',
   request_to_borrow: '申請借書',
