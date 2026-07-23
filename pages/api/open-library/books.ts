@@ -244,10 +244,12 @@ export default function handler(
 
   if (!page && !pageSize) return response.status(200).json(openLibraryBooks);
 
-  const pageIndex = Math.max(1, Number(page) || 1);
-  const limit = Math.max(1, Number(pageSize) || openLibraryBooks.length);
+  const pageIndex = Number(page) || 1;
+  const limit = Number(pageSize) || openLibraryBooks.length;
+  const safePageIndex = Math.max(1, pageIndex);
+  const safeLimit = Math.max(1, limit);
   const filteredBooks = filterBooks(openLibraryBooks, keywords);
-  const data = filteredBooks.slice((pageIndex - 1) * limit, pageIndex * limit);
+  const data = filteredBooks.slice((safePageIndex - 1) * safeLimit, safePageIndex * safeLimit);
 
   response.status(200).json({ data, totalCount: filteredBooks.length });
 }
