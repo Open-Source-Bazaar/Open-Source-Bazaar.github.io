@@ -217,20 +217,23 @@ export const openLibraryBooks: Book[] = [
 const includesKeyword = (field: string | undefined, keywords: string) =>
   field?.toLowerCase().includes(keywords);
 
-const filterBooks = (books: Book[], keywords = '') => {
-  const normalizedKeywords = keywords.trim().toLowerCase();
+const getFirstQueryParam = (value: string | string[] | undefined, defaultValue = '') =>
+  Array.isArray(value) ? value[0] || defaultValue : value || defaultValue;
 
-  if (!normalizedKeywords) return books;
+const filterBooks = (books: Book[], keywords = '') => {
+  const searchTerm = keywords.trim().toLowerCase();
+
+  if (!searchTerm) return books;
 
   return books.filter(({ title, author, category, language, description, isbn, tags = [] }) => {
-    if (includesKeyword(title, normalizedKeywords)) return true;
-    if (includesKeyword(author, normalizedKeywords)) return true;
-    if (includesKeyword(category, normalizedKeywords)) return true;
-    if (includesKeyword(language, normalizedKeywords)) return true;
-    if (includesKeyword(description, normalizedKeywords)) return true;
-    if (includesKeyword(isbn, normalizedKeywords)) return true;
+    if (includesKeyword(title, searchTerm)) return true;
+    if (includesKeyword(author, searchTerm)) return true;
+    if (includesKeyword(category, searchTerm)) return true;
+    if (includesKeyword(language, searchTerm)) return true;
+    if (includesKeyword(description, searchTerm)) return true;
+    if (includesKeyword(isbn, searchTerm)) return true;
 
-    return tags.some(tag => includesKeyword(tag, normalizedKeywords));
+    return tags.some(tag => includesKeyword(tag, searchTerm));
   });
 };
 
@@ -238,11 +241,11 @@ export default function handler(
   { query }: NextApiRequest,
   response: NextApiResponse<Book[] | SearchBookPage>,
 ) {
-  const keywords = Array.isArray(query.keywords) ? query.keywords[0] : query.keywords || '';
-  const page = Array.isArray(query.page) ? query.page[0] : query.page;
-  const pageSize = Array.isArray(query.pageSize) ? query.pageSize[0] : query.pageSize;
+  const keywords = getFirstQueryParam(query.keywords);
+  const page = getFirstQueryParam(query.page);
+  const pageSize = getFirstQueryParam(query.pageSize);
 
-  if (!page && !pageSize) return response.status(200).json(openLibraryBooks);
+  if (!keywords && !pageSize) return response.status(200).json(openLibraryBooks);
 
   const pageIndex = Number(page) || 1;
   const limit = Number(pageSize) || openLibraryBooks.length;
