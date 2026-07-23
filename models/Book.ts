@@ -1,4 +1,5 @@
 import { Filter, ListModel } from 'mobx-restful';
+import { buildURLData } from 'web-utility';
 
 import { ownClient } from './Base';
 
@@ -25,27 +26,20 @@ export interface Book
 
 export type SearchBookFilter = Filter<Book> & { keywords?: string };
 
-let bookListCache: Book[] | undefined;
+export interface SearchBookPage {
+  data: Book[];
+  totalCount: number;
+}
 
 export class SearchBookModel extends ListModel<Book, SearchBookFilter> {
   client = ownClient;
   baseURI = 'open-library/books';
 
   async loadPage(page = this.pageIndex, pageSize = this.pageSize, { keywords = '' } = {}) {
-    const body = bookListCache || (await this.client.get<Book[]>(this.baseURI)).body || [];
+    const { body } = await this.client.get<SearchBookPage>(
+      `${this.baseURI}?${buildURLData({ keywords, page, pageSize })}`,
+    );
 
-    bookListCache = body;
-
-    const normalizedKeyword = keywords.trim().toLowerCase();
-    const bookList = normalizedKeyword
-      ? body.filter(({ title, author, category, language, description, isbn, tags = [] }) =>
-          [title, author, category, language, description, isbn, ...tags].some(field =>
-            field?.toLowerCase().includes(normalizedKeyword),
-          ),
-        )
-      : body;
-    const pageData = bookList.slice((page - 1) * pageSize, page * pageSize);
-
-    return { pageData, totalCount: bookList.length };
+    return { pageData: body?.data || [], totalCount: body?.totalCount || 0 };
   }
 }

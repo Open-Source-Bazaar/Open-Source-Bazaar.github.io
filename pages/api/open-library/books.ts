@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import type { Book } from '../../../models/Book';
+import type { Book, SearchBookPage } from '../../../models/Book';
 
 export const openLibraryBooks: Book[] = [
   {
@@ -214,6 +214,38 @@ export const openLibraryBooks: Book[] = [
   },
 ];
 
-export default function handler(_: NextApiRequest, response: NextApiResponse<Book[]>) {
-  response.status(200).json(openLibraryBooks);
+const includesKeyword = (field: string | undefined, keywords: string) =>
+  field?.toLowerCase().includes(keywords);
+
+const filterBooks = (books: Book[], keywords = '') => {
+  const normalizedKeywords = keywords.trim().toLowerCase();
+
+  if (!normalizedKeywords) return books;
+
+  return books.filter(({ title, author, category, language, description, isbn, tags = [] }) => {
+    if (includesKeyword(title, normalizedKeywords)) return true;
+    if (includesKeyword(author, normalizedKeywords)) return true;
+    if (includesKeyword(category, normalizedKeywords)) return true;
+    if (includesKeyword(language, normalizedKeywords)) return true;
+    if (includesKeyword(description, normalizedKeywords)) return true;
+    if (includesKeyword(isbn, normalizedKeywords)) return true;
+
+    return tags.some(tag => includesKeyword(tag, normalizedKeywords));
+  });
+};
+
+export default function handler(
+  { query }: NextApiRequest,
+  response: NextApiResponse<Book[] | SearchBookPage>,
+) {
+  const { keywords = '', page, pageSize } = query;
+
+  if (!page && !pageSize) return response.status(200).json(openLibraryBooks);
+
+  const pageIndex = Math.max(1, Number(page) || 1);
+  const limit = Math.max(1, Number(pageSize) || openLibraryBooks.length);
+  const filteredBooks = filterBooks(openLibraryBooks, keywords + '');
+  const data = filteredBooks.slice((pageIndex - 1) * limit, pageIndex * limit);
+
+  response.status(200).json({ data, totalCount: filteredBooks.length });
 }
