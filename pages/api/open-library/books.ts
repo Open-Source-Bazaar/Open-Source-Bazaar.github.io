@@ -238,13 +238,15 @@ export default function handler(
   { query }: NextApiRequest,
   response: NextApiResponse<Book[] | SearchBookPage>,
 ) {
-  const { keywords = '', page, pageSize } = query;
+  const keywords = Array.isArray(query.keywords) ? query.keywords[0] : query.keywords || '';
+  const page = Array.isArray(query.page) ? query.page[0] : query.page;
+  const pageSize = Array.isArray(query.pageSize) ? query.pageSize[0] : query.pageSize;
 
   if (!page && !pageSize) return response.status(200).json(openLibraryBooks);
 
   const pageIndex = Math.max(1, Number(page) || 1);
   const limit = Math.max(1, Number(pageSize) || openLibraryBooks.length);
-  const filteredBooks = filterBooks(openLibraryBooks, keywords + '');
+  const filteredBooks = filterBooks(openLibraryBooks, keywords);
   const data = filteredBooks.slice((pageIndex - 1) * limit, pageIndex * limit);
 
   response.status(200).json({ data, totalCount: filteredBooks.length });

@@ -35,7 +35,11 @@ export class SearchBookModel extends ListModel<Book, SearchBookFilter> {
   client = ownClient;
   baseURI = 'open-library/books';
 
-  async loadPage(page = this.pageIndex, pageSize = this.pageSize, { keywords = '' } = {}) {
+  async loadPage(
+    page = this.pageIndex,
+    pageSize = this.pageSize,
+    { keywords = '' }: SearchBookFilter = {},
+  ) {
     const { body } = await this.client.get<SearchBookPage>(
       `${this.baseURI}?${buildURLData({ keywords, page, pageSize })}`,
     );
