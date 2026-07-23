@@ -217,7 +217,7 @@ export const openLibraryBooks: Book[] = [
 const includesKeyword = (field: string | undefined, searchTerm: string) =>
   field?.toLowerCase().includes(searchTerm);
 
-const getFirstQueryParam = (value: string | string[] | undefined, defaultValue = '') =>
+const getQueryParamString = (value: string | string[] | undefined, defaultValue = '') =>
   Array.isArray(value) ? value[0] || defaultValue : value || defaultValue;
 
 const filterBooks = (books: Book[], searchTerm = '') => {
@@ -241,9 +241,9 @@ export default function handler(
   { query }: NextApiRequest,
   response: NextApiResponse<Book[] | SearchBookPage>,
 ) {
-  const searchTerm = getFirstQueryParam(query.keywords);
-  const page = getFirstQueryParam(query.page);
-  const pageSize = getFirstQueryParam(query.pageSize);
+  const searchTerm = getQueryParamString(query.keywords);
+  const page = getQueryParamString(query.page);
+  const pageSize = getQueryParamString(query.pageSize);
 
   if (!searchTerm && !page && !pageSize) return response.status(200).json(openLibraryBooks);
 
