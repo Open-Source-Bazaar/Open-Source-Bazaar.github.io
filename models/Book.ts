@@ -1,15 +1,7 @@
-import {
-  BiDataQueryOptions,
-  BiDataTable,
-  BiSearch,
-  normalizeText,
-  normalizeTextArray,
-  TableCellLink,
-} from 'mobx-lark';
-import { DataObject } from 'mobx-restful';
+import { BiDataQueryOptions, BiDataTable, BiSearch } from 'mobx-lark';
 
-import { fileURLOf, larkClient } from './Base';
-import { BookTableId, LarkBitableId } from './configuration';
+import { larkClient } from './Base';
+import { BookTableId, LibraryBaseId } from './configuration';
 
 export interface BorrowHistory
   extends Record<'borrower' | 'borrowDate', string>, Partial<Record<'returnDate', string>> {}
@@ -44,35 +36,8 @@ export class BookModel extends BiDataTable<Book>() {
 
   queryOptions: BiDataQueryOptions = { text_field_as_array: false };
 
-  constructor(appId = LarkBitableId, tableId = BookTableId) {
+  constructor(appId = LibraryBaseId, tableId = BookTableId) {
     super(appId, tableId);
-  }
-
-  /** Normalize Lark book records into the shared book card/detail shape used by Open Library pages. */
-  mapFields({ fields, id, ...meta }: { fields: DataObject; id: string }): Book {
-    const { amount, authors, cover, donors, keepers, keeperEmails, link, summary, tags, ...rest } =
-      fields;
-    const normalizedTags = normalizeTextArray(tags) || [];
-    const normalizedKeepers = normalizeTextArray(keepers) || [];
-    const totalAmount = Number(amount) || DefaultBookAmount;
-    const status = normalizedKeepers.length < totalAmount ? 'available' : 'borrowed';
-
-    return {
-      ...meta,
-      id,
-      ...(rest as Omit<Book, 'id'>),
-      amount: Number(amount) || undefined,
-      authors: normalizeText(authors),
-      cover: cover ? fileURLOf(cover, true) : undefined,
-      currentHolder: normalizedKeepers.join(', ') || undefined,
-      donors: normalizeTextArray(donors) || [],
-      keepers: normalizedKeepers,
-      keeperEmails: normalizeTextArray(keeperEmails) || [],
-      link: (link as TableCellLink)?.link,
-      status,
-      summary: normalizeText(summary),
-      tags: normalizedTags,
-    };
   }
 }
 

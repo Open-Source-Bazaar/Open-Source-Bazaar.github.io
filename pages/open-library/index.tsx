@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { observer } from 'mobx-react';
-import { GetServerSideProps } from 'next';
 import { FC, useContext } from 'react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
+import { Minute, Second } from 'web-utility';
 
 import { PageHead } from '../../components/Layout/PageHead';
 import { FeaturedBooks } from '../../components/open-library/FeaturedBooks';
@@ -11,18 +11,17 @@ import { HowItWorks } from '../../components/open-library/HowItWorks';
 import { Book, BookModel } from '../../models/Book';
 import { OpenLibraryMembershipFormURL } from '../../models/configuration';
 import { I18nContext } from '../../models/Translation';
+import { skipBuilding } from '../api/SSG';
 
 interface OpenLibraryHomepageProps {
   featuredBooks: Book[];
 }
 
-export const getServerSideProps: GetServerSideProps<OpenLibraryHomepageProps> = async () => {
-  const store = new BookModel();
+export const getStaticProps = skipBuilding<OpenLibraryHomepageProps>(async () => {
+  const featuredBooks = await new BookModel().getList({}, 1, 4);
 
-  await store.getList({}, 1, 4);
-
-  return { props: { featuredBooks: store.currentPage } };
-};
+  return { props: { featuredBooks }, revalidate: Minute / Second };
+});
 
 const OpenLibraryHomepage: FC<OpenLibraryHomepageProps> = observer(({ featuredBooks }) => {
   const { t } = useContext(I18nContext);

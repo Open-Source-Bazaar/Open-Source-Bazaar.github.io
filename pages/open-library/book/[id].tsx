@@ -1,130 +1,26 @@
 import { observer } from 'mobx-react';
-import { HTTPError } from 'koajax';
-import { GetServerSideProps } from 'next';
+import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FC, useContext } from 'react';
-import { Badge, Button, Card, Col, Container, Row, Tab, Table, Tabs } from 'react-bootstrap';
-import { formatDate } from 'web-utility';
+import { Badge, Button, Card, Col, Container, Row, Tab, Tabs } from 'react-bootstrap';
 
 import { PageHead } from '../../../components/Layout/PageHead';
-import { BookModel, type Book, type BookReview, type BorrowHistory } from '../../../models/Book';
-import { OpenLibraryBorrowFormURL, OpenLibraryReviewFormURL } from '../../../models/configuration';
+import { BorrowHistoryTabContent } from '../../../components/open-library/Borrow';
+import { ReviewTabContent } from '../../../components/open-library/Review';
+import { BookModel, type Book } from '../../../models/Book';
+import { OpenLibraryBorrowFormURL } from '../../../models/configuration';
 import { I18nContext } from '../../../models/Translation';
 
-export const getServerSideProps: GetServerSideProps<Book> = async ({ params }) => {
-  try {
-    return { props: await new BookModel().getOne(params!.id + '') };
-  } catch (error) {
-    if (error instanceof HTTPError && error.response?.status === 404) return { notFound: true };
-    throw error;
-  }
-};
+export const getServerSideProps = compose<{ id: string }>(
+  cache(),
+  errorLogger,
+  async ({ params }) => {
+    const props = await new BookModel().getOne(params!.id + '');
 
-const RatingStars: FC<Pick<BookReview, 'rating'>> = ({ rating }) => (
-  <ol className="list-unstyled d-flex gap-1 mb-0">
-    {[...Array(5)].map((_, index) => (
-      <li key={index} className="text-warning">
-        {index < rating ? '\u2605' : '\u2606'}
-      </li>
-    ))}
-  </ol>
+    return { props };
+  },
 );
-
-const ReviewCard: FC<BookReview> = ({ reviewer, rating, comment, date }) => (
-  <Card className="mb-3 shadow-sm" body>
-    <div className="d-flex justify-content-between align-items-center mb-2">
-      <h5 className="mb-0">{reviewer}</h5>
-      <RatingStars rating={rating} />
-    </div>
-    <Card.Text>{comment}</Card.Text>
-    <Card.Text className="small text-muted">{formatDate(date, 'YYYY-MM-DD')}</Card.Text>
-  </Card>
-);
-
-const ReviewTabContent: FC<{ reviews?: BookReview[] }> = ({ reviews }) => {
-  const { t } = useContext(I18nContext);
-
-  return reviews?.[0] ? (
-    <>
-      {reviews.map(({ reviewer, rating, comment, date }) => (
-        <ReviewCard key={`${reviewer}-${date}`} {...{ reviewer, rating, comment, date }} />
-      ))}
-      <div className="text-center mt-4">
-        <Button
-          variant="outline-primary"
-          href={OpenLibraryReviewFormURL}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {t('add_your_review')}
-        </Button>
-      </div>
-    </>
-  ) : (
-    <div className="text-center py-5">
-      <p className="mb-4">{t('be_first_to_review')}</p>
-      <Button
-        variant="primary"
-        href={OpenLibraryReviewFormURL}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {t('write_review')}
-      </Button>
-    </div>
-  );
-};
-
-const BorrowHistoryRow: FC<BorrowHistory> = ({ borrower, borrowDate, returnDate }) => {
-  const { t } = useContext(I18nContext);
-
-  return (
-    <tr>
-      <td>{borrower}</td>
-      <td>{formatDate(borrowDate, 'YYYY-MM-DD')}</td>
-      <td>{returnDate ? formatDate(returnDate, 'YYYY-MM-DD') : '-'}</td>
-      <td>
-        {returnDate ? (
-          <Badge bg="success">{t('returned')}</Badge>
-        ) : (
-          <Badge bg="warning" text="dark">
-            {t('active')}
-          </Badge>
-        )}
-      </td>
-    </tr>
-  );
-};
-
-const BorrowHistoryTabContent: FC<{ history?: BorrowHistory[] }> = ({ history }) => {
-  const { t } = useContext(I18nContext);
-
-  return history?.[0] ? (
-    <Table hover responsive>
-      <thead>
-        <tr>
-          <th>{t('borrower')}</th>
-          <th>{t('borrow_date')}</th>
-          <th>{t('return_date')}</th>
-          <th>{t('status')}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {history.map(({ borrower, borrowDate, returnDate }) => (
-          <BorrowHistoryRow
-            key={`${borrower}-${borrowDate}`}
-            {...{ borrower, borrowDate, returnDate }}
-          />
-        ))}
-      </tbody>
-    </Table>
-  ) : (
-    <div className="text-center py-5">
-      <p>{t('not_borrowed_yet')}</p>
-    </div>
-  );
-};
 
 const BookDetail: FC<Book> = observer(
   ({

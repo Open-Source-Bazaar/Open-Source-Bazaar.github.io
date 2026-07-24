@@ -1,25 +1,28 @@
 import { observer } from 'mobx-react';
-import { GetServerSideProps } from 'next';
+import { ScrollList } from 'mobx-restful-table';
 import { FC, useContext } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
+import { Minute, Second } from 'web-utility';
 
 import { PageHead } from '../../../components/Layout/PageHead';
 import { BookCard } from '../../../components/open-library/BookCard';
 import { Book, BookModel } from '../../../models/Book';
 import { I18nContext } from '../../../models/Translation';
+import { skipBuilding } from '../../api/SSG';
 
 interface BookCatalogProps {
   books: Book[];
 }
 
-export const getServerSideProps: GetServerSideProps<BookCatalogProps> = async () => ({
-  props: {
-    books: await new BookModel().getAll(),
-  },
+export const getStaticProps = skipBuilding<BookCatalogProps>(async () => {
+  const books = await new BookModel().getList({}, 1, 9);
+
+  return { props: { books }, revalidate: Minute / Second };
 });
 
 const BookCatalog: FC<BookCatalogProps> = observer(({ books }) => {
-  const { t } = useContext(I18nContext);
+  const i18n = useContext(I18nContext);
+  const { t } = i18n;
 
   return (
     <Container fluid="xl" className="px-3">
@@ -31,13 +34,20 @@ const BookCatalog: FC<BookCatalogProps> = observer(({ books }) => {
           <p className="lead text-muted">{t('book_catalog_description')}</p>
         </div>
 
-        <Row xs={1} md={2} lg={3} className="g-4">
-          {books.map(book => (
-            <Col key={book.id}>
-              <BookCard book={book} showStatus variant="catalog" className="h-100" />
-            </Col>
-          ))}
-        </Row>
+        <ScrollList
+          translator={i18n}
+          store={new BookModel()}
+          defaultData={books}
+          renderList={books => (
+            <Row xs={1} md={2} lg={3} className="g-4">
+              {books.map(book => (
+                <Col key={book.id}>
+                  <BookCard book={book} showStatus variant="catalog" className="h-100" />
+                </Col>
+              ))}
+            </Row>
+          )}
+        />
       </div>
     </Container>
   );
