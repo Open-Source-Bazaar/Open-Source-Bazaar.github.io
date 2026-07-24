@@ -49,7 +49,7 @@ const SearchNameMap = ({ t }: typeof i18n): Record<string, string> => ({
 });
 
 const BookSearchResultCard: FC<Book & { className?: string }> = ({ className, ...book }) => (
-  <BookCard className={className} book={book} variant="catalog" />
+  <BookCard {...{ className, book }} variant="catalog" />
 );
 
 const SearchCardMap: Record<string, CardPageProps['Card']> = {

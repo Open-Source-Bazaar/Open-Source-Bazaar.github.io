@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import { ScrollList } from 'mobx-restful-table';
-import { FC, useContext } from 'react';
+import { FC, useContext, useMemo } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Minute, Second } from 'web-utility';
 
@@ -21,7 +21,8 @@ export const getStaticProps = skipBuilding<BookCatalogProps>(async () => {
 });
 
 const BookCatalog: FC<BookCatalogProps> = observer(({ books }) => {
-  const i18n = useContext(I18nContext);
+  const i18n = useContext(I18nContext),
+    store = useMemo(() => new BookModel(), []);
   const { t } = i18n;
 
   return (
@@ -36,7 +37,7 @@ const BookCatalog: FC<BookCatalogProps> = observer(({ books }) => {
 
         <ScrollList
           translator={i18n}
-          store={new BookModel()}
+          store={store}
           defaultData={books}
           renderList={books => (
             <Row xs={1} md={2} lg={3} className="g-4">

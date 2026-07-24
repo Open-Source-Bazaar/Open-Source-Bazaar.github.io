@@ -29,8 +29,6 @@ export interface Book
   tags?: string[];
 }
 
-const DefaultBookAmount = 1;
-
 export class BookModel extends BiDataTable<Book>() {
   client = larkClient;
 
