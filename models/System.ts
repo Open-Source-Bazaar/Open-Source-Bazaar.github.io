@@ -6,6 +6,7 @@ import { Constructor } from 'web-utility';
 import { SearchActivityModel } from './Activity';
 import { SearchAwardModel } from './Award';
 import { ownClient } from './Base';
+import { SearchBookModel } from './Book';
 import { SearchOrganizationModel } from './Organization';
 import { SearchProjectModel } from './Project';
 
@@ -24,6 +25,7 @@ export type CityCoordinateMap = Record<string, [number, number]>;
 export class SystemModel extends BaseModel {
   searchMap = {
     activity: SearchActivityModel,
+    book: SearchBookModel,
     project: SearchProjectModel,
     award: SearchAwardModel,
     NGO: SearchOrganizationModel,

@@ -1,14 +1,29 @@
 import { observer } from 'mobx-react';
-import { useContext } from 'react';
+import { ScrollList } from 'mobx-restful-table';
+import { FC, useContext, useMemo } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
+import { Minute, Second } from 'web-utility';
 
 import { PageHead } from '../../../components/Layout/PageHead';
 import { BookCard } from '../../../components/open-library/BookCard';
+import { Book, BookModel } from '../../../models/Book';
 import { I18nContext } from '../../../models/Translation';
-import { openLibraryBooks } from '../../api/open-library/books';
+import { skipBuilding } from '../../api/SSG';
 
-const BookCatalog = observer(() => {
-  const { t } = useContext(I18nContext);
+interface BookCatalogProps {
+  books: Book[];
+}
+
+export const getStaticProps = skipBuilding<BookCatalogProps>(async () => {
+  const books = await new BookModel().getList({}, 1, 9);
+
+  return { props: { books }, revalidate: Minute / Second };
+});
+
+const BookCatalog: FC<BookCatalogProps> = observer(({ books }) => {
+  const i18n = useContext(I18nContext),
+    store = useMemo(() => new BookModel(), []);
+  const { t } = i18n;
 
   return (
     <Container fluid="xl" className="px-3">
@@ -20,13 +35,20 @@ const BookCatalog = observer(() => {
           <p className="lead text-muted">{t('book_catalog_description')}</p>
         </div>
 
-        <Row xs={1} md={2} lg={3} className="g-4">
-          {openLibraryBooks.map(book => (
-            <Col key={book.id}>
-              <BookCard book={book} showStatus variant="catalog" className="h-100" />
-            </Col>
-          ))}
-        </Row>
+        <ScrollList
+          translator={i18n}
+          store={store}
+          defaultData={books}
+          renderList={books => (
+            <Row xs={1} md={2} lg={3} className="g-4">
+              {books.map(book => (
+                <Col key={book.id}>
+                  <BookCard book={book} showStatus variant="catalog" className="h-100" />
+                </Col>
+              ))}
+            </Row>
+          )}
+        />
       </div>
     </Container>
   );
