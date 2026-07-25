@@ -23,6 +23,7 @@ reviews:
         - "components/**"
         - "models/**"
         - "!pages/**/*.md"
+        - ".coderabbit.yaml"
         - "AGENTS.md"
         - "CONTRIBUTING.md"
         - ".github/copilot-instructions.md"
