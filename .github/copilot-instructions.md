@@ -1,281 +1,145 @@
-# Open Source Bazaar - GitHub Copilot Instructions
+# Open Source Bazaar — GitHub Copilot Instructions
 
-Open Source Bazaar is an open-source project showcase platform built with Next.js 15, TypeScript, React Bootstrap, and MobX. It includes license filters, Wiki knowledge base, volunteer showcase, Lark integration, and other features.
+These instructions apply to the entire repository. Read
+[`AGENTS.md`](../AGENTS.md) first and use
+[`CONTRIBUTING.md`](../CONTRIBUTING.md) for the complete workflow.
 
-Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
+## Source of truth
 
-## Critical Requirements
+Before changing code, inspect the current issue, maintainer comments, relevant
+source files, tests, `package.json`, `pnpm-workspace.yaml`,
+`eslint.config.ts`, `tsconfig.json`, and affected workflows.
 
-⚠️ **MANDATORY NODE.JS VERSION**: This project requires **Node.js >=20**. The build works on Node.js 20+ but may have warnings.
+Executable configuration and the latest maintainer direction take precedence
+over prose. Do not repeat commands, versions, routes, or project assumptions
+from an older PR without verifying them in the current branch.
 
-- Check Node.js version: `node --version`
-- Development and linting commands work on Node.js 20+
-- Use **PNPM** as package manager, not NPM or Yarn
+## Current repository
 
-## Working Effectively
+- Default branch: `main`
+- Package manager: pnpm
+- Application: Next.js 16, React 19, and strict TypeScript 5
+- UI and styles: React Bootstrap, Bootstrap utilities, Less/CSS Modules
+- State and clients: MobX and the existing models
+- Internationalization: `translation/zh-CN.ts`,
+  `translation/zh-TW.ts`, and `translation/en-US.ts`
 
-### Initial Setup (REQUIRED for all development)
+Treat `package.json` and the lockfile as authoritative for exact versions.
 
-1. **Install global pnpm**: `npm install -g pnpm`
-2. **Install dependencies**: `pnpm install` -- takes 1-3 minutes. NEVER CANCEL. Set timeout to 5+ minutes.
-3. **Verify setup**: `pnpm --version` (should be 10.x+)
+## Setup
 
-**Important**: If you see "node_modules missing" error, you MUST run `pnpm install` first before any other commands.
-
-### Development Workflow (FULLY VALIDATED)
-
-- **Start development server**: `pnpm dev` -- starts in 5-15 seconds on http://localhost:3000
-- **Run linting**: `pnpm lint` -- takes 15 seconds. NEVER CANCEL. Set timeout to 2+ minutes.
-- **Run tests**: `pnpm test` -- runs lint-staged + lint, takes 15 seconds. Set timeout to 2+ minutes.
-
-### Build Process
-
-- **Production build**: `pnpm build` -- works on Node.js 20+ (estimated 30s-2 minutes)
-  - NEVER CANCEL. Set timeout to 5+ minutes.
-- **Static export**: Available but not commonly used in development
-
-## Validation Scenarios
-
-After making ANY changes, ALWAYS validate by running through these scenarios:
-
-### Manual Testing Requirements
-
-1. **Start development server**: `pnpm dev` and verify it starts without errors
-2. **Navigate to homepage**: Visit http://localhost:3000 and verify page loads with navigation menu
-3. **Test core pages**:
-   - License filter: http://localhost:3000/license-filter (interactive license selection tool)
-   - Wiki pages: http://localhost:3000/policy (policy documents from GitHub)
-   - Volunteer page: http://localhost:3000/volunteer (contributor showcase)
-   - Projects: http://localhost:3000/project (GitHub repository listings)
-4. **Test API endpoints**: Verify GitHub API integrations work
-5. **Check responsive design**: Test mobile/desktop layouts with React Bootstrap components
-6. **Verify i18n functionality**: Check Chinese/English language switching works
-
-### Pre-commit Validation
-
-ALWAYS run before committing changes:
+The deployment workflow uses Node.js 24. Use a compatible modern Node.js
+version and either an installed pnpm command or Corepack:
 
 ```bash
-npm test     # Runs linting + staged file checks
+node --version
+corepack pnpm --version
+corepack pnpm install --frozen-lockfile
+corepack pnpm dev
 ```
 
-## Key Project Structure
+If pnpm is already installed, the equivalent `pnpm` commands are valid.
 
-### Important Directories
+Read lifecycle scripts before installation. The current `install` script
+attempts an optional key-vault download and tolerates failure; never commit
+downloaded vault content, credentials, tokens, or local environment files.
 
-- `pages/` - Next.js pages and API routes
-- `components/` - Reusable React components with Bootstrap styling
-- `models/` - MobX stores and data models
-- `translation/` - i18n language files (zh-CN, en-US, zh-TW)
-- `styles/` - CSS and styling files
-- `public/` - Static assets
+## Synchronize a fork
 
-### Configuration Files
-
-- `package.json` - Dependencies and scripts
-- `next.config.ts` - Next.js configuration with MDX support
-- `tsconfig.json` - TypeScript configuration
-- `eslint.config.ts` - ESLint configuration
-- `babel.config.js` - Babel configuration
-
-### Key Dependencies
-
-- **Next.js 15** - React framework
-- **React Bootstrap 2.10** - UI component library
-- **MobX 6.13** - State management
-- **MobX-GitHub 0.4** - GitHub API integration
-- **MobX-i18n 0.7** - Internationalization
-- **License-Filter 0.2** - License filtering functionality
-- **Marked 16.2** - Markdown processing
-
-## Development Standards and Best Practices
-
-Based on comprehensive PR review analysis, follow these critical development standards:
-
-### Architecture and Code Organization
-
-#### Component and Import Standards
-
-- **ALWAYS use React Bootstrap components** instead of custom HTML elements
-- Use utilities from established libraries: 'web-utility'
-- Import `'./Base'` in model files for proper configuration
-
-#### Error Handling and Static Generation
-
-- **Natural error throwing** for static generation - let errors bubble up to catch build issues
-- Ensure build passes before pushing - resolve issues at compile time
-
-### UI/UX Standards
-
-#### Component Usage Patterns
-
-```typescript
-// ✅ Correct - use React Bootstrap components
-import { Button, Badge, Breadcrumb, Card, Container } from 'react-bootstrap';
-
-<Button variant="outline-primary" size="sm" href={url} target="_blank">
-  {t('edit_on_github')}
-</Button>
-
-<Badge bg="secondary">{label}</Badge>
-
-// ❌ Wrong - custom HTML elements
-<a href={url} className="btn btn-outline-primary">Edit</a>
-<span className="badge bg-secondary">{label}</span>
-```
-
-#### Semantic HTML Structure
-
-- Use ordered lists (`<ol>`) for countable items, unordered lists (`<ul>`) for navigation
-- Apply proper semantic structure: `<article>`, `<header>`, `<section>`
-- Use `list-unstyled` class for first-level lists to remove default styling
-
-### Code Quality Standards
-
-#### Modern ECMAScript Features
-
-- Use optional chaining and modern JavaScript features
-- Let TypeScript infer types when possible to avoid verbose annotations
-- Use modern ECMAScript patterns for cleaner, more maintainable code
-
-#### Import and Type Management
-
-- Import from established sources: ContentModel from mobx-github, utilities from web-utility
-- Import configuration files where needed: `'./Base'` for GitHub client setup
-- Use minimal exports and avoid unnecessary custom implementations
-- Use configured clients rather than creating new ones
-
-### Translation and Internationalization
-
-#### Critical Translation Requirements
-
-- **ALL user-facing text** MUST be translated using i18n system
-- This includes button text, labels, error messages, placeholder text, and dynamic content
-- Use the `t()` function from I18nContext for all translations
-
-#### Translation Patterns
-
-- Use the `t()` function from I18nContext for all user-facing text
-- Translate all button text, labels, error messages, and dynamic content
-- Avoid hardcoded text in any language
-
-#### Translation Key Management
-
-- Use generic terms unless specifically scoped: `t('knowledge_base')` not `t('policy_documents')`
-- Add translation keys to ALL language files: `zh-CN.ts`, `en-US.ts`, `zh-TW.ts`
-- Remove unused translation keys when replacing with generic ones
-
-### Data Modeling and Content Management
-
-#### Content Model Patterns
-
-- Use ContentModel with configured client from mobx-github
-- Import configuration via `'./Base'` to ensure proper GitHub client setup
-- Handle Base64 content decoding when processing GitHub API responses
-
-#### Tree Structure and Navigation
-
-- Use `treeFrom` utility from web-utility for hierarchical data structures
-- Follow established patterns for tree node organization and navigation
-
-### GitHub Integration Standards
-
-#### API Usage Patterns
-
-- Import configured `githubClient` from `models/Base.ts`
-
-#### Authentication and Rate Limiting
-
-- GitHub API authentication is configured in `models/Base.ts`
-- Use the configured client to avoid rate limiting and authentication issues
-- Don't create separate GitHub API instances
-
-### Build and Development Process
-
-#### Pre-commit Standards
-
-1. **Run linting**: `pnpm lint` to auto-fix formatting
-2. **Check build**: Ensure `pnpm build` passes
-3. **Validate translations**: Verify all text is properly translated
-4. **Remove unused code**: Clean up unused imports and translation keys
-
-#### Code Review Compliance
-
-- **Follow exact code suggestions** from reviews when provided
-- Use **minimal approach** - only include explicitly requested functionality
-- **Don't add extra features** not specified in requirements
-- **Address reviewer feedback completely** before requesting re-review
-
-## Common Commands Reference
-
-### Package Management
+Create work from the current upstream `main`, not merely a potentially stale
+fork branch:
 
 ```bash
-pnpm install          # Install dependencies (1-3 minutes)
-pnpm --version        # Check pnpm version
+git remote add upstream https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io.git
+git fetch upstream
+git switch main
+git merge --ff-only upstream/main
+git push origin main
+git switch -c feat/short-description
 ```
 
-### Development
+If `upstream` already exists, verify its URL instead of adding it again. Use a
+`docs/`, `fix/`, or `chore/` prefix when that better describes the task.
+
+## Commands that exist
 
 ```bash
-pnpm dev             # Start development server (5-15s)
-pnpm build           # Production build (30s-2min)
-pnpm start           # Start production server
+pnpm dev
+pnpm build
+pnpm start
+pnpm exec prettier --check <changed-files>
+pnpm exec eslint <changed-code-files>
+pnpm exec tsc --noEmit
 ```
 
-### Code Quality
+There is no `pnpm lint` script. Do not invent one.
+
+The current `pnpm test` command runs `lint-staged`, then `git add .`, then
+`tsc --noEmit`. It mutates the Git index and only formats files already staged
+when `lint-staged` starts. Read `package.json`, inspect `git status` before and
+afterward, and do not stage unrelated work.
+
+## Implementation rules
+
+- Search the current code and every open or closed PR touching the same
+  function or files before implementing.
+- Keep one reviewable goal per PR and avoid unrelated refactors.
+- Reuse existing components, models, clients, dependencies, and nearby
+  patterns.
+- Follow ESLint and Prettier; the current formatting uses single quotes,
+  trailing commas, a 100-character print width, and no parentheses around a
+  single arrow-function parameter.
+- Keep strict TypeScript compatibility. Object shapes normally use
+  `interface`, and imports are managed by `simple-import-sort`.
+- Use `I18nContext` / `t()` for new user-facing text and update all three
+  translation files.
+- Preserve semantic HTML, keyboard access, labels, and responsive behavior.
+- Do not update the lockfile, reformat the repository, or add dependencies
+  unless the task requires it.
+
+The tracked `.env` contains repository runtime configuration. Do not add
+secrets to it. Put local secrets in an ignored local environment file such as
+`.env.local`, and never commit credentials or private user data.
+
+## Validation and CI limits
+
+Run checks that match the changed scope. For TypeScript or UI work, normally
+run:
 
 ```bash
-pnpm lint            # Run ESLint with auto-fix (15s)
-pnpm test            # Run tests (lint-staged + lint, 15s)
+pnpm exec prettier --check <changed-files>
+pnpm exec eslint <changed-code-files>
+pnpm exec tsc --noEmit
+pnpm build
 ```
 
-## Troubleshooting
+For page changes, also run `pnpm dev` and inspect the affected routes,
+responsive layout, and language switching.
 
-### Common Issues and Solutions
+The current CI/CD workflow is triggered by pushes, but checkout, Node setup,
+and deployment are conditional on Vercel secrets. It does not provide a
+general PR lint, type-check, or build gate for external forks. A fork workflow
+may also wait for maintainer approval. Local validation evidence in the PR is
+therefore required.
 
-#### Build and Development Issues
+## Pull requests and rewards
 
-- **"Unsupported engine" warnings**: Expected on Node.js <22, development still works
-- **Build hangs**: Never cancel builds - they may take several minutes, set appropriate timeouts
-- **Missing dependencies**: Always run `pnpm install` first
+- Check the issue state, assignees, comments, Development links, and all
+  related open and closed PRs before starting.
+- Fill the repository PR checklist truthfully and include Summary, Changes,
+  Validation, and Scope/Risks.
+- Use `Closes #<issue>` only when the PR should close that issue.
+- Do not claim an external mirror task unless its claim protocol is confirmed
+  for this repository.
 
-#### Component and Styling Issues
+For issues labelled `reward`, closing through a merged PR triggers automation
+that finds one merged closing PR and writes reward metadata to a Git tag and
+issue comment. This records allocation data; it does not verify a currency's
+value, escrow funds, transfer payment, or guarantee acceptance. Confirm those
+terms with the named payer, and record a reward as earned only after settlement.
 
-- **Custom HTML not working**: Replace with React Bootstrap components
-- **Translation not showing**: Ensure all text uses `t()` function and keys exist in all language files
-- **GitHub API errors**: Verify you're using configured `githubClient` from `models/Base.ts`
+## Security
 
-#### Data and Content Issues
-
-- **Base64 content errors**: Use `atob(item.content)` to decode GitHub API responses
-- **Missing content**: Check ContentModel configuration and repository access
-- **Tree structure problems**: Use `treeFrom()` utility from web-utility
-
-### Development Environment Setup
-
-- Clear browser cache if components don't render properly
-- Restart development server after major configuration changes
-- Verify all translation files are updated when adding new keys
-
-## Project-Specific Patterns
-
-### Wiki System Architecture
-
-- Uses GitHub ContentModel to access policy documents from `fpsig/open-source-policy` repository
-- Renders markdown content with front-matter metadata
-- Supports hierarchical document structure with breadcrumb navigation
-
-### License Filter Integration
-
-- Interactive multi-step license selection process
-- Uses `license-filter` package for license recommendation logic
-- Supports multiple languages with comprehensive i18n coverage
-
-### Volunteer Management
-
-- Displays GitHub organization contributors
-- Integrates with OSS Insight widgets for contributor analytics
-- Uses GitHub API for real-time contributor data
-
-Always prioritize these project-specific standards over generic Next.js or React guidance when working in this specific codebase.
+Never expose tokens, cookies, passwords, private keys, key-vault data, or
+production user data. Report vulnerabilities through the repository's private
+Security reporting channel rather than publishing exploit details.
