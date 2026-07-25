@@ -22,7 +22,7 @@ reviews:
         - "pages/**"
         - "components/**"
         - "models/**"
-        - "!**/*.md"
+        - "!pages/**/*.md"
         - "AGENTS.md"
         - "CONTRIBUTING.md"
         - ".github/copilot-instructions.md"
