@@ -38,19 +38,23 @@ AI 编码 Agent。目标是让每个变更都可审查、可验证，并且与�
 
 ## 3. 开发环境
 
-CI 使用 Node.js 24；本地环境应使用兼容的现代 Node.js 版本和 pnpm。
+部署工作流使用 Node.js 24；本地环境应使用兼容的现代 Node.js 版本。可以使用已安装的
+pnpm，也可以通过 Corepack 运行：
 
 ```bash
 node --version
-pnpm --version
-pnpm install
-pnpm dev
+corepack pnpm --version
+corepack pnpm install --frozen-lockfile
+corepack pnpm dev
 ```
+
+如果系统已经安装 pnpm，直接使用对应的 `pnpm` 命令即可。
 
 开发服务器默认运行在 <http://localhost:3000>。
 
-安装依赖时可能会执行 `package.json` 中的生命周期脚本。Agent 必须先阅读这些脚本，
-不得把凭据、私有 key-vault 内容或本地环境文件提交到仓库。
+安装依赖时会执行 `package.json` 中的生命周期脚本。当前 `install` 脚本会尝试下载可选
+key-vault，失败不会中断安装。Agent 必须先阅读这些脚本，不得把下载的 vault 内容、
+凭据或本地环境文件提交到仓库。
 
 ## 4. 选择并声明任务
 
@@ -62,13 +66,18 @@ pnpm dev
 
 ## 5. 分支和提交
 
-从最新的 `main` 创建一个范围明确的分支：
+从上游仓库最新的 `main` 创建一个范围明确的分支，而不是只信任可能过期的 fork：
 
 ```bash
+git remote add upstream https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io.git
+git fetch upstream
 git switch main
-git pull --ff-only
+git merge --ff-only upstream/main
+git push origin main
 git switch -c feat/short-description
 ```
+
+如果 `upstream` 已存在，先验证其 URL，不要重复添加。
 
 文档、修复和维护任务可以分别使用 `docs/`、`fix/`、`chore/` 前缀。提交信息应简洁
 说明意图，例如：
@@ -83,7 +92,7 @@ fix(finance): preserve selected risk filter
 - 不要改动无关文件；
 - 不要更新 lockfile；
 - 不要重新格式化整个仓库；
-- 不要提交生成目录、编辑器设置、环境文件或凭据。
+- 不要提交生成目录、编辑器设置、本地环境文件或凭据。
 
 ## 6. 代码规范
 
@@ -155,6 +164,10 @@ pnpm build
 
 无法运行某项验证时，在 PR 中写明原因；不要声称未执行的检查已经通过。
 
+当前 CI/CD 在 push 时触发，但 checkout、Node 设置和部署取决于 Vercel secrets。它不为
+外部 fork 提供通用的 lint、类型检查或 build 门禁，而且首次 fork workflow 可能等待维护者
+批准。因此 PR 中必须提供本地验证证据，不能只依赖绿色状态。
+
 ## 8. Pull Request
 
 推送分支并创建 PR，目标分支为 `main`。PR 描述至少包含：
@@ -168,8 +181,10 @@ pnpm build
 填写 `.github/PULL_REQUEST_TEMPLATE.md` 中适用的清单项。只有实际设置了 label、
 assignee 或 reviewer 才勾选对应项目。
 
-奖励 issue 的自动化会在 issue 被合并后的关闭 PR 解决时生成奖励数据。合并前不要
-把奖励描述为已获得，也不要在代码、提交或评论中发布钱包私钥或其他凭据。
+带有 `reward` label 的 issue 经合并 PR 关闭后，自动化会找到一个已合并的关闭 PR，并在
+Git tag 和 issue 评论中记录奖励分配数据。它不会验证币种价值、escrow、实际转账或验收
+承诺。应先向 issue 中的 payer 确认这些条件，结算完成前不要把奖励描述为已获得，也不要
+在代码、提交或评论中发布钱包私钥或其他凭据。
 
 ## 9. AI Agent 工作协议
 
@@ -196,6 +211,9 @@ Agent 不得：
 普通 bug 和功能建议使用 GitHub issue。发现真实安全漏洞或可能泄露数据的问题时，
 不要公开 exploit、凭据或敏感样本；使用仓库 Security 页面提供的私密渠道，或先联系
 维护者确认安全报告方式。
+
+仓库已跟踪的 `.env` 包含运行配置，但不得向其中添加 secret。本地 secret 应放入被
+Git 忽略的 `.env.local` 等本地文件。
 
 提交 PR 后保持可响应：处理 review，重新运行受影响检查，并在实现或验收条件变化时
 更新 PR 描述。

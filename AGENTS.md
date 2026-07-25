@@ -40,18 +40,22 @@ lib/           领域工具
 ## 常用命令
 
 ```bash
-pnpm install
-pnpm dev
-pnpm exec prettier --check <changed-files>
-pnpm exec eslint <changed-code-files>
-pnpm exec tsc --noEmit
-pnpm build
+corepack pnpm install --frozen-lockfile
+corepack pnpm dev
+corepack pnpm exec prettier --check <changed-files>
+corepack pnpm exec eslint <changed-code-files>
+corepack pnpm exec tsc --noEmit
+corepack pnpm build
 ```
+
+如果 pnpm 已安装，可省略 `corepack` 前缀。从 fork 开始工作时，先 fetch 正确的
+`upstream` 并从 `upstream/main` 创建分支。
 
 仅修改本指南时：
 
 ```bash
-pnpm exec prettier --check CONTRIBUTING.md AGENTS.md
+corepack pnpm exec prettier --check CONTRIBUTING.md AGENTS.md \
+  .github/copilot-instructions.md
 ```
 
 注意：当前 `pnpm test` 会执行 `git add .`。在有无关修改的工作区运行前先读
@@ -59,13 +63,14 @@ pnpm exec prettier --check CONTRIBUTING.md AGENTS.md
 
 ## 实现规则
 
-- 先搜索已有代码和开放 PR，避免重复实现。
+- 先搜索已有代码，以及修改相同功能或文件的开放和关闭 PR，避免重复实现。
 - 只修改任务需要的文件，不做顺手重构。
 - 跟随相邻代码模式；优先复用现有组件、模型、客户端和依赖。
 - TypeScript 保持 strict 兼容，遵循 ESLint 和 Prettier。
 - 用户可见文案使用 `I18nContext` / `t()`，同步三份翻译。
 - 不因方便而更新 lockfile、格式化全仓库或降低检查级别。
-- 不提交环境文件、token、cookie、密码、私钥或真实用户数据。
+- 不向已跟踪的 `.env` 添加 secret；本地 secret 使用被忽略的 `.env.local`。
+- 不提交 token、cookie、密码、私钥、vault 内容或真实用户数据。
 
 ## 奖励任务
 
@@ -74,7 +79,8 @@ pnpm exec prettier --check CONTRIBUTING.md AGENTS.md
 3. 开始前确认币种、结算方式和验收规则。
 4. 从最新 `main` 建分支。
 5. PR 中列出真实验证结果并使用 `Closes #<issue>`。
-6. 只有合并并完成奖励流程后，才把奖励记录为已获得。
+6. 奖励自动化只记录分配元数据，不验证价值、escrow 或实际付款。
+7. 只有合并并完成结算后，才把奖励记录为已获得。
 
 ## 完成条件
 
@@ -82,4 +88,5 @@ pnpm exec prettier --check CONTRIBUTING.md AGENTS.md
 - 格式、类型、构建或范围对应的检查已运行；
 - 未运行的检查被明确说明；
 - PR 描述包含 Summary、Changes、Validation、Scope/Risks；
+- 已认识到外部 fork 的 CI 不一定执行 lint、类型检查或 build；
 - 没有凭据、调试残留、虚假结果或未授权副作用。
