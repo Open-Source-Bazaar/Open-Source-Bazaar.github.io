@@ -50,7 +50,15 @@ Create work from the current upstream `main`, not merely a potentially stale
 fork branch:
 
 ```bash
-git remote add upstream https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io.git
+upstream_url=https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io.git
+if git remote get-url upstream >/dev/null 2>&1; then
+  if [ "$(git remote get-url upstream)" != "$upstream_url" ]; then
+    echo "upstream points to an unexpected repository" >&2
+    exit 1
+  fi
+else
+  git remote add upstream "$upstream_url"
+fi
 git fetch upstream
 git switch main
 git merge --ff-only upstream/main
@@ -58,17 +66,20 @@ git push origin main
 git switch -c feat/short-description
 ```
 
-If `upstream` already exists, verify its URL instead of adding it again. Use a
-`docs/`, `fix/`, or `chore/` prefix when that better describes the task.
+The URL check deliberately stops the sequence when an existing `upstream`
+points elsewhere. Use a `docs/`, `fix/`, or `chore/` prefix when that better
+describes the task.
 
 ## Commands that exist
+
+Replace the existing example path below with the files changed by the PR:
 
 ```bash
 pnpm dev
 pnpm build
 pnpm start
-pnpm exec prettier --check <changed-files>
-pnpm exec eslint <changed-code-files>
+pnpm exec prettier --check pages/index.tsx
+pnpm exec eslint pages/index.tsx
 pnpm exec tsc --noEmit
 ```
 
@@ -103,12 +114,12 @@ secrets to it. Put local secrets in an ignored local environment file such as
 
 ## Validation and CI limits
 
-Run checks that match the changed scope. For TypeScript or UI work, normally
-run:
+Run checks that match the changed scope. For TypeScript or UI work, replace
+the existing example path with the files changed by the PR:
 
 ```bash
-pnpm exec prettier --check <changed-files>
-pnpm exec eslint <changed-code-files>
+pnpm exec prettier --check pages/index.tsx
+pnpm exec eslint pages/index.tsx
 pnpm exec tsc --noEmit
 pnpm build
 ```
