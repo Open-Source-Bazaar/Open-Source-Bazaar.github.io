@@ -69,7 +69,15 @@ key-vault，失败不会中断安装。Agent 必须先阅读这些脚本，不�
 从上游仓库最新的 `main` 创建一个范围明确的分支，而不是只信任可能过期的 fork：
 
 ```bash
-git remote add upstream https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io.git
+upstream_url=https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io.git
+if git remote get-url upstream >/dev/null 2>&1; then
+  if [ "$(git remote get-url upstream)" != "$upstream_url" ]; then
+    echo "upstream points to an unexpected repository" >&2
+    exit 1
+  fi
+else
+  git remote add upstream "$upstream_url"
+fi
 git fetch upstream
 git switch main
 git merge --ff-only upstream/main
@@ -77,7 +85,7 @@ git push origin main
 git switch -c feat/short-description
 ```
 
-如果 `upstream` 已存在，先验证其 URL，不要重复添加。
+该 URL 检查会在已有 `upstream` 指向其他地址时停止流程，避免从错误的上游同步。
 
 文档、修复和维护任务可以分别使用 `docs/`、`fix/`、`chore/` 前缀。提交信息应简洁
 说明意图，例如：
@@ -140,16 +148,19 @@ fix(finance): preserve selected risk filter
 ### 仅 Markdown
 
 ```bash
-pnpm exec prettier --check CONTRIBUTING.md AGENTS.md
+pnpm exec prettier --check CONTRIBUTING.md AGENTS.md .github/copilot-instructions.md
 ```
 
 同时手动检查链接、标题层级、代码块和命令是否存在。
 
 ### TypeScript / React
 
+下面的 `pages/index.tsx` 是语法有效的现有示例路径；验证实际变更时，将其替换为本次
+修改的文件路径。
+
 ```bash
-pnpm exec prettier --check <changed-files>
-pnpm exec eslint <changed-files>
+pnpm exec prettier --check pages/index.tsx
+pnpm exec eslint pages/index.tsx
 pnpm exec tsc --noEmit
 pnpm build
 ```
@@ -176,7 +187,7 @@ pnpm build
 - **Changes**：修改的文件和行为；
 - **Validation**：实际运行的命令及结果；
 - **Scope / Risks**：未处理内容、兼容性或后续工作；
-- 对应 issue 的关闭引用，例如 `Closes #90`。
+- 仅当该 PR 应关闭对应 issue 时，添加关闭引用，例如 `Closes #90`。
 
 填写 `.github/PULL_REQUEST_TEMPLATE.md` 中适用的清单项。只有实际设置了 label、
 assignee 或 reviewer 才勾选对应项目。
