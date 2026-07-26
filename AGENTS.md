@@ -39,11 +39,14 @@ lib/           领域工具
 
 ## 常用命令
 
+下面的 `pages/index.tsx` 是语法有效的现有示例路径；验证实际变更时，将其替换为本次
+修改的文件路径。
+
 ```bash
 corepack pnpm install --frozen-lockfile
 corepack pnpm dev
-corepack pnpm exec prettier --check <changed-files>
-corepack pnpm exec eslint <changed-code-files>
+corepack pnpm exec prettier --check pages/index.tsx
+corepack pnpm exec eslint pages/index.tsx
 corepack pnpm exec tsc --noEmit
 corepack pnpm build
 ```
@@ -78,7 +81,7 @@ corepack pnpm exec prettier --check CONTRIBUTING.md AGENTS.md \
 2. 留言声明范围；不要假设外部镜像的 claim 命令在这里有效。
 3. 开始前确认币种、结算方式和验收规则。
 4. 从最新 `main` 建分支。
-5. PR 中列出真实验证结果并使用 `Closes #<issue>`。
+5. PR 中列出真实验证结果；仅当该 PR 应关闭对应 issue 时使用 `Closes #<issue>`。
 6. 奖励自动化只记录分配元数据，不验证价值、escrow 或实际付款。
 7. 只有合并并完成结算后，才把奖励记录为已获得。
 
