@@ -60,15 +60,13 @@ else
   git remote add upstream "$upstream_url"
 fi
 git fetch upstream
-git switch main
-git merge --ff-only upstream/main
-git push origin main
-git switch -c feat/short-description
+git switch -c feat/short-description upstream/main
 ```
 
 The URL check deliberately stops the sequence when an existing `upstream`
-points elsewhere. Use a `docs/`, `fix/`, or `chore/` prefix when that better
-describes the task.
+points elsewhere. Creating the feature branch directly from `upstream/main`
+also avoids modifying the fork's remote `main`. Use a `docs/`, `fix/`, or
+`chore/` prefix when that better describes the task.
 
 ## Commands that exist
 

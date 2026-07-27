@@ -79,13 +79,11 @@ else
   git remote add upstream "$upstream_url"
 fi
 git fetch upstream
-git switch main
-git merge --ff-only upstream/main
-git push origin main
-git switch -c feat/short-description
+git switch -c feat/short-description upstream/main
 ```
 
 该 URL 检查会在已有 `upstream` 指向其他地址时停止流程，避免从错误的上游同步。
+直接从 `upstream/main` 创建功能分支也不会修改 fork 的远程 `main`。
 
 文档、修复和维护任务可以分别使用 `docs/`、`fix/`、`chore/` 前缀。提交信息应简洁
 说明意图，例如：
