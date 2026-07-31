@@ -1,0 +1,45 @@
+name: PR Contributor Trust
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  trust-check:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+      contents: read
+    steps:
+      - name: Flag suspicious bot patterns
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const pull = context.payload.pull_request;
+            const actor = (pull.user && pull.user.login) || '';
+            const login = actor.toLowerCase();
+            const title = (pull.title || '').toLowerCase();
+            const body = (pull.body || '').toLowerCase();
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const prNumber = pull.number;
+
+            const suspiciousActor = login.includes('[bot]') || login.includes('dependabot') || login.includes('renovate');
+            const suspiciousContent = title.includes('auto') || title.includes('generated') || body.includes('i am an ai') || body.includes('generated with');
+            const missingChecklist = !body.includes('- [x]') && body.length < 80;
+
+            if (suspiciousActor || suspiciousContent || missingChecklist) {
+              const reason = `PR trust check: suspicious contributor profile or incomplete manual verification in PR description.\n\nDetected by PR Contributor Trust: actor=${actor}, title=${pull.title || '(none)'}, missing checklist=${missingChecklist}.`;
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: prNumber,
+                body: reason
+              });
+
+              core.setFailed('PR needs manual human review before trust score is accepted.');
+            }

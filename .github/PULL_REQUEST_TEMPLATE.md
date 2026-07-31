@@ -5,6 +5,9 @@ Checklist（清单）:
 - [ ] Labels
 - [ ] Assignees
 - [ ] Reviewers
+- [ ] I confirmed I am not a bot and manually reviewed this change.
+- [ ] I listed tests, manual verification, or reproduction steps.
+- [ ] I reviewed recent commits on this branch for noisy/irrelevant churn.
 
 <!--If your pull request closes a GitHub issue, replace the XXXXX below with the issue number.（如果 pull request 关闭一个 GitHub issue，请用 GitHub issue 编号替换下面的 XXXXX）-->
 
