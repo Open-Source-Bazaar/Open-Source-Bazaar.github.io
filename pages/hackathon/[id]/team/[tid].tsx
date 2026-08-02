@@ -1,8 +1,9 @@
 import { TableCellLocation, TableCellUser, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
-import { GetStaticProps } from 'next';
 import { FC, useContext, useMemo, useState } from 'react';
 import { Breadcrumb, Button, Col, Container, Modal, Nav, Ratio, Row } from 'react-bootstrap';
+import { Minute, Second } from 'web-utility';
+
 import { CommentBox } from '../../../../components/Activity/CommentBox';
 import {
   compactSummaryOf,
@@ -23,44 +24,46 @@ import {
 } from '../../../../models/Hackathon';
 import { I18nContext } from '../../../../models/Translation';
 import { lark } from '../../../api/Lark/core';
-import { skipBuildingAll } from '../../../api/SSG';
+import { skipBuilding, skipBuildingAll } from '../../../api/SSG';
 
 import styles from '../../../../styles/HackathonTeam.module.less';
 
 export const getStaticPaths = skipBuildingAll;
 
-export const getStaticProps: GetStaticProps<
-  ProjectPageProps,
-  Record<'id' | 'tid', string>
-> = async ({ params }) => {
-  await lark.getAccessToken();
+export const getStaticProps = skipBuilding<ProjectPageProps, Record<'id' | 'tid', string>>(
+  async ({ params }) => {
+    await lark.getAccessToken();
 
-  const activityStore = new ActivityModel();
-  activityStore.client = lark.client;
+    const activityStore = new ActivityModel();
+    activityStore.client = lark.client;
 
-  const activity = await activityStore.getOne(params!.id);
-  const { appId, tableIdMap } = activity.databaseSchema || {};
+    const activity = await activityStore.getOne(params!.id);
+    const { appId, tableIdMap } = activity.databaseSchema || {};
 
-  if (!appId || !tableIdMap?.Project || !tableIdMap?.Member || !tableIdMap?.Product)
-    return { notFound: true };
+    if (!appId || !tableIdMap?.Project || !tableIdMap?.Member || !tableIdMap?.Product)
+      return { notFound: true };
 
-  const projectStore = new ProjectModel(appId, tableIdMap.Project);
-  projectStore.client = lark.client;
+    const projectStore = new ProjectModel(appId, tableIdMap.Project);
+    projectStore.client = lark.client;
 
-  const project = await projectStore.getOne(params!.tid);
+    const project = await projectStore.getOne(params!.tid);
 
-  const memberStore = new MemberModel(appId, tableIdMap.Member);
-  memberStore.client = lark.client;
-  const productStore = new ProductModel(appId, tableIdMap.Product);
-  productStore.client = lark.client;
+    const memberStore = new MemberModel(appId, tableIdMap.Member);
+    memberStore.client = lark.client;
+    const productStore = new ProductModel(appId, tableIdMap.Product);
+    productStore.client = lark.client;
 
-  // Get approved members for this project
-  const [members, products] = await Promise.all([
-    memberStore.getAll({ project: project.name as string, status: 'approved' }),
-    productStore.getAll({ project: project.name as string }),
-  ]);
-  return { props: { activity, project, members, products } };
-};
+    // Get approved members for this project
+    const [members, products] = await Promise.all([
+      memberStore.getAll({ project: project.name as string, status: 'approved' }),
+      productStore.getAll({ project: project.name as string }),
+    ]);
+    return {
+      props: { activity, project, members, products },
+      revalidate: +new Date(activity.endTime as number) < Date.now() ? undefined : Minute / Second,
+    };
+  },
+);
 
 interface ProjectPageProps {
   activity: Activity;

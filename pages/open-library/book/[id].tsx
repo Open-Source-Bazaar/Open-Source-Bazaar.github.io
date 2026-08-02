@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react';
-import { GetStaticProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FC, useContext } from 'react';
@@ -13,11 +12,11 @@ import { BookModel, type Book } from '../../../models/Book';
 import { OpenLibraryBorrowFormURL } from '../../../models/configuration';
 import { I18nContext } from '../../../models/Translation';
 import { lark } from '../../api/Lark/core';
-import { skipBuildingAll } from '../../api/SSG';
+import { skipBuilding, skipBuildingAll } from '../../api/SSG';
 
 export const getStaticPaths = skipBuildingAll;
 
-export const getStaticProps: GetStaticProps<Book, { id: string }> = async ({ params }) => {
+export const getStaticProps = skipBuilding<Book, { id: string }>(async ({ params }) => {
   await lark.getAccessToken();
 
   const store = new BookModel();
@@ -26,7 +25,7 @@ export const getStaticProps: GetStaticProps<Book, { id: string }> = async ({ par
   const props = await store.getOne(params!.id + '');
 
   return { props, revalidate: Minute / Second };
-};
+});
 
 const BookDetail: FC<Book> = observer(
   ({

@@ -1,6 +1,5 @@
 import { TableCellLocation, TableCellValue, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
-import { GetStaticProps } from 'next';
 import { TimeUnit } from 'idea-react';
 import { FC, ReactNode, useContext } from 'react';
 import { Minute, Second } from 'web-utility';
@@ -63,7 +62,7 @@ import {
 } from '../../models/Hackathon';
 import { I18nContext } from '../../models/Translation';
 import { lark } from '../api/Lark/core';
-import { skipBuildingAll } from '../api/SSG';
+import { skipBuilding, skipBuildingAll } from '../api/SSG';
 
 interface HackathonDetailProps {
   activity: Activity;
@@ -79,38 +78,52 @@ interface HackathonDetailProps {
 
 export const getStaticPaths = skipBuildingAll;
 
-export const getStaticProps: GetStaticProps<HackathonDetailProps, { id: string }> = async ({
-  params,
-}) => {
-  await lark.getAccessToken();
+export const getStaticProps = skipBuilding<HackathonDetailProps, { id: string }>(
+  async ({ params }) => {
+    await lark.getAccessToken();
 
-  const store = new ActivityModel();
-  store.client = lark.client;
+    const activityStore = new ActivityModel();
+    activityStore.client = lark.client;
 
-  const activity = await store.getOne(params!.id);
-  const { appId, tableIdMap } = activity.databaseSchema || {};
+    const activity = await activityStore.getOne(params!.id);
+    const { appId, tableIdMap } = activity.databaseSchema || {};
 
-  if (!appId || !tableIdMap) return { notFound: true };
+    if (!appId || !tableIdMap) return { notFound: true };
 
-  for (const key of RequiredTableKeys) if (!tableIdMap[key]) return { notFound: true };
+    for (const key of RequiredTableKeys) if (!tableIdMap[key]) return { notFound: true };
 
-  const [people, organizations, agenda, prizes, templates, projects] = await Promise.all([
-    new PersonModel(appId, tableIdMap.Person).getAll(),
-    new OrganizationModel(appId, tableIdMap.Organization).getAll(),
-    new AgendaModel(appId, tableIdMap.Agenda).getAll(),
-    new PrizeModel(appId, tableIdMap.Prize).getAll(),
-    new TemplateModel(appId, tableIdMap.Template).getAll(),
-    new ProjectModel(appId, tableIdMap.Project).getAll(),
-  ]);
+    const personStore = new PersonModel(appId, tableIdMap.Person);
+    const organizationStore = new OrganizationModel(appId, tableIdMap.Organization);
+    const agendaStore = new AgendaModel(appId, tableIdMap.Agenda);
+    const prizeStore = new PrizeModel(appId, tableIdMap.Prize);
+    const templateStore = new TemplateModel(appId, tableIdMap.Template);
+    const projectStore = new ProjectModel(appId, tableIdMap.Project);
+    personStore.client =
+      organizationStore.client =
+      agendaStore.client =
+      prizeStore.client =
+      templateStore.client =
+      projectStore.client =
+        lark.client;
 
-  return {
-    props: {
-      activity,
-      hackathon: { people, organizations, agenda, prizes, templates, projects },
-    },
-    revalidate: Minute / Second,
-  };
-};
+    const [people, organizations, agenda, prizes, templates, projects] = await Promise.all([
+      personStore.getAll(),
+      organizationStore.getAll(),
+      agendaStore.getAll(),
+      prizeStore.getAll(),
+      templateStore.getAll(),
+      projectStore.getAll(),
+    ]);
+
+    return {
+      props: {
+        activity,
+        hackathon: { people, organizations, agenda, prizes, templates, projects },
+      },
+      revalidate: +new Date(activity.endTime as number) < Date.now() ? undefined : Minute / Second,
+    };
+  },
+);
 
 const HackathonDetail: FC<HackathonDetailProps> = observer(({ activity, hackathon }) => {
   const i18n = useContext(I18nContext);
