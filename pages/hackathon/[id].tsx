@@ -1,8 +1,8 @@
 import { TableCellLocation, TableCellValue, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
-import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { TimeUnit } from 'idea-react';
 import { FC, ReactNode, useContext } from 'react';
+import { Minute, Second } from 'web-utility';
 
 import {
   HackathonActionHub,
@@ -61,6 +61,8 @@ import {
   TemplateModel,
 } from '../../models/Hackathon';
 import { I18nContext } from '../../models/Translation';
+import { lark } from '../api/Lark/core';
+import { skipBuilding, skipBuildingAll } from '../api/SSG';
 
 interface HackathonDetailProps {
   activity: Activity;
@@ -74,24 +76,43 @@ interface HackathonDetailProps {
   };
 }
 
-export const getServerSideProps = compose<{ id: string }>(
-  cache(),
-  errorLogger,
+export const getStaticPaths = skipBuildingAll;
+
+export const getStaticProps = skipBuilding<HackathonDetailProps, { id: string }>(
   async ({ params }) => {
-    const activity = await new ActivityModel().getOne(params!.id);
+    await lark.getAccessToken();
+
+    const activityStore = new ActivityModel();
+    activityStore.client = lark.client;
+
+    const activity = await activityStore.getOne(params!.id);
     const { appId, tableIdMap } = activity.databaseSchema || {};
 
     if (!appId || !tableIdMap) return { notFound: true };
 
     for (const key of RequiredTableKeys) if (!tableIdMap[key]) return { notFound: true };
 
+    const personStore = new PersonModel(appId, tableIdMap.Person);
+    const organizationStore = new OrganizationModel(appId, tableIdMap.Organization);
+    const agendaStore = new AgendaModel(appId, tableIdMap.Agenda);
+    const prizeStore = new PrizeModel(appId, tableIdMap.Prize);
+    const templateStore = new TemplateModel(appId, tableIdMap.Template);
+    const projectStore = new ProjectModel(appId, tableIdMap.Project);
+    personStore.client =
+      organizationStore.client =
+      agendaStore.client =
+      prizeStore.client =
+      templateStore.client =
+      projectStore.client =
+        lark.client;
+
     const [people, organizations, agenda, prizes, templates, projects] = await Promise.all([
-      new PersonModel(appId, tableIdMap.Person).getAll(),
-      new OrganizationModel(appId, tableIdMap.Organization).getAll(),
-      new AgendaModel(appId, tableIdMap.Agenda).getAll(),
-      new PrizeModel(appId, tableIdMap.Prize).getAll(),
-      new TemplateModel(appId, tableIdMap.Template).getAll(),
-      new ProjectModel(appId, tableIdMap.Project).getAll(),
+      personStore.getAll(),
+      organizationStore.getAll(),
+      agendaStore.getAll(),
+      prizeStore.getAll(),
+      templateStore.getAll(),
+      projectStore.getAll(),
     ]);
 
     return {
@@ -99,6 +120,7 @@ export const getServerSideProps = compose<{ id: string }>(
         activity,
         hackathon: { people, organizations, agenda, prizes, templates, projects },
       },
+      revalidate: +new Date(activity.endTime as number) < Date.now() ? undefined : Minute / Second,
     };
   },
 );

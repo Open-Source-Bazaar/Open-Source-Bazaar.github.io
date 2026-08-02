@@ -1,5 +1,5 @@
 import { DataObject } from 'mobx-restful';
-import { GetStaticProps, GetStaticPropsResult } from 'next';
+import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { Minute, Second } from 'web-utility';
 
@@ -23,3 +23,5 @@ export const skipBuilding =
       return fallback;
     }
   };
+
+export const skipBuildingAll: GetStaticPaths = async () => ({ paths: [], fallback: 'blocking' });
