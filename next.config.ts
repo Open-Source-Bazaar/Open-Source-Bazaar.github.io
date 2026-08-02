@@ -45,11 +45,6 @@ const rewrites: NextConfig['rewrites'] = async () => ({
 const redirects: NextConfig['redirects'] = async () =>
   ['/wiki', '/recipe', '/policy'].flatMap(route => [
     {
-      source: route,
-      destination: `https://wiki.fcc-cd.dev${route}`,
-      permanent: true,
-    },
-    {
       source: `${route}/:path*`,
       destination: `https://wiki.fcc-cd.dev${route}/:path*`,
       permanent: true,

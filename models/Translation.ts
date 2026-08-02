@@ -27,11 +27,12 @@ export interface I18nProps {
 export type I18nKey = keyof typeof zhCN;
 
 export const createI18nStore = <N extends LanguageCode, K extends string>(
-  language?: N,
+  language = 'zh-CN' as N,
   serializedData?: string,
 ) => {
-  const data = serializedData && (JSON.parse(serializedData, decodeFunctions) as TranslationMap<K>);
-
+  const data = serializedData
+    ? (JSON.parse(serializedData, decodeFunctions) as TranslationMap<K>)
+    : zhCN;
   const store = new TranslationModel({
     ...i18nData,
     ...(language && { [language]: data }),

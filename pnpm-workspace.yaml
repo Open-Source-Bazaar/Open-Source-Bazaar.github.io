@@ -4,7 +4,7 @@ autoInstallPeers: false
 overrides:
   next: '$next'
 patchedDependencies:
-  next@16.2.11: patches/next@16.2.11.patch
+  next@16.2.12: patches/next@16.2.12.patch
 allowBuilds:
   '@parcel/watcher': true
   core-js: true

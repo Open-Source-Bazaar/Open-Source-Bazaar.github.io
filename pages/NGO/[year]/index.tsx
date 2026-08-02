@@ -1,19 +1,15 @@
 import { observer } from 'mobx-react';
 import dynamic from 'next/dynamic';
-import { GetStaticPaths } from 'next';
+import { GetStaticProps } from 'next';
 import { FC, useContext } from 'react';
 import { Button, Container } from 'react-bootstrap';
 
 import { PageHead } from '../../../components/Layout/PageHead';
 import { CityStatisticMap } from '../../../components/Map/CityStatisticMap';
 import { SearchBar } from '../../../components/Navigator/SearchBar';
-import {
-  OrganizationModel,
-  OrganizationStatistic,
-  OrganizationYearStatisticModel,
-} from '../../../models/Organization';
+import { OrganizationModel, OrganizationStatistic } from '../../../models/Organization';
 import { I18nContext } from '../../../models/Translation';
-import { skipBuilding } from '../../api/SSG';
+import { skipBuildingAll } from '../../api/SSG';
 
 const OrganizationCharts = dynamic(() => import('../../../components/Organization/Charts'), {
   ssr: false,
@@ -24,30 +20,19 @@ interface OrganizationPageProps {
   statistic: OrganizationStatistic;
 }
 
-export const getStaticPaths: GetStaticPaths<{ year: string }> = async () => {
-  const yearStore = new OrganizationYearStatisticModel();
+export const getStaticPaths = skipBuildingAll;
 
-  const years = await yearStore.getAll();
+export const getStaticProps: GetStaticProps<OrganizationPageProps, { year: string }> = async ({
+  params,
+}) => {
+  const { year } = params!;
 
-  return {
-    paths: years.map(({ name }) => name && { params: { year: name! } }).filter(Boolean) as {
-      params: { year: string };
-    }[],
-    fallback: 'blocking',
-  };
+  const organizationStore = new OrganizationModel();
+
+  const statistic = await organizationStore.getStatistic({ startYear: year });
+
+  return { props: { year, statistic } };
 };
-
-export const getStaticProps = skipBuilding<OrganizationPageProps, { year: string }>(
-  async ({ params }) => {
-    const { year } = params!;
-
-    const organizationStore = new OrganizationModel();
-
-    const statistic = await organizationStore.getStatistic({ startYear: year });
-
-    return { props: { year, statistic } };
-  },
-);
 
 const OrganizationPage: FC<OrganizationPageProps> = observer(({ year, statistic }) => {
   const { t } = useContext(I18nContext);

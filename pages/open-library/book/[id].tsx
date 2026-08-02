@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react';
-import { cache, compose, errorLogger } from 'next-ssr-middleware';
+import { GetStaticProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FC, useContext } from 'react';
 import { Badge, Button, Card, Col, Container, Row, Tab, Tabs } from 'react-bootstrap';
+import { Minute, Second } from 'web-utility';
 
 import { PageHead } from '../../../components/Layout/PageHead';
 import { BorrowHistoryTabContent } from '../../../components/open-library/Borrow';
@@ -11,16 +12,21 @@ import { ReviewTabContent } from '../../../components/open-library/Review';
 import { BookModel, type Book } from '../../../models/Book';
 import { OpenLibraryBorrowFormURL } from '../../../models/configuration';
 import { I18nContext } from '../../../models/Translation';
+import { lark } from '../../api/Lark/core';
+import { skipBuildingAll } from '../../api/SSG';
 
-export const getServerSideProps = compose<{ id: string }>(
-  cache(),
-  errorLogger,
-  async ({ params }) => {
-    const props = await new BookModel().getOne(params!.id + '');
+export const getStaticPaths = skipBuildingAll;
 
-    return { props };
-  },
-);
+export const getStaticProps: GetStaticProps<Book, { id: string }> = async ({ params }) => {
+  await lark.getAccessToken();
+
+  const store = new BookModel();
+  store.client = lark.client;
+
+  const props = await store.getOne(params!.id + '');
+
+  return { props, revalidate: Minute / Second };
+};
 
 const BookDetail: FC<Book> = observer(
   ({

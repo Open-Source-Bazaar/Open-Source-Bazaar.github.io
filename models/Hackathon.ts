@@ -151,12 +151,16 @@ export class ProjectModel extends BiDataTable<Project>() {
 
   queryOptions: BiDataQueryOptions = { text_field_as_array: false };
 
-  extractFields({ fields: { members, products, ...fields }, ...meta }: TableRecord<Project>) {
+  extractFields({
+    fields: { members, products, prize, ...fields },
+    ...meta
+  }: TableRecord<Project>) {
     return {
       ...meta,
       ...fields,
       members: (members as TableCellRelation[])?.map(normalizeText),
       products: (products as TableCellRelation[])?.map(normalizeText),
+      prize: (prize as TableCellRelation[])?.map(normalizeText),
     };
   }
 }
@@ -178,7 +182,11 @@ export class MemberModel extends BiDataTable<Member>() {
       ...fields,
       person: (person as TableCellUser[])?.[0],
       summary: (summary as TableCellText[])!.map(normalizeText),
-      skills: skills?.toString().split(/\s*,\s*/) || [],
+      skills:
+        (skills as TableCellText[])!
+          .map(normalizeText)
+          .join()
+          .split(/\s*,\s*/) || [],
       githubAccount: (githubAccount as TableCellText[])!.map(normalizeText),
     };
   }
