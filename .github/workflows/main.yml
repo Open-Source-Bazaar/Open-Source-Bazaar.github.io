@@ -6,55 +6,66 @@ on:
 jobs:
   Build-and-Deploy:
     env:
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v6
-        if: ${{ env.VERCEL_TOKEN && env.VERCEL_ORG_ID && env.VERCEL_PROJECT_ID }}
+        if: ${{ env.CLOUDFLARE_ACCOUNT_ID && env.CLOUDFLARE_API_TOKEN }}
+
+      - uses: pnpm/action-setup@v4
+        if: ${{ env.CLOUDFLARE_ACCOUNT_ID && env.CLOUDFLARE_API_TOKEN }}
+        with:
+          version: 10
 
       - uses: actions/setup-node@v6
-        if: ${{ env.VERCEL_TOKEN && env.VERCEL_ORG_ID && env.VERCEL_PROJECT_ID }}
+        if: ${{ env.CLOUDFLARE_ACCOUNT_ID && env.CLOUDFLARE_API_TOKEN }}
         with:
           node-version: 24
+          cache: pnpm
 
-      - name: Deploy to Vercel
-        id: vercel-deployment
-        if: ${{ env.VERCEL_TOKEN && env.VERCEL_ORG_ID && env.VERCEL_PROJECT_ID }}
+      - name: Install dependencies
+        if: ${{ env.CLOUDFLARE_ACCOUNT_ID && env.CLOUDFLARE_API_TOKEN }}
+        run: pnpm i --frozen-lockfile
+
+      - name: Deploy to CloudFlare (production)
+        id: cf-deploy
+        if: ${{ env.CLOUDFLARE_ACCOUNT_ID && env.CLOUDFLARE_API_TOKEN && github.ref == 'refs/heads/main' }}
+        run: pnpm run deploy
+
+      - name: Preview on CloudFlare (branch)
+        id: cf-preview
+        if: ${{ env.CLOUDFLARE_ACCOUNT_ID && env.CLOUDFLARE_API_TOKEN && github.ref != 'refs/heads/main' }}
         shell: bash
         run: |
           set -euo pipefail
 
-          npm install vercel -g
+          pnpm exec opennextjs-cloudflare build
 
-          if [[ "$GITHUB_REF" == 'refs/heads/main' ]]; then
-            DeployOutput=$(vercel -t "$VERCEL_TOKEN" --prod)
-          else
-            DeployOutput=$(vercel -t "$VERCEL_TOKEN")
+          BRANCH_SLUG=$(echo "$GITHUB_REF_NAME" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]' | cut -c1-28)
+          ALIAS="b-${BRANCH_SLUG}"
+
+          OUTPUT=$(pnpm exec wrangler versions upload --tag "$ALIAS" 2>&1)
+          echo "$OUTPUT"
+          echo "$OUTPUT" >> "$GITHUB_STEP_SUMMARY"
+          echo "wrangler-output<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$OUTPUT" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Comment preview URL on PR
+        if: ${{ env.CLOUDFLARE_ACCOUNT_ID && env.CLOUDFLARE_API_TOKEN && github.ref != 'refs/heads/main' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PR_NUMBER=$(gh pr list --head "$GITHUB_REF_NAME" --json number --jq '.[0].number' 2>/dev/null || true)
+          if [[ -n "$PR_NUMBER" ]]; then
+            gh pr comment "$PR_NUMBER" --body "### CloudFlare 预览部署
+
+          ${{ steps.cf-preview.outputs.wrangler-output }}"
           fi
-          echo "$DeployOutput"
-
-          ParsedURL=$(echo "$DeployOutput" | grep -Eo 'https://[^[:space:]]*\.vercel\.app' | tail -n 1)
-
-          if [[ -z "$ParsedURL" ]]; then
-            echo "Failed to parse Vercel URL from deploy output"
-            exit 1
-          fi
-          vercel inspect "$ParsedURL" -t "$VERCEL_TOKEN" -F json > vercel-inspect.json
-
-          InspectURL=$(jq -r '.url // empty' vercel-inspect.json)
-
-          if [[ -z "$InspectURL" ]]; then
-            echo "Failed to parse inspect url from vercel-inspect.json"
-            exit 1
-          fi
-          if [[ "$InspectURL" != http* ]]; then
-            InspectURL="https://$InspectURL"
-          fi
-          echo "preview-url=$InspectURL" >> "$GITHUB_OUTPUT"
 
       - name: Lark notification
         uses: Open-Source-Bazaar/feishu-action@v3
@@ -68,7 +79,7 @@ jobs:
             header:
               title:
                 tag: plain_text
-                content: Vercel 部署通知
+                content: CloudFlare 部署通知
               template: blue
             body:
               elements:
@@ -77,4 +88,4 @@ jobs:
                     **Git 仓库：** [${{ github.server_url }}/${{ github.repository }}](${{ github.server_url }}/${{ github.repository }})
                     **代码分支：** [${{ github.ref }}](${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }})
                     **提交作者：** [${{ github.actor }}](${{ github.server_url }}/${{ github.actor }})
-                    **预览链接：** [${{ steps.vercel-deployment.outputs.preview-url }}](${{ steps.vercel-deployment.outputs.preview-url }})
+
