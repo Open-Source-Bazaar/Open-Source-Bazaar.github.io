@@ -7,14 +7,15 @@ import { ZodiacBar } from 'idea-react';
 import { PageHead } from '../../components/Layout/PageHead';
 import { OrganizationModel } from '../../models/Organization';
 import { I18nContext } from '../../models/Translation';
+import { skipBuilding } from '../api/SSG';
 
-export const getStaticProps = async () => {
+export const getStaticProps = skipBuilding(async () => {
   const organizationStore = new OrganizationModel();
 
   const [startYear, endYear] = await organizationStore.getYearRange();
 
   return { props: { startYear, endYear } };
-};
+});
 
 const OrganizationHomePage: FC<InferGetStaticPropsType<typeof getStaticProps>> = observer(props => {
   const { t } = useContext(I18nContext);
