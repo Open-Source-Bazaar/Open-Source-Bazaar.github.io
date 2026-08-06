@@ -1,0 +1,57 @@
+# reference:
+#   1. https://github.com/docker/build-push-action/blob/master/docs/advanced/push-multi-registries.md
+#   2. https://github.com/docker/build-push-action/blob/master/docs/advanced/share-image-jobs.md
+#   3. https://northflank.com/docs/v1/application/infrastructure-as-code/use-github-actions-with-northflank
+#   4. https://github.com/northflank/deploy-to-northflank/issues/1#issuecomment-2629319799
+
+name: Deploy Docker to Production environment
+on:
+  push:
+    tags:
+      - v*
+jobs:
+  deploy_docker_image:
+    name: Deploy Docker image
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Inject Environment variables
+        run: |
+          cat > .env.local <<EOF
+          ${{ secrets.ENV_FILE }}
+          EOF
+          cp .env.local .env.personal.local
+
+      - uses: docker/login-action@v4.2.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - uses: docker/metadata-action@v6.1.0
+        id: meta
+        with:
+          images: ghcr.io/${{ github.repository }}
+
+      - uses: docker/build-push-action@v7.2.0
+        id: push
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: deploy to NorthFlank
+        env:
+          PROJECT_ID: ${{ secrets.NORTHFLANK_PROJECT_ID }}
+          SERVICE_ID: ${{ secrets.NORTHFLANK_SERVICE_ID }}
+        run: |
+          curl --request POST \
+              --header "Authorization: Bearer ${{ secrets.NORTHFLANK_API_KEY }}" \
+              --header "Content-Type: application/json" \
+              --data '{"docker":{"configType":"default"},"external":{"credentials":"${{ secrets.NORTHFLANK_EXTERNAL_CREDENTIALS }}","imagePath":"ghcr.io/${{ github.repository }}:latest"}}' \
+              https://api.northflank.com/v1/projects/$PROJECT_ID/services/$SERVICE_ID/deployment
