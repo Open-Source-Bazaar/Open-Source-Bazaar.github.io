@@ -21,6 +21,7 @@ jobs:
 
       - name: Inject Environment variables
         run: |
+          echo "IMAGE_NAME=${GITHUB_REPOSITORY@L}" >> "${GITHUB_ENV}"
           cat > .env.local <<EOF
           ${{ secrets.ENV_FILE }}
           EOF
@@ -34,7 +35,7 @@ jobs:
       - uses: docker/metadata-action@v6.1.0
         id: meta
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ghcr.io/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=tag
             type=raw,value=latest
@@ -55,5 +56,5 @@ jobs:
           curl --fail-with-body --show-error --request POST \
               --header "Authorization: Bearer ${{ secrets.NORTHFLANK_API_KEY }}" \
               --header "Content-Type: application/json" \
-              --data '{"docker":{"configType":"default"},"external":{"credentials":"${{ secrets.NORTHFLANK_EXTERNAL_CREDENTIALS }}","imagePath":"ghcr.io/${{ github.repository }}:latest"}}' \
+              --data '{"docker":{"configType":"default"},"external":{"credentials":"${{ secrets.NORTHFLANK_EXTERNAL_CREDENTIALS }}","imagePath":"ghcr.io/${{ env.IMAGE_NAME }}:latest"}}' \
               https://api.northflank.com/v1/projects/$PROJECT_ID/services/$SERVICE_ID/deployment
