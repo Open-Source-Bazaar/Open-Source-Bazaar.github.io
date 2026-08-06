@@ -24,7 +24,6 @@ jobs:
           cat > .env.local <<EOF
           ${{ secrets.ENV_FILE }}
           EOF
-          cp .env.local .env.personal.local
 
       - uses: docker/login-action@v4.2.0
         with:
@@ -36,6 +35,9 @@ jobs:
         id: meta
         with:
           images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=tag
+            type=raw,value=latest
 
       - uses: docker/build-push-action@v7.2.0
         id: push
@@ -50,7 +52,7 @@ jobs:
           PROJECT_ID: ${{ secrets.NORTHFLANK_PROJECT_ID }}
           SERVICE_ID: ${{ secrets.NORTHFLANK_SERVICE_ID }}
         run: |
-          curl --request POST \
+          curl --fail-with-body --show-error --request POST \
               --header "Authorization: Bearer ${{ secrets.NORTHFLANK_API_KEY }}" \
               --header "Content-Type: application/json" \
               --data '{"docker":{"configType":"default"},"external":{"credentials":"${{ secrets.NORTHFLANK_EXTERNAL_CREDENTIALS }}","imagePath":"ghcr.io/${{ github.repository }}:latest"}}' \
