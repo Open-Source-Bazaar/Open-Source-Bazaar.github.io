@@ -6,6 +6,7 @@ import { Container, Nav } from 'react-bootstrap';
 import { buildURLData } from 'web-utility';
 
 import { ActivityCard } from '../../../components/Activity/Card';
+import { AwardCard } from '../../../components/award/AwardCard';
 import { CardPage, CardPageProps } from '../../../components/Layout/CardPage';
 import { PageHead } from '../../../components/Layout/PageHead';
 import { SearchBar } from '../../../components/Navigator/SearchBar';
@@ -40,11 +41,13 @@ export const getServerSideProps = compose<{ model: string }, SearchModelPageProp
 
 const SearchNameMap = ({ t }: typeof i18n): Record<string, string> => ({
   activity: t('activity'),
+  award: t('open_collaborator_award'),
   NGO: t('NGO'),
 });
 
 const SearchCardMap: Record<string, CardPageProps['Card']> = {
   activity: ActivityCard,
+  award: AwardCard,
   NGO: OrganizationCard,
 };
 

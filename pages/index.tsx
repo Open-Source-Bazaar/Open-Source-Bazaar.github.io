@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react';
+import Link from 'next/link';
 import { FC, useContext } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -90,9 +91,9 @@ const HomePage: FC = observer(() => {
                   ：一群来自不同领域的有趣的朋友通过展示、交流，将“开源”和“开放式协作”的乐趣带给更多人……
                 </li>
                 <li className="mb-3">
-                  <a href="/open-collaborator-award" className="fw-bold">
+                  <Link href="/award" className="fw-bold">
                     开放协作人奖
-                  </a>
+                  </Link>
                   ：在过去的一年中令你难以忘怀的人，请把 Ta 推荐给更多的人……
                 </li>
                 <li className="mb-3">

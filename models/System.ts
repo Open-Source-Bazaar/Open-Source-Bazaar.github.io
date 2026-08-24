@@ -4,6 +4,7 @@ import { BaseModel, DataObject, Filter, ListModel, toggle } from 'mobx-restful';
 import { Constructor } from 'web-utility';
 
 import { SearchActivityModel } from './Activity';
+import { SearchAwardModel } from './Award';
 import { ownClient } from './Base';
 import { OrganizationModel } from './Organization';
 
@@ -22,6 +23,7 @@ export type CityCoordinateMap = Record<string, [number, number]>;
 export class SystemModel extends BaseModel {
   searchMap = {
     activity: SearchActivityModel,
+    award: SearchAwardModel,
     NGO: OrganizationModel,
   } as Record<string, Constructor<SearchModel<DataObject>>>;
 
@@ -47,6 +49,7 @@ export class SystemModel extends BaseModel {
     const { body } = await ownClient.get<CityCoordinateMap>(
       'https://idea2app.github.io/public-meta-data/china-city-coordinate.json',
     );
+
     return (this.cityCoordinate = body!);
   }
 }

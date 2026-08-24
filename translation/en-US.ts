@@ -1,3 +1,5 @@
+// cspell:ignore Bilibili Feishu
+
 export default {
   // Navigation
   about: 'About',
@@ -46,6 +48,71 @@ export default {
   bounty_achievement_submission: 'Achievement Submission Form',
   bounty_hero_rank: 'Hero Rank',
   bounty_debt_rank: 'Debt Rank',
+
+  // Open Collaborator Award
+  award_hero_title: 'Honoring every open collaborator',
+  award_hero_description: 'Thank the people who made a difference or helped you over the past year',
+  award_submit_nomination: 'Submit a nomination',
+  award_total_nominations: 'Nominations',
+  award_total_recognized: 'Recipients',
+  award_total_support: 'Total support',
+  award_about_title: 'About the award',
+  award_meaning: 'Purpose',
+  award_meaning_description:
+    'Recognize people who demonstrate excellence and generosity in open collaboration.',
+  award_criteria: 'Nomination criteria',
+  award_criteria_description:
+    'Anyone who made a difference or helped you over the past year deserves recognition.',
+  award_open_data: 'Open records',
+  award_open_data_description:
+    'Nomination and support data comes from a Feishu Base maintained by the community.',
+  award_initiative_title: 'Open Collaborator Award initiative',
+  award_initiative_video_title: 'Open Collaborator Award initiative video',
+  award_initiative_question: 'Why did we create this award?',
+  award_initiative_description:
+    'The Open Collaborator Award uses the power of community to make every helpful person seen, thanked and remembered.',
+  award_rules_title: 'How it works',
+  award_rule_nominate: 'Nominate',
+  award_rule_nominate_description:
+    'Use the Feishu form to introduce the nominee, your reason and a nomination video.',
+  award_rule_review: 'Data sync',
+  award_rule_review_description:
+    'Form records are read from the Feishu Base by the website server and displayed here.',
+  award_rule_support: 'Community support',
+  award_rule_support_description:
+    'The page displays real support data from the Base instead of counting votes in the browser.',
+  award_rule_recognize: 'Recognition',
+  award_rule_recognize_description:
+    'A nomination joins the recipient list after reaching the support threshold.',
+  award_recognized_list: 'Award recipients',
+  award_view_nomination: 'View full nomination',
+  award_nominations_title: 'Nominations',
+  award_filter: 'Filter nominations',
+  award_filter_all: 'All',
+  award_filter_pending: 'In progress',
+  award_filter_recognized: 'Recognized',
+  award_no_nominations: 'No nominations yet',
+  award_recognized: 'Recognized',
+  award_nomination_reason: 'Reason for nomination',
+  award_nominated_by: 'Nominated by',
+  award_anonymous: 'Anonymous',
+  award_unnamed_nominee: 'Unnamed nominee',
+  award_support_count: 'supporters',
+  award_nomination_video_title: 'Nomination video',
+  award_watch_nomination_video: 'Watch nomination video',
+  award_nomination_form_title: 'Open Collaborator Award nomination form',
+  award_form_refresh_hint: 'Refresh this page after submission to see the latest nominations.',
+  award_close: 'Close',
+  award_faq_title: 'Frequently asked questions',
+  award_faq_who_question: 'Who can submit a nomination?',
+  award_faq_who_answer:
+    'Anyone may nominate a person who helped them or made a difference over the past year.',
+  award_faq_video_question: 'How do I submit a nomination video?',
+  award_faq_video_answer:
+    'Upload the video to Bilibili first, then enter its link in the Feishu nomination form.',
+  award_faq_data_question: 'Where is nomination data stored?',
+  award_faq_data_answer:
+    "Form entries are stored directly in the community's Feishu Base and read by the website server.",
 
   //License-tool Page
   license_filter: 'Open Source License Selector',
