@@ -36,7 +36,8 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Send message to Lark
-        if: ${{ contains(steps.message.outputs.content, ':') }}
+        # Fork PRs cannot access repository secrets, so skip instead of failing.
+        if: ${{ contains(steps.message.outputs.content, ':') && secrets.LARK_CHATBOT_HOOK_URL != '' }}
         uses: Open-Source-Bazaar/feishu-action@v3
         with:
           url: ${{ secrets.LARK_CHATBOT_HOOK_URL }}
