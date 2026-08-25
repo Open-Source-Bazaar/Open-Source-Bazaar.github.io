@@ -16,6 +16,10 @@ on:
 jobs:
   send-Lark-message:
     runs-on: ubuntu-latest
+    # Secrets cannot be directly referenced in if: conditionals, so expose
+    # only the presence flag. The raw URL stays scoped to the action step.
+    env:
+      HAS_LARK_WEBHOOK: ${{ secrets.LARK_CHATBOT_HOOK_URL != '' }}
     steps:
       - uses: actions/checkout@v6
 
@@ -37,7 +41,7 @@ jobs:
 
       - name: Send message to Lark
         # Fork PRs cannot access repository secrets, so skip instead of failing.
-        if: ${{ contains(steps.message.outputs.content, ':') && secrets.LARK_CHATBOT_HOOK_URL != '' }}
+        if: ${{ contains(steps.message.outputs.content, ':') && env.HAS_LARK_WEBHOOK == 'true' }}
         uses: Open-Source-Bazaar/feishu-action@v3
         with:
           url: ${{ secrets.LARK_CHATBOT_HOOK_URL }}
