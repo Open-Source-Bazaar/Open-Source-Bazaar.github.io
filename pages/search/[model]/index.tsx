@@ -10,7 +10,10 @@ import { AwardCard } from '../../../components/award/AwardCard';
 import { CardPage, CardPageProps } from '../../../components/Layout/CardPage';
 import { PageHead } from '../../../components/Layout/PageHead';
 import { SearchBar } from '../../../components/Navigator/SearchBar';
+import { BookCard } from '../../../components/open-library/BookCard';
 import { OrganizationCard } from '../../../components/Organization/Card';
+import { ProjectCard } from '../../../components/Project/Card';
+import type { Book } from '../../../models/Book';
 import systemStore, { SearchPageMeta } from '../../../models/System';
 import { i18n, I18nContext } from '../../../models/Translation';
 
@@ -42,12 +45,20 @@ export const getServerSideProps = compose<{ model: string }, SearchModelPageProp
 const SearchNameMap = ({ t }: typeof i18n): Record<string, string> => ({
   activity: t('activity'),
   award: t('open_collaborator_award'),
+  book: t('open_library'),
+  project: t('open_source_projects'),
   NGO: t('NGO'),
 });
+
+const BookSearchResultCard: FC<Book & { className?: string }> = ({ className, ...book }) => (
+  <BookCard {...{ className, book }} variant="catalog" />
+);
 
 const SearchCardMap: Record<string, CardPageProps['Card']> = {
   activity: ActivityCard,
   award: AwardCard,
+  book: BookSearchResultCard,
+  project: ProjectCard,
   NGO: OrganizationCard,
 };
 

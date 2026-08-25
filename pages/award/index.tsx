@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
-import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext, useState } from 'react';
 import { Badge, Button, ButtonGroup, Card, Col, Container, Row } from 'react-bootstrap';
+import { Minute, Second } from 'web-utility';
 
 import styles from '../../components/award/Award.module.less';
 import { AWARD_VOTE_THRESHOLD, AwardCard, voteCountOf } from '../../components/award/AwardCard';
@@ -9,11 +9,21 @@ import { NominationForm } from '../../components/award/NominationForm';
 import { PageHead } from '../../components/Layout/PageHead';
 import { Award, AwardModel } from '../../models/Award';
 import { I18nContext, I18nKey } from '../../models/Translation';
+import { lark } from '../api/Lark/core';
+import { skipBuilding } from '../api/SSG';
 
-export const getServerSideProps = compose(cache(), errorLogger, async () => {
-  const awards = await new AwardModel().getAll();
+export const getStaticProps = skipBuilding<{ awards: Award[] }>(async () => {
+  await lark.getAccessToken();
 
-  return { props: { awards } };
+  const store = new AwardModel();
+  store.client = lark.client;
+
+  const awards = await store.getAll();
+
+  return {
+    props: JSON.parse(JSON.stringify({ awards })),
+    revalidate: Minute / Second,
+  };
 });
 
 type AwardFilter = 'all' | 'pending' | 'recognized';

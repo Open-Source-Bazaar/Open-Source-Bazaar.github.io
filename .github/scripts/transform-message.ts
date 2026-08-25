@@ -5,10 +5,8 @@ type GitHubSchema = components['schemas'];
 
 type GitHubUser = GitHubSchema['simple-user'];
 
-interface GitHubAction extends Record<
-  'event_name' | 'actor' | 'server_url' | 'repository',
-  string
-> {
+interface GitHubAction
+  extends Record<'event_name' | 'actor' | 'server_url' | 'repository', string> {
   action?: string;
   ref?: string;
   ref_name?: string;

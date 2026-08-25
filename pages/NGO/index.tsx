@@ -1,32 +1,32 @@
 import { observer } from 'mobx-react';
-import { InferGetServerSidePropsType } from 'next';
-import { cache, compose, errorLogger } from 'next-ssr-middleware';
+import { InferGetStaticPropsType } from 'next';
 import { FC, useContext } from 'react';
 import { Container } from 'react-bootstrap';
+import { ZodiacBar } from 'idea-react';
 
-import { ZodiacBar } from '../../components/Base/ZodiacBar';
 import { PageHead } from '../../components/Layout/PageHead';
 import { OrganizationModel } from '../../models/Organization';
 import { I18nContext } from '../../models/Translation';
+import { skipBuilding } from '../api/SSG';
 
-export const getServerSideProps = compose(cache(), errorLogger, async () => {
-  const [startYear, endYear] = await new OrganizationModel().getYearRange();
+export const getStaticProps = skipBuilding(async () => {
+  const organizationStore = new OrganizationModel();
+
+  const [startYear, endYear] = await organizationStore.getYearRange();
 
   return { props: { startYear, endYear } };
 });
 
-const OrganizationHomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = observer(
-  props => {
-    const { t } = useContext(I18nContext);
+const OrganizationHomePage: FC<InferGetStaticPropsType<typeof getStaticProps>> = observer(props => {
+  const { t } = useContext(I18nContext);
 
-    return (
-      <Container className="py-5">
-        <PageHead title={t('China_NGO_DB')} />
-        <h1 className="text-center my-4">{t('China_NGO_DB')} 2.0</h1>
+  return (
+    <Container className="py-5">
+      <PageHead title={t('China_NGO_DB')} />
+      <h1 className="text-center my-4">{t('China_NGO_DB')} 2.0</h1>
 
-        <ZodiacBar {...props} itemOf={year => ({ title: year, link: `/NGO/${year}` })} />
-      </Container>
-    );
-  },
-);
+      <ZodiacBar {...props} itemOf={year => ({ title: year, link: `/NGO/${year}` })} />
+    </Container>
+  );
+});
 export default OrganizationHomePage;

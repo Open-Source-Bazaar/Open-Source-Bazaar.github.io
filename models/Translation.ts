@@ -1,4 +1,10 @@
-import { loadLanguageMapFrom, TranslationMap, TranslationModel } from 'mobx-i18n';
+import {
+  decodeFunctions,
+  encodeFunctions,
+  loadLanguageMapFrom,
+  TranslationMap,
+  TranslationModel,
+} from 'mobx-i18n';
 import { DataObject } from 'mobx-restful';
 import { NextPageContext } from 'next';
 import { createContext } from 'react';
@@ -15,15 +21,18 @@ export type LanguageCode = keyof typeof i18nData;
 
 export interface I18nProps {
   language: LanguageCode;
-  languageMap: typeof zhCN;
+  languageMap: string;
 }
 
 export type I18nKey = keyof typeof zhCN;
 
 export const createI18nStore = <N extends LanguageCode, K extends string>(
-  language?: N,
-  data?: TranslationMap<K>,
+  language = 'zh-CN' as N,
+  serializedData?: string,
 ) => {
+  const data = serializedData
+    ? (JSON.parse(serializedData, decodeFunctions) as TranslationMap<K>)
+    : zhCN;
   const store = new TranslationModel({
     ...i18nData,
     ...(language && { [language]: data }),
@@ -57,13 +66,18 @@ export const parseSSRContext = <T extends DataObject = DataObject>(
   return cookie;
 };
 
-export const loadSSRLanguage = (context: NextPageContext) => {
+export const loadSSRLanguage = async (context: NextPageContext) => {
   const { headers } = context.req || {},
     { language } = parseSSRContext(context, ['language']);
   const header = {
     ...headers,
     ...(language ? { cookie: `language=${language}` } : {}),
   };
+  const result = await loadLanguageMapFrom(i18nData, header);
 
-  return loadLanguageMapFrom(i18nData, header);
+  if (result)
+    return {
+      ...result,
+      languageMap: JSON.stringify(result.languageMap, encodeFunctions),
+    };
 };

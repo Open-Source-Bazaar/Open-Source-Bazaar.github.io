@@ -1,19 +1,20 @@
 import { Contributor } from 'mobx-github';
 import { observer } from 'mobx-react';
-import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
 import { Container, Row } from 'react-bootstrap';
+import { Minute, Second } from 'web-utility';
 
 import { PageHead } from '../components/Layout/PageHead';
 import { SectionTitle } from '../components/Layout/SectionTitle';
 import { PersonCard } from '../components/PersonCard';
 import { repositoryStore } from '../models/Repository';
 import { I18nContext } from '../models/Translation';
+import { skipBuilding } from './api/SSG';
 
-export const getServerSideProps = compose(cache(), errorLogger, async () => {
+export const getStaticProps = skipBuilding<{ contributors: Contributor[] }>(async () => {
   const contributors: Contributor[] = await repositoryStore.getAllContributors();
 
-  return { props: { contributors } };
+  return { props: { contributors }, revalidate: Minute / Second };
 });
 
 const Organizer: FC<{ contributors: Contributor[] }> = observer(({ contributors }) => {

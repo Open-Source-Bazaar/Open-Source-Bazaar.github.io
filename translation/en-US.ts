@@ -11,6 +11,8 @@ export default {
   hackathon: 'Hackathon',
   bounty: 'Open Source Bounty',
   open_source_projects: 'Open Source projects',
+  self_developed_projects: 'Self-developed projects',
+  bazaar_projects: 'Bazaar projects',
   open_source_bazaar: 'Open Source Bazaar',
   home_page: 'Home Page',
   wiki: 'Wiki',
@@ -18,6 +20,7 @@ export default {
   // Search
   keywords: 'Keywords',
   search_results: 'Search Results',
+  breadcrumb: 'Breadcrumb',
 
   // Scroll List
   load_more: 'Load more...',
@@ -170,6 +173,12 @@ export default {
   range_module: 'module',
   last_step: 'back',
 
+  // Signature page
+  sign: 'Sign',
+  generate_key_pair: 'Generate Key Pair',
+  signature_disclaimer:
+    'This page is a public service that provides Key Pair & Signature generation based on Web crypto API. Due to the sandbox environment of web browsers, the generated Private Key is only securely stored locally on the user, while the Public Key and Signature will be sent to the following third-party Web page for authentication. Please confirm the security of that website yourself.',
+
   // Wiki
   knowledge_base: 'Knowledge Base',
   contribute_content: 'Contribute Content',
@@ -270,61 +279,369 @@ export default {
 
   // Hackathon
   hackathon_detail: 'Hackathon Details',
-  event_info: 'Event Information',
+  hackathon_highlights: 'Tracks',
+  hackathon_highlights_subtitle: 'Theme & Tracks',
   event_description: 'Event Description',
   event_location: 'Location',
   event_duration: 'Duration',
+  main_visual: 'Main Visual',
+  countdown_days: 'Days',
+  countdown_hours: 'Hours',
+  countdown_minutes: 'Minutes',
+  countdown_seconds: 'Seconds',
+  product_submission: 'Product Submission Form',
   agenda: 'Agenda',
+  hackathon_participant_registration: 'Participant Registration',
+  hackathon_participant_registration_description:
+    'Collect participant profiles to support sign-up, team formation, and updates.',
+  hackathon_team_lead: 'Team Lead',
+  hackathon_project_registration: 'Project Registration',
+  hackathon_project_registration_description:
+    'Register the project name, teammates, track, and one-line pitch to lock the team.',
+  hackathon_submission: 'Submission',
+  hackathon_product_submission_description:
+    'Submit the final build, demo link, and supporting notes before the deadline.',
+  hackathon_review: 'Review',
+  hackathon_evaluation_entry: 'Evaluation Portal',
+  hackathon_evaluation_entry_description:
+    'Used by judges or mentors during scoring, review, and result consolidation.',
+  hackathon_event_schedule: 'EVENT SCHEDULE',
+  common_questions: 'FAQ',
+  hackathon_faq_subtitle: 'Common Questions',
+  hackathon_faq_registration_question: 'Where should I start?',
+  hackathon_faq_registration_answer_prefix: 'Start with the currently open entry: ',
+  hackathon_faq_schedule_question: 'What is the event timeline?',
+  hackathon_faq_location_question: 'Where does the event take place?',
+  hackathon_faq_resources_question: 'What resources are available?',
+  hackathon_faq_submission_question: 'Where do I submit or continue next?',
+  hackathon_faq_submission_answer_prefix: 'For the next stage, use: ',
+  hackathon_people_showcase: 'Community',
+  hackathon_people_showcase_subtitle: 'Contributors & GitHub Profiles',
+  hackathon_resource_zone: 'Resources & Projects',
+  hackathon_resource_zone_subtitle: 'Templates, repositories and submitted work',
+  hackathon_show_more: 'Show more',
+  hackathon_show_less: 'Show less',
+  hackathon_register_now: 'Register Now',
+  hackathon_judging_title: 'Judging Criteria',
+  hackathon_support_action: 'Contact via organizer',
+  hackathon_criteria_innovation_title: 'Innovation',
+  hackathon_criteria_innovation_desc:
+    'Novel ideas that clearly address meaningful real-world problems.',
+  hackathon_criteria_technical_title: 'Technical Depth',
+  hackathon_criteria_technical_desc:
+    'Effective and substantial use of AI capability in the implementation.',
+  hackathon_criteria_completion_title: 'Completion',
+  hackathon_criteria_completion_desc: 'A runnable, demonstrable product with a complete core flow.',
+  hackathon_criteria_presentation_title: 'Presentation & Design',
+  hackathon_criteria_presentation_desc:
+    'Clear storytelling, polished interaction, and persuasive product experience.',
+  hackathon_action_hub: 'Action Hub · Forms',
+  hackathon_entry_flow: 'Registration and Submission Flow',
+  hackathon_entry_flow_description:
+    'Entries are generated from the current activity schema so different events can reuse the same page structure.',
+  hackathon_phase: 'Phase',
+  hackathon_schedule_window_label: 'Window',
+  hackathon_schedule_reason_label: 'Reason',
+  hackathon_schedule_focus_label: 'Focus',
+  hackathon_schedule_goal_label: 'Stage Goal',
+  hackathon_schedule_reason_meta: 'Rhythm Design',
+  hackathon_schedule_focus_meta: 'Execution Focus',
+  hackathon_schedule_reason_enrollment:
+    'Start early warm-up and participant outreach so team formation has enough qualified candidates.',
+  hackathon_schedule_reason_formation:
+    'Keep the team-up window short to force faster decisions and reduce drift.',
+  hackathon_schedule_reason_competition:
+    'Constrain sprint duration to prioritize a demonstrable output instead of endless scope growth.',
+  hackathon_schedule_reason_evaluation:
+    'Reserve a dedicated judging window to improve scoring consistency and review quality.',
+  hackathon_schedule_reason_default:
+    'Arrange critical actions by phase so the overall timeline remains executable.',
+  hackathon_schedule_focus_enrollment:
+    'Complete participant registration and enter the community channels for matching.',
+  hackathon_schedule_focus_formation:
+    'Lock topic, members, and roles quickly to form a stable execution team.',
+  hackathon_schedule_focus_competition:
+    'Submit a runnable demo, repository, and core documentation before deadline.',
+  hackathon_schedule_focus_evaluation:
+    'Score against judging criteria, complete reviews, and prepare demo shortlist.',
+  hackathon_schedule_focus_default:
+    'Drive the phase-critical tasks first and complete key deliverables on time.',
+  hackathon_schedule_goal_enrollment:
+    'Build a strong participant pool as the quality foundation for the next phases.',
+  hackathon_schedule_goal_formation:
+    'Close team formation rapidly and move each team into execution mode.',
+  hackathon_schedule_goal_competition:
+    'Deliver a demo-ready and reproducible project with on-time submission.',
+  hackathon_schedule_goal_evaluation:
+    'Produce stable judging outcomes and finish Demo Day preparation.',
+  hackathon_schedule_goal_default:
+    'Keep each phase goal clear, closed-loop, and deliverable within schedule.',
   participants: 'Participants',
   organizations: 'Organizations',
   prizes: 'Prizes',
   hackathon_prizes: 'Hackathon Prizes',
   templates: 'Templates',
   projects: 'Projects',
-  type: 'Type',
-  start_time: 'Start Time',
-  end_time: 'End Time',
   workshop: 'Workshop',
+  enrollment: 'Enrollment',
+  formation: 'Teaming',
+  competition: 'Competition',
+  evaluation: 'Evaluation',
   presentation: 'Presentation',
   coding: 'Coding',
   break: 'Break',
   ceremony: 'Ceremony',
-  gender: 'Gender',
-  age: 'Age',
-  address: 'Address',
-  skills: 'Skills',
-  github_account: 'GitHub Account',
-  view_github: 'View GitHub',
   members: 'Members',
   sponsor: 'Sponsor',
   price: 'Prize Money',
   amount: 'Amount',
-  level: 'Level',
-  gold: 'Gold',
-  silver: 'Silver',
-  bronze: 'Bronze',
-  special: 'Special',
   source_code: 'Source Code',
   preview: 'Preview',
   created_by: 'Created By',
-  group: 'Team',
   products: 'Products',
   score: 'Score',
-  male: 'Male',
-  female: 'Female',
-  other: 'Other',
 
   // Team detail page
+  hackathon_team_showcase: 'Team Showcase',
   team_members: 'Team Members',
   team_works: 'Team Works',
-  latest_news: 'Latest News',
   no_news_yet: 'No news yet',
-  join_team: 'Join Team',
-  leave_team: 'Leave Team',
-  manage_team: 'Manage Team',
-  cancel_application: 'Cancel Application',
-  please_make_sure: 'Please confirm',
-  success: 'Success',
-  team_description: 'Team Description',
-  team_details: 'Team Details',
+
+  // Open Library
+  open_library: 'Open Library',
+
+  // Open Library Navigation
+  home: 'Home',
+  catalog: 'Catalog',
+  donate: 'Donate',
+  how_to_borrow: 'How to Borrow',
+  review: 'Review',
+
+  // Open Library Home Page
+  featured_books: 'Featured Books',
+  view_all_books: 'Browse All Books',
+  browse_catalog: 'Browse Catalog',
+  testimonials: 'Testimonials',
+  join_community: 'Join Our Community',
+  become_member: 'Become a Member',
+  donate_books: 'Donate Books',
+  how_it_works: 'How It Works',
+  how_it_works_description: 'Three simple steps to borrow books from our community',
+  step_1_find_book: 'Find a Book',
+  step_1_description:
+    'Browse our collection and find the book that interests you. Filter by category, author, or popularity.',
+  step_2_apply: 'Apply to Borrow',
+  step_2_description:
+    "Submit a simple request form. We'll connect you with the book owner and arrange the handover.",
+  step_3_receive: 'Receive and Pass It On',
+  step_3_description:
+    "Enjoy your book and return it when you're done. Consider donating your own books to keep knowledge flowing.",
+  learn_more_about_borrowing: 'Learn More About Borrowing',
+  community_voices: 'Community Voices',
+  community_voices_description: 'What our members say about Open Library',
+  read_more_reviews: 'Read More Reviews',
+  share_your_knowledge: 'Share Your Knowledge',
+  donate_a_book: 'Donate a Book',
+  stay_updated: 'Stay Updated',
+  newsletter_description: 'Subscribe to our newsletter for new book arrivals and community events.',
+  email_placeholder: 'Your email address',
+  subscribe: 'Subscribe',
+
+  // Open Library Books Page
+  book_catalog: 'Book Catalog',
+  search_books: 'Search Books',
+  all_categories: 'All Categories',
+  all_languages: 'All Languages',
+  all_status: 'All Status',
+  available: 'Available',
+  borrowed: 'Borrowed',
+  reset_filters: 'Reset Filters',
+  showing_books: ({ shownCount, totalCount }: Record<'shownCount' | 'totalCount', number>) =>
+    `Showing ${shownCount} of ${totalCount} books`,
+  no_books_found: 'No books found',
+  try_adjusting_filters: 'Try adjusting your search or filters',
+  reset_all_filters: 'Reset All Filters',
+  open_library_view_details: 'View Details',
+  currently_with: ({ holder }: Record<'holder', string>) => `Currently with: ${holder}`,
+
+  // Open Library Book Detail Page
+  loading: 'Loading...',
+  book_not_found: 'Book Not Found',
+  return_to_catalog: 'Return to Catalog',
+  back: 'Back',
+  by_author: ({ authors }: { authors: string }) => `by ${authors}`,
+  currently_borrowed: 'Currently Borrowed',
+  currently_unavailable: 'Currently Unavailable',
+  request_to_borrow: 'Request to Borrow',
+  reviews: 'Reviews',
+  borrow_history: 'Borrow History',
+  no_reviews_yet: 'No reviews yet',
+  be_first_to_review: 'Be the first to review this book!',
+  write_review: 'Write a Review',
+  add_your_review: 'Add Your Review',
+  borrower: 'Borrower',
+  borrow_date: 'Borrow Date',
+  return_date: 'Return Date',
+  status: 'Status',
+  returned: 'Returned',
+  active: 'Active',
+  not_borrowed_yet: 'This book has not been borrowed yet',
+
+  // Open Library About Page
+  about_open_library: 'About Open Library',
+  our_mission: 'Our Mission',
+  our_values: 'Our Values',
+  our_features: 'Our Features',
+  our_team: 'Our Team',
+  join_us_open_library: 'Join Us',
+
+  // Open Library Donate Page
+  book_donation: 'Book Donation',
+  why_donate: 'Why Donate Books?',
+  donation_process: 'Donation Process',
+  book_registration: 'Book Registration',
+  what_books_we_accept: 'What Books Do We Accept?',
+  we_welcome: 'We Welcome',
+  not_suitable: 'Not Suitable for Donation',
+  faq: 'Frequently Asked Questions',
+  ready_to_donate: 'Ready to Donate Books?',
+  fill_donation_form: 'Fill Donation Form',
+  apply_for_membership: 'Apply for Membership',
+
+  // Open Library How to Borrow Page
+  how_to_borrow_page_title: 'How to Borrow - Open Library',
+  how_to_borrow_page: 'How to Borrow',
+  borrowing_and_passing: 'Borrowing and Passing Model',
+  borrowing_process: 'Borrowing Process',
+  borrowing_rules: 'Borrowing Rules',
+  quick_links: 'Quick Links',
+  view_full_catalog: 'View Full Catalog',
+  fill_borrow_request: 'Fill Borrow Request',
+  fill_book_passing_form: 'Fill Book Passing Form',
+  browse_book_catalog: 'Browse Book Catalog',
+  ready_to_borrow: 'Ready to Borrow?',
+  open_library_quick_links_label: 'Open Library quick links',
+  borrow_model_intro:
+    'In Open Library, all books are donated by community members and directly **passed** from one reader to the next.',
+  borrow_model_description:
+    'We use a no-storage lending model: books circulate freely among members instead of being stored centrally. This saves physical space and creates direct community interaction.',
+  borrow_step_catalog_title: 'Browse books',
+  borrow_step_catalog_description: ({
+    catalogURL,
+    booksURL,
+  }: Record<'catalogURL' | 'booksURL', string>) =>
+    `Members can search [fCC Chengdu Community Library](${catalogURL}) or browse our [book catalog](${booksURL}).`,
+  borrow_step_apply_title: 'Apply to borrow',
+  borrow_step_apply_description: ({ borrowFormURL }: Record<'borrowFormURL', string>) =>
+    `After finding a book, submit the [book borrowing form](${borrowFormURL}) to contact the current holder.`,
+  borrow_step_handoff_title: 'Offline handoff',
+  borrow_step_handoff_description: ({ handoffFormURL }: Record<'handoffFormURL', string>) =>
+    `Both sides agree on a time and delivery method. The sender should fill in the [book handoff form](${handoffFormURL}) before passing the book on.`,
+  borrow_step_share_title: 'Read and share',
+  borrow_step_share_description:
+    'After reading, borrowers can share their thoughts and recommend the book to the next interested member. We encourage short reviews before returning or passing books on.',
+  borrow_step_continue_title: 'Keep it moving',
+  borrow_step_continue_description:
+    'When a new borrowing request arrives, the current holder passes the book to the next reader so knowledge keeps flowing.',
+  borrow_rule_period_title: 'Loan period',
+  borrow_rule_period_detail:
+    'The standard loan period is 30 days. Contact the library maintainer if you need an extension.',
+  borrow_rule_quantity_title: 'Borrowing limit',
+  borrow_rule_quantity_detail: 'Each member may borrow up to 3 books at the same time.',
+  borrow_rule_condition_title: 'Book condition',
+  borrow_rule_condition_detail:
+    'Borrowers are responsible for keeping books in good condition and avoiding damage, marks, or loss.',
+  borrow_rule_handoff_title: 'Handoff responsibility',
+  borrow_rule_handoff_detail:
+    'The current holder is responsible for safely passing the book to the next borrower and covering related delivery costs.',
+  borrow_rule_damage_title: 'Loss or damage',
+  borrow_rule_damage_detail:
+    'If a book is lost or seriously damaged while borrowed, contact the library maintainer and consider donating an identical or similar replacement.',
+  borrow_faq_available_question: 'How do I know whether a book is available?',
+  borrow_faq_available_answer:
+    'Check the current status in the Feishu base or on the book catalog page. If it is marked available, you can request to borrow it.',
+  borrow_faq_fee_question: 'Do I need to pay a borrowing fee?',
+  borrow_faq_fee_answer:
+    'Open Library does not charge borrowing fees, but borrowers cover delivery costs such as shipping.',
+  borrow_faq_return_question: 'Do I need to return a book if nobody else requests it?',
+  borrow_faq_return_answer:
+    'The standard loan period is 30 days. If no new request arrives after that, you may keep the book temporarily, but stay ready to pass it on.',
+  borrow_faq_contact_question: 'How do I contact the current holder?',
+  borrow_faq_contact_answer:
+    'After you submit a borrowing request, we provide the current holder contact information so you can coordinate the handoff.',
+  borrow_faq_keep_question: 'What if I want to keep a book long term?',
+  borrow_faq_keep_answer:
+    'Open Library exists to keep knowledge flowing. If you especially like a book, consider buying your own copy or donating the same book to the library.',
+  borrow_faq_ebook_question: 'Can I borrow ebooks?',
+  borrow_faq_ebook_answer:
+    'Open Library currently focuses on physical books. We may add ebook resources in the future.',
+
+  // BookCard
+  book_cover: 'Cover',
+
+  // HowItWorks
+  learn_more_details: 'Learn More',
+
+  // Books Page
+  book_catalog_description: 'Browse our community shared library and discover interesting books',
+
+  // Homepage About & Support sections
+  open_library_community_intro: 'freeCodeCamp Chengdu Community Open Library',
+  our_mission_text:
+    'Promote knowledge exchange, drive learning and growth among community members, and strengthen interaction and trust. We use a unique "no-storage" lending model to let books circulate freely among members.',
+  core_concepts: 'Core Concepts',
+  knowledge_flow: 'Knowledge Flow',
+  knowledge_flow_desc: 'Books circulate freely to promote knowledge sharing',
+  community_driven: 'Community Driven',
+  community_driven_desc: 'All books are donated by members',
+  open_sharing: 'Open Sharing',
+  open_sharing_desc: 'Promoting exchange and interaction',
+  support_us: 'Support Us',
+  support_us_description:
+    'Open Library is completely supported by the passion and contributions of community members. If this project has been helpful to you, please support our development.',
+  share_your_book: 'Share Your Book',
+
+  // Book Detail Page
+  book_publisher: 'Publisher',
+  book_published_year: 'Published',
+  book_page_count: 'Pages',
+  not_available: 'N/A',
+
+  // Open Library Review Page
+  book_reviews: 'Book Reviews',
+  community_reviews: 'Community Reviews',
+  all_reviews: 'All Reviews',
+  recent_reviews: 'Recent Reviews',
+  top_reviews: 'Top Reviews',
+  write_your_review: 'Write Your Review',
+  review_guidelines: 'Review Guidelines',
+  how_to_write_helpful_review: 'How to Write a Helpful Review',
+  rating_reference: 'Rating Reference',
+
+  // Homepage Hero Section
+  hero_title: 'Free knowledge flows here',
+  hero_subtitle:
+    "Share and borrow books in our open-source community. Join freeCodeCamp Chengdu's initiative to make learning accessible to everyone.",
+  hero_image_alt: 'People sharing books',
+
+  // Featured Books Section
+  featured_books_subtitle: 'Discover what our community is reading right now',
+
+  // Donation Callout Section
+  donation_callout_subtitle:
+    'Have books collecting dust on your shelf? Donate them to our community and help others learn and grow. Your contribution makes a difference!',
+
+  // Footer
+  footer_description:
+    'A community-driven library for sharing knowledge and stories. Built with open source. Powered by generosity.',
+  quick_links_footer: 'Quick Links',
+  home_footer: 'Home',
+  catalog_footer: 'Catalog',
+  about_us_footer: 'About Us',
+  donate_footer: 'Donate',
+  contact: 'Contact',
+  community_name: 'freeCodeCamp Chengdu Community',
+  community_location: 'Chengdu, Sichuan, China',
+  follow_us: 'Follow Us',
+  all_rights_reserved: 'All Rights Reserved',
 };

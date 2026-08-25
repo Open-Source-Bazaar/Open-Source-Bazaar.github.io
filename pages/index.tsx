@@ -1,20 +1,45 @@
 import { observer } from 'mobx-react';
+import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import { FC, useContext } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { renderToStaticMarkup } from 'react-dom/server';
 import ReactTyped from 'react-typed-component';
+import { Minute, Second } from 'web-utility';
 
+import { HeroCarousel } from '../components/Activity/HeroCarousel';
 import { PageHead } from '../components/Layout/PageHead';
+import { Activity, ActivityModel } from '../models/Activity';
 import { I18nContext } from '../models/Translation';
 import styles from '../styles/Home.module.less';
+import { lark } from './api/Lark/core';
 
-const HomePage: FC = observer(() => {
+interface HomePageProps {
+  activities: Activity[];
+}
+
+export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
+  await lark.getAccessToken();
+
+  const store = new ActivityModel();
+  store.client = lark.client;
+
+  const activities = await store.getList({}, 1, 3);
+
+  return {
+    props: JSON.parse(JSON.stringify({ activities })),
+    revalidate: Minute / Second,
+  };
+};
+
+const HomePage: FC<HomePageProps> = observer(({ activities }) => {
   const { t } = useContext(I18nContext);
 
   return (
     <>
       <PageHead />
+
+      {activities[0] && <HeroCarousel activities={activities} />}
 
       <section
         className={`flex-fill d-flex flex-column justify-content-center align-items-center bg-secondary bg-gradient text-dark bg-opacity-10 ${styles.main}`}

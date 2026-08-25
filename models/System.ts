@@ -6,7 +6,9 @@ import { Constructor } from 'web-utility';
 import { SearchActivityModel } from './Activity';
 import { SearchAwardModel } from './Award';
 import { ownClient } from './Base';
-import { OrganizationModel } from './Organization';
+import { SearchBookModel } from './Book';
+import { SearchOrganizationModel } from './Organization';
+import { SearchProjectModel } from './Project';
 
 export type SearchableFilter<D extends DataObject> = Filter<D> & {
   keywords?: string;
@@ -23,8 +25,10 @@ export type CityCoordinateMap = Record<string, [number, number]>;
 export class SystemModel extends BaseModel {
   searchMap = {
     activity: SearchActivityModel,
+    book: SearchBookModel,
+    project: SearchProjectModel,
     award: SearchAwardModel,
-    NGO: OrganizationModel,
+    NGO: SearchOrganizationModel,
   } as Record<string, Constructor<SearchModel<DataObject>>>;
 
   @observable
@@ -49,7 +53,6 @@ export class SystemModel extends BaseModel {
     const { body } = await ownClient.get<CityCoordinateMap>(
       'https://idea2app.github.io/public-meta-data/china-city-coordinate.json',
     );
-
     return (this.cityCoordinate = body!);
   }
 }

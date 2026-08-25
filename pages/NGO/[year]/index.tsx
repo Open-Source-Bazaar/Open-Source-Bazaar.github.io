@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import dynamic from 'next/dynamic';
-import { cache, compose, errorLogger } from 'next-ssr-middleware';
+import { GetStaticProps } from 'next';
 import { FC, useContext } from 'react';
 import { Button, Container } from 'react-bootstrap';
 
@@ -9,6 +9,7 @@ import { CityStatisticMap } from '../../../components/Map/CityStatisticMap';
 import { SearchBar } from '../../../components/Navigator/SearchBar';
 import { OrganizationModel, OrganizationStatistic } from '../../../models/Organization';
 import { I18nContext } from '../../../models/Translation';
+import { skipBuildingAll } from '../../api/SSG';
 
 const OrganizationCharts = dynamic(() => import('../../../components/Organization/Charts'), {
   ssr: false,
@@ -19,15 +20,19 @@ interface OrganizationPageProps {
   statistic: OrganizationStatistic;
 }
 
-export const getServerSideProps = compose<{ year: string }, OrganizationPageProps>(
-  cache(),
-  errorLogger,
-  async ({ params }) => {
-    const statistic = await new OrganizationModel().getStatistic({ establishedDate: params!.year });
+export const getStaticPaths = skipBuildingAll;
 
-    return { props: { year: params!.year, statistic } };
-  },
-);
+export const getStaticProps: GetStaticProps<OrganizationPageProps, { year: string }> = async ({
+  params,
+}) => {
+  const { year } = params!;
+
+  const organizationStore = new OrganizationModel();
+
+  const statistic = await organizationStore.getStatistic({ startYear: year });
+
+  return { props: { year, statistic } };
+};
 
 const OrganizationPage: FC<OrganizationPageProps> = observer(({ year, statistic }) => {
   const { t } = useContext(I18nContext);
@@ -47,7 +52,7 @@ const OrganizationPage: FC<OrganizationPageProps> = observer(({ year, statistic 
         <SearchBar action="/search/NGO" />
       </header>
 
-      <CityStatisticMap data={statistic.coverageArea} />
+      <CityStatisticMap data={statistic.city} />
 
       <OrganizationCharts {...statistic} />
     </Container>

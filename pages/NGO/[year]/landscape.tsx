@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import { cache, compose, errorLogger } from 'next-ssr-middleware';
+import { GetStaticProps } from 'next';
 import { FC, useContext } from 'react';
 import { Container } from 'react-bootstrap';
 
@@ -10,18 +10,22 @@ import {
 } from '../../../components/Organization/Landscape';
 import { OrganizationModel } from '../../../models/Organization';
 import { I18nContext } from '../../../models/Translation';
+import { skipBuildingAll } from '../../api/SSG';
 
-export const getServerSideProps = compose<{ year: string }, Pick<OrganizationModel, 'typeMap'>>(
-  cache(),
-  errorLogger,
-  async ({ params }) => {
-    const typeMap = await new OrganizationModel().groupAllByType({
-      establishedDate: params!.year,
-    });
+export const getStaticPaths = skipBuildingAll;
 
-    return { props: JSON.parse(JSON.stringify({ typeMap })) };
-  },
-);
+export const getStaticProps: GetStaticProps<
+  Pick<OrganizationModel, 'typeMap'>,
+  { year: string }
+> = async ({ params }) => {
+  const { year } = params!;
+
+  const organizationStore = new OrganizationModel();
+
+  const typeMap = await organizationStore.groupAllByType({ startYear: year });
+
+  return { props: JSON.parse(JSON.stringify({ typeMap })) };
+};
 
 const LandscapePage: FC<OpenCollaborationLandscapeProps> = observer(props => {
   const { t } = useContext(I18nContext);

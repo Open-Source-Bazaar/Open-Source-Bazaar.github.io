@@ -56,6 +56,7 @@ export default defineConfig(
           cspell: {
             language: 'en',
             dictionaries: ['typescript', 'node', 'html', 'css', 'bash', 'npm', 'pnpm'],
+            words: ['hackathon'],
           },
         },
       ],

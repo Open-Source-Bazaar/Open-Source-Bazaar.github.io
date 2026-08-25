@@ -38,7 +38,8 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
   {
     title: t('open_source_projects'),
     subs: [
-      { href: '/project', title: t('open_source_projects') },
+      { href: '/project', title: t('self_developed_projects') },
+      { href: '/search/project', title: t('bazaar_projects') },
       { href: '/issue', title: 'GitHub issues' },
       { href: '/license-filter', title: t('license_filter') },
       { href: '/finance', title: t('finance_page_title') },
@@ -80,6 +81,10 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
       { href: '/recipe', title: t('recipe') },
     ],
   },
+  {
+    href: '/open-library',
+    title: t('open_library'),
+  },
 ];
 
 export interface MainNavigatorProps {
@@ -96,7 +101,7 @@ export const MainNavigator: FC<MainNavigatorProps> = observer(({ menu }) => {
   return (
     <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
       <Container>
-        <Navbar.Brand href="/" className="fw-bolder d-flex align-items-center gap-2">
+        <Navbar.Brand href="/" className="fw-bolder d-flex align-items-center gap-2 text-nowrap">
           <Image width={40} src={DefaultImage} alt={t('open_source_bazaar')} />
           {t('open_source_bazaar')}
         </Navbar.Brand>
@@ -116,7 +121,7 @@ export const MainNavigator: FC<MainNavigatorProps> = observer(({ menu }) => {
                 <Nav.Link
                   key={`${href}-${title}`}
                   href={href}
-                  className={pathname === `${href}` ? 'fw-bolder text-light' : ''}
+                  className={`text-nowrap ${pathname === `${href}` ? 'fw-bolder text-light' : ''}`}
                 >
                   {title}
                 </Nav.Link>

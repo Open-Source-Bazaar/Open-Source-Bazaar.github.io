@@ -1,5 +1,6 @@
 import { FC, useContext, useMemo } from 'react';
 import { Badge, Card } from 'react-bootstrap';
+import { Time } from 'idea-react';
 
 import { INDEX_CATEGORY_LABEL_KEYS, INDEX_RISK_LABEL_KEYS } from '../../constants/finance';
 import { I18nContext } from '../../models/Translation';
@@ -34,8 +35,6 @@ export const FundCard: FC<IndexFundSnapshot> = ({
 }) => {
   const { currentLanguage, t } = useContext(I18nContext);
   const sparklineId = useMemo(() => `fund-${symbol}`, [symbol]);
-  const updatedAtISO = updatedAt ? new Date(updatedAt).toJSON() : undefined;
-
   return (
     <Card className={`${styles.fundCard} h-100`}>
       <Card.Body className="d-flex flex-column gap-3">
@@ -96,9 +95,10 @@ export const FundCard: FC<IndexFundSnapshot> = ({
           ))}
         </ul>
 
-        <time className="small text-muted" dateTime={updatedAtISO}>
-          {t('updated_at')} {updatedAt || '--'}
-        </time>
+        <p className="small text-muted mb-0">
+          {t('updated_at')}{' '}
+          {updatedAt ? <Time dateTime={updatedAt} format="YYYY-MM-DD HH:mm:ss" /> : '--'}
+        </p>
 
         <a href={`/finance/${symbol}`} className="text-primary fw-semibold">
           {t('view_details')}

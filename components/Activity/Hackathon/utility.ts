@@ -1,0 +1,217 @@
+import { TableCellValue, TableFormView } from 'mobx-lark';
+import { Day, formatDate } from 'web-utility';
+
+import type { HackathonScheduleTone } from './Schedule';
+import { i18n, I18nKey } from '../../../models/Translation';
+
+export const AgendaTypeClassMap: Partial<Record<string, HackathonScheduleTone>> = {
+  workshop: 'formation',
+  formation: 'formation',
+  presentation: 'enrollment',
+  enrollment: 'enrollment',
+  coding: 'competition',
+  competition: 'competition',
+  break: 'break',
+  ceremony: 'evaluation',
+  evaluation: 'evaluation',
+};
+
+export const buildAgendaTypeLabelMap = ({
+  t,
+}: Pick<typeof i18n, 't'>): Partial<Record<string, string>> => ({
+  workshop: t('workshop'),
+  presentation: t('presentation'),
+  coding: t('coding'),
+  break: t('break'),
+  ceremony: t('ceremony'),
+  enrollment: t('enrollment'),
+  formation: t('formation'),
+  competition: t('competition'),
+  evaluation: t('evaluation'),
+});
+
+export const isPublicForm = ({ shared_limit }: TableFormView) =>
+  ['anyone_editable'].includes(shared_limit as string);
+
+type NamedLike = { name?: string | null };
+type TextLike = TableCellValue | NamedLike | null | undefined;
+type TextListLike = TextLike | TextLike[];
+
+const textOf = (value: TextLike) => {
+  if (value === null || value === undefined) return '';
+  if (typeof value === 'boolean') return '';
+
+  if (typeof value === 'object' && !Array.isArray(value)) {
+    const {
+      name,
+      text,
+      value: primitiveValue,
+      displayName,
+      display_name,
+      title,
+      content,
+      plainText,
+      plain_text,
+      user,
+    } = value as NamedLike & {
+      text?: string | null;
+      value?: string | number | null;
+      displayName?: string | null;
+      display_name?: string | null;
+      title?: string | null;
+      content?: string | null;
+      plainText?: string | null;
+      plain_text?: string | null;
+      user?: {
+        name?: string | null;
+        displayName?: string | null;
+        display_name?: string | null;
+      } | null;
+    };
+    const candidate = [
+      name,
+      text,
+      primitiveValue,
+      displayName,
+      display_name,
+      title,
+      content,
+      plainText,
+      plain_text,
+      user?.displayName,
+      user?.display_name,
+      user?.name,
+    ].find(item => item !== null && item !== undefined && `${item}`.trim());
+
+    return candidate === null || candidate === undefined ? '' : `${candidate}`.trim();
+  }
+
+  const text = value.toString().trim();
+
+  return text === '[object Object]' ? '' : text;
+};
+
+export const firstTextOf = (value: TextListLike) =>
+  (Array.isArray(value) ? value.map(textOf).find(Boolean) : textOf(value)) || '';
+
+export const formatMoment = (value?: TableCellValue) => (value ? formatDate(value as string) : '');
+
+export const formatPeriod = (startedAt?: TableCellValue, endedAt?: TableCellValue) =>
+  [formatMoment(startedAt), formatMoment(endedAt)].filter(Boolean).join(' - ');
+
+export const timeOf = (value?: TableCellValue) => {
+  if (value instanceof Date) return value.getTime();
+
+  if (typeof value === 'number') return Number.isFinite(value) ? value : NaN;
+
+  const text = firstTextOf(value as TextListLike);
+
+  if (!text) return NaN;
+
+  const time = Date.parse(text);
+
+  return Number.isFinite(time) ? time : NaN;
+};
+
+export interface CountdownWindow {
+  startedAt?: TableCellValue;
+  endedAt?: TableCellValue;
+}
+
+const countdownTextOf = (value?: TableCellValue) => {
+  const time = timeOf(value);
+
+  return Number.isFinite(time) ? new Date(time).toISOString() : undefined;
+};
+
+export const resolveCountdownState = <T extends CountdownWindow>(
+  items: T[],
+  referenceTime: number,
+  startTime?: TableCellValue,
+  endTime?: TableCellValue,
+) => {
+  const nextItem = items.find(({ startedAt, endedAt }) => {
+    const started = timeOf(startedAt);
+    const ended = timeOf(endedAt);
+
+    return Number.isFinite(started) && Number.isFinite(ended) && referenceTime <= ended;
+  });
+  const nextStartedAt = timeOf(nextItem?.startedAt);
+  const nextCountdownTarget =
+    Number.isFinite(nextStartedAt) && nextStartedAt > referenceTime
+      ? nextItem?.startedAt
+      : nextItem?.endedAt;
+  const fallbackCountdownTarget = timeOf(startTime) > referenceTime ? startTime : endTime;
+  const countdownTo =
+    countdownTextOf(nextCountdownTarget) || countdownTextOf(fallbackCountdownTarget);
+
+  return { nextItem, countdownTo };
+};
+
+export const previewText = (items: TableCellValue[], fallback: string) =>
+  items
+    .map(item => textOf(item))
+    .filter(Boolean)
+    .slice(0, 2)
+    .join(' · ') || fallback;
+
+export const agendaToneClassOf = (type: TableCellValue, index: number) => {
+  const normalized = type?.toString().toLowerCase() || '';
+  const fallbackOrder: HackathonScheduleTone[] = [
+    'formation',
+    'enrollment',
+    'competition',
+    'break',
+    'evaluation',
+  ];
+
+  return AgendaTypeClassMap[normalized] || fallbackOrder[index % fallbackOrder.length];
+};
+
+export const agendaTypeLabelOf = (
+  type: TableCellValue,
+  t: (key: I18nKey) => string,
+  fallback = '-',
+) => {
+  const normalized = type?.toString().toLowerCase() || '';
+
+  return buildAgendaTypeLabelMap({ t })[normalized] || type?.toString() || fallback;
+};
+
+export const compactSummaryOf = (
+  text: TableCellValue | string[] | string | undefined,
+  fallback: string,
+  limit = 96,
+) => {
+  const source = Array.isArray(text)
+    ? text
+        .map(item => textOf(item))
+        .filter(Boolean)
+        .join(' · ')
+    : textOf(text);
+  const normalized = source.replace(/\s+/g, ' ').trim();
+
+  if (!normalized) return fallback;
+
+  return normalized.length > limit ? `${normalized.slice(0, limit).trim()}...` : normalized;
+};
+
+export const dateKeyOf = (value?: TableCellValue) => {
+  const dateText = formatMoment(value);
+
+  return dateText ? dateText.slice(5, 10).replace(/\//g, '-') : '';
+};
+
+export const compactDateKeyOf = (value?: TableCellValue) => dateKeyOf(value).replace('-', '.');
+
+export const daysBetween = (startedAt?: TableCellValue, endedAt?: TableCellValue) => {
+  const start = timeOf(startedAt);
+  const end = timeOf(endedAt);
+
+  if (!Number.isFinite(start) || !Number.isFinite(end) || end < start) return 0;
+
+  return Math.max(1, Math.ceil((end - start) / Day));
+};
+
+export const normalizeAgendaType = (value?: TableCellValue) =>
+  value?.toString().toLowerCase() || '';

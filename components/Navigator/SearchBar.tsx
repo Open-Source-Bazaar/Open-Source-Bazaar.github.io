@@ -13,8 +13,7 @@ import { I18nContext } from '../../models/Translation';
 import styles from './SearchBar.module.less';
 
 export interface SearchBarProps
-  extends
-    Omit<FormProps, 'onChange'>,
+  extends Omit<FormProps, 'onChange'>,
     Pick<InputGroupProps, 'size'>,
     Pick<FormControlProps, 'name' | 'placeholder' | 'defaultValue' | 'value' | 'onChange'> {
   expanded?: boolean;

@@ -2,21 +2,25 @@ import { Loading } from 'idea-react';
 import { GitRepository, RepositoryModel } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { ScrollList } from 'mobx-restful-table';
-import { cache, compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
+import { Minute, Second } from 'web-utility';
 
 import { GitCard } from '../components/Git/Card';
 import { PageHead } from '../components/Layout/PageHead';
 import { repositoryStore } from '../models/Repository';
 import { I18nContext } from '../models/Translation';
+import { skipBuilding } from './api/SSG';
 
-export const getServerSideProps = compose(cache(), errorLogger, async () => {
+export const getStaticProps = skipBuilding<{ list: GitRepository[] }>(async () => {
   const list = await new RepositoryModel('Open-Source-Bazaar').getList({
     relation: ['languages'],
   });
 
-  return { props: JSON.parse(JSON.stringify({ list })) };
+  return {
+    props: JSON.parse(JSON.stringify({ list })),
+    revalidate: Minute / Second,
+  };
 });
 
 const ProjectListPage: FC<{ list: GitRepository[] }> = observer(({ list }) => {

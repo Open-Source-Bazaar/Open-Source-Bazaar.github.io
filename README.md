@@ -3,6 +3,7 @@
 开源市集官网项目
 
 [![CI & CD](https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io/actions/workflows/main.yml/badge.svg)][7]
+[![Self Scan](https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io/actions/workflows/self-scan.yml/badge.svg)][12]
 
 ## 项目简介
 
@@ -22,11 +23,8 @@
 ## 开始
 
 ```bash
-npm install
-npm run dev
-# or
-yarn install
-yarn dev
+pnpm install
+pnpm dev
 ```
 
 可访问 http://localhost:3000.
@@ -38,3 +36,4 @@ yarn dev
 [7]: https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io/actions/workflows/main.yml
 [10]: https://github.com/features/actions
 [11]: https://vercel.com/
+[12]: https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io/actions/workflows/self-scan.yml
