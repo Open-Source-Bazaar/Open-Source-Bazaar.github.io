@@ -31,20 +31,22 @@ type AwardFilter = 'all' | 'pending' | 'recognized';
 const aboutItems: Array<{ icon: string; title: I18nKey; description: I18nKey }> = [
   { icon: '🌟', title: 'award_meaning', description: 'award_meaning_description' },
   { icon: '🎯', title: 'award_criteria', description: 'award_criteria_description' },
-  { icon: '🤝', title: 'award_open_data', description: 'award_open_data_description' },
+  { icon: '🏆', title: 'award_shared_value', description: 'award_shared_value_description' },
 ];
 
 const ruleItems: Array<{ title: I18nKey; description: I18nKey }> = [
   { title: 'award_rule_nominate', description: 'award_rule_nominate_description' },
-  { title: 'award_rule_review', description: 'award_rule_review_description' },
-  { title: 'award_rule_support', description: 'award_rule_support_description' },
-  { title: 'award_rule_recognize', description: 'award_rule_recognize_description' },
+  { title: 'award_rule_vote', description: 'award_rule_vote_description' },
+  { title: 'award_rule_establish', description: 'award_rule_establish_description' },
+  { title: 'award_rule_trophy', description: 'award_rule_trophy_description' },
 ];
 
 const faqItems: Array<{ question: I18nKey; answer: I18nKey }> = [
   { question: 'award_faq_who_question', answer: 'award_faq_who_answer' },
   { question: 'award_faq_video_question', answer: 'award_faq_video_answer' },
-  { question: 'award_faq_data_question', answer: 'award_faq_data_answer' },
+  { question: 'award_faq_cost_question', answer: 'award_faq_cost_answer' },
+  { question: 'award_faq_multiple_question', answer: 'award_faq_multiple_answer' },
+  { question: 'award_faq_delivery_question', answer: 'award_faq_delivery_answer' },
 ];
 
 const AwardPage: FC<{ awards: Award[] }> = observer(({ awards }) => {

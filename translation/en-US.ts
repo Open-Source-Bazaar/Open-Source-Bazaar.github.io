@@ -56,19 +56,19 @@ export default {
   award_hero_title: 'Honoring every open collaborator',
   award_hero_description: 'Thank the people who made a difference or helped you over the past year',
   award_submit_nomination: 'Submit a nomination',
-  award_total_nominations: 'Nominations',
+  award_total_nominations: 'Total nominations',
   award_total_recognized: 'Recipients',
-  award_total_support: 'Total support',
+  award_total_support: 'Total votes',
   award_about_title: 'About the award',
   award_meaning: 'Purpose',
   award_meaning_description:
-    'Recognize people who demonstrate excellence and generosity in open collaboration.',
-  award_criteria: 'Nomination criteria',
+    'Initiated by the Open Source Bazaar community to recognize individuals who demonstrate excellence and selfless dedication in open-source collaboration.',
+  award_criteria: 'Selection criteria',
   award_criteria_description:
-    'Anyone who made a difference or helped you over the past year deserves recognition.',
-  award_open_data: 'Open records',
-  award_open_data_description:
-    'Nomination and support data comes from a Feishu Base maintained by the community.',
+    'Anyone who made a lasting impression on you or helped you over the past year deserves to be nominated and recognized.',
+  award_shared_value: 'Create value together',
+  award_shared_value_description:
+    'When a nomination receives at least 10 votes, all voters share the cost of creating a custom trophy for the recipient.',
   award_initiative_title: 'Open Collaborator Award initiative',
   award_initiative_video_title: 'Open Collaborator Award initiative video',
   award_initiative_question: 'Why did we create this award?',
@@ -77,16 +77,16 @@ export default {
   award_rules_title: 'How it works',
   award_rule_nominate: 'Nominate',
   award_rule_nominate_description:
-    'Use the Feishu form to introduce the nominee, your reason and a nomination video.',
-  award_rule_review: 'Data sync',
-  award_rule_review_description:
-    'Form records are read from the Feishu Base by the website server and displayed here.',
-  award_rule_support: 'Community support',
-  award_rule_support_description:
-    'The page displays real support data from the Base instead of counting votes in the browser.',
-  award_rule_recognize: 'Recognition',
-  award_rule_recognize_description:
-    'A nomination joins the recipient list after reaching the support threshold.',
+    'Anyone may nominate a person who helped them over the past year and explain their reason in a video.',
+  award_rule_vote: 'Vote',
+  award_rule_vote_description:
+    'Community members may vote for nominations they support, with one vote per person for each nomination.',
+  award_rule_establish: 'Establish',
+  award_rule_establish_description:
+    'A nomination becomes an official award after receiving at least 10 votes, and the nominee becomes a recipient.',
+  award_rule_trophy: 'Trophy',
+  award_rule_trophy_description:
+    'All voters share the cost of creating a custom trophy for the recipient.',
   award_recognized_list: 'Award recipients',
   award_view_nomination: 'View full nomination',
   award_nominations_title: 'Nominations',
@@ -107,15 +107,21 @@ export default {
   award_form_refresh_hint: 'Refresh this page after submission to see the latest nominations.',
   award_close: 'Close',
   award_faq_title: 'Frequently asked questions',
-  award_faq_who_question: 'Who can submit a nomination?',
+  award_faq_who_question: 'Q: Who can submit a nomination?',
   award_faq_who_answer:
-    'Anyone may nominate a person who helped them or made a difference over the past year.',
-  award_faq_video_question: 'How do I submit a nomination video?',
+    'A: Anyone may nominate a person who helped them or made a lasting impression over the past year.',
+  award_faq_video_question: 'Q: How do I create a nomination video?',
   award_faq_video_answer:
-    'Upload the video to Bilibili first, then enter its link in the Feishu nomination form.',
-  award_faq_data_question: 'Where is nomination data stored?',
-  award_faq_data_answer:
-    "Form entries are stored directly in the community's Feishu Base and read by the website server.",
+    'A: Record it on a phone or computer and sincerely explain why you are nominating them and what they did that impressed you. Upload it to Bilibili, then paste the link into the nomination form.',
+  award_faq_cost_question: 'Q: How much will I need to pay after voting?',
+  award_faq_cost_answer:
+    'A: Voters only share the trophy production cost after a nomination reaches 10 votes. The exact amount will be explained when voting and is usually around a dozen yuan per person.',
+  award_faq_multiple_question: 'Q: Can I vote for multiple nominations?',
+  award_faq_multiple_answer:
+    'A: Yes. You may vote for multiple different nominations, but only once for each nomination.',
+  award_faq_delivery_question: 'Q: How will the trophy reach the recipient?',
+  award_faq_delivery_answer:
+    'A: We will present the trophy at an in-person Open Source Bazaar event or send it by courier.',
 
   //License-tool Page
   license_filter: 'Open Source License Selector',
