@@ -8,6 +8,7 @@ import Head from 'next/head';
 
 import { Footer } from '../components/Footer';
 import { MainNavigator } from '../components/Navigator/MainNavigator';
+import { OpenLibraryFooter } from '../components/open-library/Footer';
 import { LibraryNavbar } from '../components/open-library/Navbar';
 import { PageContent } from '../components/PageContent';
 import { isServer } from '../models/configuration';
@@ -90,7 +91,7 @@ export default class CustomApp extends App<I18nProps> {
         ) : (
           this.renderSiteFrame(isArticlePage)
         )}
-        <Footer />
+        {isOpenLibraryPath ? <OpenLibraryFooter /> : <Footer />}
       </I18nContext.Provider>
     );
   }
