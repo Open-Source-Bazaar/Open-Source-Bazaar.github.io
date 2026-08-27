@@ -5,6 +5,7 @@ import { Col, Container, Image, Nav, Row } from 'react-bootstrap';
 
 import { ContactEmail, GitHubURL, WeChatURL } from '../models/configuration';
 import { I18nContext } from '../models/Translation';
+import styles from './Footer.module.less';
 
 export interface FooterLink {
   href: string;
@@ -29,17 +30,17 @@ export const Footer = observer(
         : currentYear;
 
     return (
-      <footer className="bg-dark text-light py-4">
-        <Container fluid="xl" className="px-3">
+      <footer className={`bg-dark text-light ${styles.footer}`}>
+        <Container fluid="xl" className="px-4 px-md-3">
           <Row>
-            <Col md={4} className="mb-3 mb-md-0">
-              <section>
+            <Col md={12} lg={4} className={styles.sectionColumn}>
+              <section className={styles.section}>
                 <h5 className="fw-bold mb-3">{t('open_source_bazaar')}</h5>
-                <p className="text-light opacity-75 lh-base">{description}</p>
-                <div className="mt-3">
+                <p className="text-light opacity-75 lh-base mb-0">{description}</p>
+                <div className={`${styles.socialLinks} mt-3`}>
                   <a
                     href={GitHubURL}
-                    className="text-light text-decoration-none me-3 hover-opacity"
+                    className={`${styles.socialLink} text-light text-decoration-none hover-opacity`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -47,7 +48,7 @@ export const Footer = observer(
                   </a>
                   <a
                     href={WeChatURL}
-                    className="text-light text-decoration-none me-3 hover-opacity"
+                    className={`${styles.socialLink} text-light text-decoration-none hover-opacity`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -56,36 +57,63 @@ export const Footer = observer(
                 </div>
               </section>
             </Col>
-            <Col md={4} className="d-md-flex justify-content-md-center mb-3 mb-md-0">
-              <section>
+            <Col
+              md={6}
+              lg={4}
+              className={`${styles.sectionColumn} d-md-flex justify-content-md-center`}
+            >
+              <section className={styles.section}>
                 <h5 className="fw-bold mb-3">{t('quick_links_footer')}</h5>
-                <Nav className="flex-column">
+                <Nav className={`${styles.quickLinks} flex-column`}>
                   {quickLinks.map(({ href, icon, label }) => (
                     <Link
                       key={href}
                       href={href}
-                      className="nav-link text-light px-0 py-1 text-decoration-none"
+                      className={`${styles.quickLink} nav-link text-light px-0 text-decoration-none`}
                     >
-                      {icon} {label}
+                      <span className={styles.icon} aria-hidden="true">
+                        {icon}
+                      </span>
+                      <span>{label}</span>
                     </Link>
                   ))}
                 </Nav>
               </section>
             </Col>
-            <Col md={4} className="d-md-flex justify-content-md-end">
-              <section>
+            <Col
+              md={6}
+              lg={4}
+              className={`${styles.sectionColumn} d-md-flex justify-content-md-center justify-content-lg-end`}
+            >
+              <section className={styles.section}>
                 <h5 className="fw-bold mb-3">{t('contact')}</h5>
-                <ul className="list-unstyled d-flex flex-column gap-2 text-light opacity-75 mb-0">
-                  <li>📍 {t('community_name')}</li>
-                  <li>📌 {t('community_location')}</li>
-                  <li>
-                    ✉️{' '}
+                <ul
+                  className={`${styles.contactList} list-unstyled d-flex flex-column text-light opacity-75 mb-0`}
+                >
+                  <li className={styles.contactItem}>
+                    <span className={styles.icon} aria-hidden="true">
+                      📍
+                    </span>
+                    <span>{t('community_name')}</span>
+                  </li>
+                  <li className={styles.contactItem}>
+                    <span className={styles.icon} aria-hidden="true">
+                      📌
+                    </span>
+                    <span>{t('community_location')}</span>
+                  </li>
+                  <li className={styles.contactItem}>
+                    <span className={styles.icon} aria-hidden="true">
+                      ✉️
+                    </span>
                     <a className="text-light" href={`mailto:${ContactEmail}`}>
                       {ContactEmail}
                     </a>
                   </li>
-                  <li>
-                    💬{' '}
+                  <li className={styles.contactItem}>
+                    <span className={styles.icon} aria-hidden="true">
+                      💬
+                    </span>
                     <a
                       className="text-light"
                       href={WeChatURL}
@@ -100,9 +128,11 @@ export const Footer = observer(
             </Col>
           </Row>
 
-          <hr className="mt-4 mb-3 border-secondary opacity-25" />
+          <hr className="my-0 mt-md-4 mb-md-3 border-secondary opacity-25" />
 
-          <div className="d-flex flex-column align-items-center gap-2 text-center text-light opacity-75 py-2">
+          <div
+            className={`${styles.copyright} d-flex flex-column align-items-center gap-2 text-center text-light opacity-75`}
+          >
             <span>
               &copy; {copyrightYear} {t('open_source_bazaar')}. {t('all_rights_reserved')}
             </span>
