@@ -74,6 +74,24 @@ export default class CustomApp extends App<I18nProps> {
     const isArticlePage = asPath.startsWith('/article/') || asPath.startsWith('/policy/'),
       isActivityPage = asPath.startsWith('/hackathon'),
       isOpenLibraryPath = asPath.startsWith('/open-library');
+    const footerProps = isOpenLibraryPath
+      ? {
+          description: t('footer_description'),
+          quickLinks: [
+            { href: '/open-library/books', icon: '📖', label: t('catalog_footer') },
+            { href: '/open-library/how-to-borrow', icon: 'ℹ️', label: t('how_to_borrow') },
+          ],
+        }
+      : {
+          description: t('site_footer_description'),
+          quickLinks: [
+            { href: '/', icon: '🏠', label: t('home_footer') },
+            { href: '/article/about', icon: 'ℹ️', label: t('about_us_footer') },
+            { href: '/article/join-us', icon: '🤝', label: t('join_us') },
+          ],
+          copyrightStartYear: 2021,
+          showVercelCredit: true,
+        };
 
     return (
       <I18nContext.Provider value={this.i18nStore}>
@@ -90,7 +108,7 @@ export default class CustomApp extends App<I18nProps> {
         ) : (
           this.renderSiteFrame(isArticlePage)
         )}
-        <Footer />
+        <Footer {...footerProps} />
       </I18nContext.Provider>
     );
   }

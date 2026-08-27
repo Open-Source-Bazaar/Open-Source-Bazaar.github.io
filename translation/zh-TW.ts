@@ -535,6 +535,8 @@ export default {
     '您的捐贈將有助於我們的社群圖書館的發展。您的支持將有助於我們提供更多免費的書籍和資源給社群成員。',
 
   // Footer
+  site_footer_description:
+    '一個以開源軟硬體、公益項目為主題的公益活動品牌，也是一個以「開放式協作」為核心理念的開源社群。',
   footer_description:
     '一個開源的社群圖書館，提供免費的書籍和資源給社群成員。開源。免費。無限可能。',
   quick_links_footer: '快速連結',
@@ -547,4 +549,5 @@ export default {
   community_location: '中國四川成都',
   follow_us: '關注我們',
   all_rights_reserved: '版權所有',
+  powered_by: '技術支援：',
 };

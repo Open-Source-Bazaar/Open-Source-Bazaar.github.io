@@ -565,6 +565,8 @@ export default {
     'Have books collecting dust on your shelf? Donate them to our community and help others learn and grow. Your contribution makes a difference!',
 
   // Footer
+  site_footer_description:
+    'A nonprofit event brand focused on open-source software, hardware, and public-interest projects, and a community built around open collaboration.',
   footer_description:
     'A community-driven library for sharing knowledge and stories. Built with open source. Powered by generosity.',
   quick_links_footer: 'Quick Links',
@@ -577,4 +579,5 @@ export default {
   community_location: 'Chengdu, Sichuan, China',
   follow_us: 'Follow Us',
   all_rights_reserved: 'All Rights Reserved',
+  powered_by: 'Powered by',
 };

@@ -535,6 +535,8 @@ export default {
     '您的书架上有积灰的书吗？将它们捐赠给我们的社区，帮助他人学习和成长。您的贡献会产生影响！',
 
   // Footer
+  site_footer_description:
+    '一个以开源软硬件、公益项目为主题的公益活动品牌，也是一个以「开放式协作」为核心理念的开源社群。',
   footer_description: '一个由社区驱动的图书馆，用于分享知识和故事。开源构建。由慷慨驱动。',
   quick_links_footer: '快速链接',
   home_footer: '首页',
@@ -546,4 +548,5 @@ export default {
   community_location: '中国四川成都',
   follow_us: '关注我们',
   all_rights_reserved: '版权所有',
+  powered_by: '技术支持：',
 };
