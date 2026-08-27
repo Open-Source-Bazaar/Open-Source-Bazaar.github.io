@@ -33,64 +33,70 @@ export const Footer = observer(
         <Container fluid="xl" className="px-3">
           <Row>
             <Col md={4} className="mb-3 mb-md-0">
-              <h5 className="fw-bold mb-3">{t('open_source_bazaar')}</h5>
-              <p className="text-light opacity-75 lh-base">{description}</p>
-              <div className="mt-3">
-                <a
-                  href={GitHubURL}
-                  className="text-light text-decoration-none me-3 hover-opacity"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  🐱 GitHub
-                </a>
-                <a
-                  href={WeChatURL}
-                  className="text-light text-decoration-none me-3 hover-opacity"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  💬 WeChat
-                </a>
-              </div>
-            </Col>
-            <Col md={3} className="mb-3 mb-md-0">
-              <h5 className="fw-bold mb-3">{t('quick_links_footer')}</h5>
-              <Nav className="flex-column">
-                {quickLinks.map(({ href, icon, label }) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    className="nav-link text-light px-0 py-1 text-decoration-none"
-                  >
-                    {icon} {label}
-                  </Link>
-                ))}
-              </Nav>
-            </Col>
-            <Col md={5}>
-              <h5 className="fw-bold mb-3">{t('contact')}</h5>
-              <ul className="list-unstyled d-flex flex-column gap-2 text-light opacity-75 mb-0">
-                <li>📍 {t('community_name')}</li>
-                <li>📌 {t('community_location')}</li>
-                <li>
-                  ✉️{' '}
-                  <a className="text-light" href={`mailto:${ContactEmail}`}>
-                    {ContactEmail}
-                  </a>
-                </li>
-                <li>
-                  💬{' '}
+              <section>
+                <h5 className="fw-bold mb-3">{t('open_source_bazaar')}</h5>
+                <p className="text-light opacity-75 lh-base">{description}</p>
+                <div className="mt-3">
                   <a
-                    className="text-light"
-                    href={WeChatURL}
+                    href={GitHubURL}
+                    className="text-light text-decoration-none me-3 hover-opacity"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {t('community_name')}
+                    🐱 GitHub
                   </a>
-                </li>
-              </ul>
+                  <a
+                    href={WeChatURL}
+                    className="text-light text-decoration-none me-3 hover-opacity"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    💬 WeChat
+                  </a>
+                </div>
+              </section>
+            </Col>
+            <Col md={4} className="d-md-flex justify-content-md-center mb-3 mb-md-0">
+              <section>
+                <h5 className="fw-bold mb-3">{t('quick_links_footer')}</h5>
+                <Nav className="flex-column">
+                  {quickLinks.map(({ href, icon, label }) => (
+                    <Link
+                      key={href}
+                      href={href}
+                      className="nav-link text-light px-0 py-1 text-decoration-none"
+                    >
+                      {icon} {label}
+                    </Link>
+                  ))}
+                </Nav>
+              </section>
+            </Col>
+            <Col md={4} className="d-md-flex justify-content-md-end">
+              <section>
+                <h5 className="fw-bold mb-3">{t('contact')}</h5>
+                <ul className="list-unstyled d-flex flex-column gap-2 text-light opacity-75 mb-0">
+                  <li>📍 {t('community_name')}</li>
+                  <li>📌 {t('community_location')}</li>
+                  <li>
+                    ✉️{' '}
+                    <a className="text-light" href={`mailto:${ContactEmail}`}>
+                      {ContactEmail}
+                    </a>
+                  </li>
+                  <li>
+                    💬{' '}
+                    <a
+                      className="text-light"
+                      href={WeChatURL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {t('community_name')}
+                    </a>
+                  </li>
+                </ul>
+              </section>
             </Col>
           </Row>
 
