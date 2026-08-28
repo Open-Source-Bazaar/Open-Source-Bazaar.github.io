@@ -537,7 +537,7 @@ export default {
   // Footer
   site_footer_description:
     '一个以开源软硬件、公益项目为主题的公益活动品牌，也是一个以「开放式协作」为核心理念的开源社群。',
-  footer_description: '一个由社区驱动的图书馆，用于分享知识和故事。开源构建。由慷慨驱动。',
+  library_footer_description: '一个由社区驱动的图书馆，用于分享知识和故事。开源构建。由慷慨驱动。',
   quick_links_footer: '快速链接',
   home_footer: '首页',
   catalog_footer: '目录',
