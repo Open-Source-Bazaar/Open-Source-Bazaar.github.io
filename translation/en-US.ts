@@ -579,5 +579,4 @@ export default {
   community_location: 'Chengdu, Sichuan, China',
   follow_us: 'Follow Us',
   all_rights_reserved: 'All Rights Reserved',
-  powered_by: 'Powered by',
 };

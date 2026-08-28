@@ -549,5 +549,4 @@ export default {
   community_location: '中國四川成都',
   follow_us: '關注我們',
   all_rights_reserved: '版權所有',
-  powered_by: '技術支援：',
 };

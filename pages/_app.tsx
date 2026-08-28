@@ -89,8 +89,6 @@ export default class CustomApp extends App<I18nProps> {
             { href: '/article/about', icon: 'ℹ️', label: t('about_us_footer') },
             { href: '/article/join-us', icon: '🤝', label: t('join_us') },
           ],
-          copyrightStartYear: 2021,
-          showVercelCredit: true,
         };
 
     return (
