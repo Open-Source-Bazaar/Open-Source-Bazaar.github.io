@@ -565,7 +565,9 @@ export default {
     'Have books collecting dust on your shelf? Donate them to our community and help others learn and grow. Your contribution makes a difference!',
 
   // Footer
-  footer_description:
+  site_footer_description:
+    'A nonprofit event brand focused on open-source software, hardware, and public-interest projects, and a community built around open collaboration.',
+  library_footer_description:
     'A community-driven library for sharing knowledge and stories. Built with open source. Powered by generosity.',
   quick_links_footer: 'Quick Links',
   home_footer: 'Home',

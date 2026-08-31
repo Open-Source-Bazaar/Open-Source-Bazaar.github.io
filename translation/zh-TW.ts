@@ -535,7 +535,9 @@ export default {
     '您的捐贈將有助於我們的社群圖書館的發展。您的支持將有助於我們提供更多免費的書籍和資源給社群成員。',
 
   // Footer
-  footer_description:
+  site_footer_description:
+    '一個以開源軟硬體、公益項目為主題的公益活動品牌，也是一個以「開放式協作」為核心理念的開源社群。',
+  library_footer_description:
     '一個開源的社群圖書館，提供免費的書籍和資源給社群成員。開源。免費。無限可能。',
   quick_links_footer: '快速連結',
   home_footer: '首頁',
