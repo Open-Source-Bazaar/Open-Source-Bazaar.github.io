@@ -101,7 +101,7 @@ export const Footer: FC<FooterProps> = observer(({ description, quickLinks }) =>
                 <span className="d-inline-block flex-shrink-0 text-center" aria-hidden="true">
                   📌
                 </span>
-                <address>{t('community_location')}</address>
+                <address className="mb-0">{t('community_location')}</address>
               </li>
               <li className="d-flex align-items-center gap-2 py-1">
                 <span className="d-inline-block flex-shrink-0 text-center" aria-hidden="true">

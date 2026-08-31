@@ -76,7 +76,7 @@ export default class CustomApp extends App<I18nProps> {
       isOpenLibraryPath = asPath.startsWith('/open-library');
     const footerProps = isOpenLibraryPath
       ? {
-          description: t('footer_description'),
+          description: t('library_footer_description'),
           quickLinks: [
             { href: '/open-library/books', icon: '📖', label: t('catalog_footer') },
             { href: '/open-library/how-to-borrow', icon: 'ℹ️', label: t('how_to_borrow') },
