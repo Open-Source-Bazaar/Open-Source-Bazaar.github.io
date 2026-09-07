@@ -1,0 +1,190 @@
+name: PR - Contributor Trust (Bot Killer)
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull request number to re-score
+        required: true
+        type: number
+
+# Cancel in-progress re-runs for the same PR
+concurrency:
+  group: contributor-trust-${{ github.event.pull_request.number || inputs.pr_number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  preflight:
+    name: Preflight — detect bot authors
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      author_login: ${{ steps.inspect.outputs.author_login }}
+      pr_number: ${{ steps.inspect.outputs.pr_number }}
+      should_skip: ${{ steps.inspect.outputs.should_skip }}
+      skip_reason: ${{ steps.inspect.outputs.skip_reason }}
+    steps:
+      - name: Resolve PR metadata
+        id: inspect
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.eventName === "pull_request_target"
+              ? context.payload.pull_request?.number
+              : Number(context.payload.inputs?.pr_number ?? "");
+
+            if (!Number.isInteger(prNumber) || prNumber <= 0)
+              throw new Error(`Unable to resolve a valid pull request number for event ${context.eventName}.`);
+
+            const { data: pullRequest } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+            });
+
+            const authorLogin = pullRequest.user?.login ?? "";
+            const authorType = pullRequest.user?.type ?? "";
+            // Skip if (a) GitHub recognises the author as a Bot account
+            // or (b) the username ends with `[bot]` (e.g. dependabot[bot])
+            const shouldSkip = authorType === "Bot" || authorLogin.toLowerCase().endsWith("[bot]");
+
+            core.setOutput("author_login", authorLogin);
+            core.setOutput("pr_number", String(prNumber));
+            core.setOutput("should_skip", shouldSkip ? "true" : "false");
+            core.setOutput(
+              "skip_reason",
+              shouldSkip ? `bot-authored PR by @${authorLogin}` : ""
+            );
+
+      - name: Write skip summary
+        if: steps.inspect.outputs.should_skip == 'true'
+        run: |
+          {
+            echo "## Contributor trust automation"
+            echo ""
+            echo "- Event: ${{ github.event_name }}"
+            echo "- PR: #${{ steps.inspect.outputs.pr_number }}"
+            echo "- Author: @${{ steps.inspect.outputs.author_login }}"
+            echo "- Result: skipped — ${{ steps.inspect.outputs.skip_reason }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ───────────────────────────────────────────────────────────────────────
+  # Phase 2 — Lightweight trust signals for human authors
+  #
+  # We deliberately avoid the heavy 100-point scoring system used by read-frog
+  # (which weighs repo stars, followers, etc.) — 开源市集 is a small community
+  # repo, so over-scoring would create more friction than safety.
+  #
+  # Instead we apply three cheap signals that catch the common Bot / low-quality
+  # PR patterns observed in this repo:
+  #   1. Account age (< 7 days = suspicious)
+  #   2. PR diff size ( > 500 lines OR zero-line change = suspicious)
+  #   3. Description length ( < 20 chars = suspicious)
+  #
+  # Combined signal is surfaced as a sticky PR comment + labels.
+  # ───────────────────────────────────────────────────────────────────────
+  trust-signals:
+    name: Compute trust signals
+    needs: preflight
+    if: needs.preflight.outputs.should_skip != 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Inspect PR (author age, diff size, description)
+        id: inspect
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = Number("${{ needs.preflight.outputs.pr_number }}");
+
+            const [{ data: pr }, { data: files }] = await Promise.all([
+              github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+              }),
+              github.rest.pulls.listFiles({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                per_page: 100,
+              }),
+            ]);
+
+            const authorLogin = pr.user?.login ?? "";
+            const authorCreatedAt = pr.user?.created_at ?? pr.head?.user?.created_at;
+            const description = pr.body ?? "";
+            const totalAdditions = files.reduce((sum, f) => sum + (f.additions ?? 0), 0);
+            const totalDeletions = files.reduce((sum, f) => sum + (f.deletions ?? 0), 0);
+
+            const accountAgeDays = authorCreatedAt
+              ? Math.floor((Date.now() - new Date(authorCreatedAt).getTime()) / (1000 * 60 * 60 * 24))
+              : null;
+
+            const flags = [];
+            if (accountAgeDays !== null && accountAgeDays < 7) {
+              flags.push(`account age ${accountAgeDays}d < 7d`);
+            }
+            if (totalAdditions + totalDeletions === 0) {
+              flags.push("empty diff");
+            } else if (totalAdditions + totalDeletions > 500) {
+              flags.push(`large diff (${totalAdditions + totalDeletions} lines)`);
+            }
+            if (description.trim().length < 20) {
+              flags.push(`short description (${description.trim().length} chars)`);
+            }
+
+            const riskLevel = flags.length >= 2 ? "high" : flags.length === 1 ? "medium" : "low";
+
+            const summary = [
+              `### PR contributor trust signals`,
+              ``,
+              `- **Author**: @${authorLogin}${accountAgeDays !== null ? ` (account age: ${accountAgeDays}d)` : ""}`,
+              `- **Diff size**: +${totalAdditions} / -${totalDeletions} across ${files.length} files`,
+              `- **Description length**: ${description.trim().length} chars`,
+              `- **Risk level**: **${riskLevel}**`,
+              ...(flags.length ? [`- **Flags**: ${flags.join(", ")}`] : ["- **Flags**: none"]),
+            ].join("\n");
+
+            core.setOutput("risk_level", riskLevel);
+            core.setOutput("flags", flags.join("|"));
+            core.setOutput("summary", summary);
+            core.setOutput("author_login", authorLogin);
+            core.setOutput("pr_number", String(prNumber));
+
+      - name: Label PR by risk level
+        env:
+          RISK: ${{ steps.inspect.outputs.risk_level }}
+          PR_NUMBER: ${{ steps.inspect.outputs.pr_number }}
+        run: |
+          LABEL="trust/$RISK"
+          # Create the label if it doesn't exist
+          gh label create "$LABEL" \
+            --description "Auto-computed by pr-contributor-trust.yml" \
+            --color "$( [ "$RISK" = "high" ] && echo "d93f0b" || ( [ "$RISK" = "medium" ] && echo "fbca04" || echo "0e8a16" ) )" \
+            --force || true
+          gh issue edit "$PR_NUMBER" --add-label "$LABEL"
+
+      - name: Post trust summary as PR comment
+        if: steps.inspect.outputs.risk_level != 'low'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const summary = `${{ steps.inspect.outputs.summary }}`;
+            const prNumber = Number("${{ steps.inspect.outputs.pr_number }}");
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: summary + "\n\n— posted by `pr-contributor-trust.yml`",
+            });
