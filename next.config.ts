@@ -15,11 +15,11 @@ const { stdout, stderr } = spawnSync('git', ['rev-parse', 'HEAD'], {
 });
 const gitRevision = stdout.trim();
 const { GITHUB_SHA, VERCEL_GIT_COMMIT_SHA } = process.env;
-const revision = gitRevision || VERCEL_GIT_COMMIT_SHA || GITHUB_SHA || crypto.randomUUID();
+const revision = gitRevision || VERCEL_GIT_COMMIT_SHA || GITHUB_SHA;
 
-if (!gitRevision)
+if (!revision)
   console.warn(
-    `Falling back to random UUID for Serwist revision: ${
+    `Skipping additional Serwist precache revision: ${
       stderr.trim() || 'Git revision is unavailable'
     }`,
   );
@@ -36,7 +36,7 @@ const withMDX = setMDX({
     swSrc: 'service-worker.ts',
     swDest: 'public/sw.js',
     disable: isDev,
-    additionalPrecacheEntries: [{ url: '/', revision }],
+    additionalPrecacheEntries: revision ? [{ url: '/', revision }] : undefined,
   });
 
 const rewrites: NextConfig['rewrites'] = async () => ({
