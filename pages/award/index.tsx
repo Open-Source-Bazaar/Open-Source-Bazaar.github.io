@@ -16,8 +16,17 @@ const formatAwardField = (value?: Award[keyof Award]) =>
       ? value.filter((item): item is string => typeof item === 'string').join(' ')
       : '';
 
-export const getStaticProps: GetStaticProps<{ awards: Award[] }> = async () => {
-  if (!hasLarkServerAccess) return { props: { awards: [] }, revalidate: Minute / Second };
+interface AwardPageProps {
+  awards: Award[];
+  awardsUnavailable: boolean;
+}
+
+export const getStaticProps: GetStaticProps<AwardPageProps> = async () => {
+  if (!hasLarkServerAccess)
+    return {
+      props: { awards: [], awardsUnavailable: true },
+      revalidate: Minute / Second,
+    };
 
   await lark.getAccessToken();
 
@@ -26,10 +35,10 @@ export const getStaticProps: GetStaticProps<{ awards: Award[] }> = async () => {
 
   const awards = await store.getAll();
 
-  return { props: { awards }, revalidate: Minute / Second };
+  return { props: { awards, awardsUnavailable: false }, revalidate: Minute / Second };
 };
 
-const AwardPage: FC<{ awards: Award[] }> = ({ awards }) => {
+const AwardPage: FC<AwardPageProps> = ({ awards, awardsUnavailable }) => {
   const { t } = useContext(I18nContext);
 
   return (
@@ -57,8 +66,10 @@ const AwardPage: FC<{ awards: Award[] }> = ({ awards }) => {
             </Col>
           ))}
         </Row>
-      ) : (
+      ) : awardsUnavailable ? (
         <p className="py-4 text-center text-muted">{t('remote_content_unavailable')}</p>
+      ) : (
+        <p className="py-4 text-center text-muted">{t('no_awards_yet')}</p>
       )}
     </Container>
   );

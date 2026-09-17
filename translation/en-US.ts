@@ -409,6 +409,7 @@ export default {
   reviews: 'Reviews',
   borrow_history: 'Borrow History',
   no_reviews_yet: 'No reviews yet',
+  no_awards_yet: 'No awards yet',
   remote_content_unavailable: 'Remote content is temporarily unavailable. Please check back later.',
   be_first_to_review: 'Be the first to review this book!',
   write_review: 'Write a Review',
