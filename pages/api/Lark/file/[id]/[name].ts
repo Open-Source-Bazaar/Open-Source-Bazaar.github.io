@@ -44,7 +44,6 @@ const downloader: Middleware = async context => {
   context.set('Content-Disposition', headers.get('Content-Disposition') || '');
   context.set('Content-Length', headers.get('Content-Length') || '');
 
-  // @ts-expect-error Web type compatibility
   context.body = method === 'GET' ? Readable.fromWeb(stream2) : '';
 };
 
