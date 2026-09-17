@@ -382,6 +382,7 @@ export default {
   reviews: '書評',
   borrow_history: '借書歷史',
   no_reviews_yet: '尚無書評',
+  remote_content_unavailable: '遠端內容暫時不可用，請稍後再試。',
   be_first_to_review: '成為第一個書評的人！',
   write_review: '寫書評',
   add_your_review: '新增您的書評',

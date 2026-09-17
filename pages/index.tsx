@@ -16,10 +16,15 @@ import { lark } from './api/Lark/core';
 
 interface HomePageProps {
   activities: Activity[];
+  activitiesUnavailable: boolean;
 }
 
 export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
-  if (!hasLarkServerAccess) return { props: { activities: [] }, revalidate: Minute / Second };
+  if (!hasLarkServerAccess)
+    return {
+      props: { activities: [], activitiesUnavailable: true },
+      revalidate: Minute / Second,
+    };
 
   await lark.getAccessToken();
 
@@ -29,19 +34,25 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
   const activities = await store.getList({}, 1, 3);
 
   return {
-    props: JSON.parse(JSON.stringify({ activities })),
+    props: JSON.parse(JSON.stringify({ activities, activitiesUnavailable: false })),
     revalidate: Minute / Second,
   };
 };
 
-const HomePage: FC<HomePageProps> = observer(({ activities }) => {
+const HomePage: FC<HomePageProps> = observer(({ activities, activitiesUnavailable }) => {
   const { t } = useContext(I18nContext);
 
   return (
     <>
       <PageHead />
 
-      {activities[0] && <HeroCarousel activities={activities} />}
+      {activities[0] ? (
+        <HeroCarousel activities={activities} />
+      ) : (
+        activitiesUnavailable && (
+          <p className="py-4 text-center text-muted">{t('remote_content_unavailable')}</p>
+        )
+      )}
 
       <section
         className={`flex-fill d-flex flex-column justify-content-center align-items-center bg-secondary bg-gradient text-dark bg-opacity-10 ${styles.main}`}
