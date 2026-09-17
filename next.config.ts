@@ -17,13 +17,6 @@ const gitRevision = gitCommand.status === 0 && !gitCommand.error ? gitCommand.st
 const { GITHUB_SHA, VERCEL_GIT_COMMIT_SHA } = process.env;
 const revision = gitRevision || VERCEL_GIT_COMMIT_SHA || GITHUB_SHA;
 
-if (!revision)
-  console.warn(
-    `Skipping additional Serwist precache revision: ${
-      gitCommand.error?.message || gitCommand.stderr.trim() || 'Git revision is unavailable'
-    }`,
-  );
-
 const withMDX = setMDX({
     options: {
       remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],

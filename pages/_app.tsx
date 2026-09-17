@@ -93,24 +93,30 @@ export default class CustomApp extends App<I18nProps> {
           ],
         };
 
-    return (
+    const frame = (
+      <I18nContext.Provider value={this.i18nStore}>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+          <title>{t('open_source_bazaar')}</title>
+        </Head>
+
+        {isActivityPage ? (
+          <Component {...pageProps} />
+        ) : isOpenLibraryPath ? (
+          this.renderOpenLibraryFrame()
+        ) : (
+          this.renderSiteFrame(isArticlePage)
+        )}
+        <Footer {...footerProps} />
+      </I18nContext.Provider>
+    );
+
+    return isServer() ? (
+      frame
+    ) : (
       <SerwistProvider swUrl="/sw.js" disable={isDev}>
-        <I18nContext.Provider value={this.i18nStore}>
-          <Head>
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-            <title>{t('open_source_bazaar')}</title>
-          </Head>
-
-          {isActivityPage ? (
-            <Component {...pageProps} />
-          ) : isOpenLibraryPath ? (
-            this.renderOpenLibraryFrame()
-          ) : (
-            this.renderSiteFrame(isArticlePage)
-          )}
-          <Footer {...footerProps} />
-        </I18nContext.Provider>
+        {frame}
       </SerwistProvider>
     );
   }
