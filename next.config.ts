@@ -10,17 +10,17 @@ import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 
 const { NODE_ENV, CI } = process.env;
 const isDev = NODE_ENV === 'development';
-const { stdout, stderr } = spawnSync('git', ['rev-parse', 'HEAD'], {
+const gitCommand = spawnSync('git', ['rev-parse', 'HEAD'], {
   encoding: 'utf8',
 });
-const gitRevision = stdout.trim();
+const gitRevision = gitCommand.status === 0 && !gitCommand.error ? gitCommand.stdout.trim() : '';
 const { GITHUB_SHA, VERCEL_GIT_COMMIT_SHA } = process.env;
 const revision = gitRevision || VERCEL_GIT_COMMIT_SHA || GITHUB_SHA;
 
 if (!revision)
   console.warn(
     `Skipping additional Serwist precache revision: ${
-      stderr.trim() || 'Git revision is unavailable'
+      gitCommand.error?.message || gitCommand.stderr.trim() || 'Git revision is unavailable'
     }`,
   );
 
