@@ -2,9 +2,12 @@ import { GetStaticProps } from 'next';
 import { FC } from 'react';
 
 import { Award, AwardModel } from '../../models/Award';
+import { hasLarkServerAccess } from '../../models/configuration';
 import { lark } from '../api/Lark/core';
 
 export const getStaticProps: GetStaticProps<{ awards: Award[] }> = async () => {
+  if (!hasLarkServerAccess) return { props: { awards: [] } };
+
   await lark.getAccessToken();
 
   const store = new AwardModel();
@@ -15,8 +18,6 @@ export const getStaticProps: GetStaticProps<{ awards: Award[] }> = async () => {
   return { props: { awards } };
 };
 
-const AwardPage: FC<{ awards: Award[] }> = ({ awards }) => {
-  return <></>;
-};
+const AwardPage: FC = () => <></>;
 
 export default AwardPage;

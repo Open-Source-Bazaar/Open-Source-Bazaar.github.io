@@ -9,16 +9,18 @@ import { Minute, Second } from 'web-utility';
 import { HeroCarousel } from '../components/Activity/HeroCarousel';
 import { PageHead } from '../components/Layout/PageHead';
 import { Activity, ActivityModel } from '../models/Activity';
+import { hasLarkServerAccess } from '../models/configuration';
 import { I18nContext } from '../models/Translation';
-import { lark } from './api/Lark/core';
-
 import styles from '../styles/Home.module.less';
+import { lark } from './api/Lark/core';
 
 interface HomePageProps {
   activities: Activity[];
 }
 
 export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
+  if (!hasLarkServerAccess) return { props: { activities: [] }, revalidate: Minute / Second };
+
   await lark.getAccessToken();
 
   const store = new ActivityModel();

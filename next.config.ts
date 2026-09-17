@@ -1,8 +1,8 @@
 import { spawnSync } from 'node:child_process';
 
 import setMDX from '@next/mdx';
-import { NextConfig } from 'next';
 import withSerwistInit from '@serwist/next';
+import { NextConfig } from 'next';
 // @ts-expect-error no official types
 import withLess from 'next-with-less';
 import remarkFrontmatter from 'remark-frontmatter';
@@ -15,8 +15,7 @@ const { stdout, stderr } = spawnSync('git', ['rev-parse', 'HEAD'], {
 });
 const gitRevision = stdout.trim();
 const { GITHUB_SHA, VERCEL_GIT_COMMIT_SHA } = process.env;
-const revision =
-  gitRevision || VERCEL_GIT_COMMIT_SHA || GITHUB_SHA || crypto.randomUUID();
+const revision = gitRevision || VERCEL_GIT_COMMIT_SHA || GITHUB_SHA || crypto.randomUUID();
 
 if (!gitRevision)
   console.warn(
