@@ -1,5 +1,3 @@
-import { spawnSync } from 'node:child_process';
-
 import setMDX from '@next/mdx';
 import withSerwistInit from '@serwist/next';
 import { NextConfig } from 'next';
@@ -10,12 +8,6 @@ import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 
 const { NODE_ENV, CI } = process.env;
 const isDev = NODE_ENV === 'development';
-const gitCommand = spawnSync('git', ['rev-parse', 'HEAD'], {
-  encoding: 'utf8',
-});
-const gitRevision = gitCommand.status === 0 && !gitCommand.error ? gitCommand.stdout.trim() : '';
-const { GITHUB_SHA, VERCEL_GIT_COMMIT_SHA } = process.env;
-const revision = gitRevision || VERCEL_GIT_COMMIT_SHA || GITHUB_SHA;
 
 const withMDX = setMDX({
     options: {
@@ -29,7 +21,6 @@ const withMDX = setMDX({
     swSrc: 'service-worker.ts',
     swDest: 'public/sw.js',
     disable: isDev,
-    additionalPrecacheEntries: revision ? [{ url: '/', revision }] : undefined,
   });
 
 const rewrites: NextConfig['rewrites'] = async () => ({
