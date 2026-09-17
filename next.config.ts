@@ -1,6 +1,8 @@
+import { spawnSync } from 'node:child_process';
+
 import setMDX from '@next/mdx';
 import { NextConfig } from 'next';
-import setPWA from 'next-pwa';
+import withSerwistInit from '@serwist/next';
 // @ts-expect-error no official types
 import withLess from 'next-with-less';
 import remarkFrontmatter from 'remark-frontmatter';
@@ -8,6 +10,20 @@ import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 
 const { NODE_ENV, CI } = process.env;
 const isDev = NODE_ENV === 'development';
+const { stdout, stderr } = spawnSync('git', ['rev-parse', 'HEAD'], {
+  encoding: 'utf8',
+});
+const gitRevision = stdout.trim();
+const { GITHUB_SHA, VERCEL_GIT_COMMIT_SHA } = process.env;
+const revision =
+  gitRevision || VERCEL_GIT_COMMIT_SHA || GITHUB_SHA || crypto.randomUUID();
+
+if (!gitRevision)
+  console.warn(
+    `Falling back to random UUID for Serwist revision: ${
+      stderr.trim() || 'Git revision is unavailable'
+    }`,
+  );
 
 const withMDX = setMDX({
     options: {
@@ -17,11 +33,11 @@ const withMDX = setMDX({
     },
     extension: /\.mdx?$/,
   }),
-  withPWA = setPWA({
-    dest: 'public',
-    register: true,
-    skipWaiting: true,
+  withSerwist = withSerwistInit({
+    swSrc: 'service-worker.ts',
+    swDest: 'public/sw.js',
     disable: isDev,
+    additionalPrecacheEntries: [{ url: '/', revision }],
   });
 
 const rewrites: NextConfig['rewrites'] = async () => ({
@@ -51,7 +67,7 @@ const redirects: NextConfig['redirects'] = async () =>
     },
   ]);
 
-export default withPWA(
+export default withSerwist(
   withLess(
     withMDX({
       pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],

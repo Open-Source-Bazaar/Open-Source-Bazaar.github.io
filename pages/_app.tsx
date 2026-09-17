@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 
+import { SerwistProvider } from '@serwist/next/react';
 import { HTTPError } from 'koajax';
 import { configure } from 'mobx';
 import { enableStaticRendering, observer } from 'mobx-react';
@@ -70,6 +71,7 @@ export default class CustomApp extends App<I18nProps> {
   render() {
     const { Component, pageProps, router } = this.props,
       { t } = this.i18nStore;
+    const isDev = process.env.NODE_ENV === 'development';
     const { asPath } = router;
     const isArticlePage = asPath.startsWith('/article/') || asPath.startsWith('/policy/'),
       isActivityPage = asPath.startsWith('/hackathon'),
@@ -92,22 +94,24 @@ export default class CustomApp extends App<I18nProps> {
         };
 
     return (
-      <I18nContext.Provider value={this.i18nStore}>
-        <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <SerwistProvider swUrl="/sw.js" disable={isDev}>
+        <I18nContext.Provider value={this.i18nStore}>
+          <Head>
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-          <title>{t('open_source_bazaar')}</title>
-        </Head>
+            <title>{t('open_source_bazaar')}</title>
+          </Head>
 
-        {isActivityPage ? (
-          <Component {...pageProps} />
-        ) : isOpenLibraryPath ? (
-          this.renderOpenLibraryFrame()
-        ) : (
-          this.renderSiteFrame(isArticlePage)
-        )}
-        <Footer {...footerProps} />
-      </I18nContext.Provider>
+          {isActivityPage ? (
+            <Component {...pageProps} />
+          ) : isOpenLibraryPath ? (
+            this.renderOpenLibraryFrame()
+          ) : (
+            this.renderSiteFrame(isArticlePage)
+          )}
+          <Footer {...footerProps} />
+        </I18nContext.Provider>
+      </SerwistProvider>
     );
   }
 }

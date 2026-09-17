@@ -6,7 +6,7 @@ overrides:
   postcss: 8.5.25
   serialize-javascript: 7.0.7
 patchedDependencies:
-  next@16.3.0: patches/next@16.3.0.patch
+  next@16.3.5: patches/next@16.3.5.patch
 allowBuilds:
   '@parcel/watcher': true
   core-js: true
