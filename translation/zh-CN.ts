@@ -382,6 +382,8 @@ export default {
   reviews: '评价',
   borrow_history: '借阅历史',
   no_reviews_yet: '暂无评价',
+  no_awards_yet: '暂无奖项',
+  remote_content_unavailable: '远程内容暂时不可用，请稍后再试。',
   be_first_to_review: '成为第一个评价的人！',
   write_review: '写评价',
   add_your_review: '添加您的评价',

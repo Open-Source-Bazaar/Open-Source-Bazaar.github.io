@@ -1,6 +1,6 @@
 import setMDX from '@next/mdx';
+import withSerwistInit from '@serwist/next';
 import { NextConfig } from 'next';
-import setPWA from 'next-pwa';
 // @ts-expect-error no official types
 import withLess from 'next-with-less';
 import remarkFrontmatter from 'remark-frontmatter';
@@ -17,10 +17,9 @@ const withMDX = setMDX({
     },
     extension: /\.mdx?$/,
   }),
-  withPWA = setPWA({
-    dest: 'public',
-    register: true,
-    skipWaiting: true,
+  withSerwist = withSerwistInit({
+    swSrc: 'service-worker.ts',
+    swDest: 'public/sw.js',
     disable: isDev,
   });
 
@@ -51,7 +50,7 @@ const redirects: NextConfig['redirects'] = async () =>
     },
   ]);
 
-export default withPWA(
+export default withSerwist(
   withLess(
     withMDX({
       pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
