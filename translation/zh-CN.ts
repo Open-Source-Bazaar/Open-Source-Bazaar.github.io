@@ -316,6 +316,34 @@ export default {
   team_works: '团队作品',
   no_news_yet: '暂无动态',
 
+  // Wuhan-2020 Archival
+  wuhan2020: '新冠救援信息',
+  wuhan2020_title: '武汉新冠救援信息平台 · 数据存档',
+  wuhan2020_description:
+    '2020 年初新冠疫情爆发期间，来自全国各地的企业、机构和个人纷纷伸出援手。本页面为 WuHan-2020 新冠救援信息平台的开放数据存档，记录了那段众志成城的历史。',
+  wuhan2020_records: '条记录',
+  wuhan2020_regions: '个地区',
+  wuhan2020_all_records: '全部信息',
+  wuhan2020_all: '全部',
+  wuhan2020_search_placeholder: '搜索名称、地区……',
+  wuhan2020_no_results: '没有找到匹配的记录',
+  wuhan2020_reset: '重置筛选',
+  wuhan2020_verified: '已核实',
+  wuhan2020_cat_hospital: '定点医院',
+  wuhan2020_cat_hotel: '酒店住宿',
+  wuhan2020_cat_logistics: '物流运输',
+  wuhan2020_cat_factory: '物资工厂',
+  wuhan2020_cat_donation: '捐赠渠道',
+  wuhan2020_cat_consulting: '免费咨询',
+  wuhan2020_timeline_title: '关键时间线',
+  wuhan2020_timeline_1: '钟南山确认新冠病毒人传人',
+  wuhan2020_timeline_2: '武汉宣布"封城"，全市城市公交、地铁、轮渡、长途客运暂停运营',
+  wuhan2020_timeline_3: '全国各地救援物资和医疗队开始大规模驰援武汉',
+  wuhan2020_timeline_4: '火神山医院正式交付使用',
+  wuhan2020_timeline_5: '雷神山医院正式交付使用',
+  wuhan2020_timeline_6: '武汉正式解除离汉通道管控',
+  wuhan2020_source_note: '数据来源：',
+
   // Open Library
   open_library: '开源图书馆',
 

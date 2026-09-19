@@ -340,6 +340,35 @@ export default {
   team_works: 'Team Works',
   no_news_yet: 'No news yet',
 
+  // Wuhan-2020 Archival
+  wuhan2020: 'COVID-19 Rescue',
+  wuhan2020_title: 'Wuhan COVID-19 Rescue Platform · Data Archive',
+  wuhan2020_description:
+    'During the early 2020 COVID-19 outbreak, enterprises, organizations, and individuals across China mobilized to help. This page is an open data archive of the WuHan-2020 COVID rescue information platform, preserving the history of that united effort.',
+  wuhan2020_records: 'records',
+  wuhan2020_regions: 'regions',
+  wuhan2020_all_records: 'All Records',
+  wuhan2020_all: 'All',
+  wuhan2020_search_placeholder: 'Search by name, region…',
+  wuhan2020_no_results: 'No matching records found',
+  wuhan2020_reset: 'Reset Filters',
+  wuhan2020_verified: 'Verified',
+  wuhan2020_cat_hospital: 'Hospitals',
+  wuhan2020_cat_hotel: 'Hotels',
+  wuhan2020_cat_logistics: 'Logistics',
+  wuhan2020_cat_factory: 'Factories',
+  wuhan2020_cat_donation: 'Donations',
+  wuhan2020_cat_consulting: 'Consulting',
+  wuhan2020_timeline_title: 'Key Timeline',
+  wuhan2020_timeline_1: 'Zhong Nanshan confirms human-to-human transmission of COVID-19',
+  wuhan2020_timeline_2:
+    'Wuhan announces city lockdown; public transit, metro, ferries, and long-distance buses suspended',
+  wuhan2020_timeline_3: 'Rescue supplies and medical teams from across China begin massive support for Wuhan',
+  wuhan2020_timeline_4: 'Huoshenshan Hospital officially delivered and put into use',
+  wuhan2020_timeline_5: 'Leishenshan Hospital officially delivered and put into use',
+  wuhan2020_timeline_6: 'Wuhan officially lifts lockdown controls',
+  wuhan2020_source_note: 'Data source: ',
+
   // Open Library
   open_library: 'Open Library',
 
