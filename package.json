@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Open Source Bazaar web-site",
   "private": true,
-  "packageManager": "pnpm@11.27.1",
   "scripts": {
     "prepare": "husky",
     "install": "pnpx git-utility download https://github.com/Open-Source-Bazaar/key-vault main Open-Source-Bazaar.github.io  ||  true",
