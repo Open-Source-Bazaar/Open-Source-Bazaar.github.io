@@ -29,7 +29,7 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
     subs: [
       { href: '/article/join-us', title: t('join_us') },
       {
-        href: '/article/open-collaborator-award',
+        href: '/award',
         title: t('open_collaborator_award'),
       },
       { href: '/volunteer', title: t('volunteer') },

@@ -1,3 +1,5 @@
+// cspell:ignore Bilibili
+
 export default {
   // Navigation
   open_source_bazaar: '開源市集',
@@ -48,6 +50,71 @@ export default {
   bounty_achievement_submission: '成果提交表單',
   bounty_hero_rank: '英雄榜',
   bounty_debt_rank: '欠條榜',
+
+  // Open Collaborator Award
+  award_hero_title: '致敬每一位開放協作者',
+  award_hero_description: '感謝那些在過去一年裡給你留下深刻印象、對你有幫助的人',
+  award_submit_nomination: '提交提名',
+  award_total_nominations: '總提名數',
+  award_total_recognized: '獲獎人數',
+  award_total_support: '總投票數',
+  award_about_title: '關於獎項',
+  award_meaning: '獎項意義',
+  award_meaning_description:
+    '由「開源市集」社群發起，旨在表彰那些在開源協作中展現出卓越精神和無私奉獻的個人。',
+  award_criteria: '評選標準',
+  award_criteria_description:
+    '任何在過去一年裡給你留下深刻印象或對你有幫助的人，都值得被提名和表彰。',
+  award_shared_value: '共創價值',
+  award_shared_value_description:
+    '當提名獲得至少10票支持，所有投票人將共同分攤費用，為獲獎者製作專屬獎盃。',
+  award_initiative_title: '開放協作人獎提名倡議',
+  award_initiative_video_title: '開放協作人獎提名倡議影片',
+  award_initiative_question: '為什麼發起這個獎項？',
+  award_initiative_description:
+    '開放協作人獎希望透過社群的力量，讓每一個幫助過你的人都能被看見、被感謝、被銘記。',
+  award_rules_title: '參與規則',
+  award_rule_nominate: '提名',
+  award_rule_nominate_description:
+    '任何人都可以提名在過去一年裡對自己有幫助的人，透過影片介紹提名理由',
+  award_rule_vote: '投票',
+  award_rule_vote_description: '社群成員可以為認同的提名投票，每人每個提名只能投一票',
+  award_rule_establish: '成立',
+  award_rule_establish_description: '當提名獲得至少10票時，獎項正式成立，被提名人成為獲獎者',
+  award_rule_trophy: '獎盃',
+  award_rule_trophy_description: '所有投票人平攤費用，共同為獲獎者製作專屬獎盃',
+  award_recognized_list: '獲獎者榜單',
+  award_view_nomination: '查看完整提名',
+  award_nominations_title: '提名展示',
+  award_filter: '篩選提名',
+  award_filter_all: '全部',
+  award_filter_pending: '進行中',
+  award_filter_recognized: '已獲獎',
+  award_no_nominations: '暫無提名',
+  award_recognized: '已獲獎',
+  award_nomination_reason: '提名理由',
+  award_nominated_by: '提名人',
+  award_anonymous: '匿名',
+  award_unnamed_nominee: '未命名被提名人',
+  award_support_count: '份支持',
+  award_nomination_video_title: '提名影片',
+  award_watch_nomination_video: '觀看提名影片',
+  award_nomination_form_title: '開放協作人獎提名表單',
+  award_form_refresh_hint: '提交成功後重新整理頁面即可查看最新提名。',
+  award_close: '關閉',
+  award_faq_title: '常見問題',
+  award_faq_who_question: 'Q: 誰可以參與提名？',
+  award_faq_who_answer: 'A: 任何人都可以提名在過去一年裡對自己有幫助或留下深刻印象的人。',
+  award_faq_video_question: 'Q: 如何製作提名影片？',
+  award_faq_video_answer:
+    'A: 可以用手機或電腦錄製，真誠地講述為什麼要提名TA、TA做了什麼讓你印象深刻的事情。上傳到B站後將連結貼到提名表單即可。',
+  award_faq_cost_question: 'Q: 投票後需要支付多少費用？',
+  award_faq_cost_answer:
+    'A: 只有當提名達到10票成立後，投票人才需要分攤獎盃製作費用。具體金額會在投票時說明，通常每人十幾元人民幣。',
+  award_faq_multiple_question: 'Q: 可以投多個提名嗎？',
+  award_faq_multiple_answer: 'A: 可以。你可以為多個不同的提名投票，但每個提名只能投一票。',
+  award_faq_delivery_question: 'Q: 獎盃如何送達獲獎者？',
+  award_faq_delivery_answer: 'A: 我們會在開源市集線下活動中把獎盃發給獲獎者，或者透過快遞送達。',
 
   //License-tool Page
   license_filter: '開源許可證選擇器',
