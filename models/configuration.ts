@@ -41,7 +41,6 @@ export const LarkAppMeta = {
   id: process.env.NEXT_PUBLIC_LARK_APP_ID!,
   secret: process.env.LARK_APP_SECRET!,
 };
-export const hasLarkServerAccess = Boolean(process.env.LARK_APP_SECRET);
 const { hostname, pathname } = new URL(process.env.NEXT_PUBLIC_LARK_WIKI_URL!);
 
 export const LarkWikiDomain = hostname;

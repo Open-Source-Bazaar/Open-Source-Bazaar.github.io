@@ -9,23 +9,16 @@ import { Minute, Second } from 'web-utility';
 import { HeroCarousel } from '../components/Activity/HeroCarousel';
 import { PageHead } from '../components/Layout/PageHead';
 import { Activity, ActivityModel } from '../models/Activity';
-import { hasLarkServerAccess } from '../models/configuration';
 import { I18nContext } from '../models/Translation';
-import styles from '../styles/Home.module.less';
 import { lark } from './api/Lark/core';
+
+import styles from '../styles/Home.module.less';
 
 interface HomePageProps {
   activities: Activity[];
-  activitiesUnavailable: boolean;
 }
 
 export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
-  if (!hasLarkServerAccess)
-    return {
-      props: { activities: [], activitiesUnavailable: true },
-      revalidate: Minute / Second,
-    };
-
   await lark.getAccessToken();
 
   const store = new ActivityModel();
@@ -34,25 +27,19 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
   const activities = await store.getList({}, 1, 3);
 
   return {
-    props: JSON.parse(JSON.stringify({ activities, activitiesUnavailable: false })),
+    props: JSON.parse(JSON.stringify({ activities })),
     revalidate: Minute / Second,
   };
 };
 
-const HomePage: FC<HomePageProps> = observer(({ activities, activitiesUnavailable }) => {
+const HomePage: FC<HomePageProps> = observer(({ activities }) => {
   const { t } = useContext(I18nContext);
 
   return (
     <>
       <PageHead />
 
-      {activities[0] ? (
-        <HeroCarousel activities={activities} />
-      ) : (
-        activitiesUnavailable && (
-          <p className="py-4 text-center text-muted">{t('remote_content_unavailable')}</p>
-        )
-      )}
+      {activities[0] && <HeroCarousel activities={activities} />}
 
       <section
         className={`flex-fill d-flex flex-column justify-content-center align-items-center bg-secondary bg-gradient text-dark bg-opacity-10 ${styles.main}`}
