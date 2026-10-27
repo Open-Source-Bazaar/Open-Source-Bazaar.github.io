@@ -1,5 +1,7 @@
 import '../styles/globals.css';
 
+import '@khmyznikov/pwa-install';
+import { SerwistProvider } from '@serwist/next/react';
 import { HTTPError } from 'koajax';
 import { configure } from 'mobx';
 import { enableStaticRendering, observer } from 'mobx-react';
@@ -91,13 +93,15 @@ export default class CustomApp extends App<I18nProps> {
           ],
         };
 
-    return (
+    const frame = (
       <I18nContext.Provider value={this.i18nStore}>
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
 
           <title>{t('open_source_bazaar')}</title>
         </Head>
+
+        <pwa-install />
 
         {isActivityPage ? (
           <Component {...pageProps} />
@@ -109,5 +113,7 @@ export default class CustomApp extends App<I18nProps> {
         <Footer {...footerProps} />
       </I18nContext.Provider>
     );
+
+    return <SerwistProvider swUrl="/sw.js">{frame}</SerwistProvider>;
   }
 }
