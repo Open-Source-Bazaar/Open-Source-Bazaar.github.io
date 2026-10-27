@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 
+import '@khmyznikov/pwa-install';
 import { SerwistProvider } from '@serwist/next/react';
 import { HTTPError } from 'koajax';
 import { configure } from 'mobx';
@@ -71,7 +72,6 @@ export default class CustomApp extends App<I18nProps> {
   render() {
     const { Component, pageProps, router } = this.props,
       { t } = this.i18nStore;
-    const isDev = process.env.NODE_ENV === 'development';
     const { asPath } = router;
     const isArticlePage = asPath.startsWith('/article/') || asPath.startsWith('/policy/'),
       isActivityPage = asPath.startsWith('/hackathon'),
@@ -101,6 +101,8 @@ export default class CustomApp extends App<I18nProps> {
           <title>{t('open_source_bazaar')}</title>
         </Head>
 
+        <pwa-install />
+
         {isActivityPage ? (
           <Component {...pageProps} />
         ) : isOpenLibraryPath ? (
@@ -112,12 +114,6 @@ export default class CustomApp extends App<I18nProps> {
       </I18nContext.Provider>
     );
 
-    return isServer() ? (
-      frame
-    ) : (
-      <SerwistProvider swUrl="/sw.js" disable={isDev}>
-        {frame}
-      </SerwistProvider>
-    );
+    return <SerwistProvider swUrl="/sw.js">{frame}</SerwistProvider>;
   }
 }
