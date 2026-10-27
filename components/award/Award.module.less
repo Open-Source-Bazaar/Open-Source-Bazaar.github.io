@@ -1,0 +1,154 @@
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  padding: 5rem 0;
+  overflow: hidden;
+  color: #fff;
+
+  &::before {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    animation: grid-animation 20s linear infinite;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    content: '';
+  }
+}
+
+@keyframes grid-animation {
+  to {
+    transform: translate(50px, 50px);
+  }
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+}
+
+.heroTitle {
+  font-weight: 700;
+  font-size: clamp(2.25rem, 6vw, 3.5rem);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.heroDescription {
+  opacity: 0.9;
+  margin: 1rem auto 2rem;
+  max-width: 50rem;
+  font-size: 1.2rem;
+}
+
+.statNumber {
+  font-weight: 700;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+}
+
+.section {
+  padding: 4rem 0;
+}
+
+.mutedSection {
+  background: #f8f9fa;
+}
+
+.sectionTitle {
+  margin-bottom: 2rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.infoCard,
+.ruleCard,
+.recipientCard,
+.nomineeCard,
+.faqCard {
+  box-shadow: 0 0.25rem 1rem rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 1rem;
+}
+
+.recipientCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.initiative {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+}
+
+.videoWrapper {
+  position: relative;
+  background: #000;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+
+  iframe {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.initiativeVideo {
+  border-radius: 1rem;
+}
+
+.videoFallback {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  min-height: 14rem;
+}
+
+.ruleNumber {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  width: 3rem;
+  height: 3rem;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.reason {
+  margin-bottom: 1rem;
+  border-left: 0.25rem solid #667eea;
+  border-radius: 0.5rem;
+  background: #f8f9fa;
+  padding: 1rem;
+}
+
+.progressTrack {
+  border-radius: 999px;
+  background: #e9ecef;
+  height: 0.5rem;
+  overflow: hidden;
+}
+
+.progressFill {
+  transition: width 0.3s ease;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  height: 100%;
+}
+
+.voteCount {
+  color: #667eea;
+  font-size: 1.25rem;
+}
+
+.nominationForm {
+  border: 0;
+  width: 100%;
+  min-height: min(75vh, 50rem);
+}

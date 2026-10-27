@@ -1,3 +1,5 @@
+// cspell:ignore Bilibili
+
 export default {
   // Navigation
   open_source_bazaar: '开源市集',
@@ -48,6 +50,71 @@ export default {
   bounty_achievement_submission: '成果提交表单',
   bounty_hero_rank: '英雄榜',
   bounty_debt_rank: '欠条榜',
+
+  // Open Collaborator Award
+  award_hero_title: '致敬每一位开放协作者',
+  award_hero_description: '感谢那些在过去一年里给你留下深刻印象、对你有帮助的人',
+  award_submit_nomination: '提交提名',
+  award_total_nominations: '总提名数',
+  award_total_recognized: '获奖人数',
+  award_total_support: '总投票数',
+  award_about_title: '关于奖项',
+  award_meaning: '奖项意义',
+  award_meaning_description:
+    '由「开源市集」社区发起，旨在表彰那些在开源协作中展现出卓越精神和无私奉献的个人。',
+  award_criteria: '评选标准',
+  award_criteria_description:
+    '任何在过去一年里给你留下深刻印象或对你有帮助的人，都值得被提名和表彰。',
+  award_shared_value: '共创价值',
+  award_shared_value_description:
+    '当提名获得至少10票支持，所有投票人将共同分摊费用，为获奖者制作专属奖杯。',
+  award_initiative_title: '开放协作人奖提名倡议',
+  award_initiative_video_title: '开放协作人奖提名倡议视频',
+  award_initiative_question: '为什么发起这个奖项？',
+  award_initiative_description:
+    '开放协作人奖希望通过社区的力量，让每一个帮助过你的人都能被看见、被感谢、被铭记。',
+  award_rules_title: '参与规则',
+  award_rule_nominate: '提名',
+  award_rule_nominate_description:
+    '任何人都可以提名在过去一年里对自己有帮助的人，通过视频介绍提名理由',
+  award_rule_vote: '投票',
+  award_rule_vote_description: '社区成员可以为认同的提名投票，每人每个提名只能投一票',
+  award_rule_establish: '成立',
+  award_rule_establish_description: '当提名获得至少10票时，奖项正式成立，被提名人成为获奖者',
+  award_rule_trophy: '奖杯',
+  award_rule_trophy_description: '所有投票人平摊费用，共同为获奖者制作专属奖杯',
+  award_recognized_list: '获奖者榜单',
+  award_view_nomination: '查看完整提名',
+  award_nominations_title: '提名展示',
+  award_filter: '筛选提名',
+  award_filter_all: '全部',
+  award_filter_pending: '进行中',
+  award_filter_recognized: '已获奖',
+  award_no_nominations: '暂无提名',
+  award_recognized: '已获奖',
+  award_nomination_reason: '提名理由',
+  award_nominated_by: '提名人',
+  award_anonymous: '匿名',
+  award_unnamed_nominee: '未命名提名人',
+  award_support_count: '份支持',
+  award_nomination_video_title: '提名视频',
+  award_watch_nomination_video: '观看提名视频',
+  award_nomination_form_title: '开放协作人奖提名表单',
+  award_form_refresh_hint: '提交成功后刷新页面即可查看最新提名。',
+  award_close: '关闭',
+  award_faq_title: '常见问题',
+  award_faq_who_question: 'Q: 谁可以参与提名？',
+  award_faq_who_answer: 'A: 任何人都可以提名在过去一年里对自己有帮助或留下深刻印象的人。',
+  award_faq_video_question: 'Q: 如何制作提名视频？',
+  award_faq_video_answer:
+    'A: 可以用手机或电脑录制，真诚地讲述为什么要提名TA、TA做了什么让你印象深刻的事情。上传到B站后将链接粘贴到提名表单即可。',
+  award_faq_cost_question: 'Q: 投票后需要支付多少费用？',
+  award_faq_cost_answer:
+    'A: 只有当提名达到10票成立后，投票人才需要分摊奖杯制作费用。具体金额会在投票时说明，通常每人十几元人民币。',
+  award_faq_multiple_question: 'Q: 可以投多个提名吗？',
+  award_faq_multiple_answer: 'A: 可以。你可以为多个不同的提名投票，但每个提名只能投一票。',
+  award_faq_delivery_question: 'Q: 奖杯如何送达获奖者？',
+  award_faq_delivery_answer: 'A: 我们会在开源市集线下活动中把奖杯发给获奖者，或者通过快递送达。',
 
   //License-tool Page
   license_filter: '开源协议选择器',
