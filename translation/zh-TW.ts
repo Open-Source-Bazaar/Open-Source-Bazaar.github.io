@@ -316,6 +316,34 @@ export default {
   team_works: '團隊作品',
   no_news_yet: '暫無動態',
 
+  // Wuhan-2020 Archival
+  wuhan2020: '新冠救援資訊',
+  wuhan2020_title: '武漢新冠救援資訊平台 · 資料存檔',
+  wuhan2020_description:
+    '2020 年初新冠疫情爆發期間，來自全國各地的企業、機構和個人紛紛伸出援手。本頁面為 WuHan-2020 新冠救援資訊平台的開放資料存檔，記錄了那段眾志成城的歷史。',
+  wuhan2020_records: '筆記錄',
+  wuhan2020_regions: '個地區',
+  wuhan2020_all_records: '全部資訊',
+  wuhan2020_all: '全部',
+  wuhan2020_search_placeholder: '搜尋名稱、地區……',
+  wuhan2020_no_results: '沒有找到匹配的記錄',
+  wuhan2020_reset: '重置篩選',
+  wuhan2020_verified: '已核實',
+  wuhan2020_cat_hospital: '定點醫院',
+  wuhan2020_cat_hotel: '酒店住宿',
+  wuhan2020_cat_logistics: '物流運輸',
+  wuhan2020_cat_factory: '物資工廠',
+  wuhan2020_cat_donation: '捐贈渠道',
+  wuhan2020_cat_consulting: '免費諮詢',
+  wuhan2020_timeline_title: '關鍵時間線',
+  wuhan2020_timeline_1: '鍾南山確認新冠病毒人傳人',
+  wuhan2020_timeline_2: '武漢宣布「封城」，全市城市公交、地鐵、輪渡、長途客運暫停運營',
+  wuhan2020_timeline_3: '全國各地救援物資和醫療隊開始大規模馳援武漢',
+  wuhan2020_timeline_4: '火神山醫院正式交付使用',
+  wuhan2020_timeline_5: '雷神山醫院正式交付使用',
+  wuhan2020_timeline_6: '武漢正式解除離漢通道管控',
+  wuhan2020_source_note: '資料來源：',
+
   // Open Library
   open_library: '開源圖書館',
 
