@@ -85,6 +85,10 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
     href: '/open-library',
     title: t('open_library'),
   },
+  {
+    href: '/wuhan-2020',
+    title: '武汉 2020',
+  },
 ];
 
 export interface MainNavigatorProps {
