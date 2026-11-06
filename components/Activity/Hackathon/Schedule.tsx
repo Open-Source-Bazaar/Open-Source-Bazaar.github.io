@@ -1,5 +1,5 @@
+import { Container } from 'idea-react';
 import { FC, ReactNode } from 'react';
-import { Container } from 'react-bootstrap';
 import { TimeData } from 'web-utility';
 
 import { TimeRange } from '../../TimeRange';
@@ -7,18 +7,16 @@ import type { HackathonAwardsMeta } from './Awards';
 import styles from './Schedule.module.less';
 
 export type HackathonScheduleTone =
-  | 'break'
-  | 'competition'
-  | 'enrollment'
-  | 'evaluation'
-  | 'formation';
+  'break' | 'competition' | 'enrollment' | 'evaluation' | 'formation';
 
 export interface HackathonScheduleFact extends HackathonAwardsMeta {
   meta: string;
 }
 
-export interface HackathonScheduleItem
-  extends Record<'id' | 'phase' | 'title' | 'description', string> {
+export interface HackathonScheduleItem extends Record<
+  'id' | 'phase' | 'title' | 'description',
+  string
+> {
   facts: HackathonScheduleFact[];
 
   endedAt?: TimeData;
@@ -27,8 +25,10 @@ export interface HackathonScheduleItem
   tone: HackathonScheduleTone;
 }
 
-export interface HackathonScheduleProps
-  extends Record<'title' | 'subtitle' | 'lead' | 'kicker' | 'stageGoalLabel', string> {
+export interface HackathonScheduleProps extends Record<
+  'title' | 'subtitle' | 'lead' | 'kicker' | 'stageGoalLabel',
+  string
+> {
   items: HackathonScheduleItem[];
   keyDates?: {
     label: string;
@@ -52,7 +52,7 @@ const ScheduleCard: FC<HackathonScheduleItem & Record<'phaseLabel' | 'stageGoalL
 }) => (
   <article className={`${styles.dayCard} ${styles[tone]}`}>
     <div
-      className={`${styles.dayCardHead} d-flex justify-content-between align-items-baseline gap-3`}
+      className={`${styles.dayCardHead} d-flex justify-content-between align-items-baseline gap-5`}
     >
       <span className={`${styles.dayNo} d-inline-flex align-items-center`}>
         {phaseLabel} {phase}
@@ -62,8 +62,8 @@ const ScheduleCard: FC<HackathonScheduleItem & Record<'phaseLabel' | 'stageGoalL
       </span>
     </div>
 
-    <h3 className={`${styles.dayTitle} mt-3 mb-2`}>{title}</h3>
-    <p className={`${styles.daySub} mb-3`}>{description}</p>
+    <h3 className={`${styles.dayTitle} mt-5 mb-3`}>{title}</h3>
+    <p className={`${styles.daySub} mb-5`}>{description}</p>
 
     <dl className={styles.dayAgenda}>
       {facts.map(({ label, meta, value }) => (
@@ -78,7 +78,7 @@ const ScheduleCard: FC<HackathonScheduleItem & Record<'phaseLabel' | 'stageGoalL
     </dl>
 
     {stageGoal && (
-      <p className={`${styles.stageGoal} d-flex flex-wrap gap-2 mt-3 pt-3`}>
+      <p className={`${styles.stageGoal} d-flex flex-wrap gap-3 mt-5 pt-5`}>
         <strong>{stageGoalLabel}:</strong>
         <span>{stageGoal}</span>
       </p>
@@ -107,13 +107,13 @@ export const HackathonSchedule: FC<HackathonScheduleProps & { phaseLabel: string
       </header>
 
       {lead && (
-        <hgroup className={`${styles.scheduleIntro} text-center mb-4`}>
+        <hgroup className={`${styles.scheduleIntro} text-center mb-7`}>
           <h3 className={styles.scheduleLead}>{lead}</h3>
         </hgroup>
       )}
 
       <ul
-        className={`list-unstyled ${styles.scheduleOverview} d-flex flex-wrap justify-content-center gap-3 mb-4`}
+        className={`list-unstyled ${styles.scheduleOverview} d-flex flex-wrap justify-content-center gap-5 mb-7`}
       >
         {overviewPills.map((pill, index) => (
           <li key={index} className={styles.schedulePill}>
@@ -134,7 +134,7 @@ export const HackathonSchedule: FC<HackathonScheduleProps & { phaseLabel: string
       </div>
 
       {keyDates?.[0] && (
-        <ul className={`list-unstyled ${styles.keyDates} mt-4`}>
+        <ul className={`list-unstyled ${styles.keyDates} mt-7`}>
           {keyDates.map(({ startedAt, endedAt, label }, index) => (
             <li
               key={`${startedAt || ''}-${endedAt || ''}-${label}`}

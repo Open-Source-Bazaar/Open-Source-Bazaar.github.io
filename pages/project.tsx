@@ -1,9 +1,8 @@
-import { Loading } from 'idea-react';
+import { Col, Container, Loading, Row } from 'idea-react';
 import { GitRepository, RepositoryModel } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { ScrollList } from 'mobx-restful-table';
 import { FC, useContext } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
 import { Minute, Second } from 'web-utility';
 
 import { GitCard } from '../components/Git/Card';
@@ -30,7 +29,7 @@ const ProjectListPage: FC<{ list: GitRepository[] }> = observer(({ list }) => {
   return (
     <Container>
       <PageHead title={t('open_source_projects')} />
-      <h1 className="my-4">{t('open_source_projects')}</h1>
+      <h1 className="my-7">{t('open_source_projects')}</h1>
 
       {repositoryStore.downloading > 0 && <Loading />}
 
@@ -39,7 +38,7 @@ const ProjectListPage: FC<{ list: GitRepository[] }> = observer(({ list }) => {
         store={repositoryStore}
         filter={{ relation: ['languages'] }}
         renderList={allItems => (
-          <Row as="ul" className="list-unstyled g-4" xs={1} sm={2}>
+          <Row as="ul" className="list-unstyled g-7" cols={1} sm={2}>
             {allItems.map(
               item =>
                 item.homepage && (

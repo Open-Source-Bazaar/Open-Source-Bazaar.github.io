@@ -1,7 +1,20 @@
-import { CSSProperties, FC, useContext, useEffect, useState } from 'react';
-import { TextTruncate } from 'idea-react';
+import {
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  CardText,
+  CardTitle,
+  Carousel,
+  CarouselSlide,
+  Col,
+  Container,
+  Row,
+  Stack,
+  TextTruncate,
+} from 'idea-react';
 import { TableCellLocation } from 'mobx-lark';
-import { Badge, Button, Card, Carousel, Col, Container, Row, Stack } from 'react-bootstrap';
+import { CSSProperties, FC, useContext, useEffect, useState } from 'react';
 
 import { Activity, ActivityModel } from '../../models/Activity';
 import { I18nContext } from '../../models/Translation';
@@ -80,7 +93,7 @@ export const HeroCarousel: FC<{ activities: Activity[] }> = ({ activities }) => 
     >
       <Carousel
         fade
-        touch
+        autoplay
         pause="hover"
         interval={6500}
         indicators={activities.length > 1}
@@ -99,54 +112,57 @@ export const HeroCarousel: FC<{ activities: Activity[] }> = ({ activities }) => 
           const image = cardImage || activity.image;
 
           return (
-            <Carousel.Item key={id as string} className={`${styles.item} h-100`}>
+            <CarouselSlide key={id as string} className={`${styles.item} h-100`}>
               <Card
-                className={`${styles.slideCard} h-100 rounded-0 border-0 bg-transparent text-white`}
+                className={`${styles.slideCard} h-100 rounded-0 border-0 bg-transparent fg-white`}
               >
-                <Row className="g-0 h-100 flex-column-reverse flex-md-row">
+                <Row className="g-0 h-100 flex-column-reverse md:flex-row">
                   <Col
-                    xs={12}
+                    span={12}
                     md={6}
                     lg={5}
                     className="d-flex align-items-center position-relative z-1"
                   >
-                    <Container fluid="md" className="px-3 px-md-4 px-xl-5 py-5">
-                      <Card.Body
+                    <Container breakpoint="md" className="px-5 md:px-7 xl:px-12 py-12">
+                      <CardBody
                         className="p-0 d-flex flex-column justify-content-center"
                         style={infoBodyStyle}
                       >
-                        <Stack direction="horizontal" gap={2} className="flex-wrap mb-3 mb-md-4">
+                        <Stack direction="horizontal" gap={2} className="flex-wrap mb-5 md:mb-7">
                           {(hosts.length ? hosts : [(type as string) || t('hackathon')]).map(
                             item => (
                               <Badge
                                 key={item}
                                 pill
-                                bg="info"
-                                text="dark"
-                                className="px-3 py-2 fw-semibold"
+                                theme="info"
+                                className="px-5 py-3 fw-semibold fg-black"
                               >
                                 {item}
                               </Badge>
                             ),
                           )}
                           {(dateText || t('event_duration')) && (
-                            <Badge pill bg="light" text="dark" className="px-3 py-2 fw-semibold">
+                            <Badge
+                              pill
+                              theme="secondary"
+                              className="px-5 py-3 fw-semibold fg-black"
+                            >
                               {dateText || t('event_duration')}
                             </Badge>
                           )}
                         </Stack>
 
-                        <Card.Title
+                        <CardTitle
                           as="h1"
-                          className="display-3 fw-bold lh-1 mb-3 mb-md-4"
+                          className="fs-5xl fw-bold lh-1 mb-5 md:mb-7"
                           style={{ textWrap: 'balance' }}
                         >
                           {title}
-                        </Card.Title>
+                        </CardTitle>
 
                         <TextTruncate
                           rows={descriptionRows}
-                          className={`${styles.description} text-white-50 mb-4`}
+                          className={`${styles.description} fg-white fg-50 mb-7`}
                         >
                           {description}
                         </TextTruncate>
@@ -154,29 +170,29 @@ export const HeroCarousel: FC<{ activities: Activity[] }> = ({ activities }) => 
                         <Stack
                           direction="horizontal"
                           gap={3}
-                          className="flex-wrap align-items-start align-items-md-center"
+                          className="flex-wrap align-items-start md:align-items-center"
                         >
-                          <Card.Text className="mb-0 fs-6 text-info-emphasis fw-semibold">
+                          <CardText className="mb-0 fs-md fg-emphasis-info fw-semibold">
                             {locationText || t('open_source_bazaar')}
-                          </Card.Text>
+                          </CardText>
                           <Button
                             href={href}
-                            variant="light"
-                            className={`${styles.actionButton} px-4 py-2 fw-semibold text-uppercase`}
+                            theme="secondary"
+                            className={`${styles.actionButton} px-7 py-3 fw-semibold text-uppercase`}
                           >
                             {t('hackathon_register_now')}
                           </Button>
                         </Stack>
-                      </Card.Body>
+                      </CardBody>
                     </Container>
                   </Col>
 
-                  <Col xs={12} md={6} lg={7} className={`${styles.mediaPane} position-relative`}>
+                  <Col span={12} md={6} lg={7} className={`${styles.mediaPane} position-relative`}>
                     <LarkImage src={image} alt={title} className="w-100 h-100 object-fit-cover" />
                   </Col>
                 </Row>
               </Card>
-            </Carousel.Item>
+            </CarouselSlide>
           );
         })}
       </Carousel>

@@ -1,5 +1,5 @@
+import { Badge, Card, CardBody, CardImage, CardSubtitle, CardTitle, Col } from 'idea-react';
 import { FC } from 'react';
-import { Badge, Card, Col } from 'react-bootstrap';
 
 export interface PersonCardProps {
   avatar: string;
@@ -10,26 +10,26 @@ export interface PersonCardProps {
 }
 
 export const PersonCard: FC<PersonCardProps> = ({ avatar, name, link, position, count }) => (
-  <Col as="li" className="my-3 d-flex justify-content-center">
+  <Col as="li" className="my-5 d-flex justify-content-center">
     <Card className="border-0 align-items-center position-relative">
       {count != null && (
-        <Badge className="fs-6 position-absolute top-0 end-0" pill bg="danger">
+        <Badge className="fs-md position-absolute top-0 end-0" pill theme="danger">
           {count}
         </Badge>
       )}
-      <Card.Img
+      <CardImage
         className="rounded-circle"
         style={{ width: '8rem' }}
-        variant="top"
+        placement="top"
         src={avatar}
         alt={name}
       />
-      <Card.Body>
-        <Card.Title as="a" className="fs-6 text-decoration-none stretched-link" href={link || '#'}>
+      <CardBody>
+        <CardTitle as="a" className="fs-md text-decoration-none stretched-link" href={link || '#'}>
           {name}
-        </Card.Title>
-        <Card.Subtitle className="fw-light mt-2">{position}</Card.Subtitle>
-      </Card.Body>
+        </CardTitle>
+        <CardSubtitle className="fw-light mt-3">{position}</CardSubtitle>
+      </CardBody>
     </Card>
   </Col>
 );

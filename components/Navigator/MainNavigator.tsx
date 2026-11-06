@@ -1,9 +1,20 @@
+import {
+  Container,
+  Drawer,
+  Image,
+  Navbar,
+  NavbarBrand,
+  NavbarNav,
+  NavbarToggler,
+  NavItem,
+  NavLink,
+} from 'idea-react';
+import { action, observable } from 'mobx';
 import { textJoin } from 'mobx-i18n';
 import { observer } from 'mobx-react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { AnchorHTMLAttributes, FC, useContext } from 'react';
-import { Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { AnchorHTMLAttributes, Component, FC } from 'react';
 
 import { DefaultImage } from '../../models/configuration';
 import { i18n, I18nContext } from '../../models/Translation';
@@ -91,50 +102,99 @@ export interface MainNavigatorProps {
   menu?: MenuItem[];
 }
 
-export const MainNavigator: FC<MainNavigatorProps> = observer(({ menu }) => {
-  const { pathname } = useRouter(),
-    i18n = useContext(I18nContext);
-  const { t } = i18n;
+interface MainNavigatorViewProps extends MainNavigatorProps {
+  pathname: string;
+}
 
-  menu ||= topNavBarMenu(i18n);
+@observer
+class MainNavigatorView extends Component<MainNavigatorViewProps, typeof i18n> {
+  static contextType = I18nContext;
 
-  return (
-    <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
-      <Container>
-        <Navbar.Brand href="/" className="fw-bolder d-flex align-items-center gap-2 text-nowrap">
-          <Image width={40} src={DefaultImage} alt={t('open_source_bazaar')} />
-          {t('open_source_bazaar')}
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-            {menu.map(({ href, title, subs }) =>
-              subs ? (
-                <NavDropdown key={title} title={title}>
-                  {subs.map(({ href, title }) => (
-                    <NavDropdown.Item key={href} href={href}>
-                      {title}
-                    </NavDropdown.Item>
-                  ))}
-                </NavDropdown>
-              ) : (
-                <Nav.Link
-                  key={`${href}-${title}`}
-                  href={href}
-                  className={`text-nowrap ${pathname === `${href}` ? 'fw-bolder text-light' : ''}`}
-                >
-                  {title}
-                </Nav.Link>
-              ),
-            )}
-          </Nav>
+  declare context: typeof i18n;
 
-          <div className="d-flex justify-content-around gap-3">
-            <SearchBar />
-            <LanguageMenu />
-          </div>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  );
-});
+  @observable accessor open = false;
+
+  toggle = action(() => (this.open = !this.open));
+
+  hide = action(() => (this.open = false));
+
+  render() {
+    const { t } = this.context;
+    const menu = this.props.menu ?? topNavBarMenu(this.context);
+
+    return (
+      <Navbar theme="dark" className="fixed-top bg-body" expand="lg">
+        <Container>
+          <NavbarBrand href="/" className="fw-bolder d-flex align-items-center gap-3 text-nowrap">
+            <Image width={40} src={DefaultImage} alt={t('open_source_bazaar')} />
+            {t('open_source_bazaar')}
+          </NavbarBrand>
+          <NavbarToggler
+            expanded={this.open}
+            aria-label={t('open_source_bazaar')}
+            onClick={this.toggle}
+          />
+          <Drawer
+            className="w-100"
+            bodyClassName="d-flex flex-column lg:flex-row lg:align-items-center"
+            title={t('open_source_bazaar')}
+            responsive="lg"
+            placement="end"
+            open={this.open}
+            onDismiss={this.hide}
+          >
+            <NavbarNav className="flex-fill me-auto my-3 lg:my-0 lg:flex-row">
+              {menu.map(({ href, title, subs }) =>
+                subs ? (
+                  <NavItem key={title} as="li">
+                    <details>
+                      <summary className="nav-link">{title}</summary>
+                      <ul className="list-unstyled ms-5 lg:ms-0">
+                        {subs.map(
+                          ({ href: subHref, title: subTitle }) =>
+                            subHref && (
+                              <li key={subHref}>
+                                <NavLink href={subHref} onClick={this.hide}>
+                                  {subTitle}
+                                </NavLink>
+                              </li>
+                            ),
+                        )}
+                      </ul>
+                    </details>
+                  </NavItem>
+                ) : (
+                  href && (
+                    <NavItem key={`${href}-${title}`} as="li">
+                      <NavLink
+                        href={href}
+                        active={this.props.pathname === href}
+                        className={`text-nowrap ${
+                          this.props.pathname === href ? 'fw-bolder fg-white' : ''
+                        }`}
+                        onClick={this.hide}
+                      >
+                        {title}
+                      </NavLink>
+                    </NavItem>
+                  )
+                ),
+              )}
+            </NavbarNav>
+
+            <div className="d-flex justify-content-around gap-5">
+              <SearchBar />
+              <LanguageMenu />
+            </div>
+          </Drawer>
+        </Container>
+      </Navbar>
+    );
+  }
+}
+
+export const MainNavigator: FC<MainNavigatorProps> = props => {
+  const { pathname } = useRouter();
+
+  return <MainNavigatorView {...props} pathname={pathname} />;
+};

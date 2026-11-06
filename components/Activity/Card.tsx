@@ -1,12 +1,11 @@
-import { TimeDistance } from 'idea-react';
+import { Card, CardBody, CardText, CardTitle, Col, Row, TimeDistance } from 'idea-react';
 import { TableCellLocation } from 'mobx-lark';
+import { BadgeBar } from 'mobx-restful-table';
 import type { FC } from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
 
 import { type Activity, ActivityModel } from '../../models/Activity';
-import { LarkImage } from '../LarkImage';
 import { TimeOption } from '../data';
-import { BadgeBar } from 'mobx-restful-table';
+import { LarkImage } from '../LarkImage';
 
 export interface ActivityCardProps extends Activity {
   className?: string;
@@ -36,30 +35,30 @@ export const ActivityCard: FC<ActivityCardProps> = ({
         />
       </div>
     </div>
-    <Card.Body className="d-flex flex-column">
-      <Card.Title as="h3" className="h5 flex-fill">
+    <CardBody className="d-flex flex-column">
+      <CardTitle as="h3" className="h5 flex-fill">
         <a
-          className="text-decoration-none text-secondary text-truncate-lines"
+          className="text-decoration-none fg-secondary text-truncate-lines"
           href={ActivityModel.getLink({ id, ...activity })}
         >
           {name as string}
         </a>
-      </Card.Title>
+      </CardTitle>
 
-      <Row className="mt-2 flex-fill">
+      <Row className="mt-3 flex-fill">
         <Col className="text-start">
-          <Card.Text
+          <CardText
             className="mt-1 text-truncate"
             title={(location as TableCellLocation)?.full_address}
           >
             <span className="me-1">{city as string}</span>
 
             {(location as TableCellLocation)?.full_address}
-          </Card.Text>
+          </CardText>
         </Col>
       </Row>
       <Row as="footer" className="flex-fill small mt-1">
-        <Col xs={8}>
+        <Col span={8}>
           <BadgeBar
             list={(host as string[]).map(text => ({
               text,
@@ -67,10 +66,10 @@ export const ActivityCard: FC<ActivityCardProps> = ({
             }))}
           />
         </Col>
-        <Col className="text-end" xs={4}>
+        <Col className="text-end" span={4}>
           <TimeDistance {...TimeOption} date={startTime as number} />
         </Col>
       </Row>
-    </Card.Body>
+    </CardBody>
   </Card>
 );

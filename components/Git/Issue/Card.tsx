@@ -1,14 +1,25 @@
-import { Icon, Nameplate, Time, text2color } from 'idea-react';
+import {
+  Badge,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  CardProps,
+  Icon,
+  Nameplate,
+  Stack,
+  text2color,
+  Time,
+} from 'idea-react';
 import { marked } from 'marked';
 import { Issue } from 'mobx-github';
 import { FC } from 'react';
-import { Badge, Card, CardProps, Stack } from 'react-bootstrap';
 
 export type IssueCardProps = Issue & Omit<CardProps, 'id' | 'body'>;
 
 export const IssueCard: FC<IssueCardProps> = ({
-  bg = 'light',
-  text = 'dark',
+  theme = 'secondary',
+  className = '',
   id,
   number,
   title,
@@ -20,10 +31,10 @@ export const IssueCard: FC<IssueCardProps> = ({
   created_at,
   ...props
 }) => (
-  <Card {...{ ...props, bg, text }}>
-    <Card.Header as="h4" className="d-flex justify-content-between align-items-center gap-3">
+  <Card {...props} theme={theme} className={`${className} fg-black`}>
+    <CardHeader as="h4" className="d-flex justify-content-between align-items-center gap-5">
       <a
-        className="text-decoration-none text-secondary text-truncate"
+        className="text-decoration-none fg-secondary text-truncate"
         title={title}
         href={html_url}
         target="_blank"
@@ -37,14 +48,13 @@ export const IssueCard: FC<IssueCardProps> = ({
             typeof label === 'object' && (
               <Badge
                 key={label.name}
-                className="fs-6"
+                className="fs-md"
                 {...(label.color
                   ? {
-                      bg: '',
                       style: { background: `#${label.color}` },
                     }
                   : {
-                      bg: text2color(label.name || '', ['light']),
+                      theme: text2color(label.name || '', ['light', 'dark']),
                     })}
               >
                 {label.name}
@@ -52,9 +62,9 @@ export const IssueCard: FC<IssueCardProps> = ({
             ),
         )}
       </Stack>
-    </Card.Header>
-    <Card.Body as="article" dangerouslySetInnerHTML={{ __html: marked(body || '') as string }} />
-    <Card.Footer className="d-flex justify-content-between align-items-center">
+    </CardHeader>
+    <CardBody as="article" dangerouslySetInnerHTML={{ __html: marked(body || '') as string }} />
+    <CardFooter className="d-flex justify-content-between align-items-center">
       {user && <Nameplate name={user.name || ''} avatar={user.avatar_url} />}
 
       <Stack direction="horizontal" gap={2}>
@@ -63,6 +73,6 @@ export const IssueCard: FC<IssueCardProps> = ({
       </Stack>
 
       <Time dateTime={created_at} format="YYYY-MM-DD HH:mm:ss" />
-    </Card.Footer>
+    </CardFooter>
   </Card>
 );

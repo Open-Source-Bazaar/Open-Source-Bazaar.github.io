@@ -1,7 +1,7 @@
+import { Card, Col, Row } from 'idea-react';
 import { observer } from 'mobx-react';
 import { GetStaticProps } from 'next';
 import { FC, useContext } from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
 import { renderToStaticMarkup } from 'react-dom/server';
 import ReactTyped from 'react-typed-component';
 import { Minute, Second } from 'web-utility';
@@ -10,9 +10,8 @@ import { HeroCarousel } from '../components/Activity/HeroCarousel';
 import { PageHead } from '../components/Layout/PageHead';
 import { Activity, ActivityModel } from '../models/Activity';
 import { I18nContext } from '../models/Translation';
-import { lark } from './api/Lark/core';
-
 import styles from '../styles/Home.module.less';
+import { lark } from './api/Lark/core';
 
 interface HomePageProps {
   activities: Activity[];
@@ -42,7 +41,7 @@ const HomePage: FC<HomePageProps> = observer(({ activities }) => {
       {activities[0] && <HeroCarousel activities={activities} />}
 
       <section
-        className={`flex-fill d-flex flex-column justify-content-center align-items-center bg-secondary bg-gradient text-dark bg-opacity-10 ${styles.main}`}
+        className={`flex-fill d-flex flex-column justify-content-center align-items-center bg-secondary bg-gradient fg-black bg-10 ${styles.main}`}
       >
         <h2 className={`m-0 text-center ${styles.title}`}>
           <ReactTyped
@@ -59,7 +58,7 @@ const HomePage: FC<HomePageProps> = observer(({ activities }) => {
                 <>
                   欢迎来到
                   <strong>
-                    <a className="text-primary mx-2" href="https://bazaar.fcc-cd.dev/">
+                    <a className="fg-primary mx-3" href="https://bazaar.fcc-cd.dev/">
                       开源市集
                     </a>
                   </strong>
@@ -82,15 +81,15 @@ const HomePage: FC<HomePageProps> = observer(({ activities }) => {
         </h2>
       </section>
       <section
-        className={`flex-fill d-flex flex-column justify-content-center align-items-center pb-0 bg-warning bg-opacity-10 ${styles.main}`}
+        className={`flex-fill d-flex flex-column justify-content-center align-items-center pb-0 bg-warning bg-10 ${styles.main}`}
       >
-        <h2 className="text-start mb-5 mt-5 fw-bolder">{t('participate')}</h2>
-        <Row className="flex-fill d-flex justify-content-around align-items-center w-100 px-3">
-          <Col xs={8} sm={7} md={4} className="pb-5">
+        <h2 className="text-start mb-12 mt-12 fw-bolder">{t('participate')}</h2>
+        <Row className="flex-fill d-flex justify-content-around align-items-center w-100 px-5">
+          <Col span={8} sm={7} md={4} className="pb-12">
             <Card body className={`shadow ${styles.activeCard}`}>
-              <h5 className="fw-bold mb-3">{t('code_work')}</h5>
+              <h5 className="fw-bold mb-5">{t('code_work')}</h5>
               <ul className="list-unstyled">
-                <li className="mb-3">
+                <li className="mb-5">
                   <a
                     href="https://github.com/Open-Source-Bazaar/Open-Source-Bazaar.github.io"
                     className="fw-bold"
@@ -99,35 +98,35 @@ const HomePage: FC<HomePageProps> = observer(({ activities }) => {
                   </a>
                   ：研发官网，让更多人了解「开源市集」，了解「开放式协作」……
                 </li>
-                <li className="mb-3">
+                <li className="mb-5">
                   <span className="fw-bold">……</span>
                 </li>
               </ul>
             </Card>
           </Col>
-          <Col xs={8} sm={7} md={4} className="pb-5">
+          <Col span={8} sm={7} md={4} className="pb-12">
             <Card body className={`shadow overflow-auto ${styles.activeCard}`}>
-              <h5 className="fw-bold mb-3">{t('non_code_work')}</h5>
+              <h5 className="fw-bold mb-5">{t('non_code_work')}</h5>
               <ul className="list-unstyled">
-                <li className="mb-3">
+                <li className="mb-5">
                   <a href="/history" className="fw-bold">
                     开放市集
                   </a>
                   ：一群来自不同领域的有趣的朋友通过展示、交流，将“开源”和“开放式协作”的乐趣带给更多人……
                 </li>
-                <li className="mb-3">
+                <li className="mb-5">
                   <a href="/open-collaborator-award" className="fw-bold">
                     开放协作人奖
                   </a>
                   ：在过去的一年中令你难以忘怀的人，请把 Ta 推荐给更多的人……
                 </li>
-                <li className="mb-3">
+                <li className="mb-5">
                   <span className="fw-bold">……</span>
                 </li>
               </ul>
             </Card>
           </Col>
-          <Col xs={8} sm={7} md={4} className="pb-5">
+          <Col span={8} sm={7} md={4} className="pb-12">
             <Card body className={`shadow ${styles.activeCard}`}>
               <p>
                 欢迎
@@ -141,20 +140,20 @@ const HomePage: FC<HomePageProps> = observer(({ activities }) => {
         </Row>
       </section>
       <section
-        className={`flex-fill d-flex flex-column justify-content-center align-items-center pb-0 bg-success bg-opacity-10 ${styles.main}`}
+        className={`flex-fill d-flex flex-column justify-content-center align-items-center pb-0 bg-success bg-10 ${styles.main}`}
       >
-        <h2 className="text-start mb-5 fw-bolder h1">{t('action')}</h2>
-        <Row className="d-flex flex-column justify-content-start align-items-center w-100 mb-5">
+        <h2 className="text-start mb-12 fw-bolder h1">{t('action')}</h2>
+        <Row className="d-flex flex-column justify-content-start align-items-center w-100 mb-12">
           <Col className="text-center">
             <figure className="text-center">
-              <blockquote className="blockquote mb-4">
+              <blockquote className="blockquote mb-7">
                 <p className="h2">{t('we_are_organizing_bazaar')}</p>
               </blockquote>
-              <figcaption className="h6 text-muted">
+              <figcaption className="h6 fg-secondary">
                 即兴三月，开源开放！来都来了，玩就是了！👉
                 <a
                   href="https://open-source-bazaar.feishu.cn/docs/doccnGSsshgO4ojuAHVzWJMXWog?from=from_copylink"
-                  className="text-primary"
+                  className="fg-primary"
                 >
                   立刻协作
                 </a>

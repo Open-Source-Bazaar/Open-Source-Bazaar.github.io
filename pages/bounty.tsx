@@ -1,6 +1,6 @@
+import { Card, CardTitle, Col, Container, Row } from 'idea-react';
 import { observer } from 'mobx-react';
 import { FC, useContext } from 'react';
-import { Card, Col, Container, Row } from 'react-bootstrap';
 
 import { PageHead } from '../components/Layout/PageHead';
 import { I18nContext } from '../models/Translation';
@@ -10,9 +10,9 @@ type BountyViewProps = Record<'icon' | 'title' | 'url', string>;
 
 const BountyView: FC<BountyViewProps> = ({ title, url, icon }) => (
   <Card className={`${styles.bountyCard} rounded-4`} body>
-    <Card.Title as="h2" className="fs-5">
+    <CardTitle as="h2" className="fs-lg">
       {icon} <span className={styles.cardTitle}>{title}</span>
-    </Card.Title>
+    </CardTitle>
     <div
       className={`${styles.iframeContainer} overflow-hidden w-100 rounded-4 position-relative`}
       style={{ height: 'calc(100vh - 10rem)' }}
@@ -36,22 +36,22 @@ const BountyPage: FC = observer(() => {
         </Container>
       </section>
 
-      <Container className="my-5 d-flex flex-column gap-4">
+      <Container className="my-12 d-flex flex-column gap-7">
         <BountyView
           title={t('bounty_dashboard')}
           url="https://open-source-bazaar.feishu.cn/share/base/dashboard/shrcnt4EaAxn3zx9faRarERgEqf"
           icon="📊"
         />
 
-        <Row className="g-4">
-          <Col xs={12} lg={8}>
+        <Row className="g-7">
+          <Col span={12} lg={8}>
             <BountyView
               icon="📋"
               title={t('bounty_task_rank')}
               url="https://open-source-bazaar.feishu.cn/share/base/view/shrcnUVgb8E73UthaB2Tk4glnSb"
             />
           </Col>
-          <Col xs={12} lg={4}>
+          <Col span={12} lg={4}>
             <BountyView
               icon="📝"
               title={t('bounty_task_submission')}
@@ -60,15 +60,15 @@ const BountyPage: FC = observer(() => {
           </Col>
         </Row>
 
-        <Row className="g-4">
-          <Col xs={12} lg={8}>
+        <Row className="g-7">
+          <Col span={12} lg={8}>
             <BountyView
               icon="🏆"
               title={t('bounty_achievement_rank')}
               url="https://open-source-bazaar.feishu.cn/share/base/view/shrcne4IY9mYAfoo9a69oxyAdTb"
             />
           </Col>
-          <Col xs={12} lg={4}>
+          <Col span={12} lg={4}>
             <BountyView
               icon="✅"
               title={t('bounty_achievement_submission')}

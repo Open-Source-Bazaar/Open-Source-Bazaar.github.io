@@ -402,6 +402,8 @@ export default {
   book_not_found: 'Book Not Found',
   return_to_catalog: 'Return to Catalog',
   back: 'Back',
+  previous_page: 'Previous page',
+  next_page: 'Next page',
   by_author: ({ authors }: { authors: string }) => `by ${authors}`,
   currently_borrowed: 'Currently Borrowed',
   currently_unavailable: 'Currently Unavailable',

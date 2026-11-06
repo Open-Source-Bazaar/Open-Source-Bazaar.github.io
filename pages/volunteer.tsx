@@ -1,7 +1,7 @@
+import { Container, Row } from 'idea-react';
 import { Contributor } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { FC, useContext } from 'react';
-import { Container, Row } from 'react-bootstrap';
 import { Minute, Second } from 'web-utility';
 
 import { PageHead } from '../components/Layout/PageHead';
@@ -23,9 +23,9 @@ const Organizer: FC<{ contributors: Contributor[] }> = observer(({ contributors 
   return (
     <Container>
       <PageHead title={t('volunteer')} />
-      <h1 className="py-5 text-center text-md-start ps-md-4">{t('volunteer')}</h1>
+      <h1 className="py-12 text-center md:text-start md:ps-7">{t('volunteer')}</h1>
 
-      <section className="d-flex justify-content-around align-items-center gap-3 flex-wrap mb-5">
+      <section className="d-flex justify-content-around align-items-center gap-5 flex-wrap mb-12">
         <a
           className="d-block"
           href="https://next.ossinsight.io/widgets/official/compose-org-participants-roles-ratio?owner_id=73477979&period=past_28_days"
@@ -70,7 +70,7 @@ const Organizer: FC<{ contributors: Contributor[] }> = observer(({ contributors 
       <Row
         as="ul"
         className="list-unstyled justify-content-center text-center"
-        xs={2}
+        cols={2}
         sm={5}
         md={6}
       >

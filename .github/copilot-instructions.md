@@ -1,6 +1,6 @@
 # Open Source Bazaar - GitHub Copilot Instructions
 
-Open Source Bazaar is an open-source project showcase platform built with Next.js 15, TypeScript, React Bootstrap, and MobX. It includes license filters, Wiki knowledge base, volunteer showcase, Lark integration, and other features.
+Open Source Bazaar is an open-source project showcase platform built with Next.js, TypeScript, Idea React 3 (Bootstrap 6), and MobX. It includes license filters, Wiki knowledge base, volunteer showcase, Lark integration, and other features.
 
 Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
 
@@ -48,7 +48,7 @@ After making ANY changes, ALWAYS validate by running through these scenarios:
    - Volunteer page: http://localhost:3000/volunteer (contributor showcase)
    - Projects: http://localhost:3000/project (GitHub repository listings)
 4. **Test API endpoints**: Verify GitHub API integrations work
-5. **Check responsive design**: Test mobile/desktop layouts with React Bootstrap components
+5. **Check responsive design**: Test mobile/desktop layouts with Idea React components
 6. **Verify i18n functionality**: Check Chinese/English language switching works
 
 ### Pre-commit Validation
@@ -81,7 +81,7 @@ npm test     # Runs linting + staged file checks
 ### Key Dependencies
 
 - **Next.js 15** - React framework
-- **React Bootstrap 2.10** - UI component library
+- **Idea React 3 / Bootstrap 6** - UI component library and CSS framework
 - **MobX 6.13** - State management
 - **MobX-GitHub 0.4** - GitHub API integration
 - **MobX-i18n 0.7** - Internationalization
@@ -96,7 +96,7 @@ Based on comprehensive PR review analysis, follow these critical development sta
 
 #### Component and Import Standards
 
-- **ALWAYS use React Bootstrap components** instead of custom HTML elements
+- **Prefer Idea React components** for Bootstrap UI patterns instead of recreating them with custom elements
 - Use utilities from established libraries: 'web-utility'
 - Import `'./Base'` in model files for proper configuration
 
@@ -110,14 +110,20 @@ Based on comprehensive PR review analysis, follow these critical development sta
 #### Component Usage Patterns
 
 ```typescript
-// ✅ Correct - use React Bootstrap components
-import { Button, Badge, Breadcrumb, Card, Container } from 'react-bootstrap';
+// ✅ Correct - use Idea React components
+import { Badge, Button, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Card, Container } from 'idea-react';
 
-<Button variant="outline-primary" size="sm" href={url} target="_blank">
+<Button theme="primary" variant="outline" size="sm" href={url} target="_blank">
   {t('edit_on_github')}
 </Button>
 
-<Badge bg="secondary">{label}</Badge>
+<Badge theme="secondary">{label}</Badge>
+
+<Breadcrumb>
+  <BreadcrumbItem>
+    <BreadcrumbLink href="/">{t('open_source_bazaar')}</BreadcrumbLink>
+  </BreadcrumbItem>
+</Breadcrumb>
 
 // ❌ Wrong - custom HTML elements
 <a href={url} className="btn btn-outline-primary">Edit</a>
@@ -242,7 +248,7 @@ pnpm test            # Run tests (lint-staged + lint, 15s)
 
 #### Component and Styling Issues
 
-- **Custom HTML not working**: Replace with React Bootstrap components
+- **Bootstrap UI not working**: Prefer Idea React components and Bootstrap 6 utilities
 - **Translation not showing**: Ensure all text uses `t()` function and keys exist in all language files
 - **GitHub API errors**: Verify you're using configured `githubClient` from `models/Base.ts`
 

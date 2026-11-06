@@ -1,6 +1,6 @@
 import '../styles/globals.css';
-
 import '@khmyznikov/pwa-install';
+
 import { SerwistProvider } from '@serwist/next/react';
 import { HTTPError } from 'koajax';
 import { configure } from 'mobx';
@@ -47,7 +47,7 @@ export default class CustomApp extends App<I18nProps> {
     return (
       <>
         <LibraryNavbar />
-        <main className="py-5">
+        <main className="py-12">
           <Component {...pageProps} />
         </main>
       </>
@@ -62,7 +62,7 @@ export default class CustomApp extends App<I18nProps> {
       <>
         <MainNavigator />
 
-        <div className="mt-5 pt-2">
+        <div className="mt-12 pt-3">
           {isArticlePage ? <PageContent>{content}</PageContent> : content}
         </div>
       </>

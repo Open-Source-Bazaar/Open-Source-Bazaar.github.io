@@ -1,7 +1,7 @@
-import Link from 'next/link';
+import { Button, Card, CardBody, Col, Container, Row } from 'idea-react';
 import { observer } from 'mobx-react';
+import Link from 'next/link';
 import { FC, useContext } from 'react';
-import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { Minute, Second } from 'web-utility';
 
 import { PageHead } from '../../components/Layout/PageHead';
@@ -70,47 +70,47 @@ const OpenLibraryHomepage: FC<OpenLibraryHomepageProps> = observer(({ featuredBo
         heroImageAlt={t('hero_image_alt')}
       />
 
-      <Container fluid="xl" className="px-3">
-        <div className="py-5">
-          <div className="text-center mb-5">
-            <h2 className="display-5 fw-bold text-primary mb-3">📚 {t('about_us_footer')}</h2>
-            <p className="lead text-muted">{t('open_library_community_intro')}</p>
+      <Container breakpoint="xl" className="px-5">
+        <div className="py-12">
+          <div className="text-center mb-12">
+            <h2 className="fs-4xl fw-bold fg-primary mb-5">📚 {t('about_us_footer')}</h2>
+            <p className="fs-lg fw-light fg-secondary">{t('open_library_community_intro')}</p>
           </div>
 
-          <Row className="g-4 mb-5">
+          <Row className="g-7 mb-12">
             <Col md={6}>
               <Card className="h-100 border-0 shadow-sm">
-                <Card.Body className="p-4">
-                  <h4 className="text-primary mb-3">🌟 {t('our_mission')}</h4>
+                <CardBody className="p-7">
+                  <h4 className="fg-primary mb-5">🌟 {t('our_mission')}</h4>
                   <p>{t('our_mission_text')}</p>
-                </Card.Body>
+                </CardBody>
               </Card>
             </Col>
             <Col md={6}>
               <Card className="h-100 border-0 shadow-sm">
-                <Card.Body className="p-4">
-                  <h4 className="text-primary mb-3">💡 {t('core_concepts')}</h4>
-                  <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
-                    <li className="d-flex gap-2">
+                <CardBody className="p-7">
+                  <h4 className="fg-primary mb-5">💡 {t('core_concepts')}</h4>
+                  <ul className="list-unstyled d-flex flex-column gap-3 mb-0">
+                    <li className="d-flex gap-3">
                       <span aria-hidden="true">✦</span>
                       <span>
                         <strong>{t('knowledge_flow')}</strong> - {t('knowledge_flow_desc')}
                       </span>
                     </li>
-                    <li className="d-flex gap-2">
+                    <li className="d-flex gap-3">
                       <span aria-hidden="true">✦</span>
                       <span>
                         <strong>{t('community_driven')}</strong> - {t('community_driven_desc')}
                       </span>
                     </li>
-                    <li className="d-flex gap-2">
+                    <li className="d-flex gap-3">
                       <span aria-hidden="true">✦</span>
                       <span>
                         <strong>{t('open_sharing')}</strong> - {t('open_sharing_desc')}
                       </span>
                     </li>
                   </ul>
-                </Card.Body>
+                </CardBody>
               </Card>
             </Col>
           </Row>
@@ -132,14 +132,14 @@ const OpenLibraryHomepage: FC<OpenLibraryHomepageProps> = observer(({ featuredBo
         learnMoreLink="/open-library/how-to-borrow"
       />
 
-      <div className="bg-primary bg-gradient text-white py-5">
-        <Container fluid="xl" className="px-3">
+      <div className="bg-primary bg-gradient fg-white py-12">
+        <Container breakpoint="xl" className="px-5">
           <div className="text-center">
-            <h2 className="display-6 fw-bold mb-3">💖 {t('support_us')}</h2>
-            <p className="lead mb-4">{t('support_us_description')}</p>
-            <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+            <h2 className="fs-3xl fw-bold mb-5">💖 {t('support_us')}</h2>
+            <p className="fs-lg fw-light mb-7">{t('support_us_description')}</p>
+            <div className="d-flex flex-column sm:flex-row gap-5 justify-content-center">
               <Link href="/open-library/books" passHref legacyBehavior>
-                <Button as="a" variant="light" size="lg" className="rounded-pill px-4">
+                <Button as="a" theme="secondary" size="lg" className="rounded-pill px-7">
                   📚 {t('share_your_book')}
                 </Button>
               </Link>

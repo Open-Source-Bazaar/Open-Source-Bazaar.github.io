@@ -1,14 +1,14 @@
+import { Badge, Button, Card, Col, Container, Row, Tab, Tabs } from 'idea-react';
 import { observer } from 'mobx-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FC, useContext } from 'react';
-import { Badge, Button, Card, Col, Container, Row, Tab, Tabs } from 'react-bootstrap';
 import { Minute, Second } from 'web-utility';
 
 import { PageHead } from '../../../components/Layout/PageHead';
 import { BorrowHistoryTabContent } from '../../../components/open-library/Borrow';
 import { ReviewTabContent } from '../../../components/open-library/Review';
-import { BookModel, type Book } from '../../../models/Book';
+import { type Book, BookModel } from '../../../models/Book';
 import { OpenLibraryBorrowFormURL } from '../../../models/configuration';
 import { I18nContext } from '../../../models/Translation';
 import { lark } from '../../api/Lark/core';
@@ -49,17 +49,22 @@ const BookDetail: FC<Book> = observer(
     const isAvailable = status === 'available';
 
     return (
-      <Container fluid="xl" className="px-3">
+      <Container breakpoint="xl" className="px-5">
         <PageHead title={`${title} - ${t('open_library')}`} />
 
-        <div className="mb-4">
-          <Button variant="outline-secondary" className="mb-3" onClick={() => router.back()}>
+        <div className="mb-7">
+          <Button
+            theme="secondary"
+            variant="outline"
+            className="mb-5"
+            onClick={() => router.back()}
+          >
             &larr; {t('back')}
           </Button>
 
           <Card className="border-0 shadow-sm" body>
             <Row>
-              <Col md={3} className="text-center mb-4 mb-md-0">
+              <Col md={3} className="text-center mb-7 md:mb-0">
                 <Image
                   src={cover || '/images/placeholder-book.svg'}
                   alt={title}
@@ -68,65 +73,64 @@ const BookDetail: FC<Book> = observer(
                   width={200}
                   height={300}
                 />
-                <div className="mt-3">
+                <div className="mt-5">
                   <Badge
-                    bg={isAvailable ? 'success' : 'warning'}
-                    text={isAvailable ? 'white' : 'dark'}
-                    className="px-3 py-2"
+                    theme={isAvailable ? 'success' : 'warning'}
+                    className={`px-5 py-3 ${isAvailable ? 'fg-white' : 'fg-black'}`}
                   >
                     {isAvailable ? t('available') : t('currently_borrowed')}
                   </Badge>
                 </div>
                 {status === 'borrowed' && currentHolder && (
-                  <div className="mt-2 text-muted">
+                  <div className="mt-3 fg-secondary">
                     <small>{t('currently_with', { holder: currentHolder })}</small>
                   </div>
                 )}
               </Col>
               <Col md={9}>
                 <h1>{title}</h1>
-                <p className="text-muted mb-3">
+                <p className="fg-secondary mb-5">
                   <cite>{t('by_author', { authors })}</cite>
                 </p>
 
-                <div className="mb-3">
+                <div className="mb-5">
                   {category && (
-                    <Badge bg="secondary" className="me-2">
+                    <Badge theme="secondary" className="me-3">
                       {category}
                     </Badge>
                   )}
                   {language && (
-                    <Badge bg="info" text="dark">
+                    <Badge theme="info" className="fg-black">
                       {language}
                     </Badge>
                   )}
                 </div>
 
-                <p className="lead">{summary}</p>
+                <p className="fs-lg fw-light">{summary}</p>
 
-                <Row as="ul" className="list-unstyled mt-4 g-3" sm={2} md={4}>
+                <Row as="ul" className="list-unstyled mt-7 g-5" sm={2} md={4}>
                   <Col as="li">
-                    <div className="text-muted small">ISBN</div>
+                    <div className="fg-secondary small">ISBN</div>
                     <div>{isbn || t('not_available')}</div>
                   </Col>
                   <Col as="li">
-                    <div className="text-muted small">{t('book_publisher')}</div>
+                    <div className="fg-secondary small">{t('book_publisher')}</div>
                     <div>{publisher || t('not_available')}</div>
                   </Col>
                   <Col as="li">
-                    <div className="text-muted small">{t('book_published_year')}</div>
+                    <div className="fg-secondary small">{t('book_published_year')}</div>
                     <div>{publishYear || t('not_available')}</div>
                   </Col>
                   <Col as="li">
-                    <div className="text-muted small">{t('book_page_count')}</div>
+                    <div className="fg-secondary small">{t('book_page_count')}</div>
                     <div>{pageCount || t('not_available')}</div>
                   </Col>
                 </Row>
 
-                <div className="mt-4">
+                <div className="mt-7">
                   {isAvailable ? (
                     <Button
-                      variant="primary"
+                      theme="primary"
                       size="lg"
                       href={OpenLibraryBorrowFormURL}
                       target="_blank"
@@ -135,7 +139,7 @@ const BookDetail: FC<Book> = observer(
                       {t('request_to_borrow')}
                     </Button>
                   ) : (
-                    <Button variant="outline-primary" size="lg" disabled>
+                    <Button theme="primary" variant="outline" size="lg" disabled>
                       {t('currently_unavailable')}
                     </Button>
                   )}
@@ -144,12 +148,12 @@ const BookDetail: FC<Book> = observer(
             </Row>
           </Card>
 
-          <div className="mt-4">
-            <Tabs defaultActiveKey="reviews" className="mb-3">
-              <Tab eventKey="reviews" title={t('reviews')}>
+          <div className="mt-7">
+            <Tabs id="book-detail-tabs" defaultActiveKey="reviews" className="mb-5">
+              <Tab eventKey="reviews" label={t('reviews')}>
                 <ReviewTabContent reviews={reviews} />
               </Tab>
-              <Tab eventKey="history" title={t('borrow_history')}>
+              <Tab eventKey="history" label={t('borrow_history')}>
                 <BorrowHistoryTabContent history={borrowHistory} />
               </Tab>
             </Tabs>

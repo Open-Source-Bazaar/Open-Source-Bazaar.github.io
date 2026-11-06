@@ -1,5 +1,5 @@
+import { Col, Container, Row } from 'idea-react';
 import { FC, useMemo, useState } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
 
 import type { HackathonAwardsMeta } from './Awards';
 import styles from './Resources.module.less';
@@ -29,8 +29,10 @@ export interface HackathonProjectItem {
   title: string;
 }
 
-export interface HackathonResourcesProps
-  extends Record<`project${'Subtitle' | 'Title'}` | `template${'Subtitle' | 'Title'}`, string> {
+export interface HackathonResourcesProps extends Record<
+  `project${'Subtitle' | 'Title'}` | `template${'Subtitle' | 'Title'}`,
+  string
+> {
   projectInitialVisible?: number;
   projectItems: HackathonProjectItem[];
   showLessLabel?: string;
@@ -51,13 +53,13 @@ const TemplateCard: FC<HackathonTemplateItem> = ({
 }) => (
   <article className={styles.resourceCard}>
     <div
-      className={`${styles.resourceHead} d-flex justify-content-between align-items-start gap-3`}
+      className={`${styles.resourceHead} d-flex justify-content-between align-items-start gap-5`}
     >
       <h3 className={styles.resourceTitle}>{title}</h3>
     </div>
-    <p className={`${styles.resourceDescription} mt-3 mb-3`}>{description}</p>
+    <p className={`${styles.resourceDescription} mt-5 mb-5`}>{description}</p>
 
-    <ul className={`list-unstyled ${styles.topicList} d-flex flex-wrap gap-2 mb-3`}>
+    <ul className={`list-unstyled ${styles.topicList} d-flex flex-wrap gap-3 mb-5`}>
       {languages.map(language => (
         <li key={language} className={`${styles.topicChip} d-inline-flex align-items-center`}>
           {language}
@@ -70,7 +72,7 @@ const TemplateCard: FC<HackathonTemplateItem> = ({
       ))}
     </ul>
 
-    <nav className={`${styles.resourceLinks} d-flex flex-wrap gap-3`} aria-label={title}>
+    <nav className={`${styles.resourceLinks} d-flex flex-wrap gap-5`} aria-label={title}>
       {sourceUrl && (
         <a
           className={`${styles.entryLink} d-inline-flex align-items-center`}
@@ -97,8 +99,8 @@ const TemplateCard: FC<HackathonTemplateItem> = ({
 
 const ProjectCard: FC<HackathonProjectItem> = ({ description, link, meta, score, title }) => (
   <article className={styles.projectCard}>
-    <div className={`${styles.projectTop} d-flex justify-content-between align-items-start gap-3`}>
-      <hgroup className={`${styles.projectHead} d-grid gap-3`}>
+    <div className={`${styles.projectTop} d-flex justify-content-between align-items-start gap-5`}>
+      <hgroup className={`${styles.projectHead} d-grid gap-5`}>
         <h3 className={styles.projectTitle}>
           <a href={link}>{title}</a>
         </h3>
@@ -158,7 +160,7 @@ export const HackathonResources: FC<HackathonResourcesProps> = ({
               <div className={styles.accentLine} />
             </header>
 
-            <Row className="g-3">
+            <Row className="g-5">
               {visibleTemplates.map(template => (
                 <Col key={template.id} md={6} xl={4}>
                   <TemplateCard {...template} />
@@ -169,7 +171,7 @@ export const HackathonResources: FC<HackathonResourcesProps> = ({
             {hasMoreTemplates && (
               <button
                 type="button"
-                className={`${styles.toggleButton} d-inline-flex align-items-center justify-content-center mt-3`}
+                className={`${styles.toggleButton} d-inline-flex align-items-center justify-content-center mt-5`}
                 onClick={() => setTemplatesExpanded(value => !value)}
               >
                 {templatesExpanded ? showLessLabel || 'Show less' : showMoreLabel || 'Show more'}
@@ -180,13 +182,13 @@ export const HackathonResources: FC<HackathonResourcesProps> = ({
 
         {projectItems[0] && (
           <>
-            <header className={`${styles.sectionHeader} mt-5`}>
+            <header className={`${styles.sectionHeader} mt-12`}>
               <h2 className={styles.sectionTitle}>{projectTitle}</h2>
               <p className={styles.sectionSubtitle}>{projectSubtitle}</p>
               <div className={styles.accentLine} />
             </header>
 
-            <Row className="g-3">
+            <Row className="g-5">
               {visibleProjects.map(project => (
                 <Col key={project.id} md={6} xl={4}>
                   <ProjectCard {...project} />
@@ -197,7 +199,7 @@ export const HackathonResources: FC<HackathonResourcesProps> = ({
             {hasMoreProjects && (
               <button
                 type="button"
-                className={`${styles.toggleButton} d-inline-flex align-items-center justify-content-center mt-3`}
+                className={`${styles.toggleButton} d-inline-flex align-items-center justify-content-center mt-5`}
                 onClick={() => setProjectsExpanded(value => !value)}
               >
                 {projectsExpanded ? showLessLabel || 'Show less' : showMoreLabel || 'Show more'}

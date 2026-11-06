@@ -1,5 +1,5 @@
+import { Container } from 'idea-react';
 import { FC } from 'react';
-import { Container } from 'react-bootstrap';
 
 import styles from './FAQ.module.less';
 
@@ -20,11 +20,11 @@ export const HackathonFAQ: FC<HackathonFAQProps> = ({ items, subtitle, title }) 
         <div className={styles.accentLine} />
       </header>
 
-      <div className={`${styles.faqGrid} d-grid gap-3`}>
+      <div className={`${styles.faqGrid} d-grid gap-5`}>
         {items.map(({ answer, id, question }) => (
           <details key={id} className={styles.faqItem}>
             <summary className={styles.faqQuestion}>{question}</summary>
-            <p className={`${styles.faqAnswer} mt-3 mb-0`}>{answer}</p>
+            <p className={`${styles.faqAnswer} mt-5 mb-0`}>{answer}</p>
           </details>
         ))}
       </div>

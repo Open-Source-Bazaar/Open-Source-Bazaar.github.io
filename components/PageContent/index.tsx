@@ -1,6 +1,6 @@
 import { MDXProvider } from '@mdx-js/react';
+import { Card, Container } from 'idea-react';
 import type { FC, PropsWithChildren } from 'react';
-import { Card, Container } from 'react-bootstrap';
 
 import styles from '../../styles/Home.module.less';
 import pageContentStyles from './PageContent.module.less';
@@ -17,10 +17,10 @@ const components = {
 
 export const PageContent: FC<PageContentProps> = ({ children }) => (
   <main
-    className={`d-flex flex-column justify-content-start align-items-center bg-secondary bg-gradient text-dark bg-opacity-10 ${styles.main}`}
+    className={`d-flex flex-column justify-content-start align-items-center bg-secondary bg-gradient fg-black bg-10 ${styles.main}`}
   >
     <Container>
-      <Card body className={`p-5 lh-base ${pageContentStyles.MDXProvider}`}>
+      <Card body className={`p-12 lh-md ${pageContentStyles.MDXProvider}`}>
         <MDXProvider components={components}>{children}</MDXProvider>
       </Card>
     </Container>

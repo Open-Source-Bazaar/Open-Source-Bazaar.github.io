@@ -375,6 +375,8 @@ export default {
   book_not_found: '未找到书籍',
   return_to_catalog: '返回目录',
   back: '返回',
+  previous_page: '上一页',
+  next_page: '下一页',
   by_author: ({ authors }: { authors: string }) => `作者：${authors}`,
   currently_borrowed: '当前已借出',
   currently_unavailable: '当前不可用',
