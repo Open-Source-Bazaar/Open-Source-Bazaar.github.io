@@ -2,6 +2,7 @@ export default {
   // Navigation
   open_source_bazaar: '開源市集',
   toggle_navigation: '切換導覽選單',
+  select_language: '選擇語言',
   about: '關於',
   history: '歷史',
   code_of_conduct: '行為規範',

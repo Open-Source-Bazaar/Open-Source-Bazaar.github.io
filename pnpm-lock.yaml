@@ -47,8 +47,8 @@ importers:
         specifier: ^22.3.0
         version: 22.3.0
       idea-react:
-        specifier: ^3.0.0-beta.5
-        version: 3.0.0-beta.5(mobx-react@10.0.3(mobx@7.1.5)(react@19.3.1))(mobx@7.1.5)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
+        specifier: ^3.0.0-rc.0
+        version: 3.0.0-rc.0(mobx-react@10.0.3(mobx@7.1.5)(react@19.3.1))(mobx@7.1.5)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
       jsonwebtoken:
         specifier: ^9.0.3
         version: 9.0.3
@@ -202,9 +202,6 @@ packages:
 
   '@cacheable/utils@2.5.0':
     resolution: {integrity: sha512-buipgOVDkkPXNR5+xBpDw7Zk2n1EvU7qBJCNUcL7rhQ//kfpOXPAvQ511Os0vpLYJ1pZnvudNytkQt2hst3wqA==}
-
-  '@codexteam/icons@0.0.4':
-    resolution: {integrity: sha512-V8N/TY2TGyas4wLrPIFq7bcow68b3gu8DfDt1+rrHPtXxcexadKauRJL6eQgfG7Z0LCrN4boLRawR4S9gjIh/Q==}
 
   '@cspell/cspell-bundled-dicts@10.4.1':
     resolution: {integrity: sha512-QkDsQSUa6qK/2/AF43YYTrN1rpsJN3Yn1ckA3qH9zmBn0N/tkCWaJ675wo8j1CguPjZdPBF1t4J5tLcjiQv/Dg==}
@@ -440,21 +437,6 @@ packages:
 
   '@dual-bundle/import-meta-resolve@4.2.1':
     resolution: {integrity: sha512-id+7YRUgoUX6CgV0DtuhirQWodeeA7Lf4i2x71JS/vtA5pRb/hIGWlw+G6MeXvsM+MXrz0VAydTGElX1rAfgPg==}
-
-  '@editorjs/caret@1.1.0':
-    resolution: {integrity: sha512-dzUjrPV7mtqM0HR/7IwT1/1PfyMxUfe5MRXo9joFmBRDIcrQ5ikbqVxSL9+Hy5tQ+BUWBwqLUgX1UKTJylWW9Q==}
-
-  '@editorjs/dom@1.2.0':
-    resolution: {integrity: sha512-0b7kyM6bKBNqr90JruQCghwoR7zFfXJp1Ysuj2CG8Df1lGBq2/aKGzPnJteXgFHmViykdebAVTICvQsUk9ocHQ==}
-
-  '@editorjs/editorjs@2.31.7':
-    resolution: {integrity: sha512-te4wI1heK3B8s0pz1asyRPEmOglfkb9ex5nvvCN5OUVDLSnohTszI+yyLI73qOIuUWxenIvJYkOuGHzh/a47Hw==}
-
-  '@editorjs/helpers@1.2.3':
-    resolution: {integrity: sha512-8NnWyZhVqfkaDSRTOpayd8oaGkppw00XvOvUIxPB6SZFd9LKgQo31o9v6eDK4XFsbTed8LQt2xmvZFFK9wNTSg==}
-
-  '@editorjs/paragraph@2.11.7':
-    resolution: {integrity: sha512-qD6bbWvRc4VvP0mXDOm+hOhzzhUYR9ZjcAvgCuKWcCbUMpCvhVF1s8NX40zdjekPi6JEnuHTamCncTrSzVsVhw==}
 
   '@emnapi/runtime@1.11.3':
     resolution: {integrity: sha512-Xz4Tpyki7XyrpbUK1jR1AhdAdaXyhhY4lZ3neLodmhpuWfy2PAQN5B46sAiU4liOXGLkHypn/qU+jvfWSCYYLA==}
@@ -853,26 +835,6 @@ packages:
   '@pkgr/core@0.3.6':
     resolution: {integrity: sha512-SEeaJLb3qBNF/OaXnaR1NmmBbFYk1zC0ZH/52fATcRPLFg/p791YrcyFFy44Bo9sLaGuSuLp5Q6axbb/O+v/RA==}
     engines: {node: ^14.18.0 || >=16.0.0}
-
-  '@react-editor-js/client@2.1.0':
-    resolution: {integrity: sha512-X/OwqY2KKUUVIy24zvubHTI4qhiVIWMxGlU/Bc6tkf9gcsWgQjPvn75DwrQ5SIGBOYpSBcHY01JX0RRtJHRumw==}
-    peerDependencies:
-      '@editorjs/editorjs': '*'
-      '@editorjs/paragraph': '*'
-      react: '*'
-
-  '@react-editor-js/core@2.1.0':
-    resolution: {integrity: sha512-6h98D5g2RatdCDQRW/+N+eiMtjoq0n1n02m8oA7FrlEzEaOUyV+J+rmtmRS8OexLVOiNeWaSPDpVJ3MNiVLq8Q==}
-    peerDependencies:
-      '@editorjs/editorjs': '*'
-      react: '*'
-
-  '@react-editor-js/server@2.1.0':
-    resolution: {integrity: sha512-RnTbCmzCHbjcjPNKhr9FaehItHgAZyd47Lq+iIGynFqWSsrwGy46LgOXSvb50DYbwDyT0GtxaXBIk6aiFki1Dg==}
-    peerDependencies:
-      '@editorjs/editorjs': '*'
-      '@editorjs/paragraph': '*'
-      react: '*'
 
   '@react-leaflet/core@3.0.0':
     resolution: {integrity: sha512-3EWmekh4Nz+pGcr+xjf0KNyYfC3U2JjnkWsh0zcqaexYqmmB5ZhH37kz41JXGmKzpaMZCnPofBBm64i+YrEvGQ==}
@@ -1360,12 +1322,6 @@ packages:
     resolution: {integrity: sha512-Kbpv2Yd1NdL1V/V4cwLVxraHDV6K8ayohr2rmH0J87Er8+zJjcTa6dAn9QMPC9CRgU8+aNajKbSf1TzDB1yKPA==}
     engines: {node: '>=8.0.0'}
 
-  codex-notifier@1.1.2:
-    resolution: {integrity: sha512-DCp6xe/LGueJ1N5sXEwcBc3r3PyVkEEDNWCVigfvywAkeXcZMk9K41a31tkEFBW0Ptlwji6/JlAb49E3Yrxbtg==}
-
-  codex-tooltip@1.1.0:
-    resolution: {integrity: sha512-4AHzIapwZ979nzOPR9YYd8GU+xRAxrc5i5vV6+A6OZRRarLW2ToJZv63E/sYONeJSxUQ1Dyn+PtnVGA3OuoKhA==}
-
   collapse-white-space@2.1.0:
     resolution: {integrity: sha512-loKTxY1zCOuG4j9f6EPnuyyYkf58RnhhWTvRoZEokgB+WbdXehfjFviyOVYkqzEWz1Q5kRiZdBYS5SwxbQYwzw==}
 
@@ -1555,9 +1511,6 @@ packages:
 
   echarts@6.1.0:
     resolution: {integrity: sha512-q0yaFPggC9FUdsWH4blavRWFmxdrIodbkoKNAjJudAI6CA9gNPxHtV2RcZNEepZVlk4yvBYkOkbk6HIVpIyHZA==}
-
-  editorjs-html@4.0.5:
-    resolution: {integrity: sha512-ImQYxB3fNCJcd+nJ+Vbne/6PxidO1cYByNpu9nBDStVabfjVrMW65BuR+IEZfOii8VKYH+CW/lYDb2GDlzZtDg==}
 
   edkit@1.3.2:
     resolution: {integrity: sha512-P6vpm1LNI1tmXUz5MB8Si9/wj9jIo4m+ljRJ1283tVuwVCFCY4hj6UCy/eWnc559b7lYbpkKaNUq9SIR6Hcf5g==}
@@ -1968,8 +1921,8 @@ packages:
   idb@8.0.3:
     resolution: {integrity: sha512-LtwtVyVYO5BqRvcsKuB2iUMnHwPVByPCXFXOpuU96IZPPoPN6xjOGxZQ74pgSVVLQWtUOYgyeL4GE98BY5D3wg==}
 
-  idea-react@3.0.0-beta.5:
-    resolution: {integrity: sha512-gempxD9q+Rtwib1phNOvd1MQuQbJc8WTID5Kv8KjJr31/vgUyn5a4oEDGGz7+JWeQeoCmoJXfp5Py6zD1kgh0Q==}
+  idea-react@3.0.0-rc.0:
+    resolution: {integrity: sha512-WEs9LxKhMmN8DibjBwTgPKXrpox4P+rbR5ZkdvjO9FDE1JFaFQ1oj/Hws5pbZMxnnEmPZrLakELzQPQMC5nTFQ==}
     peerDependencies:
       mobx: '>=6'
       mobx-react: '>=9'
@@ -2864,9 +2817,6 @@ packages:
     peerDependencies:
       react: ^19.3.1
 
-  react-editor-js@2.1.0:
-    resolution: {integrity: sha512-unI9D2pTH/2gBenc6LgCXJm8iqnrzB71CHgfjQmaB+lGR0Njx+ZXydgUQm1VofMmvF6vcCNVDE1Eb47zQbm14g==}
-
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -3436,8 +3386,6 @@ snapshots:
       hashery: 1.5.1
       keyv: 5.6.0
 
-  '@codexteam/icons@0.0.4': {}
-
   '@cspell/cspell-bundled-dicts@10.4.1':
     dependencies:
       '@cspell/dict-ada': 4.1.1
@@ -3661,28 +3609,6 @@ snapshots:
   '@cspell/url@10.4.1': {}
 
   '@dual-bundle/import-meta-resolve@4.2.1': {}
-
-  '@editorjs/caret@1.1.0':
-    dependencies:
-      '@editorjs/dom': 1.2.0
-
-  '@editorjs/dom@1.2.0':
-    dependencies:
-      '@editorjs/helpers': 1.2.3
-
-  '@editorjs/editorjs@2.31.7':
-    dependencies:
-      '@editorjs/caret': 1.1.0
-      codex-notifier: 1.1.2
-      codex-tooltip: 1.1.0
-
-  '@editorjs/helpers@1.2.3':
-    dependencies:
-      codex-tooltip: 1.1.0
-
-  '@editorjs/paragraph@2.11.7':
-    dependencies:
-      '@codexteam/icons': 0.0.4
 
   '@emnapi/runtime@1.11.3':
     dependencies:
@@ -4012,25 +3938,6 @@ snapshots:
   '@octokit/openapi-types@28.0.0': {}
 
   '@pkgr/core@0.3.6': {}
-
-  '@react-editor-js/client@2.1.0(@editorjs/editorjs@2.31.7)(@editorjs/paragraph@2.11.7)(react@19.3.1)':
-    dependencies:
-      '@editorjs/editorjs': 2.31.7
-      '@editorjs/paragraph': 2.11.7
-      '@react-editor-js/core': 2.1.0(@editorjs/editorjs@2.31.7)(react@19.3.1)
-      react: 19.3.1
-
-  '@react-editor-js/core@2.1.0(@editorjs/editorjs@2.31.7)(react@19.3.1)':
-    dependencies:
-      '@editorjs/editorjs': 2.31.7
-      react: 19.3.1
-
-  '@react-editor-js/server@2.1.0(@editorjs/editorjs@2.31.7)(@editorjs/paragraph@2.11.7)(react@19.3.1)':
-    dependencies:
-      '@editorjs/editorjs': 2.31.7
-      '@editorjs/paragraph': 2.11.7
-      '@react-editor-js/core': 2.1.0(@editorjs/editorjs@2.31.7)(react@19.3.1)
-      react: 19.3.1
 
   '@react-leaflet/core@3.0.0(leaflet@1.9.4)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
@@ -4601,10 +4508,6 @@ snapshots:
       raw-body: 2.5.3
       type-is: 1.6.18
 
-  codex-notifier@1.1.2: {}
-
-  codex-tooltip@1.1.0: {}
-
   collapse-white-space@2.1.0: {}
 
   comma-separated-tokens@2.0.3: {}
@@ -4812,8 +4715,6 @@ snapshots:
     dependencies:
       tslib: 2.3.0
       zrender: 6.1.0
-
-  editorjs-html@4.0.5: {}
 
   edkit@1.3.2(marked@18.1.3)(typescript@6.0.3):
     dependencies:
@@ -5452,26 +5353,22 @@ snapshots:
 
   idb@8.0.3: {}
 
-  idea-react@3.0.0-beta.5(mobx-react@10.0.3(mobx@7.1.5)(react@19.3.1))(mobx@7.1.5)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3):
+  idea-react@3.0.0-rc.0(mobx-react@10.0.3(mobx@7.1.5)(react@19.3.1))(mobx@7.1.5)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3):
     dependencies:
-      '@editorjs/editorjs': 2.31.7
-      '@editorjs/paragraph': 2.11.7
-      '@react-editor-js/core': 2.1.0(@editorjs/editorjs@2.31.7)(react@19.3.1)
       '@shikijs/langs': 4.6.0
       '@shikijs/themes': 4.6.0
       '@swc/helpers': 0.5.24
       bootstrap: 6.0.0-alpha.1(vanilla-calendar-pro@3.4.0)
       classnames: 2.5.1
-      editorjs-html: 4.0.5
       html2canvas: 1.4.1
       iterable-observer: 1.1.1
       lodash: 4.18.1
+      marked: 18.1.3
       mobx: 7.1.5
       mobx-react: 10.0.3(mobx@7.1.5)(react@19.3.1)
       mobx-react-helper: 0.5.4(mobx@7.1.5)(react@19.3.1)(typescript@6.0.3)
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
-      react-editor-js: 2.1.0(@editorjs/editorjs@2.31.7)(@editorjs/paragraph@2.11.7)(react@19.3.1)
       react-live: 5.0.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       shiki: 4.6.0
       vanilla-calendar-pro: 3.4.0
@@ -6303,7 +6200,7 @@ snapshots:
     dependencies:
       '@swc/helpers': 0.5.24
       classnames: 2.5.1
-      idea-react: 3.0.0-beta.5(mobx-react@10.0.3(mobx@7.1.5)(react@19.3.1))(mobx@7.1.5)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
+      idea-react: 3.0.0-rc.0(mobx-react@10.0.3(mobx@7.1.5)(react@19.3.1))(mobx@7.1.5)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
       lodash: 4.18.1
       mobx: 7.1.5
       mobx-i18n: 0.7.9(mobx@7.1.5)(typescript@6.0.3)
@@ -6696,16 +6593,6 @@ snapshots:
     dependencies:
       react: 19.3.1
       scheduler: 0.28.0
-
-  react-editor-js@2.1.0(@editorjs/editorjs@2.31.7)(@editorjs/paragraph@2.11.7)(react@19.3.1):
-    dependencies:
-      '@react-editor-js/client': 2.1.0(@editorjs/editorjs@2.31.7)(@editorjs/paragraph@2.11.7)(react@19.3.1)
-      '@react-editor-js/core': 2.1.0(@editorjs/editorjs@2.31.7)(react@19.3.1)
-      '@react-editor-js/server': 2.1.0(@editorjs/editorjs@2.31.7)(@editorjs/paragraph@2.11.7)(react@19.3.1)
-    transitivePeerDependencies:
-      - '@editorjs/editorjs'
-      - '@editorjs/paragraph'
-      - react
 
   react-is@16.13.1: {}
 

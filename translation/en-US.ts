@@ -13,6 +13,7 @@ export default {
   bazaar_projects: 'Bazaar projects',
   open_source_bazaar: 'Open Source Bazaar',
   toggle_navigation: 'Toggle navigation menu',
+  select_language: 'Select language',
   home_page: 'Home Page',
   wiki: 'Wiki',
 
