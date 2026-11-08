@@ -1,6 +1,6 @@
+import { Badge, Table } from 'idea-react';
 import { observer } from 'mobx-react';
 import { FC, useContext } from 'react';
-import { Badge, Table } from 'react-bootstrap';
 import { formatDate } from 'web-utility';
 
 import { type BorrowHistory } from '../../models/Book';
@@ -17,11 +17,9 @@ export const BorrowHistoryRow: FC<BorrowHistory> = observer(
         <td>{returnDate ? formatDate(returnDate, 'YYYY-MM-DD') : '-'}</td>
         <td>
           {returnDate ? (
-            <Badge bg="success">{t('returned')}</Badge>
+            <Badge theme="success">{t('returned')}</Badge>
           ) : (
-            <Badge bg="warning" text="dark">
-              {t('active')}
-            </Badge>
+            <Badge theme="warning">{t('active')}</Badge>
           )}
         </td>
       </tr>
@@ -53,7 +51,7 @@ export const BorrowHistoryTabContent: FC<{ history?: BorrowHistory[] }> = observ
         </tbody>
       </Table>
     ) : (
-      <div className="text-center py-5">
+      <div className="text-center py-12">
         <p>{t('not_borrowed_yet')}</p>
       </div>
     );

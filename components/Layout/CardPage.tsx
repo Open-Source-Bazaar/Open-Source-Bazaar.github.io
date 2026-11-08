@@ -1,7 +1,9 @@
-import { ComponentClass, FC } from 'react';
-import { Col, Pagination, Row } from 'react-bootstrap';
+import { Col, PageItem, PageLink, Pagination, Row } from 'idea-react';
+import { observer } from 'mobx-react';
+import { ComponentClass, FC, useContext } from 'react';
 
 import { SearchPageMeta } from '../../models/System';
+import { I18nContext } from '../../models/Translation';
 
 export interface CardPageProps extends SearchPageMeta {
   // Card receives each search result plus layout props injected below.
@@ -11,26 +13,33 @@ export interface CardPageProps extends SearchPageMeta {
   pageLinkOf: (page: number) => string;
 }
 
-export const CardPage: FC<CardPageProps> = ({
-  Card,
-  cardLinkOf,
-  currentPage,
-  pageIndex,
-  pageCount,
-  pageLinkOf,
-}) => (
-  <>
-    <Row className="g-3 my-3" xs={1} md={2} lg={3}>
-      {currentPage.map(item => (
-        <Col key={item.id as string}>
-          <Card className="h-100" linkOf={cardLinkOf} {...item} />
-        </Col>
-      ))}
-    </Row>
+export const CardPage: FC<CardPageProps> = observer(
+  ({ Card, cardLinkOf, currentPage, pageIndex, pageCount, pageLinkOf }) => {
+    const { t } = useContext(I18nContext);
 
-    <Pagination className="justify-content-center" size="lg">
-      <Pagination.Prev href={pageLinkOf(pageIndex - 1)} disabled={pageIndex === 1} />
-      <Pagination.Next href={pageLinkOf(pageIndex + 1)} disabled={pageIndex === pageCount} />
-    </Pagination>
-  </>
+    return (
+      <>
+        <Row className="g-5 my-5" xs={1} md={2} lg={3}>
+          {currentPage.map(item => (
+            <Col key={item.id as string}>
+              <Card className="h-100" linkOf={cardLinkOf} {...item} />
+            </Col>
+          ))}
+        </Row>
+
+        <Pagination className="justify-content-center" size="lg">
+          <PageItem disabled={pageIndex === 1}>
+            <PageLink href={pageLinkOf(pageIndex - 1)} aria-label={t('previous_page')}>
+              &lsaquo;
+            </PageLink>
+          </PageItem>
+          <PageItem disabled={pageIndex === pageCount}>
+            <PageLink href={pageLinkOf(pageIndex + 1)} aria-label={t('next_page')}>
+              &rsaquo;
+            </PageLink>
+          </PageItem>
+        </Pagination>
+      </>
+    );
+  },
 );

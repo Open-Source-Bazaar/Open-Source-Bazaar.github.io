@@ -15,9 +15,9 @@
 
 ## 技术栈
 
-- Language: [TypeScript v5][2]
+- Language: [TypeScript v6][2]
 - Component engine: [Nextjs v16][3]
-- Component suite: [Bootstrap v5][4]
+- Component suite: [Bootstrap v6][4]
 - CI / CD: GitHub [Actions][10] + [Vercel][11]
 
 ## 开始

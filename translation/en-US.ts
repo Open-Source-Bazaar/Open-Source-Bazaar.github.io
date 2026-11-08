@@ -12,6 +12,8 @@ export default {
   self_developed_projects: 'Self-developed projects',
   bazaar_projects: 'Bazaar projects',
   open_source_bazaar: 'Open Source Bazaar',
+  toggle_navigation: 'Toggle navigation menu',
+  select_language: 'Select language',
   home_page: 'Home Page',
   wiki: 'Wiki',
 
@@ -402,6 +404,8 @@ export default {
   book_not_found: 'Book Not Found',
   return_to_catalog: 'Return to Catalog',
   back: 'Back',
+  previous_page: 'Previous page',
+  next_page: 'Next page',
   by_author: ({ authors }: { authors: string }) => `by ${authors}`,
   currently_borrowed: 'Currently Borrowed',
   currently_unavailable: 'Currently Unavailable',

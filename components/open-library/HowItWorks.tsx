@@ -1,7 +1,7 @@
+import { Button, Col, Container, Row } from 'idea-react';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
 import { CSSProperties, FC, useContext } from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
 
 import { I18nContext } from '../../models/Translation';
 import styles from './HowItWorks.module.less';
@@ -53,59 +53,62 @@ export const HowItWorks: FC<HowItWorksProps> = observer(
     ];
 
     return (
-      <section className="py-5 bg-white">
-        <Container fluid="xl" className="px-3">
-          <div className="text-center mb-5">
-            <h2 className="display-5 fw-bold text-dark mb-3 position-relative">
+      <section className="py-12 bg-white">
+        <Container fluid="xl" className="px-5">
+          <div className="text-center mb-12">
+            <h2 className="fs-4xl fw-bold fg-black mb-5 position-relative">
               {resolvedTitle}
-              <div className="position-absolute start-50 translate-middle-x mt-2">
+              <div className="position-absolute start-50 translate-middle-x mt-3">
                 <div className={`bg-primary rounded-pill ${styles.sectionTitleMarker}`} />
               </div>
             </h2>
-            <p className={`lead text-muted mx-auto ${styles.subtitle}`}>{resolvedSubtitle}</p>
+            <p className={`fs-lg fw-light fg-secondary mx-auto ${styles.subtitle}`}>
+              {resolvedSubtitle}
+            </p>
           </div>
 
-          <Row as="ol" className="g-4 list-unstyled mb-0">
+          <Row as="ol" className="g-7 list-unstyled mb-0">
             {resolvedSteps.map(({ id, title, description, icon, color }, index) => (
               <Col key={id} as="li" md={6} lg={3}>
-                <div className="text-center p-3">
+                <div className="text-center p-5">
                   <div
-                    className={`position-relative mb-3 d-flex justify-content-center ${styles.stepIconWrap}`}
+                    className={`position-relative mb-5 d-flex justify-content-center ${styles.stepIconWrap}`}
                   >
                     <div
-                      className={`rounded-circle d-flex align-items-center justify-content-center text-white fs-4 shadow position-relative ${styles.stepIcon}`}
+                      className={`rounded-circle d-flex align-items-center justify-content-center fg-white fs-xl shadow position-relative ${styles.stepIcon}`}
                       style={{ '--step-color': color } as CSSProperties}
                     >
                       {icon}
                     </div>
                     <span
-                      className={`position-absolute bg-danger text-white rounded-circle d-flex align-items-center justify-content-center fw-bold small ${styles.stepNumber}`}
+                      className={`position-absolute bg-danger fg-white rounded-circle d-flex align-items-center justify-content-center fw-bold small ${styles.stepNumber}`}
                     >
                       {id}
                     </span>
                     {index < resolvedSteps.length - 1 && (
                       <div
-                        className={`position-absolute bg-secondary d-none d-lg-block ${styles.connector}`}
+                        className={`position-absolute bg-secondary d-none lg:d-block ${styles.connector}`}
                       >
                         <div className={`position-absolute ${styles.connectorArrow}`} />
                       </div>
                     )}
                   </div>
-                  <h3 className="h5 fw-semibold text-dark mb-3">{title}</h3>
-                  <p className="text-muted lh-base">{description}</p>
+                  <h3 className="h5 fw-semibold fg-black mb-5">{title}</h3>
+                  <p className="fg-secondary lh-md">{description}</p>
                 </div>
               </Col>
             ))}
           </Row>
 
           {showLearnMore && (
-            <div className="text-center mt-5">
+            <div className="text-center mt-12">
               <Link href={learnMoreLink} passHref legacyBehavior>
                 <Button
-                  variant="outline-primary"
+                  theme="primary"
+                  variant="outline"
                   size="lg"
                   as="a"
-                  className="rounded-pill px-4 fw-semibold"
+                  className="rounded-pill px-7 fw-semibold"
                 >
                   ℹ️ {t('learn_more_details')} →
                 </Button>

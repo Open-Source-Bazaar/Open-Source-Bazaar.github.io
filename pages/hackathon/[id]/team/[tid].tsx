@@ -1,17 +1,33 @@
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Button,
+  CloseButton,
+  Col,
+  Container,
+  DialogBody,
+  DialogHeader,
+  DialogTitle,
+  NativeDialog,
+  Nav,
+  NavItem,
+  NavLink,
+  Row,
+} from 'idea-react';
 import { TableCellLocation, TableCellUser, TableFormView } from 'mobx-lark';
 import { observer } from 'mobx-react';
 import { FC, useContext, useMemo, useState } from 'react';
-import { Breadcrumb, Button, Col, Container, Modal, Nav, Ratio, Row } from 'react-bootstrap';
 import { Minute, Second } from 'web-utility';
 
 import { CommentBox } from '../../../../components/Activity/CommentBox';
+import { TeamMemberCard } from '../../../../components/Activity/Hackathon/TeamMember';
 import {
   compactSummaryOf,
   firstTextOf,
   isPublicForm,
 } from '../../../../components/Activity/Hackathon/utility';
 import { ProductCard } from '../../../../components/Activity/ProductCard';
-import { TeamMemberCard } from '../../../../components/Activity/Hackathon/TeamMember';
 import { PageHead } from '../../../../components/Layout/PageHead';
 import { Activity, ActivityModel } from '../../../../models/Activity';
 import {
@@ -23,10 +39,9 @@ import {
   ProjectModel,
 } from '../../../../models/Hackathon';
 import { I18nContext } from '../../../../models/Translation';
+import styles from '../../../../styles/HackathonTeam.module.less';
 import { lark } from '../../../api/Lark/core';
 import { skipBuilding, skipBuildingAll } from '../../../api/SSG';
-
-import styles from '../../../../styles/HackathonTeam.module.less';
 
 export const getStaticPaths = skipBuildingAll;
 
@@ -58,6 +73,7 @@ export const getStaticProps = skipBuilding<ProjectPageProps, Record<'id' | 'tid'
       memberStore.getAll({ project: project.name as string, status: 'approved' }),
       productStore.getAll({ project: project.name as string }),
     ]);
+
     return {
       props: { activity, project, members, products },
       revalidate: +new Date(activity.endTime as number) < Date.now() ? undefined : Minute / Second,
@@ -162,30 +178,30 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
         <section id="overview" className={styles.heroSection}>
           <Container>
             <div className={styles.heroShell}>
-              <div className="d-grid gap-4">
+              <div className="d-grid gap-7">
                 <Breadcrumb aria-label={t('breadcrumb')} className={styles.breadcrumb}>
                   {currentRoute.map(({ title, href }, index, { length }) => (
-                    <Breadcrumb.Item
-                      key={`${title}-${index}`}
-                      href={index === length - 1 ? undefined : href}
-                      active={index === length - 1}
-                    >
-                      {title}
-                    </Breadcrumb.Item>
+                    <BreadcrumbItem key={`${title}-${index}`}>
+                      {index === length - 1 ? (
+                        <BreadcrumbLink active>{title}</BreadcrumbLink>
+                      ) : (
+                        <BreadcrumbLink href={href}>{title}</BreadcrumbLink>
+                      )}
+                    </BreadcrumbItem>
                   ))}
                 </Breadcrumb>
 
-                <Nav as="ul" className="flex-wrap gap-3 list-unstyled" aria-label={displayTitle}>
+                <Nav as="ul" className="flex-wrap gap-5 list-unstyled" aria-label={displayTitle}>
                   {navigation.map(({ href, label }) => (
-                    <Nav.Item as="li" key={`${href}-${label}`}>
-                      <Nav.Link className={styles.heroNavLink} href={href}>
+                    <NavItem key={`${href}-${label}`} as="li">
+                      <NavLink className={styles.heroNavLink} href={href}>
                         {label}
-                      </Nav.Link>
-                    </Nav.Item>
+                      </NavLink>
+                    </NavItem>
                   ))}
                 </Nav>
 
-                <div className="d-flex flex-wrap align-items-center gap-2 gap-md-3">
+                <div className="d-flex flex-wrap align-items-center gap-3 md:gap-5">
                   <span className={styles.heroEyebrow}>
                     {(activityType as string) || t('hackathon_detail')}
                   </span>
@@ -196,7 +212,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
                 <h1 className={styles.introTitle}>{displayTitle}</h1>
                 <p className={styles.introText}>{projectSummary}</p>
 
-                <nav className="d-flex flex-wrap gap-3">
+                <nav className="d-flex flex-wrap gap-5">
                   <a
                     className={styles.primaryAction}
                     href={heroPrimaryAction.href}
@@ -212,7 +228,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
                   </a>
                 </nav>
 
-                <ul className="d-flex flex-wrap gap-2 gap-md-3 m-0 p-0 list-unstyled">
+                <ul className="d-flex flex-wrap gap-3 md:gap-5 m-0 p-0 list-unstyled">
                   {heroChips.map(item => (
                     <li key={item} className={styles.metaItem}>
                       {item}
@@ -220,9 +236,9 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
                   ))}
                 </ul>
 
-                <Row as="ol" className="list-unstyled g-4" xs={1} md={2} xl={4}>
+                <Row as="ol" className="list-unstyled g-7" xs={1} md={2} xl={4}>
                   {quickMetrics.map(({ label, value, meta }) => (
-                    <Col as="li" key={`${label}-${value}`}>
+                    <Col key={`${label}-${value}`} as="li">
                       <article className={styles.metricCard}>
                         <span className={styles.metricLabel}>{label}</span>
                         <strong className={styles.metricValue}>{value}</strong>
@@ -244,9 +260,9 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
               <div className={styles.accentLine} />
             </header>
 
-            <Row as="ul" className="list-unstyled g-4" xs={1} md={2} xl={3}>
+            <Row as="ul" className="list-unstyled g-7" xs={1} md={2} xl={3}>
               {members.map(member => (
-                <Col as="li" key={member.id as string}>
+                <Col key={member.id as string} as="li">
                   <TeamMemberCard {...member} />
                 </Col>
               ))}
@@ -263,9 +279,9 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
             </header>
 
             {products.length > 0 ? (
-              <Row as="ul" className="list-unstyled g-4" xs={1} md={2}>
+              <Row as="ul" className="list-unstyled g-7" xs={1} md={2}>
                 {products.map(product => (
-                  <Col as="li" key={product.id as string}>
+                  <Col key={product.id as string} as="li">
                     <ProductCard className={styles.productCardOverride} {...product} />
                   </Col>
                 ))}
@@ -284,7 +300,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
               <div className={styles.accentLine} />
             </header>
 
-            <Row className="g-4">
+            <Row className="g-7">
               <Col xl={7}>
                 <article className={styles.summaryCard}>
                   <span className={styles.creatorLabel}>{t('event_description')}</span>
@@ -303,7 +319,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
 
                   {scoreForm && (
                     <Button
-                      className={`${styles.scoreButton} w-100 mt-3`}
+                      className={`${styles.scoreButton} w-100 mt-5`}
                       onClick={() => setShowScoreModal(true)}
                     >
                       {t('score')}
@@ -320,26 +336,28 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
         </section>
       </div>
 
-      <Modal
+      <NativeDialog
         size="lg"
-        centered
-        show={showScoreModal}
-        onHide={() => setShowScoreModal(false)}
         className={styles.scoreModal}
+        open={showScoreModal}
+        onClose={() => setShowScoreModal(false)}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>{t('score')}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Ratio aspectRatio="16x9">
-            <iframe
-              className="w-100 h-100 border-0"
-              title={t('score')}
-              src={scoreForm?.shared_url}
-            />
-          </Ratio>
-        </Modal.Body>
-      </Modal>
+        <DialogHeader>
+          <DialogTitle as="h2">{t('score')}</DialogTitle>
+          <CloseButton onClick={() => setShowScoreModal(false)} />
+        </DialogHeader>
+        <DialogBody>
+          <div className="ratio ratio-16x9">
+            {showScoreModal && (
+              <iframe
+                className="w-100 h-100 border-0"
+                title={t('score')}
+                src={scoreForm?.shared_url}
+              />
+            )}
+          </div>
+        </DialogBody>
+      </NativeDialog>
     </>
   );
 });

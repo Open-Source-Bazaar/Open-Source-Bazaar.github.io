@@ -1,7 +1,7 @@
+import { Container } from 'idea-react';
 import { observer } from 'mobx-react';
 import { GetStaticProps } from 'next';
 import { FC, useContext } from 'react';
-import { Container } from 'react-bootstrap';
 
 import { PageHead } from '../../../components/Layout/PageHead';
 import {
@@ -31,10 +31,10 @@ const LandscapePage: FC<OpenCollaborationLandscapeProps> = observer(props => {
   const { t } = useContext(I18nContext);
 
   return (
-    <Container className="mb-5">
+    <Container className="mb-12">
       <PageHead title={t('China_NGO_Landscape')} />
 
-      <h1 className="my-5 text-center">{t('China_NGO_Landscape')}</h1>
+      <h1 className="my-12 text-center">{t('China_NGO_Landscape')}</h1>
 
       <OpenCollaborationLandscape {...props} />
     </Container>

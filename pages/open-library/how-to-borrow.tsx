@@ -1,8 +1,8 @@
+import { Button, Card, Col, Container, ListGroup, ListGroupItem, Row } from 'idea-react';
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
 import { useContext } from 'react';
-import { Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
 
 import { PageHead } from '../../components/Layout/PageHead';
 import {
@@ -61,33 +61,33 @@ const HowToBorrowPage = observer(() => {
   ];
 
   return (
-    <Container fluid="xl" className="px-3">
+    <Container fluid="xl" className="px-5">
       <PageHead title={t('how_to_borrow_page_title')} />
 
-      <div className="mb-5">
-        <h1 className="display-4 mb-4">{t('how_to_borrow_page')}</h1>
+      <div className="mb-12">
+        <h1 className="fs-5xl mb-7">{t('how_to_borrow_page')}</h1>
 
-        <Card className="border-0 shadow-sm mb-5 p-4" body>
-          <h2 className="mb-4">{t('borrowing_and_passing')}</h2>
+        <Card className="border-0 shadow-sm mb-12 p-7" body>
+          <h2 className="mb-7">{t('borrowing_and_passing')}</h2>
           <p
             dangerouslySetInnerHTML={{ __html: marked(t('borrow_model_intro')) as string }}
-            className="lead"
+            className="fs-lg fw-light"
           />
           <p
             dangerouslySetInnerHTML={{ __html: marked(t('borrow_model_description')) as string }}
           />
         </Card>
 
-        <Row className="mb-5">
-          <Col lg={7} className="mb-4 mb-lg-0">
-            <Card className="h-100 border-0 shadow-sm p-4" body>
-              <h3 className="mb-4">{t('borrowing_process')}</h3>
+        <Row className="mb-12">
+          <Col lg={7} className="mb-7 lg:mb-0">
+            <Card className="h-100 border-0 shadow-sm p-7" body>
+              <h3 className="mb-7">{t('borrowing_process')}</h3>
 
-              <ol className="list-unstyled d-flex flex-column gap-4 mb-0">
+              <ol className="list-unstyled d-flex flex-column gap-7 mb-0">
                 {borrowSteps.map(({ title, description }, index) => (
                   <li key={title} className="d-flex position-relative z-2">
                     <span
-                      className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 me-3 fw-semibold"
+                      className="bg-primary fg-white rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 me-5 fw-semibold"
                       style={{ width: '50px', height: '50px' }}
                     >
                       {index + 1}
@@ -106,26 +106,25 @@ const HowToBorrowPage = observer(() => {
           </Col>
 
           <Col lg={5}>
-            <Card className="border-0 shadow-sm mb-4 p-4" body>
-              <h3 className="mb-3">{t('borrowing_rules')}</h3>
-              <ListGroup variant="flush">
+            <Card className="border-0 shadow-sm mb-7 p-7" body>
+              <h3 className="mb-5">{t('borrowing_rules')}</h3>
+              <ListGroup className="list-group-flush">
                 {borrowRules.map(([term, detail]) => (
-                  <ListGroup.Item key={term} className="px-0">
+                  <ListGroupItem key={term} className="px-0">
                     <strong className="me-1">{term}</strong>
                     {detail}
-                  </ListGroup.Item>
+                  </ListGroupItem>
                 ))}
               </ListGroup>
             </Card>
 
-            <Card className="border-0 shadow-sm p-4" body>
-              <h3 className="mb-3">{t('quick_links')}</h3>
+            <Card className="border-0 shadow-sm p-7" body>
+              <h3 className="mb-5">{t('quick_links')}</h3>
               <ListGroup
-                className="list-unstyled d-grid gap-2 mb-0"
-                variant="flush"
+                className="list-group-flush list-unstyled d-grid gap-3 mb-0"
                 aria-label={t('open_library_quick_links_label')}
               >
-                <ListGroup.Item
+                <ListGroupItem
                   action
                   href={OpenLibraryCatalogURL}
                   target="_blank"
@@ -133,8 +132,8 @@ const HowToBorrowPage = observer(() => {
                   className="text-center"
                 >
                   {t('view_full_catalog')}
-                </ListGroup.Item>
-                <ListGroup.Item
+                </ListGroupItem>
+                <ListGroupItem
                   action
                   href={OpenLibraryBorrowFormURL}
                   target="_blank"
@@ -142,8 +141,8 @@ const HowToBorrowPage = observer(() => {
                   className="text-center"
                 >
                   {t('fill_borrow_request')}
-                </ListGroup.Item>
-                <ListGroup.Item
+                </ListGroupItem>
+                <ListGroupItem
                   action
                   href={OpenLibraryHandoffFormURL}
                   target="_blank"
@@ -151,18 +150,18 @@ const HowToBorrowPage = observer(() => {
                   className="text-center"
                 >
                   {t('fill_book_passing_form')}
-                </ListGroup.Item>
-                <ListGroup.Item action href={booksURL} className="text-center">
+                </ListGroupItem>
+                <ListGroupItem action href={booksURL} className="text-center">
                   {t('browse_book_catalog')}
-                </ListGroup.Item>
+                </ListGroupItem>
               </ListGroup>
             </Card>
           </Col>
         </Row>
 
-        <Card className="border-0 shadow-sm mb-5 p-4" body>
-          <h3 className="mb-4">{t('faq')}</h3>
-          <Row as="dl" className="g-4 mb-0" md={2}>
+        <Card className="border-0 shadow-sm mb-12 p-7" body>
+          <h3 className="mb-7">{t('faq')}</h3>
+          <Row as="dl" className="g-7 mb-0" md={2}>
             {questions.map(([question, answer]) => (
               <Col key={question}>
                 <dt className="h5">{question}</dt>
@@ -173,8 +172,8 @@ const HowToBorrowPage = observer(() => {
         </Card>
 
         <div className="text-center">
-          <h3 className="mb-4">{t('ready_to_borrow')}</h3>
-          <div className="d-flex justify-content-center gap-3 flex-wrap">
+          <h3 className="mb-7">{t('ready_to_borrow')}</h3>
+          <div className="d-flex justify-content-center gap-5 flex-wrap">
             <Link href={booksURL} passHref legacyBehavior>
               <Button as="a" size="lg">
                 {t('browse_book_catalog')}
@@ -184,7 +183,7 @@ const HowToBorrowPage = observer(() => {
               href={OpenLibraryMembershipFormURL}
               target="_blank"
               rel="noopener noreferrer"
-              variant="warning"
+              theme="warning"
               size="lg"
             >
               {t('apply_for_membership')}

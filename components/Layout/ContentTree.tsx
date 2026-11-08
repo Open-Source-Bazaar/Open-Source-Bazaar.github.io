@@ -1,6 +1,6 @@
+import { Badge } from 'idea-react';
 import Link from 'next/link';
 import { FC } from 'react';
-import { Badge } from 'react-bootstrap';
 
 import { XContent } from '../../models/Wiki';
 
@@ -19,13 +19,13 @@ export const ContentTree: FC<ContentTreeProps> = ({
 }) => (
   <ol className={level === 0 ? 'list-unstyled' : ''}>
     {nodes.map(({ path, name, type, meta, children }) => (
-      <li key={path} className={level > 0 ? 'ms-3' : ''}>
+      <li key={path} className={level > 0 ? 'ms-5' : ''}>
         {type !== 'dir' ? (
           <Link className="h4 d-flex align-items-center py-1" href={`${basePath}/${path}`}>
             {name}
 
             {meta?.[metaKey] && (
-              <Badge bg="secondary" className="ms-2 small">
+              <Badge theme="secondary" className="ms-3 small">
                 {meta[metaKey]}
               </Badge>
             )}

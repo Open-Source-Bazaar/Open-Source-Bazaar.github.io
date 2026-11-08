@@ -1,7 +1,6 @@
-import { Avatar } from 'idea-react';
+import { Avatar, Card } from 'idea-react';
 import { TableCellUser } from 'mobx-lark';
 import { FC } from 'react';
-import { Card } from 'react-bootstrap';
 
 import { Member } from '../../../models/Hackathon';
 import styles from './TeamMember.module.less';
@@ -14,7 +13,7 @@ export const TeamMemberCard: FC<Member> = ({ person, githubAccount, summary, ski
 
   return (
     <Card className={`${styles.card} h-100`} body>
-      <div className="d-flex align-items-center gap-3">
+      <div className="d-flex align-items-center gap-5">
         <Avatar className={styles.avatar} src={member?.avatar_url} />
         <div>
           <h3 className={styles.name}>{member?.name || '-'}</h3>
@@ -35,7 +34,7 @@ export const TeamMemberCard: FC<Member> = ({ person, githubAccount, summary, ski
       {memberSummary && <p className={styles.summary}>{memberSummary}</p>}
 
       {memberSkills[0] && (
-        <ul className="d-flex flex-wrap gap-2 mt-3 mb-0 p-0 list-unstyled">
+        <ul className="d-flex flex-wrap gap-3 mt-5 mb-0 p-0 list-unstyled">
           {memberSkills.map(skill => (
             <li key={skill} className={styles.skill}>
               {skill}
