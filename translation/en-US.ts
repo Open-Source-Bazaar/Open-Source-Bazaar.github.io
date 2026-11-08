@@ -12,6 +12,7 @@ export default {
   self_developed_projects: 'Self-developed projects',
   bazaar_projects: 'Bazaar projects',
   open_source_bazaar: 'Open Source Bazaar',
+  toggle_navigation: 'Toggle navigation menu',
   home_page: 'Home Page',
   wiki: 'Wiki',
 

@@ -17,7 +17,7 @@ const components = {
 
 export const PageContent: FC<PageContentProps> = ({ children }) => (
   <main
-    className={`d-flex flex-column justify-content-start align-items-center bg-secondary bg-gradient fg-black bg-10 ${styles.main}`}
+    className={`d-flex flex-column justify-content-start align-items-center bg-secondary bg-gradient bg-10 ${styles.main}`}
   >
     <Container>
       <Card body className={`p-12 lh-md ${pageContentStyles.MDXProvider}`}>

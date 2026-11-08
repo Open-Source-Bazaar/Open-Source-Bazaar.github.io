@@ -14,7 +14,7 @@ const formatPercent = (value?: number | null) =>
   value != null ? `${(value * 100).toFixed(2)}%` : '--';
 
 const valueTone = (value?: number | null) =>
-  value != null ? (value >= 0 ? styles.positiveText : styles.negativeText) : styles.mutedText;
+  value != null ? (value >= 0 ? 'fg-success' : 'fg-danger') : 'fg-secondary';
 
 export const FundCard: FC<IndexFundSnapshot> = ({
   symbol,
@@ -42,9 +42,7 @@ export const FundCard: FC<IndexFundSnapshot> = ({
           <div>
             <h3 className="h5 mb-1">{displayName}</h3>
             <div className="d-flex flex-wrap gap-3 align-items-center">
-              <Badge theme="secondary" className="fg-black">
-                {t(INDEX_CATEGORY_LABEL_KEYS[category])}
-              </Badge>
+              <Badge theme="secondary">{t(INDEX_CATEGORY_LABEL_KEYS[category])}</Badge>
               <Badge
                 theme={
                   riskLevel === 'aggressive'
@@ -56,11 +54,7 @@ export const FundCard: FC<IndexFundSnapshot> = ({
               >
                 {t(INDEX_RISK_LABEL_KEYS[riskLevel])}
               </Badge>
-              {fallback && (
-                <Badge theme="secondary" className="fg-white">
-                  {t('offline_data')}
-                </Badge>
-              )}
+              {fallback && <Badge theme="secondary">{t('offline_data')}</Badge>}
             </div>
           </div>
           <small className="fg-secondary text-end">
@@ -89,7 +83,7 @@ export const FundCard: FC<IndexFundSnapshot> = ({
 
         <ul className="list-unstyled m-0 d-flex flex-wrap gap-3">
           {tags?.map(tag => (
-            <Badge key={tag} as="li" theme="secondary" className={`${styles.tagBadge} fg-black`}>
+            <Badge key={tag} as="li" theme="secondary" className={styles.tagBadge}>
               {tag}
             </Badge>
           ))}

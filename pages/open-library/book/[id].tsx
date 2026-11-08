@@ -49,7 +49,7 @@ const BookDetail: FC<Book> = observer(
     const isAvailable = status === 'available';
 
     return (
-      <Container breakpoint="xl" className="px-5">
+      <Container fluid="xl" className="px-5">
         <PageHead title={`${title} - ${t('open_library')}`} />
 
         <div className="mb-7">

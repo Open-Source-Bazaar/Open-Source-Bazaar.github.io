@@ -29,7 +29,7 @@ export const FeaturedBooks: FC<FeaturedBooksProps> = observer(
 
     return (
       <section className="py-12 bg-1">
-        <Container breakpoint="xl" className="px-5">
+        <Container fluid="xl" className="px-5">
           <hgroup className="text-center mb-12">
             <h2 className="fs-4xl fw-bold fg-black mb-5 position-relative">
               {resolvedTitle}
@@ -42,7 +42,7 @@ export const FeaturedBooks: FC<FeaturedBooksProps> = observer(
             </p>
           </hgroup>
 
-          <Row cols={1} sm={2} lg={3} xl={4} className="g-7 justify-content-center">
+          <Row xs={1} sm={2} lg={3} xl={4} className="g-7 justify-content-center">
             {books.slice(0, 8).map(book => (
               <Col key={book.id}>
                 <BookCard book={book} variant="featured" />

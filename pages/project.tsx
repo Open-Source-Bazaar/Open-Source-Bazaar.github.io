@@ -38,7 +38,7 @@ const ProjectListPage: FC<{ list: GitRepository[] }> = observer(({ list }) => {
         store={repositoryStore}
         filter={{ relation: ['languages'] }}
         renderList={allItems => (
-          <Row as="ul" className="list-unstyled g-7" cols={1} sm={2}>
+          <Row as="ul" className="list-unstyled g-7" xs={1} sm={2}>
             {allItems.map(
               item =>
                 item.homepage && (

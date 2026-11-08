@@ -41,7 +41,7 @@ const HomePage: FC<HomePageProps> = observer(({ activities }) => {
       {activities[0] && <HeroCarousel activities={activities} />}
 
       <section
-        className={`flex-fill d-flex flex-column justify-content-center align-items-center bg-secondary bg-gradient fg-black bg-10 ${styles.main}`}
+        className={`flex-fill d-flex flex-column justify-content-center align-items-center bg-secondary bg-gradient bg-10 ${styles.main}`}
       >
         <h2 className={`m-0 text-center ${styles.title}`}>
           <ReactTyped
@@ -85,7 +85,7 @@ const HomePage: FC<HomePageProps> = observer(({ activities }) => {
       >
         <h2 className="text-start mb-12 mt-12 fw-bolder">{t('participate')}</h2>
         <Row className="flex-fill d-flex justify-content-around align-items-center w-100 px-5">
-          <Col span={8} sm={7} md={4} className="pb-12">
+          <Col xs={8} sm={7} md={4} className="pb-12">
             <Card body className={`shadow ${styles.activeCard}`}>
               <h5 className="fw-bold mb-5">{t('code_work')}</h5>
               <ul className="list-unstyled">
@@ -104,7 +104,7 @@ const HomePage: FC<HomePageProps> = observer(({ activities }) => {
               </ul>
             </Card>
           </Col>
-          <Col span={8} sm={7} md={4} className="pb-12">
+          <Col xs={8} sm={7} md={4} className="pb-12">
             <Card body className={`shadow overflow-auto ${styles.activeCard}`}>
               <h5 className="fw-bold mb-5">{t('non_code_work')}</h5>
               <ul className="list-unstyled">
@@ -126,7 +126,7 @@ const HomePage: FC<HomePageProps> = observer(({ activities }) => {
               </ul>
             </Card>
           </Col>
-          <Col span={8} sm={7} md={4} className="pb-12">
+          <Col xs={8} sm={7} md={4} className="pb-12">
             <Card body className={`shadow ${styles.activeCard}`}>
               <p>
                 欢迎

@@ -222,7 +222,7 @@ export default class FinanceLandingPage extends ObservedComponent<{}, typeof i18
             filter={this.filter}
             renderList={funds =>
               funds.length ? (
-                <Row cols={1} md={2} className="g-7">
+                <Row xs={1} md={2} className="g-7">
                   {funds.map(fund => (
                     <Col key={fund.symbol}>
                       <FundCard {...fund} />

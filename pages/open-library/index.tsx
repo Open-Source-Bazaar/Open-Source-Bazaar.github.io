@@ -70,7 +70,7 @@ const OpenLibraryHomepage: FC<OpenLibraryHomepageProps> = observer(({ featuredBo
         heroImageAlt={t('hero_image_alt')}
       />
 
-      <Container breakpoint="xl" className="px-5">
+      <Container fluid="xl" className="px-5">
         <div className="py-12">
           <div className="text-center mb-12">
             <h2 className="fs-4xl fw-bold fg-primary mb-5">📚 {t('about_us_footer')}</h2>
@@ -133,7 +133,7 @@ const OpenLibraryHomepage: FC<OpenLibraryHomepageProps> = observer(({ featuredBo
       />
 
       <div className="bg-primary bg-gradient fg-white py-12">
-        <Container breakpoint="xl" className="px-5">
+        <Container fluid="xl" className="px-5">
           <div className="text-center">
             <h2 className="fs-3xl fw-bold mb-5">💖 {t('support_us')}</h2>
             <p className="fs-lg fw-light mb-7">{t('support_us_description')}</p>

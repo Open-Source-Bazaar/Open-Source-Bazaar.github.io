@@ -44,14 +44,14 @@ const BountyPage: FC = observer(() => {
         />
 
         <Row className="g-7">
-          <Col span={12} lg={8}>
+          <Col xs={12} lg={8}>
             <BountyView
               icon="📋"
               title={t('bounty_task_rank')}
               url="https://open-source-bazaar.feishu.cn/share/base/view/shrcnUVgb8E73UthaB2Tk4glnSb"
             />
           </Col>
-          <Col span={12} lg={4}>
+          <Col xs={12} lg={4}>
             <BountyView
               icon="📝"
               title={t('bounty_task_submission')}
@@ -61,14 +61,14 @@ const BountyPage: FC = observer(() => {
         </Row>
 
         <Row className="g-7">
-          <Col span={12} lg={8}>
+          <Col xs={12} lg={8}>
             <BountyView
               icon="🏆"
               title={t('bounty_achievement_rank')}
               url="https://open-source-bazaar.feishu.cn/share/base/view/shrcne4IY9mYAfoo9a69oxyAdTb"
             />
           </Col>
-          <Col span={12} lg={4}>
+          <Col xs={12} lg={4}>
             <BountyView
               icon="✅"
               title={t('bounty_achievement_submission')}

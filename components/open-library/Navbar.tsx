@@ -26,15 +26,28 @@ export class LibraryNavbar extends Component<{}, typeof i18n> {
 
   hide = action(() => (this.open = false));
 
+  desktopBreakpoint?: MediaQueryList;
+
+  componentDidMount() {
+    this.desktopBreakpoint = window.matchMedia('(min-width: 1024px)');
+    this.desktopBreakpoint.addEventListener('change', this.handleBreakpointChange);
+    if (this.desktopBreakpoint.matches) this.hide();
+  }
+
+  componentWillUnmount() {
+    this.desktopBreakpoint?.removeEventListener('change', this.handleBreakpointChange);
+  }
+
+  handleBreakpointChange = ({ matches }: MediaQueryListEvent) => {
+    if (matches) this.hide();
+  };
+
   render() {
     const { t } = this.context;
 
     return (
       <Navbar theme="light" expand="lg" className="shadow-sm sticky-top">
-        <Container
-          breakpoint="xl"
-          className="px-5 d-flex align-items-center justify-content-between"
-        >
+        <Container fluid="xl" className="px-5 d-flex align-items-center justify-content-between">
           <NavbarBrand href="/open-library" className="d-flex align-items-center">
             {t('open_library')}
           </NavbarBrand>

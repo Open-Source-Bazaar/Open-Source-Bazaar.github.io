@@ -28,7 +28,7 @@ export const HeroSection: FC<HeroSectionProps> = ({
       paddingBottom: '7.5rem',
     }}
   >
-    <Container breakpoint="xl" className="px-5">
+    <Container fluid="xl" className="px-5">
       <Row className="align-items-center py-12">
         <Col lg={6} className="order-2 lg:order-1">
           <div className="position-relative">

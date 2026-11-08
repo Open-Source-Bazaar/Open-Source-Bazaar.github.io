@@ -2,6 +2,8 @@ import {
   Container,
   Drawer,
   Image,
+  Menu,
+  MenuItem,
   Navbar,
   NavbarBrand,
   NavbarNav,
@@ -13,8 +15,7 @@ import { action, observable } from 'mobx';
 import { textJoin } from 'mobx-i18n';
 import { observer } from 'mobx-react';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
-import { AnchorHTMLAttributes, Component, FC } from 'react';
+import { AnchorHTMLAttributes, Component } from 'react';
 
 import { DefaultImage } from '../../models/configuration';
 import { i18n, I18nContext } from '../../models/Translation';
@@ -22,11 +23,14 @@ import { SearchBar } from './SearchBar';
 
 const LanguageMenu = dynamic(() => import('./LanguageMenu'), { ssr: false });
 
-export interface MenuItem extends Pick<AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'title'> {
-  subs?: MenuItem[];
+export interface NavigatorMenuItem extends Pick<
+  AnchorHTMLAttributes<HTMLAnchorElement>,
+  'href' | 'title'
+> {
+  subs?: NavigatorMenuItem[];
 }
 
-const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
+const topNavBarMenu = ({ t }: typeof i18n): NavigatorMenuItem[] => [
   {
     title: t('about'),
     subs: [
@@ -99,15 +103,12 @@ const topNavBarMenu = ({ t }: typeof i18n): MenuItem[] => [
 ];
 
 export interface MainNavigatorProps {
-  menu?: MenuItem[];
-}
-
-interface MainNavigatorViewProps extends MainNavigatorProps {
+  menu?: NavigatorMenuItem[];
   pathname: string;
 }
 
 @observer
-class MainNavigatorView extends Component<MainNavigatorViewProps, typeof i18n> {
+export class MainNavigator extends Component<MainNavigatorProps, typeof i18n> {
   static contextType = I18nContext;
 
   declare context: typeof i18n;
@@ -131,7 +132,7 @@ class MainNavigatorView extends Component<MainNavigatorViewProps, typeof i18n> {
           </NavbarBrand>
           <NavbarToggler
             expanded={this.open}
-            aria-label={t('open_source_bazaar')}
+            aria-label={t('toggle_navigation')}
             onClick={this.toggle}
           />
           <Drawer
@@ -146,23 +147,16 @@ class MainNavigatorView extends Component<MainNavigatorViewProps, typeof i18n> {
             <NavbarNav className="flex-fill me-auto my-3 lg:my-0 lg:flex-row">
               {menu.map(({ href, title, subs }) =>
                 subs ? (
-                  <NavItem key={title} as="li">
-                    <details>
-                      <summary className="nav-link">{title}</summary>
-                      <ul className="list-unstyled ms-5 lg:ms-0">
-                        {subs.map(
-                          ({ href: subHref, title: subTitle }) =>
-                            subHref && (
-                              <li key={subHref}>
-                                <NavLink href={subHref} onClick={this.hide}>
-                                  {subTitle}
-                                </NavLink>
-                              </li>
-                            ),
-                        )}
-                      </ul>
-                    </details>
-                  </NavItem>
+                  <Menu key={title} label={title} nav>
+                    {subs.map(
+                      ({ href: subHref, title: subTitle }) =>
+                        subHref && (
+                          <MenuItem key={subHref} href={subHref} onClick={this.hide}>
+                            {subTitle}
+                          </MenuItem>
+                        ),
+                    )}
+                  </Menu>
                 ) : (
                   href && (
                     <NavItem key={`${href}-${title}`} as="li">
@@ -192,9 +186,3 @@ class MainNavigatorView extends Component<MainNavigatorViewProps, typeof i18n> {
     );
   }
 }
-
-export const MainNavigator: FC<MainNavigatorProps> = props => {
-  const { pathname } = useRouter();
-
-  return <MainNavigatorView {...props} pathname={pathname} />;
-};

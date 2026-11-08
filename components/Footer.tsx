@@ -23,9 +23,9 @@ export const Footer: FC<FooterProps> = observer(({ description, quickLinks }) =>
 
   return (
     <footer data-bs-theme="dark" className="bg-body fg-body">
-      <Container breakpoint="xl" className="px-7 md:px-5 lg:py-7">
+      <Container fluid="xl" className="px-7 md:px-5 lg:py-7">
         <Row>
-          <Col as="section" span={12} lg={4} className="py-7 lg:py-0">
+          <Col as="section" xs={12} lg={4} className="py-7 lg:py-0">
             <h5 className="fw-bold mb-5">{t('open_source_bazaar')}</h5>
             <p className="fg-white opacity-75 lh-md mb-0">{description}</p>
             <div className="d-flex flex-wrap gap-3 column-gap-5 mt-5">
@@ -48,13 +48,13 @@ export const Footer: FC<FooterProps> = observer(({ description, quickLinks }) =>
             </div>
           </Col>
 
-          <Col span={12} className="lg:d-none">
+          <Col xs={12} className="lg:d-none">
             <hr className="m-0 border-secondary opacity-25" />
           </Col>
 
           <Col
             as="section"
-            span={12}
+            xs={12}
             md
             lg={4}
             className="md:d-grid md:align-content-start md:justify-content-center py-7 lg:py-0"
@@ -76,7 +76,7 @@ export const Footer: FC<FooterProps> = observer(({ description, quickLinks }) =>
             </Nav>
           </Col>
 
-          <Col span={12} className="md:d-none">
+          <Col xs={12} className="md:d-none">
             <hr className="m-0 border-secondary opacity-25" />
           </Col>
 
@@ -84,7 +84,7 @@ export const Footer: FC<FooterProps> = observer(({ description, quickLinks }) =>
 
           <Col
             as="section"
-            span={12}
+            xs={12}
             md
             lg={4}
             className="md:d-grid md:align-content-start md:justify-content-center lg:justify-content-end py-7 lg:py-0"

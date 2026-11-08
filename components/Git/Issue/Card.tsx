@@ -31,7 +31,7 @@ export const IssueCard: FC<IssueCardProps> = ({
   created_at,
   ...props
 }) => (
-  <Card {...props} theme={theme} className={`${className} fg-black`}>
+  <Card {...props} theme={theme} className={className}>
     <CardHeader as="h4" className="d-flex justify-content-between align-items-center gap-5">
       <a
         className="text-decoration-none fg-secondary text-truncate"
@@ -63,7 +63,11 @@ export const IssueCard: FC<IssueCardProps> = ({
         )}
       </Stack>
     </CardHeader>
-    <CardBody as="article" dangerouslySetInnerHTML={{ __html: marked(body || '') as string }} />
+    <CardBody
+      as="article"
+      className="markdown-body"
+      dangerouslySetInnerHTML={{ __html: marked(body || '') as string }}
+    />
     <CardFooter className="d-flex justify-content-between align-items-center">
       {user && <Nameplate name={user.name || ''} avatar={user.avatar_url} />}
 

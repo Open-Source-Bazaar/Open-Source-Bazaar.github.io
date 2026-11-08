@@ -61,7 +61,7 @@ const HowToBorrowPage = observer(() => {
   ];
 
   return (
-    <Container breakpoint="xl" className="px-5">
+    <Container fluid="xl" className="px-5">
       <PageHead title={t('how_to_borrow_page_title')} />
 
       <div className="mb-12">

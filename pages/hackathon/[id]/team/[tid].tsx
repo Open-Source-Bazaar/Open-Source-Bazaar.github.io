@@ -236,7 +236,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
                   ))}
                 </ul>
 
-                <Row as="ol" className="list-unstyled g-7" cols={1} md={2} xl={4}>
+                <Row as="ol" className="list-unstyled g-7" xs={1} md={2} xl={4}>
                   {quickMetrics.map(({ label, value, meta }) => (
                     <Col key={`${label}-${value}`} as="li">
                       <article className={styles.metricCard}>
@@ -260,7 +260,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
               <div className={styles.accentLine} />
             </header>
 
-            <Row as="ul" className="list-unstyled g-7" cols={1} md={2} xl={3}>
+            <Row as="ul" className="list-unstyled g-7" xs={1} md={2} xl={3}>
               {members.map(member => (
                 <Col key={member.id as string} as="li">
                   <TeamMemberCard {...member} />
@@ -279,7 +279,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
             </header>
 
             {products.length > 0 ? (
-              <Row as="ul" className="list-unstyled g-7" cols={1} md={2}>
+              <Row as="ul" className="list-unstyled g-7" xs={1} md={2}>
                 {products.map(product => (
                   <Col key={product.id as string} as="li">
                     <ProductCard className={styles.productCardOverride} {...product} />
@@ -338,8 +338,8 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
 
       <NativeDialog
         size="lg"
-        open={showScoreModal}
         className={styles.scoreModal}
+        open={showScoreModal}
         onClose={() => setShowScoreModal(false)}
       >
         <DialogHeader>
@@ -348,11 +348,13 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
         </DialogHeader>
         <DialogBody>
           <div className="ratio ratio-16x9">
-            <iframe
-              className="w-100 h-100 border-0"
-              title={t('score')}
-              src={scoreForm?.shared_url}
-            />
+            {showScoreModal && (
+              <iframe
+                className="w-100 h-100 border-0"
+                title={t('score')}
+                src={scoreForm?.shared_url}
+              />
+            )}
           </div>
         </DialogBody>
       </NativeDialog>

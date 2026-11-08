@@ -4,7 +4,7 @@ import { LanguageCode, parseSSRContext } from '../models/Translation';
 
 interface CustomDocumentProps {
   language: LanguageCode;
-  colorScheme: 'light' | 'dark';
+  colorScheme?: 'light' | 'dark';
 }
 
 export default class CustomDocument extends Document<CustomDocumentProps> {

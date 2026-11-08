@@ -58,7 +58,7 @@ export const ActivityCard: FC<ActivityCardProps> = ({
         </Col>
       </Row>
       <Row as="footer" className="flex-fill small mt-1">
-        <Col span={8}>
+        <Col xs={8}>
           <BadgeBar
             list={(host as string[]).map(text => ({
               text,
@@ -66,7 +66,7 @@ export const ActivityCard: FC<ActivityCardProps> = ({
             }))}
           />
         </Col>
-        <Col className="text-end" span={4}>
+        <Col className="text-end" xs={4}>
           <TimeDistance {...TimeOption} date={startTime as number} />
         </Col>
       </Row>

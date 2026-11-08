@@ -54,7 +54,7 @@ export const HowItWorks: FC<HowItWorksProps> = observer(
 
     return (
       <section className="py-12 bg-white">
-        <Container breakpoint="xl" className="px-5">
+        <Container fluid="xl" className="px-5">
           <div className="text-center mb-12">
             <h2 className="fs-4xl fw-bold fg-black mb-5 position-relative">
               {resolvedTitle}

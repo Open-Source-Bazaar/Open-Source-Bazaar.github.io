@@ -59,7 +59,7 @@ export const GitCard: FC<GitCardProps> = observer(
               </Badge>
             ))}
           </nav>
-          <Row as="ul" className="list-unstyled g-7" cols={4}>
+          <Row as="ul" className="list-unstyled g-7" xs={4}>
             {languages.map(language => (
               <Col key={language} as="li">
                 <GitLogo name={language} />

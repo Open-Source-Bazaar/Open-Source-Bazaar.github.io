@@ -55,12 +55,12 @@ export default class CustomApp extends App<I18nProps> {
   }
 
   renderSiteFrame(isArticlePage: boolean) {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, router } = this.props;
     const content = <Component {...pageProps} />;
 
     return (
       <>
-        <MainNavigator />
+        <MainNavigator pathname={router.pathname} />
 
         <div className="mt-12 pt-3">
           {isArticlePage ? <PageContent>{content}</PageContent> : content}

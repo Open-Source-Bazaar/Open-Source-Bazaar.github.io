@@ -96,6 +96,7 @@ export const HeroCarousel: FC<{ activities: Activity[] }> = ({ activities }) => 
         autoplay
         pause="hover"
         interval={6500}
+        controlsPlacement="overlay"
         indicators={activities.length > 1}
         controls={activities.length > 1}
         className={`${styles.carousel} h-100`}
@@ -118,12 +119,12 @@ export const HeroCarousel: FC<{ activities: Activity[] }> = ({ activities }) => 
               >
                 <Row className="g-0 h-100 flex-column-reverse md:flex-row">
                   <Col
-                    span={12}
+                    xs={12}
                     md={6}
                     lg={5}
                     className="d-flex align-items-center position-relative z-1"
                   >
-                    <Container breakpoint="md" className="px-5 md:px-7 xl:px-12 py-12">
+                    <Container fluid="md" className="px-5 md:px-7 xl:px-12 py-12">
                       <CardBody
                         className="p-0 d-flex flex-column justify-content-center"
                         style={infoBodyStyle}
@@ -187,7 +188,7 @@ export const HeroCarousel: FC<{ activities: Activity[] }> = ({ activities }) => 
                     </Container>
                   </Col>
 
-                  <Col span={12} md={6} lg={7} className={`${styles.mediaPane} position-relative`}>
+                  <Col xs={12} md={6} lg={7} className={`${styles.mediaPane} position-relative`}>
                     <LarkImage src={image} alt={title} className="w-100 h-100 object-fit-cover" />
                   </Col>
                 </Row>

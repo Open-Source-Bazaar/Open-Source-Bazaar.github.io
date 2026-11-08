@@ -19,7 +19,7 @@ export const CardPage: FC<CardPageProps> = observer(
 
     return (
       <>
-        <Row className="g-5 my-5" cols={1} md={2} lg={3}>
+        <Row className="g-5 my-5" xs={1} md={2} lg={3}>
           {currentPage.map(item => (
             <Col key={item.id as string}>
               <Card className="h-100" linkOf={cardLinkOf} {...item} />

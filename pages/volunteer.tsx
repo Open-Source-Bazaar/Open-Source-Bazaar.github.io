@@ -70,7 +70,7 @@ const Organizer: FC<{ contributors: Contributor[] }> = observer(({ contributors 
       <Row
         as="ul"
         className="list-unstyled justify-content-center text-center"
-        cols={2}
+        xs={2}
         sm={5}
         md={6}
       >

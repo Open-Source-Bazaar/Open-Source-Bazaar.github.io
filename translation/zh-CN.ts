@@ -1,6 +1,7 @@
 export default {
   // Navigation
   open_source_bazaar: '开源市集',
+  toggle_navigation: '切换导航菜单',
   about: '关于',
   history: '历史',
   code_of_conduct: '行为规范',

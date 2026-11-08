@@ -26,7 +26,7 @@ const BookCatalog: FC<BookCatalogProps> = observer(({ books }) => {
   const { t } = i18n;
 
   return (
-    <Container breakpoint="xl" className="px-5">
+    <Container fluid="xl" className="px-5">
       <PageHead title={`${t('book_catalog')} - ${t('open_library')}`} />
 
       <div className="py-12">
@@ -40,7 +40,7 @@ const BookCatalog: FC<BookCatalogProps> = observer(({ books }) => {
           store={store}
           defaultData={books}
           renderList={books => (
-            <Row cols={1} md={2} lg={3} className="g-7">
+            <Row xs={1} md={2} lg={3} className="g-7">
               {books.map(book => (
                 <Col key={book.id}>
                   <BookCard book={book} showStatus variant="catalog" className="h-100" />
