@@ -56,8 +56,6 @@ export default withSerwist(
       pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
       output: CI ? 'standalone' : undefined,
       transpilePackages: [
-        '@sentry/browser',
-        '@sentry/nextjs',
         '@serwist/next',
         '@swc/helpers',
         'idea-react',
