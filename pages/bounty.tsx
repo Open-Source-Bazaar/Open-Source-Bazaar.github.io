@@ -86,7 +86,7 @@ const BountyPage: FC = observer(() => {
         <BountyView
           icon="🦸"
           title={t('bounty_hero_rank')}
-          url="https://open-source-bazaar.feishu.cn/share/base/view/shrcnyrOkRfqSAjWEjCQ9T4OOwc"
+          url="https://open-source-bazaar.feishu.cn/share/base/view/shrcn719aZRGCj0bNDytylbG3uh"
         />
 
         <BountyView
