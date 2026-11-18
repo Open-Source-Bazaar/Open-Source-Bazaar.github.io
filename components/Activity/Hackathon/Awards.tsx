@@ -1,10 +1,10 @@
+import { Container } from 'idea-react';
 import { TableCellValue } from 'mobx-lark';
 import { FC } from 'react';
-import { Container } from 'react-bootstrap';
 
 import { LarkImage } from '../../LarkImage';
-import type { HackathonHeroAction } from './Hero';
 import styles from './Awards.module.less';
+import type { HackathonHeroAction } from './Hero';
 
 export interface HackathonAwardsMeta<Value = string> {
   label: string;
@@ -110,23 +110,23 @@ export const HackathonAwards: FC<HackathonAwardsProps> = ({
             <div className={styles.accentLine} />
           </header>
 
-          <div className={`${styles.awardsGrid} gap-3`}>
+          <div className={`${styles.awardsGrid} gap-5`}>
             {prizes.map(prize => (
               <PrizeCard key={prize.id} {...prize} />
             ))}
           </div>
 
           {criteria?.[0] && (
-            <article className={`${styles.judgingCard} mt-4`}>
-              <h3 className={`${styles.judgingTitle} mb-3`}>{subtitle}</h3>
+            <article className={`${styles.judgingCard} mt-7`}>
+              <h3 className={`${styles.judgingTitle} mb-5`}>{subtitle}</h3>
 
               <ul className={`list-unstyled ${styles.criteriaGrid}`}>
                 {criteria.map(({ description, id, title, weight }) => (
-                  <li key={id} className={`${styles.criterion} d-grid align-items-start gap-3`}>
+                  <li key={id} className={`${styles.criterion} d-grid align-items-start gap-5`}>
                     <span className={styles.criterionWeight}>{weight}</span>
                     <div>
                       <strong className={styles.criterionTitle}>{title}</strong>
-                      <p className={`${styles.criterionDescription} mt-2 mb-0`}>{description}</p>
+                      <p className={`${styles.criterionDescription} mt-3 mb-0`}>{description}</p>
                     </div>
                   </li>
                 ))}
@@ -137,10 +137,10 @@ export const HackathonAwards: FC<HackathonAwardsProps> = ({
       )}
 
       {organizations[0] && (
-        <div className={`${styles.supportCard} mt-4`}>
+        <div className={`${styles.supportCard} mt-7`}>
           <div className={`${styles.supportCopy} d-flex flex-column justify-content-center`}>
             <p className={`${styles.supportEyebrow} mb-1`}>{supportEyebrow}</p>
-            <h3 className={`${styles.supportTitle} mt-2`}>{supportTitle}</h3>
+            <h3 className={`${styles.supportTitle} mt-3`}>{supportTitle}</h3>
             <p className={styles.supportDescription}>{supportDescription}</p>
           </div>
 
@@ -152,7 +152,7 @@ export const HackathonAwards: FC<HackathonAwardsProps> = ({
 
           {supportAction && (
             <a
-              className={`${styles.supportLink} d-inline-flex align-items-center mt-2`}
+              className={`${styles.supportLink} d-inline-flex align-items-center mt-3`}
               href={supportAction.href}
               {...(supportAction.external && { target: '_blank', rel: 'noreferrer' })}
             >

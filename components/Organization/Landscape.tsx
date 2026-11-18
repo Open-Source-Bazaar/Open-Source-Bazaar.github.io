@@ -1,8 +1,7 @@
-import { Dialog } from 'idea-react';
+import { CloseButton, Dialog, DialogBody, DialogHeader, DialogTitle, DialogBox } from 'idea-react';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { Component } from 'react';
-import { Modal } from 'react-bootstrap';
 import { splitArray } from 'web-utility';
 
 import { Organization, OrganizationModel } from '../../models/Organization';
@@ -17,13 +16,14 @@ export class OpenCollaborationLandscape extends Component<OpenCollaborationLands
   @observable
   accessor itemSize = 2;
 
-  modal = new Dialog<{ name?: string }>(({ defer, name }) => (
-    <Modal show={!!defer} onHide={() => defer?.resolve()}>
-      <Modal.Header closeButton>
-        <Modal.Title>{name}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>{this.renderCard(name!)}</Modal.Body>
-    </Modal>
+  modal = new DialogBox<{ name?: string }>(({ defer, name }) => (
+    <Dialog open={!!defer} onClose={() => defer?.resolve()}>
+      <DialogHeader>
+        <DialogTitle as="h2">{name}</DialogTitle>
+        <CloseButton onClick={() => defer?.resolve()} />
+      </DialogHeader>
+      <DialogBody>{this.renderCard(name!)}</DialogBody>
+    </Dialog>
   ));
 
   renderCard(name: string) {
@@ -59,12 +59,12 @@ export class OpenCollaborationLandscape extends Component<OpenCollaborationLands
     return (
       <>
         {rows.map(row => (
-          <ul className={`list-unstyled d-flex flex-${screenNarrow ? 'column' : 'row'} gap-2`}>
+          <ul className={`list-unstyled d-flex flex-${screenNarrow ? 'column' : 'row'} gap-3`}>
             {row.map(([name, list]) => (
               <li key={name} className="flex-fill">
-                <h2 className={`h5 p-2 text-nowrap text-white ${styles.groupTitle}`}>{name}</h2>
+                <h2 className={`h5 p-3 text-nowrap fg-white ${styles.groupTitle}`}>{name}</h2>
 
-                <ol className="list-unstyled d-flex flex-wrap gap-2">
+                <ol className="list-unstyled d-flex flex-wrap gap-3">
                   {list.map(this.renderLogo)}
                 </ol>
               </li>

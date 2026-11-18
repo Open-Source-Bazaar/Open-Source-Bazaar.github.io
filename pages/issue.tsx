@@ -1,9 +1,15 @@
-import { Loading } from 'idea-react';
+import {
+  Accordion,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Container,
+  Loading,
+} from 'idea-react';
 import { GitRepository, RepositoryModel } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { ScrollList } from 'mobx-restful-table';
 import { FC, useContext } from 'react';
-import { Accordion, Breadcrumb, Container } from 'react-bootstrap';
 import { Minute, Second } from 'web-utility';
 
 import { IssueModule } from '../components/Git/Issue/IssueModule';
@@ -28,11 +34,15 @@ const IssuesPage: FC<{ list: GitRepository[] }> = observer(({ list }) => {
   const { t } = i18n;
 
   return (
-    <Container className="py-5">
+    <Container className="py-12">
       <PageHead title="GitHub issues" />
       <Breadcrumb>
-        <Breadcrumb.Item href="/">{t('open_source_bazaar')}</Breadcrumb.Item>
-        <Breadcrumb.Item active>GitHub issues</Breadcrumb.Item>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/">{t('open_source_bazaar')}</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          <BreadcrumbLink active>GitHub issues</BreadcrumbLink>
+        </BreadcrumbItem>
       </Breadcrumb>
       <h1>GitHub issues</h1>
 

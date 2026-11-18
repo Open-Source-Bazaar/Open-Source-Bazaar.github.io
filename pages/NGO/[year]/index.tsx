@@ -1,8 +1,8 @@
+import { Button, Container } from 'idea-react';
 import { observer } from 'mobx-react';
-import dynamic from 'next/dynamic';
 import { GetStaticProps } from 'next';
+import dynamic from 'next/dynamic';
 import { FC, useContext } from 'react';
-import { Button, Container } from 'react-bootstrap';
 
 import { PageHead } from '../../../components/Layout/PageHead';
 import { CityStatisticMap } from '../../../components/Map/CityStatisticMap';
@@ -41,10 +41,10 @@ const OrganizationPage: FC<OrganizationPageProps> = observer(({ year, statistic 
     <Container>
       <PageHead title={t('China_NGO_Map')} />
 
-      <header className="d-flex flex-wrap justify-content-around align-items-center my-4">
-        <h1 className="my-4">{t('China_NGO_Map')}</h1>
+      <header className="d-flex flex-wrap justify-content-around align-items-center my-7">
+        <h1 className="my-7">{t('China_NGO_Map')}</h1>
         <div>
-          <Button className="me-2" size="sm" href={`/NGO/${year}/landscape`}>
+          <Button className="me-3" size="sm" href={`/NGO/${year}/landscape`}>
             {t('landscape')}
           </Button>
         </div>

@@ -1,8 +1,17 @@
+import {
+  Accordion,
+  AccordionBody,
+  AccordionHeader,
+  AccordionItem,
+  Button,
+  ButtonGroup,
+  Container,
+  Progress,
+} from 'idea-react';
 import { FeatureAttitude, filterLicenses, InfectionRange, License } from 'license-filter';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
-import { Accordion, Button, ButtonGroup, Container, ProgressBar } from 'react-bootstrap';
 
 import { PageHead } from '../components/Layout/PageHead';
 import { licenseTips, optionValue } from '../components/License/helper';
@@ -93,12 +102,12 @@ export default class LicenseTool extends ObservedComponent<{}, typeof i18n> {
     const percent = (keyIndex + 1) * now;
 
     return (
-      <Container className="py-5">
+      <Container className="py-12">
         <PageHead title={t('license_tool_headline')} />
         <h1>{t('license_tool_headline')}</h1>
 
         <p>{t('license_tool_description')}</p>
-        <p className="text-warning">{t('warn_info')}</p>
+        <p className="fg-warning">{t('warn_info')}</p>
 
         <h2>
           {t('filter_option')}: {t(choiceSteps[keyIndex])}
@@ -107,12 +116,14 @@ export default class LicenseTool extends ObservedComponent<{}, typeof i18n> {
         {licenseTips(i18n)[choiceSteps[keyIndex]].map(({ text }) => (
           <p key={text}>{text}</p>
         ))}
-        <ProgressBar className="mb-3" variant="info" now={percent} label={`${percent}%`} />
+        <Progress className="mb-5" theme="info" value={percent}>
+          {percent}%
+        </Progress>
 
-        <Button className="mb-2" variant="warning" onClick={this.backToLast}>
+        <Button className="mb-3" theme="warning" onClick={this.backToLast}>
           {t('last_step')}
         </Button>
-        <ButtonGroup className="mb-2">
+        <ButtonGroup className="mb-3">
           {optionValue(i18n)[choiceSteps[keyIndex]].map(({ value, text }) => (
             <Button
               key={value}
@@ -127,14 +138,14 @@ export default class LicenseTool extends ObservedComponent<{}, typeof i18n> {
           ))}
         </ButtonGroup>
 
-        <Accordion defaultActiveKey="0">
+        <Accordion>
           {lists.map(({ license, score }, index) => (
-            <Accordion.Item key={license.name} eventKey={index + 1 + ''}>
-              <Accordion.Header>
+            <AccordionItem key={license.name}>
+              <AccordionHeader>
                 {license.name} {t('license_score')}: {score * 10}
-              </Accordion.Header>
-              <Accordion.Body>{this.renderInfo(license)}</Accordion.Body>
-            </Accordion.Item>
+              </AccordionHeader>
+              <AccordionBody>{this.renderInfo(license)}</AccordionBody>
+            </AccordionItem>
           ))}
         </Accordion>
       </Container>

@@ -1,8 +1,7 @@
+import { Container, TimeUnit } from 'idea-react';
 import { TableCellValue } from 'mobx-lark';
 import dynamic from 'next/dynamic';
 import { FC, ReactNode } from 'react';
-import { Container } from 'react-bootstrap';
-import { TimeUnit } from 'idea-react';
 
 import { Agenda } from '../../../models/Hackathon';
 import { LarkImage } from '../../LarkImage';
@@ -18,16 +17,15 @@ export interface HackathonHeroAction extends HackathonHeroNavItem {
 
 export type HackathonHeroCard = Record<'title' | 'description' | 'eyebrow', string>;
 
-export interface HackathonHeroProps
-  extends Record<
-    | `visual${'Kicker' | 'Title' | 'Copy' | 'Chip'}`
-    | 'name'
-    | 'subtitle'
-    | 'description'
-    | 'locationText'
-    | 'imageFallback',
-    string
-  > {
+export interface HackathonHeroProps extends Record<
+  | `visual${'Kicker' | 'Title' | 'Copy' | 'Chip'}`
+  | 'name'
+  | 'subtitle'
+  | 'description'
+  | 'locationText'
+  | 'imageFallback',
+  string
+> {
   agendaItems: Agenda[];
   badges: ReactNode[];
   bottomCard?: HackathonHeroCard;
@@ -63,7 +61,7 @@ const HeroLink: FC<{
 );
 
 const NavLink: FC<{ item: HackathonHeroNavItem }> = ({ item }) => (
-  <a className={`${styles.headerNavLink} d-none d-lg-inline`} href={item.href}>
+  <a className={`${styles.headerNavLink} d-none lg:d-inline`} href={item.href}>
     {item.label}
   </a>
 );
@@ -73,7 +71,7 @@ const FloatingCard: FC<{
   position: 'bottom' | 'top';
 }> = ({ card, position }) => (
   <div
-    className={`${styles.heroFloatingCard} mt-3 mt-md-0 ${position === 'top' ? styles.heroFloatingCardTop : styles.heroFloatingCardBottom}`}
+    className={`${styles.heroFloatingCard} mt-5 md:mt-0 ${position === 'top' ? styles.heroFloatingCardTop : styles.heroFloatingCardBottom}`}
   >
     <span className={styles.floatingLabel}>{card.eyebrow}</span>
     <strong>{card.title}</strong>
@@ -126,14 +124,14 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
       <header className={styles.siteHeader}>
         <Container>
           <div
-            className={`${styles.headerContainer} d-flex flex-wrap flex-md-nowrap justify-content-between align-items-center gap-3 py-3`}
+            className={`${styles.headerContainer} d-flex flex-wrap md:flex-nowrap justify-content-between align-items-center gap-5 py-5`}
           >
             <a className={`${styles.logoText} text-nowrap`} href="#top">
               {name}
             </a>
 
             <nav
-              className={`${styles.headerNav} d-flex justify-content-between justify-content-md-start align-items-center gap-3`}
+              className={`${styles.headerNav} d-flex justify-content-between md:justify-content-start align-items-center gap-5`}
               aria-label={subtitle}
             >
               {navigation.map(item => (
@@ -147,8 +145,8 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
 
       <Container>
         <div className={styles.heroInner}>
-          <div className={`${styles.heroContent} d-flex flex-column pt-3 pt-xl-4`}>
-            <ul className={`list-unstyled ${styles.heroEyebrow} d-flex flex-wrap gap-3 m-0`}>
+          <div className={`${styles.heroContent} d-flex flex-column pt-5 xl:pt-7`}>
+            <ul className={`list-unstyled ${styles.heroEyebrow} d-flex flex-wrap gap-5 m-0`}>
               {badges.map((badge, index) => (
                 <li
                   key={index}
@@ -174,14 +172,14 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
               units={countdownUnits}
             />
 
-            <nav className="d-flex flex-wrap gap-2 gap-md-3" aria-label={subtitle}>
+            <nav className="d-flex flex-wrap gap-3 md:gap-5" aria-label={subtitle}>
               <HeroLink action={primaryAction} variant="primary" />
               <HeroLink action={secondaryAction} variant="ghost" />
             </nav>
 
             {chips?.[0] && (
               <ul
-                className={`list-unstyled ${styles.heroStats} d-flex flex-wrap gap-2 gap-md-3 m-0`}
+                className={`list-unstyled ${styles.heroStats} d-flex flex-wrap gap-3 md:gap-5 m-0`}
               >
                 {chips.map((chip, index) => (
                   <li key={index} className={`${styles.statChip} d-inline-flex align-items-center`}>
@@ -192,9 +190,9 @@ export const HackathonHero: FC<HackathonHeroProps> = ({
             )}
           </div>
 
-          <div className={`${styles.heroVisual} pt-3 pt-xl-4 d-flex d-md-block flex-column`}>
+          <div className={`${styles.heroVisual} pt-5 xl:pt-7 d-flex md:d-block flex-column`}>
             <div className={styles.heroVisualCard}>
-              <div className={`${styles.heroVisualHead} d-flex justify-content-between gap-3`}>
+              <div className={`${styles.heroVisualHead} d-flex justify-content-between gap-5`}>
                 <span className={styles.visualKicker}>{visualKicker}</span>
                 <span className={styles.visualChip}>{visualChip}</span>
               </div>

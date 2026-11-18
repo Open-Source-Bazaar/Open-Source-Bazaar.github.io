@@ -1,17 +1,17 @@
+import { Container, Nav, NavItem, NavLink } from 'idea-react';
 import { observer } from 'mobx-react';
 import { Base, SearchableFilter } from 'mobx-strapi';
 import { cache, compose, errorLogger, RouteProps, router } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
-import { Container, Nav } from 'react-bootstrap';
 import { buildURLData } from 'web-utility';
 
 import { ActivityCard } from '../../../components/Activity/Card';
 import { CardPage, CardPageProps } from '../../../components/Layout/CardPage';
 import { PageHead } from '../../../components/Layout/PageHead';
 import { SearchBar } from '../../../components/Navigator/SearchBar';
+import { BookCard } from '../../../components/open-library/BookCard';
 import { OrganizationCard } from '../../../components/Organization/Card';
 import { ProjectCard } from '../../../components/Project/Card';
-import { BookCard } from '../../../components/open-library/BookCard';
 import type { Book } from '../../../models/Book';
 import systemStore, { SearchPageMeta } from '../../../models/System';
 import { i18n, I18nContext } from '../../../models/Translation';
@@ -71,20 +71,20 @@ const SearchModelPage: FC<SearchModelPageProps> = observer(
     const title = `${keywords} - ${name} ${t('search_results')}`;
 
     return (
-      <Container className="my-5">
+      <Container className="my-12">
         <PageHead title={title} />
 
-        <h1 className="my-3 text-center">{title}</h1>
+        <h1 className="my-5 text-center">{title}</h1>
 
-        <header className="d-flex flex-wrap align-items-center gap-3">
+        <header className="d-flex flex-wrap align-items-center gap-5">
           <SearchBar className="flex-fill" action={`/search/${model}`} defaultValue={keywords} />
-          <Nav variant="pills" defaultActiveKey={model}>
+          <Nav as="ul" variant="pills">
             {Object.entries(nameMap).map(([key, value]) => (
-              <Nav.Item key={key}>
-                <Nav.Link eventKey={key} href={`/search/${key}?keywords=${keywords}`}>
+              <NavItem key={key} as="li">
+                <NavLink active={key === model} href={`/search/${key}?keywords=${keywords}`}>
                   {value}
-                </Nav.Link>
-              </Nav.Item>
+                </NavLink>
+              </NavItem>
             ))}
           </Nav>
         </header>

@@ -1,17 +1,24 @@
-import { text2color } from 'idea-react';
+import {
+  AccordionBody,
+  AccordionHeader,
+  AccordionItem,
+  Badge,
+  Col,
+  Row,
+  text2color,
+} from 'idea-react';
 import type { GitRepository } from 'mobx-github';
 import { FC } from 'react';
-import { Accordion, Badge, Col, Row } from 'react-bootstrap';
 
 import { IssueCard } from './Card';
 
 export const IssueModule: FC<GitRepository> = ({ name, language, issues }) => (
-  <Accordion.Item eventKey={name}>
-    <Accordion.Header>
-      <Row className="flex-fill align-items-center gx-3">
+  <AccordionItem>
+    <AccordionHeader>
+      <Row className="flex-fill align-items-center gx-5">
         <Col xs={4} sm={2}>
           {language && (
-            <Badge className="fs-6" bg={text2color(language, ['light'])}>
+            <Badge className="fs-md" theme={text2color(language, ['light', 'dark'])}>
               {language}
             </Badge>
           )}
@@ -20,21 +27,21 @@ export const IssueModule: FC<GitRepository> = ({ name, language, issues }) => (
           {name}
         </Col>
         <Col xs={2} className="text-end">
-          <Badge className="fs-6" pill bg="info">
+          <Badge className="fs-md" pill theme="info">
             {issues?.length}
           </Badge>
         </Col>
       </Row>
-    </Accordion.Header>
+    </AccordionHeader>
 
-    <Accordion.Body>
-      <Row xs={1} sm={2} xl={2} className="g-3">
+    <AccordionBody>
+      <Row xs={1} sm={2} xl={2} className="g-5">
         {issues?.map(issue => (
           <Col key={issue.title}>
             <IssueCard className="h-100" {...issue} />
           </Col>
         ))}
       </Row>
-    </Accordion.Body>
-  </Accordion.Item>
+    </AccordionBody>
+  </AccordionItem>
 );

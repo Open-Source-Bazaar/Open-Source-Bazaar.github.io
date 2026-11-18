@@ -3,11 +3,10 @@ packages:
 autoInstallPeers: false
 minimumReleaseAge: 0
 overrides:
-  next: '$next'
-  postcss: 8.5.25
-  serialize-javascript: 7.0.7
+  postcss: 8.5.33
+  serialize-javascript: 7.1.4
 patchedDependencies:
-  next@16.4.3: patches/next@16.4.3.patch
+  next@16.4.6: patches/next@16.4.6.patch
 allowBuilds:
   '@parcel/watcher': true
   core-js: true

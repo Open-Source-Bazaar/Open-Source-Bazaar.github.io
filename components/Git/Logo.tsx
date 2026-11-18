@@ -1,7 +1,7 @@
+import { Image } from 'idea-react';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { PureComponent } from 'react';
-import { Image } from 'react-bootstrap';
 
 export interface GitLogoProps {
   name: string;

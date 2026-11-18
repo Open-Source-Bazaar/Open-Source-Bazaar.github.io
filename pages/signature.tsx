@@ -1,14 +1,14 @@
+import { Container } from 'idea-react';
 import { computed, observable } from 'mobx';
 import { textJoin } from 'mobx-i18n';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
 import { compose, RouteProps, router } from 'next-ssr-middleware';
-import { Container } from 'react-bootstrap';
 import { buildURLData } from 'web-utility';
 
 import { PageHead } from '../components/Layout/PageHead';
-import { i18n, I18nContext } from '../models/Translation';
 import { SignatureModel } from '../models/Signature';
+import { i18n, I18nContext } from '../models/Translation';
 
 export const getServerSideProps = compose(router);
 
@@ -60,9 +60,9 @@ export default class SignaturePage extends ObservedComponent<RouteProps, typeof 
       <Container>
         <PageHead title={title} />
 
-        <h1 className="my-5 text-truncate">{title}</h1>
+        <h1 className="my-12 text-truncate">{title}</h1>
 
-        <section className="markdown-body bg-white py-4">
+        <section className="markdown-body bg-white py-7">
           <blockquote>{t('signature_disclaimer')}</blockquote>
           <pre>
             <code>

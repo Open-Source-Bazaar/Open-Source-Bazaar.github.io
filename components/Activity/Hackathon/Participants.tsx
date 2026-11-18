@@ -1,6 +1,6 @@
+import { Container } from 'idea-react';
 import { TableCellValue } from 'mobx-lark';
 import { FC, useMemo, useState } from 'react';
-import { Container } from 'react-bootstrap';
 
 import { LarkImage } from '../../LarkImage';
 import styles from './Participants.module.less';
@@ -31,7 +31,7 @@ const ParticipantCard: FC<HackathonParticipantItem> = ({ avatar, githubLink, nam
 
   return githubLink ? (
     <a
-      className={`${styles.participantCard} d-flex flex-column align-items-center gap-3 text-center`}
+      className={`${styles.participantCard} d-flex flex-column align-items-center gap-5 text-center`}
       href={githubLink}
       target="_blank"
       rel="noreferrer"
@@ -40,7 +40,7 @@ const ParticipantCard: FC<HackathonParticipantItem> = ({ avatar, githubLink, nam
     </a>
   ) : (
     <div
-      className={`${styles.participantCard} d-flex flex-column align-items-center gap-3 text-center`}
+      className={`${styles.participantCard} d-flex flex-column align-items-center gap-5 text-center`}
     >
       {content}
     </div>
@@ -71,7 +71,7 @@ export const HackathonParticipants: FC<HackathonParticipantsProps> = ({
           <div className={styles.accentLine} />
         </header>
 
-        <div className={`${styles.participantCloud} d-grid gap-3`}>
+        <div className={`${styles.participantCloud} d-grid gap-5`}>
           {visibleParticipants.map(participant => (
             <ParticipantCard key={participant.id} {...participant} />
           ))}
@@ -80,7 +80,7 @@ export const HackathonParticipants: FC<HackathonParticipantsProps> = ({
         {hasMore && (
           <button
             type="button"
-            className={`${styles.toggleButton} d-inline-flex align-items-center justify-content-center mt-3`}
+            className={`${styles.toggleButton} d-inline-flex align-items-center justify-content-center mt-5`}
             onClick={() => setExpanded(value => !value)}
           >
             {expanded ? showLessLabel || 'Show less' : showMoreLabel || 'Show more'}
