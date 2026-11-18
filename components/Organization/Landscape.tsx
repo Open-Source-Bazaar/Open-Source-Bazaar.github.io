@@ -1,11 +1,4 @@
-import {
-  CloseButton,
-  Dialog,
-  DialogBody,
-  DialogHeader,
-  DialogTitle,
-  NativeDialog,
-} from 'idea-react';
+import { CloseButton, Dialog, DialogBody, DialogHeader, DialogTitle, DialogBox } from 'idea-react';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { Component } from 'react';
@@ -23,14 +16,14 @@ export class OpenCollaborationLandscape extends Component<OpenCollaborationLands
   @observable
   accessor itemSize = 2;
 
-  modal = new Dialog<{ name?: string }>(({ defer, name }) => (
-    <NativeDialog open={!!defer} onClose={() => defer?.resolve()}>
+  modal = new DialogBox<{ name?: string }>(({ defer, name }) => (
+    <Dialog open={!!defer} onClose={() => defer?.resolve()}>
       <DialogHeader>
         <DialogTitle as="h2">{name}</DialogTitle>
         <CloseButton onClick={() => defer?.resolve()} />
       </DialogHeader>
       <DialogBody>{this.renderCard(name!)}</DialogBody>
-    </NativeDialog>
+    </Dialog>
   ));
 
   renderCard(name: string) {

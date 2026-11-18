@@ -9,7 +9,7 @@ import {
   DialogBody,
   DialogHeader,
   DialogTitle,
-  NativeDialog,
+  Dialog,
   Nav,
   NavItem,
   NavLink,
@@ -336,7 +336,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
         </section>
       </div>
 
-      <NativeDialog
+      <Dialog
         size="lg"
         className={styles.scoreModal}
         open={showScoreModal}
@@ -357,7 +357,7 @@ const ProjectPage: FC<ProjectPageProps> = observer(({ activity, project, members
             )}
           </div>
         </DialogBody>
-      </NativeDialog>
+      </Dialog>
     </>
   );
 });

@@ -13,9 +13,7 @@ const LanguageMenu: FC = observer(() => {
       aria-label={i18n.t('select_language')}
       search={false}
       value={i18n.currentLanguage}
-      onChange={key => {
-        if (typeof key === 'string') i18n.loadLanguages(key as typeof i18n.currentLanguage);
-      }}
+      onChange={key => i18n.loadLanguages(key as typeof i18n.currentLanguage)}
     >
       {Object.entries(LanguageName).map(([key, name]) => (
         <ComboboxOption key={key} value={key}>

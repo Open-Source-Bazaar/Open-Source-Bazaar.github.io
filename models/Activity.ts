@@ -57,10 +57,7 @@ export class ActivityModel extends BiDataTable<Activity>() {
   }: Pick<Activity, 'id' | 'type' | 'alias' | 'link' | 'database'>) =>
     database ? `/${type?.toString().toLowerCase() || 'activity'}/${alias || id}` : link + '';
 
-  extractFields({
-    id,
-    fields: { host, city, link, database, databaseSchema, ...fields },
-  }: TableRecord<Activity>) {
+  extractFields({ id, fields: { host, city, link, database, ...fields } }: TableRecord<Activity>) {
     return {
       ...fields,
       id: id!,
@@ -68,7 +65,6 @@ export class ActivityModel extends BiDataTable<Activity>() {
       city: (city as TableCellRelation[])?.map(normalizeText),
       link: (link as TableCellLink)?.link,
       database: (database as TableCellLink)?.link,
-      databaseSchema: databaseSchema && JSON.parse(databaseSchema as string),
     };
   }
 

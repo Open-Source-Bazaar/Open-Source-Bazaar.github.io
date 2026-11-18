@@ -36,11 +36,12 @@ export default class CustomDocument extends Document<CustomDocumentProps> {
           />
           <link
             rel="stylesheet"
-            href="https://unpkg.com/github-markdown-css@5.8.1/github-markdown.css"
+            href="https://unpkg.com/github-markdown-css@5.9.0/github-markdown.css"
           />
+          <link rel="stylesheet" href="https://unpkg.com/idea-react@3.0.0-rc.4/dist/style.css" />
           <link
             rel="stylesheet"
-            href="https://unpkg.com/mobx-restful-table@3.0.0-rc.0/dist/index.css"
+            href="https://unpkg.com/mobx-restful-table@3.0.0-rc.3/dist/index.css"
           />
           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
         </Head>
