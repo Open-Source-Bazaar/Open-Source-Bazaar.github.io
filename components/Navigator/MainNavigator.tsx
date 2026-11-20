@@ -1,9 +1,6 @@
 import {
   Container,
-  Drawer,
   Image,
-  Menu,
-  MenuItem,
   Navbar,
   NavbarBrand,
   NavbarNav,
@@ -19,9 +16,13 @@ import { AnchorHTMLAttributes, Component } from 'react';
 
 import { DefaultImage } from '../../models/configuration';
 import { i18n, I18nContext } from '../../models/Translation';
+import styles from './MainNavigator.module.css';
+import { MainNavigatorDrawer } from './MainNavigatorDrawer';
+import { MainNavigatorMenu } from './MainNavigatorMenu';
 import { SearchBar } from './SearchBar';
 
 const LanguageMenu = dynamic(() => import('./LanguageMenu'), { ssr: false });
+const NAVIGATION_ID = 'main-navigation';
 
 export interface NavigatorMenuItem extends Pick<
   AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -132,40 +133,35 @@ export class MainNavigator extends Component<MainNavigatorProps, typeof i18n> {
           </NavbarBrand>
           <NavbarToggler
             expanded={this.open}
+            aria-controls={NAVIGATION_ID}
             aria-label={t('toggle_navigation')}
             onClick={this.toggle}
           />
-          <Drawer
-            className="w-100"
-            bodyClassName="d-flex flex-column lg:flex-row lg:align-items-center"
+          <MainNavigatorDrawer
+            id={NAVIGATION_ID}
             title={t('open_source_bazaar')}
-            responsive="lg"
-            placement="end"
             open={this.open}
             onDismiss={this.hide}
           >
             <NavbarNav className="flex-fill me-auto my-3 lg:my-0 lg:flex-row">
-              {menu.map(({ href, title, subs }) =>
+              {menu.map(({ href, title, subs }, index) =>
                 subs ? (
-                  <Menu key={title} label={title} nav>
-                    {subs.map(
-                      ({ href: subHref, title: subTitle }) =>
-                        subHref && (
-                          <MenuItem key={subHref} href={subHref} onClick={this.hide}>
-                            {subTitle}
-                          </MenuItem>
-                        ),
-                    )}
-                  </Menu>
+                  <NavItem key={title}>
+                    <MainNavigatorMenu
+                      id={`main-navigation-${index}`}
+                      title={title}
+                      items={subs}
+                      pathname={this.props.pathname}
+                      onSelect={this.hide}
+                    />
+                  </NavItem>
                 ) : (
                   href && (
                     <NavItem key={`${href}-${title}`} as="li">
                       <NavLink
                         href={href}
                         active={this.props.pathname === href}
-                        className={`text-nowrap ${
-                          this.props.pathname === href ? 'fw-bolder fg-white' : ''
-                        }`}
+                        className={styles.link}
                         onClick={this.hide}
                       >
                         {title}
@@ -180,7 +176,7 @@ export class MainNavigator extends Component<MainNavigatorProps, typeof i18n> {
               <SearchBar />
               <LanguageMenu />
             </div>
-          </Drawer>
+          </MainNavigatorDrawer>
         </Container>
       </Navbar>
     );
