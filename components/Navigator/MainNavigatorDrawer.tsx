@@ -3,7 +3,10 @@ import { action, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { Component } from 'react';
 
-type MainNavigatorDrawerProps = Pick<DrawerProps, 'title' | 'open' | 'onDismiss' | 'children'>;
+type MainNavigatorDrawerProps = Pick<
+  DrawerProps,
+  'id' | 'title' | 'open' | 'onDismiss' | 'children'
+>;
 
 @observer
 export class MainNavigatorDrawer extends Component<MainNavigatorDrawerProps> {
@@ -25,13 +28,24 @@ export class MainNavigatorDrawer extends Component<MainNavigatorDrawerProps> {
   updateLayout = () => (this.desktop = this.media?.matches ?? false);
 
   render() {
-    const { children, ...props } = this.props;
+    const { id, children, ...props } = this.props;
 
     // A permanent desktop navigation must not run native dialog autofocus.
-    if (this.desktop) return <div className="w-100 d-flex align-items-center">{children}</div>;
+    if (this.desktop)
+      return (
+        <div id={id} className="w-100 d-flex align-items-center">
+          {children}
+        </div>
+      );
 
     return (
-      <Drawer {...props} className="w-100" bodyClassName="d-flex flex-column" placement="end">
+      <Drawer
+        {...props}
+        id={id}
+        className="w-100"
+        bodyClassName="d-flex flex-column"
+        placement="end"
+      >
         {children}
       </Drawer>
     );

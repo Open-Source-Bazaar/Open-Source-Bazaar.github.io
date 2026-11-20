@@ -22,6 +22,7 @@ import { MainNavigatorMenu } from './MainNavigatorMenu';
 import { SearchBar } from './SearchBar';
 
 const LanguageMenu = dynamic(() => import('./LanguageMenu'), { ssr: false });
+const NAVIGATION_ID = 'main-navigation';
 
 export interface NavigatorMenuItem extends Pick<
   AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -132,10 +133,12 @@ export class MainNavigator extends Component<MainNavigatorProps, typeof i18n> {
           </NavbarBrand>
           <NavbarToggler
             expanded={this.open}
+            aria-controls={NAVIGATION_ID}
             aria-label={t('toggle_navigation')}
             onClick={this.toggle}
           />
           <MainNavigatorDrawer
+            id={NAVIGATION_ID}
             title={t('open_source_bazaar')}
             open={this.open}
             onDismiss={this.hide}
@@ -143,14 +146,15 @@ export class MainNavigator extends Component<MainNavigatorProps, typeof i18n> {
             <NavbarNav className="flex-fill me-auto my-3 lg:my-0 lg:flex-row">
               {menu.map(({ href, title, subs }, index) =>
                 subs ? (
-                  <MainNavigatorMenu
-                    key={title}
-                    id={`main-navigation-${index}`}
-                    title={title}
-                    items={subs}
-                    pathname={this.props.pathname}
-                    onSelect={this.hide}
-                  />
+                  <NavItem key={title}>
+                    <MainNavigatorMenu
+                      id={`main-navigation-${index}`}
+                      title={title}
+                      items={subs}
+                      pathname={this.props.pathname}
+                      onSelect={this.hide}
+                    />
+                  </NavItem>
                 ) : (
                   href && (
                     <NavItem key={`${href}-${title}`} as="li">

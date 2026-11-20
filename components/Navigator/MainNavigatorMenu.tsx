@@ -14,6 +14,7 @@ interface MainNavigatorMenuProps {
   onSelect: () => void;
 }
 
+// Deliberate UX customization: upstream menus open on click rather than hover.
 const canHover = ({ pointerType }: PointerEvent<HTMLElement>) =>
   pointerType === 'mouse' &&
   window.matchMedia('(min-width: 1024px) and (any-hover: hover) and (any-pointer: fine)').matches;
@@ -23,7 +24,7 @@ export class MainNavigatorMenu extends Component<MainNavigatorMenuProps> {
   @observable accessor horizontalOffset = 0;
   @observable accessor viewportPadding = 8;
 
-  menu = createRef<Menu<'li'>>();
+  menu = createRef<Menu>();
   closeTimer?: ReturnType<typeof setTimeout>;
   resize?: ResizeObserver;
 
@@ -83,7 +84,6 @@ export class MainNavigatorMenu extends Component<MainNavigatorMenuProps> {
     return (
       <Menu
         ref={this.menu}
-        as="li"
         id={id}
         label={title}
         nav
