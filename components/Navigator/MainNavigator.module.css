@@ -1,6 +1,5 @@
 .link {
   color: var(--bs-nav-link-color);
-  white-space: nowrap;
 }
 
 .link:hover,
@@ -20,13 +19,13 @@
   outline-offset: -2px;
 }
 
-.menu {
-  --bs-menu-bg: var(--bs-bg-body);
-  --bs-menu-border-color: var(--bs-border-color-translucent);
-  --bs-menu-color: var(--bs-fg-body);
-  --bs-menu-item-hover-bg: var(--bs-bg-1);
+.menu,
+.inlineMenu {
   --bs-menu-item-active-bg: var(--bs-bg-2);
   --bs-menu-item-active-color: var(--bs-fg-body);
+}
+
+.menu {
   transform-origin: top center;
 }
 
@@ -46,6 +45,14 @@
 .menu[data-bs-placement^='top']::before {
   top: auto;
   bottom: -5px;
+}
+
+/* Keep submenus inside the scrollable drawer instead of positioning them in the viewport. */
+.inlineMenu {
+  position: static !important;
+  min-width: 0;
+  max-width: 100% !important;
+  max-height: none !important;
 }
 
 .menuItem {

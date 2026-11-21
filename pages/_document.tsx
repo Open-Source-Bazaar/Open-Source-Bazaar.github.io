@@ -38,7 +38,7 @@ export default class CustomDocument extends Document<CustomDocumentProps> {
             rel="stylesheet"
             href="https://unpkg.com/github-markdown-css@5.9.0/github-markdown.css"
           />
-          <link rel="stylesheet" href="https://unpkg.com/idea-react@3.0.0-rc.4/dist/style.css" />
+          <link rel="stylesheet" href="https://unpkg.com/idea-react@3.0.0-rc.6/dist/style.css" />
           <link
             rel="stylesheet"
             href="https://unpkg.com/mobx-restful-table@3.0.0-rc.3/dist/index.css"
