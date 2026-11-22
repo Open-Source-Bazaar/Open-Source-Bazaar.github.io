@@ -78,6 +78,7 @@ const topNavBarMenu = ({ t }: typeof i18n): NavigatorMenuItem[] => [
     ],
   },
   { href: '/bounty', title: t('bounty') },
+  { href: '/wuhan2020', title: t('wuhan2020') },
   {
     title: t('NGO'),
     subs: [

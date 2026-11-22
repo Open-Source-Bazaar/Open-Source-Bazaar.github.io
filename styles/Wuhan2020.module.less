@@ -1,0 +1,172 @@
+// Wuhan-2020 Archival Page styles
+
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+  padding: 5rem 0;
+  overflow: hidden;
+  color: #fff;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    content: '';
+  }
+}
+
+.title {
+  margin-bottom: 1rem;
+  font-weight: 700;
+  font-size: 2.5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+  }
+}
+
+.subtitle {
+  opacity: 0.9;
+  margin: 0 auto;
+  max-width: 700px;
+  font-size: 1.15rem;
+  line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+  }
+}
+
+.metaBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.25rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  font-size: 0.85rem;
+  backdrop-filter: blur(4px);
+}
+
+.statsRow {
+  margin-top: -2rem;
+}
+
+.statCard {
+  transition: all 0.3s ease;
+  border: none;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  &.active {
+    border-bottom: 3px solid #1a237e;
+    box-shadow: 0 4px 20px rgba(26, 35, 126, 0.2);
+  }
+}
+
+.statIcon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.statCount {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #1a237e;
+}
+
+.statLabel {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.recordCard {
+  transition: all 0.3s ease;
+  border: none;
+  border-radius: 0.75rem;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+
+  &:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.badgeVerified {
+  color: #fff;
+  background: #2e7d32;
+}
+
+.categoryBadge {
+  color: #fff;
+  font-size: 0.75rem;
+}
+
+.description {
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.infoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.filterBar {
+  background: #f8f9fa;
+  border-radius: 0.75rem;
+}
+
+.filterBtn {
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  border-radius: 2rem;
+  background: #fff;
+  color: #555;
+
+  &:hover {
+    color: #1a237e;
+    border-color: #1a237e;
+  }
+
+  &.active {
+    color: #fff;
+    background: #1a237e;
+    border-color: #1a237e;
+  }
+}
+
+.timeline {
+  border-left: 3px solid #e3f2fd;
+}
+
+.timelineDot {
+  width: 12px;
+  height: 12px;
+  margin-left: -8px;
+  border-radius: 50%;
+  background: #1a237e;
+}
+
+.sourceNote {
+  font-size: 0.8rem;
+  color: #999;
+}
