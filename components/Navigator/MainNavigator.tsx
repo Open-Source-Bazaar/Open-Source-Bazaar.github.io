@@ -164,9 +164,9 @@ export class MainNavigator extends Component<MainNavigatorProps, typeof i18n> {
               href && (
                 <NavItem key={`${href}-${title}`} as="li">
                   <NavLink
+                    className={styles.link}
                     href={href}
                     active={this.props.pathname === href}
-                    className={styles.link}
                     onClick={this.hide}
                   >
                     {title}

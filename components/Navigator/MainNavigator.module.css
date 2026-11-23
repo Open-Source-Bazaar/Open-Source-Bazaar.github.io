@@ -47,18 +47,13 @@
   bottom: -5px;
 }
 
-/* Keep submenus inside the scrollable drawer instead of positioning them in the viewport. */
+/* Allow the submenu to expand within the drawer. */
 .inlineMenu {
-  position: static !important;
-  min-width: 0;
-  max-width: 100% !important;
   max-height: none !important;
 }
 
 .menuItem {
   color: var(--bs-menu-item-color);
-  white-space: normal;
-  overflow-wrap: anywhere;
 }
 
 .menuItem:hover,

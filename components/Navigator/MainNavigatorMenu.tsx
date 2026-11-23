@@ -82,7 +82,9 @@ export class MainNavigatorMenu extends Component<MainNavigatorMenuProps> {
         theme="dark"
         className={desktop ? undefined : 'w-100'}
         offset={desktop ? [this.horizontalOffset, 4] : undefined}
-        menuClassName={desktop ? styles.menu : styles.inlineMenu}
+        menuClassName={
+          desktop ? styles.menu : `${styles.inlineMenu} position-static min-w-0 max-w-100`
+        }
         toggleProps={{
           className: styles.link,
           'aria-current': active ? 'true' : undefined,
