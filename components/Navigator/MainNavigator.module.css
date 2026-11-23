@@ -1,0 +1,66 @@
+.link {
+  color: var(--bs-nav-link-color);
+}
+
+.link:hover,
+.link:focus-visible,
+.link[aria-expanded='true'] {
+  color: var(--bs-nav-link-hover-color);
+}
+
+.link[aria-current] {
+  color: var(--bs-nav-link-active-color);
+  font-weight: var(--bs-font-weight-bold);
+}
+
+.link:focus-visible,
+.menuItem:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+
+.menu,
+.inlineMenu {
+  --bs-menu-item-active-bg: var(--bs-bg-2);
+  --bs-menu-item-active-color: var(--bs-fg-body);
+}
+
+.menu {
+  transform-origin: top center;
+}
+
+.menu[data-bs-placement^='top'] {
+  transform-origin: bottom center;
+}
+
+/* Keep the four-pixel visual gap within the menu's pointer hit area. */
+.menu::before {
+  position: absolute;
+  inset-inline: 0;
+  top: -5px;
+  height: 5px;
+  content: '';
+}
+
+.menu[data-bs-placement^='top']::before {
+  top: auto;
+  bottom: -5px;
+}
+
+/* Allow the submenu to expand within the drawer. */
+.inlineMenu {
+  max-height: none !important;
+}
+
+.menuItem {
+  color: var(--bs-menu-item-color);
+}
+
+.menuItem:hover,
+.menuItem:focus-visible {
+  color: var(--bs-menu-item-hover-color);
+}
+
+.menuItem[aria-current] {
+  color: var(--bs-menu-item-active-color);
+}

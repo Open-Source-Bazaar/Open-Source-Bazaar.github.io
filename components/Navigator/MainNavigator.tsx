@@ -2,8 +2,6 @@ import {
   Container,
   Drawer,
   Image,
-  Menu,
-  MenuItem,
   Navbar,
   NavbarBrand,
   NavbarNav,
@@ -19,9 +17,13 @@ import { AnchorHTMLAttributes, Component } from 'react';
 
 import { DefaultImage } from '../../models/configuration';
 import { i18n, I18nContext } from '../../models/Translation';
+import styles from './MainNavigator.module.css';
+import { MainNavigatorMenu } from './MainNavigatorMenu';
 import { SearchBar } from './SearchBar';
 
 const LanguageMenu = dynamic(() => import('./LanguageMenu'), { ssr: false });
+const NAVIGATION_ID = 'main-navigation';
+const DESKTOP_QUERY = '(min-width: 1024px)';
 
 export interface NavigatorMenuItem extends Pick<
   AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -115,6 +117,26 @@ export class MainNavigator extends Component<MainNavigatorProps, typeof i18n> {
 
   @observable accessor open = false;
 
+  @observable accessor desktop = false;
+
+  desktopMedia?: MediaQueryList;
+
+  componentDidMount() {
+    this.desktopMedia = window.matchMedia(DESKTOP_QUERY);
+    this.desktopMedia.addEventListener('change', this.updateLayout);
+    this.updateLayout();
+  }
+
+  componentWillUnmount() {
+    this.desktopMedia?.removeEventListener('change', this.updateLayout);
+  }
+
+  @action
+  updateLayout = () => {
+    this.desktop = this.desktopMedia?.matches ?? false;
+    if (this.desktop) this.hide();
+  };
+
   toggle = action(() => (this.open = !this.open));
 
   hide = action(() => (this.open = false));
@@ -122,6 +144,45 @@ export class MainNavigator extends Component<MainNavigatorProps, typeof i18n> {
   render() {
     const { t } = this.context;
     const menu = this.props.menu ?? topNavBarMenu(this.context);
+
+    const navigation = (
+      <>
+        <NavbarNav className="flex-fill me-auto my-3 lg:my-0 lg:flex-row">
+          {menu.map(({ href, title, subs }, index) =>
+            subs ? (
+              <NavItem key={title}>
+                <MainNavigatorMenu
+                  id={`main-navigation-${index}`}
+                  title={title}
+                  desktop={this.desktop}
+                  items={subs}
+                  pathname={this.props.pathname}
+                  onSelect={this.hide}
+                />
+              </NavItem>
+            ) : (
+              href && (
+                <NavItem key={`${href}-${title}`} as="li">
+                  <NavLink
+                    className={styles.link}
+                    href={href}
+                    active={this.props.pathname === href}
+                    onClick={this.hide}
+                  >
+                    {title}
+                  </NavLink>
+                </NavItem>
+              )
+            ),
+          )}
+        </NavbarNav>
+
+        <div className="d-flex justify-content-around gap-5">
+          <SearchBar />
+          <LanguageMenu />
+        </div>
+      </>
+    );
 
     return (
       <Navbar theme="dark" className="fixed-top bg-body" expand="lg">
@@ -132,55 +193,27 @@ export class MainNavigator extends Component<MainNavigatorProps, typeof i18n> {
           </NavbarBrand>
           <NavbarToggler
             expanded={this.open}
+            aria-controls={NAVIGATION_ID}
             aria-label={t('toggle_navigation')}
             onClick={this.toggle}
           />
-          <Drawer
-            className="w-100"
-            bodyClassName="d-flex flex-column lg:flex-row lg:align-items-center"
-            title={t('open_source_bazaar')}
-            responsive="lg"
-            placement="end"
-            open={this.open}
-            onDismiss={this.hide}
-          >
-            <NavbarNav className="flex-fill me-auto my-3 lg:my-0 lg:flex-row">
-              {menu.map(({ href, title, subs }) =>
-                subs ? (
-                  <Menu key={title} label={title} nav>
-                    {subs.map(
-                      ({ href: subHref, title: subTitle }) =>
-                        subHref && (
-                          <MenuItem key={subHref} href={subHref} onClick={this.hide}>
-                            {subTitle}
-                          </MenuItem>
-                        ),
-                    )}
-                  </Menu>
-                ) : (
-                  href && (
-                    <NavItem key={`${href}-${title}`} as="li">
-                      <NavLink
-                        href={href}
-                        active={this.props.pathname === href}
-                        className={`text-nowrap ${
-                          this.props.pathname === href ? 'fw-bolder fg-white' : ''
-                        }`}
-                        onClick={this.hide}
-                      >
-                        {title}
-                      </NavLink>
-                    </NavItem>
-                  )
-                ),
-              )}
-            </NavbarNav>
-
-            <div className="d-flex justify-content-around gap-5">
-              <SearchBar />
-              <LanguageMenu />
+          {this.desktop ? (
+            <div id={NAVIGATION_ID} className="w-100 d-flex align-items-center">
+              {navigation}
             </div>
-          </Drawer>
+          ) : (
+            <Drawer
+              id={NAVIGATION_ID}
+              title={t('open_source_bazaar')}
+              className="w-100"
+              bodyClassName="d-flex flex-column"
+              placement="end"
+              open={this.open}
+              onDismiss={this.hide}
+            >
+              {navigation}
+            </Drawer>
+          )}
         </Container>
       </Navbar>
     );
