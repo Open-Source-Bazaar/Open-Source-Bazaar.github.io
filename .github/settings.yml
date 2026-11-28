@@ -48,6 +48,22 @@ labels:
     color: '#ffffff'
     description: This will not be worked on
 
+  - name: trusted-contributor
+    color: '#0e8a16'
+    description: Contributor with clean history
+
+  - name: first-time-contributor
+    color: '#fbca04'
+    description: First-time contributor, review as usual
+
+  - name: needs-human-review
+    color: '#d93f0b'
+    description: Needs priority human review
+
+  - name: bot-pr
+    color: '#5319e7'
+    description: Pull request opened by a Bot account
+
 branches:
   - name: main
     # https://docs.github.com/en/rest/reference/repos#update-branch-protection

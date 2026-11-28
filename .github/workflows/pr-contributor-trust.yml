@@ -1,0 +1,55 @@
+name: PR - Contributor Trust
+
+# 目标：把"人写的 PR"和"agent / 刷量 PR"分开，而不是一刀切拒绝。
+# 设计原则：只分级、不自动关闭 —— 误杀一个真贡献者的代价，远高于多看一个低质 PR。
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull request number to re-score
+        required: true
+        type: number
+
+# 同一 PR 的多次触发只保留最后一次，避免 push 风暴刷评论
+concurrency:
+  group: contributor-trust-${{ github.event.pull_request.number || inputs.pr_number || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  contributor-trust:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      # 注意：pull_request_target 下只 checkout 默认分支，绝不 checkout PR 的 head。
+      # 本工作流只通过 GitHub API 读取元数据，不执行任何来自 PR 的代码。
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.repository.default_branch }}
+
+      - uses: denoland/setup-deno@667a34cdef165d8d2b2e98dde39547c9daac7282 # v2.0.4
+        with:
+          deno-version: v2.x
+
+      - name: Score contributor trust
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          deno --allow-run --allow-sys --allow-env --allow-read --allow-net=api.github.com \
+            .github/scripts/contributor-trust.ts \
+            "${{ github.repository_owner }}" \
+            "${{ github.event.repository.name }}" \
+            "${{ github.event.pull_request.number || inputs.pr_number }}"
